@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Market Intelligence — ACNABIN Tender Agent</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/config.js"></script>
+  <script src="js/app.js" defer></script>
+</head>
+<body>
+  <header class="app-header">
+    <div class="brand-container">
+      <div class="brand-logo-badge">ACNABIN</div>
+      <div class="brand-title-wrap">
+        <h1>Tender &amp; Opportunity Intelligence</h1>
+        <p>Market Intelligence &amp; Regulatory Signals</p>
+      </div>
+    </div>
+    <nav class="main-nav">
+      <a href="index.html">Today's Priority</a>
+      <a href="ifrs9.html">IFRS 9 Target (30)</a>
+      <a href="market.html">General Market</a>
+      <a href="intelligence.html" class="active">Market Intelligence</a>
+      <a href="sources.html">Source Health</a>
+      <a href="operations.html">Operations</a>
+    </nav>
+  </header>
+
+  <main class="app-container">
+    <div class="page-header">
+      <div class="page-header-text">
+        <h2>Market Intelligence &amp; Early Signals</h2>
+        <p>Bangladesh Bank circulars, annual reports, policy changes, and bank modernization announcements without direct tenders.</p>
+      </div>
+    </div>
+
+    <div class="table-responsive">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Organization</th>
+            <th>Title &amp; Signal Summary</th>
+            <th>Category</th>
+            <th>Tags</th>
+            <th>Date</th>
+            <th>Source</th>
+          </tr>
+        </thead>
+        <tbody id="intel-tbody">
+          <!-- Populated from market_intelligence -->
+        </tbody>
+      </table>
+    </div>
+  </main>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", async () => {
+      const tbody = document.getElementById("intel-tbody");
+      if (!supabaseClient) {
+        tbody.innerHTML = `<tr><td colspan="6" class="empty-state">Running in demo/local mode. Configure Supabase credentials to view market intelligence.</td></tr>`;
+        return;
+      }
+      try {
+        const { data, error } = await supabaseClient.from("market_intelligence").select("*, organizations(canonical_name)").order("created_at", { ascending: false });
+        if (error) throw error;
+        if (!data || data.length === 0) {
+          tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding: 2rem;">No market intelligence items captured yet.</td></tr>`;
+          return;
+        }
+
+        tbody.innerHTML = data.map(item => `
+          <tr>
+            <td><strong>${escapeHtml(item.organizations?.canonical_name || 'Regulator / Market')}</strong></td>
+            <td>
+              <div style="font-weight:600; color:#fff;">${escapeHtml(item.title)}</div>
+              <div style="font-size:0.8rem; color:var(--text-muted); margin-top:0.25rem;">${escapeHtml(item.summary || '')}</div>
+            </td>
+            <td>${escapeHtml(item.category || 'General')}</td>
+            <td>${(item.tags || []).map(t => `<span class="badge" style="background:rgba(255,255,255,0.06);">${escapeHtml(t)}</span>`).join(" ")}</td>
+            <td style="font-size:0.8rem; color:var(--text-dim);">${item.publication_date || item.created_at}</td>
+            <td><a href="${item.source_url}" target="_blank" rel="noopener" class="btn" style="padding:0.25rem 0.5rem; font-size:0.75rem;">Source ↗</a></td>
+          </tr>
+        `).join("");
+      } catch (err) {
+        tbody.innerHTML = `<tr><td colspan="6" style="color:var(--color-very-high); padding:2rem;">Failed to load market intelligence.</td></tr>`;
+      }
+    });
+  </script>
+</body>
+</html>

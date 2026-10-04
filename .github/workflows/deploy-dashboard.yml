@@ -1,0 +1,33 @@
+name: Deploy Dashboard to Cloudflare Pages
+
+on:
+  push:
+    branches: [ "main" ]
+    paths:
+      - "dashboard/**"
+  workflow_dispatch: {}
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      deployments: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Inject Supabase Config into Dashboard
+        run: |
+          sed -i "s|__SUPABASE_URL__|${{ secrets.SUPABASE_URL }}|g" dashboard/js/config.js
+          sed -i "s|__SUPABASE_ANON_KEY__|${{ secrets.SUPABASE_ANON_KEY }}|g" dashboard/js/config.js
+
+      - name: Deploy to Cloudflare Pages
+        uses: cloudflare/pages-action@v1
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          projectName: "acnabin-tenders"
+          directory: "dashboard"
+          gitHubToken: ${{ secrets.GITHUB_TOKEN }}

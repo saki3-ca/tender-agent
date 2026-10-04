@@ -1,0 +1,67 @@
+# ACNABIN Tender & Opportunity Intelligence Agent Configuration
+
+# Pipeline Routing Settings
+ifrs9_outside_target_mode: "general_market"  # "general_market" | "intelligence_only"
+pipeline_b_sectors:
+  - "scheduled_banks"
+  - "nbfis"
+  - "insurers"
+  - "capital_market"
+  - "regulators"
+  - "public_donor"
+
+# Free-Tier Constraints & Safeguards
+free_tier_caps:
+  supabase_db_warning_mb: 350
+  supabase_db_limit_mb: 500
+  supabase_storage_warning_mb: 700
+  supabase_storage_limit_mb: 1000
+  github_actions_max_minutes_monthly: 2000
+  github_actions_run_budget_minutes: 4
+
+# Crawler Settings
+crawler:
+  default_rate_limit_seconds: 5
+  concurrent_domains_limit: 5
+  request_timeout_seconds: 30
+  max_retries: 3
+  user_agent: "ACNABIN-Tender-Intelligence-Bot/1.0 (+https://acnabin-tenders.pages.dev; contact: {contact_email})"
+  text_truncation_limit_chars: 50000
+
+# Search Engine Discovery Settings
+search:
+  daily_query_limit: 100
+  provider: "google" # google | brave | serpapi
+
+# AI Pipeline Settings
+ai:
+  mode: "full" # off | triage_only | full
+  groq_daily_call_limit: 1000
+  gemini_daily_call_limit: 500
+  cloudflare_daily_call_limit: 5000
+  max_input_chars: 12000
+  semantic_threshold: 0.78
+  ocr_confidence_threshold: 60.0
+
+# Deduplication Settings
+dedupe:
+  embedding_similarity_threshold: 0.90
+  never_merge_across_organizations: true
+
+# Deadline Tracking Settings (Asia/Dhaka timezone)
+deadlines:
+  alert_threshold_days: [7, 3, 1]
+  timezone: "Asia/Dhaka"
+
+# Retention & Cleanup Settings
+retention:
+  irrelevant_records_retention_days: 30
+  expired_documents_retention_days: 90
+  keepalive_ping_days: 5
+
+# Priority Bands
+priority_bands:
+  VERY_HIGH: 85
+  HIGH: 70
+  MEDIUM: 55
+  LOW: 40

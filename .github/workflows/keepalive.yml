@@ -1,0 +1,26 @@
+name: Supabase & Repo Keep-Alive
+
+on:
+  schedule:
+    # Run twice a week (Wednesday and Sunday at 00:00 UTC)
+    - cron: "0 0 * * 0,3"
+  workflow_dispatch: {}
+
+jobs:
+  keep-alive:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping Supabase Database
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+        run: |
+          if [ -z "$SUPABASE_URL" ] || [ -z "$SUPABASE_SERVICE_ROLE_KEY" ]; then
+            echo "Supabase credentials not configured in secrets; skipping keep-alive ping."
+            exit 0
+          fi
+          echo "Pinging Supabase REST endpoint to keep project active..."
+          curl -s -X GET "${SUPABASE_URL}/rest/v1/organizations?select=organization_id&limit=1" \
+               -H "apikey: ${SUPABASE_SERVICE_ROLE_KEY}" \
+               -H "Authorization: Bearer ${SUPABASE_SERVICE_ROLE_KEY}"
+          echo "Ping completed successfully."

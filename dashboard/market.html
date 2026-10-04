@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>General Market Opportunities — ACNABIN Intelligence</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+  <script src="js/config.js"></script>
+  <script src="js/app.js" defer></script>
+</head>
+<body>
+  <header class="app-header">
+    <div class="brand-container">
+      <div class="brand-logo-badge">ACNABIN</div>
+      <div class="brand-title-wrap">
+        <h1>Tender &amp; Opportunity Intelligence</h1>
+        <p>Pipeline B · General Market &amp; Public/Donor Procurement</p>
+      </div>
+    </div>
+    <nav class="main-nav">
+      <a href="index.html">Today's Priority</a>
+      <a href="ifrs9.html">IFRS 9 Target (30)</a>
+      <a href="market.html" class="active">General Market</a>
+      <a href="intelligence.html">Market Intelligence</a>
+      <a href="sources.html">Source Health</a>
+      <a href="operations.html">Operations</a>
+    </nav>
+    <div class="header-actions">
+      <div class="user-badge">
+        <span class="live-indicator"></span>
+        <span>Pipeline B Active</span>
+      </div>
+    </div>
+  </header>
+
+  <main class="app-container">
+    <div class="page-header">
+      <div class="page-header-text">
+        <h2>Pipeline B: General Market Opportunities</h2>
+        <p>Statutory audit, internal audit, ERM, tax/VAT, financial due diligence, and donor-funded project audits.</p>
+      </div>
+      <div class="btn-group">
+        <button id="btn-export-excel" class="btn btn-primary">Export Excel</button>
+        <button id="btn-export-csv" class="btn">Export CSV</button>
+      </div>
+    </div>
+
+    <!-- Toolbar -->
+    <div class="toolbar-card">
+      <div class="filter-group">
+        <input type="text" id="filter-search" class="search-input" placeholder="Search organization, title, ref #..." style="min-width: 280px;">
+        <select id="filter-category" class="filter-select">
+          <option value="ALL">All Categories</option>
+          <option value="AUDIT_ASSURANCE">Audit &amp; Assurance</option>
+          <option value="RISK_CONTROL">Risk &amp; Internal Control</option>
+          <option value="ACCOUNTING_REPORTING">Accounting &amp; Reporting</option>
+          <option value="PROCESS_ADVISORY">Process Advisory</option>
+          <option value="TAX_VAT">Tax &amp; VAT</option>
+          <option value="FINANCIAL_ADVISORY">Financial Advisory</option>
+        </select>
+        <select id="filter-priority" class="filter-select">
+          <option value="ALL">All Priorities</option>
+          <option value="VERY HIGH">VERY HIGH</option>
+          <option value="HIGH">HIGH</option>
+          <option value="MEDIUM">MEDIUM</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="table-responsive">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Organization &amp; Ref</th>
+            <th>Tender Title &amp; Category</th>
+            <th>Pipeline</th>
+            <th>Priority</th>
+            <th>Score</th>
+            <th>Deadline</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="opportunities-tbody">
+          <!-- Populated from v_general_market -->
+        </tbody>
+      </table>
+    </div>
+  </main>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      loadOpportunities("v_general_market");
+    });
+  </script>
+</body>
+</html>

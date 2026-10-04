@@ -1,0 +1,61 @@
+name: Test Suite & Quality Verification
+
+on:
+  push:
+    branches: [ "main", "master", "develop" ]
+  pull_request:
+    branches: [ "main", "master" ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+
+      - name: Install system dependencies (Tesseract)
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y tesseract-ocr tesseract-ocr-ben
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Run Secret Leak Prevention Check
+        run: |
+          python -c "
+          import os, re, sys
+          suspicious = [
+              r'gsk_[A-Za-z0-9_-]{20,}',
+              r'AIzaSy[A-Za-z0-9_-]{33}',
+              r'eyJhbGciOi[A-Za-z0-9_.-]{40,}'
+          ]
+          for root, dirs, files in os.walk('.'):
+              if '.git' in dirs: dirs.remove('.git')
+              for f in files:
+                  if f.endswith(('.py', '.json', '.yaml', '.yml', '.md', '.html', '.js')):
+                      p = os.path.join(root, f)
+                      with open(p, 'r', encoding='utf-8', errors='ignore') as fh:
+                          txt = fh.read()
+                          for pat in suspicious:
+                              if re.search(pat, txt) and not 'example' in p:
+                                  print(f'FATAL: Potential hardcoded secret in {p}')
+                                  sys.exit(1)
+          print('Secrets leak check passed.')
+          "
+
+      - name: Run Pytest Test Suite
+        env:
+          AI_MODE: "off"
+        run: |
+          pytest -v tests/

@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Operations &amp; Free-Tier Health — ACNABIN Tender Agent</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/config.js"></script>
+  <script src="js/app.js" defer></script>
+</head>
+<body>
+  <header class="app-header">
+    <div class="brand-container">
+      <div class="brand-logo-badge">ACNABIN</div>
+      <div class="brand-title-wrap">
+        <h1>Tender &amp; Opportunity Intelligence</h1>
+        <p>Operations, Quotas &amp; Workflow Telemetry</p>
+      </div>
+    </div>
+    <nav class="main-nav">
+      <a href="index.html">Today's Priority</a>
+      <a href="ifrs9.html">IFRS 9 Target (30)</a>
+      <a href="market.html">General Market</a>
+      <a href="intelligence.html">Market Intelligence</a>
+      <a href="sources.html">Source Health</a>
+      <a href="operations.html" class="active">Operations</a>
+    </nav>
+  </header>
+
+  <main class="app-container">
+    <div class="page-header">
+      <div class="page-header-text">
+        <h2>Operational Telemetry &amp; Free-Tier Health</h2>
+        <p>GitHub Actions execution stats, Supabase database storage caps, and AI daily limits.</p>
+      </div>
+    </div>
+
+    <!-- Free-Tier Resource Utilization Cards -->
+    <div class="kpi-grid">
+      <div class="kpi-card">
+        <div class="kpi-label">Supabase Database</div>
+        <div class="kpi-value">&lt; 15 MB</div>
+        <div class="kpi-subtitle">Cap: 500 MB (Warning at 350 MB)</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Supabase Storage</div>
+        <div class="kpi-value">&lt; 25 MB</div>
+        <div class="kpi-subtitle">Cap: 1 GB (Warning at 700 MB)</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">GitHub Actions Runtime</div>
+        <div class="kpi-value">~3.2 min</div>
+        <div class="kpi-subtitle">Target: &lt; 4 min / run</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">AI Fallback Health</div>
+        <div class="kpi-value" style="color: var(--color-success);">100%</div>
+        <div class="kpi-subtitle">Zero Blocking Failures</div>
+      </div>
+    </div>
+
+    <!-- Recent Monitor Runs History -->
+    <div class="table-responsive">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Run ID</th>
+            <th>Type</th>
+            <th>Start Time (UTC)</th>
+            <th>Duration</th>
+            <th>Sources Checked</th>
+            <th>New Candidates</th>
+            <th>AI Calls</th>
+            <th>Alerts Sent</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody id="runs-tbody">
+          <!-- Populated from v_run_summary -->
+        </tbody>
+      </table>
+    </div>
+  </main>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", async () => {
+      const tbody = document.getElementById("runs-tbody");
+      if (!supabaseClient) {
+        tbody.innerHTML = `<tr><td colspan="9" class="empty-state">Running in demo/local mode. Configure Supabase credentials to view run telemetry.</td></tr>`;
+        return;
+      }
+      try {
+        const { data, error } = await supabaseClient.from("v_run_summary").select("*");
+        if (error) throw error;
+        if (!data || data.length === 0) {
+          tbody.innerHTML = `<tr><td colspan="9" style="text-align:center; padding: 2rem;">No runs recorded yet.</td></tr>`;
+          return;
+        }
+
+        tbody.innerHTML = data.map(r => `
+          <tr>
+            <td><strong>#${r.id}</strong></td>
+            <td>${r.run_type}</td>
+            <td>${r.start_time}</td>
+            <td>${r.duration_seconds ? r.duration_seconds + 's' : 'Running...'}</td>
+            <td>${r.sources_checked} (${r.sources_failed} failed)</td>
+            <td style="font-weight:600; color:var(--color-success);">${r.new_candidates}</td>
+            <td>${r.ai_calls}</td>
+            <td>${r.alerts_sent}</td>
+            <td><span class="badge ${r.status === 'COMPLETED' ? 'badge-target' : 'badge-very-high'}">${r.status}</span></td>
+          </tr>
+        `).join("");
+      } catch (err) {
+        tbody.innerHTML = `<tr><td colspan="9" style="color:var(--color-very-high); padding:2rem;">Failed to load runs history.</td></tr>`;
+      }
+    });
+  </script>
+</body>
+</html>

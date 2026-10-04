@@ -1,0 +1,249 @@
+[
+  {
+    "id": "bank_01_agrani",
+    "canonical_name": "Agrani Bank PLC",
+    "aliases": ["Agrani Bank", "Agrani Bank Limited", "ABL", "অগ্রণী ব্যাংক পিএলসি", "অগ্রণী ব্যাংক"],
+    "official_domain": "agranibank.org",
+    "last_verified": "2026-10-01",
+    "notes": "State-owned commercial bank"
+  },
+  {
+    "id": "bank_02_janata",
+    "canonical_name": "Janata Bank PLC",
+    "aliases": ["Janata Bank", "Janata Bank Limited", "JBL", "জনতা ব্যাংক পিএলসি", "জনতা ব্যাংক"],
+    "official_domain": "jb.com.bd",
+    "last_verified": "2026-10-01",
+    "notes": "State-owned commercial bank"
+  },
+  {
+    "id": "bank_03_rupali",
+    "canonical_name": "Rupali Bank PLC",
+    "aliases": ["Rupali Bank", "Rupali Bank Limited", "RBL", "রূপালী ব্যাংক পিএলসি", "রূপালী ব্যাংক"],
+    "official_domain": "rupalibank.com.bd",
+    "last_verified": "2026-10-01",
+    "notes": "State-owned commercial bank"
+  },
+  {
+    "id": "bank_04_mercantile",
+    "canonical_name": "Mercantile Bank PLC",
+    "aliases": ["Mercantile Bank", "Mercantile Bank Limited", "MBL", "মার্কেন্টাইল ব্যাংক পিএলসি", "মার্কেন্টাইল ব্যাংক"],
+    "official_domain": "mblbd.com",
+    "last_verified": "2026-10-01",
+    "notes": "Private commercial bank"
+  },
+  {
+    "id": "bank_05_midland",
+    "canonical_name": "Midland Bank PLC",
+    "aliases": ["Midland Bank", "Midland Bank Limited", "MDB", "মিডল্যান্ড ব্যাংক পিএলসি", "মিডল্যান্ড ব্যাংক"],
+    "official_domain": "midlandbankbd.net",
+    "last_verified": "2026-10-01",
+    "notes": "Private commercial bank"
+  },
+  {
+    "id": "bank_06_citizens",
+    "canonical_name": "Citizens Bank PLC",
+    "aliases": ["Citizens Bank", "Citizens Bank Limited", "CZB", "সিটিজেনস ব্যাংক পিএলসি", "সিটিজেনস ব্যাংক"],
+    "official_domain": "citizensbankbd.com",
+    "last_verified": "2026-10-01",
+    "notes": "Private commercial bank"
+  },
+  {
+    "id": "bank_07_sonali",
+    "canonical_name": "Sonali Bank PLC",
+    "aliases": ["Sonali Bank", "Sonali Bank Limited", "SBL", "সোনালী ব্যাংক পিএলসি", "সোনালী ব্যাংক"],
+    "official_domain": "sonalibank.com.bd",
+    "last_verified": "2026-10-01",
+    "notes": "Largest state-owned commercial bank"
+  },
+  {
+    "id": "bank_08_basic",
+    "canonical_name": "BASIC Bank PLC",
+    "aliases": ["BASIC Bank", "BASIC Bank Limited", "বেসিক ব্যাংক পিএলসি", "বেসিক ব্যাংক"],
+    "official_domain": "basicbank.com.bd",
+    "last_verified": "2026-10-01",
+    "notes": "State-owned specialized commercial bank"
+  },
+  {
+    "id": "bank_09_bdbl",
+    "canonical_name": "Bangladesh Development Bank PLC",
+    "aliases": ["BDBL", "Bangladesh Development Bank", "বাংলাদেশ ডেভেলপমেন্ট ব্যাংক পিএলসি", "বাংলাদেশ ডেভেলপমেন্ট ব্যাংক"],
+    "official_domain": "bdbl.com.bd",
+    "last_verified": "2026-10-01",
+    "notes": "State-owned development bank"
+  },
+  {
+    "id": "bank_10_sammilito_islami",
+    "canonical_name": "Sammilito Islami Bank PLC",
+    "aliases": [
+      "Sammilito Islami Bank",
+      "সম্মিলিত ইসলামী ব্যাংক পিএলসি",
+      "সম্মিলিত ইসলামী ব্যাংক",
+      "Padma Bank",
+      "The Farmers Bank",
+      "National Bank of Pakistan Bangladesh operations"
+    ],
+    "official_domain": "sammilitoislamibank.com.bd",
+    "last_verified": "2026-10-01",
+    "notes": "Recently formed merged bank; includes predecessor bank aliases"
+  },
+  {
+    "id": "bank_11_krishi",
+    "canonical_name": "Bangladesh Krishi Bank",
+    "aliases": ["BKB", "Krishi Bank", "বাংলাদেশ কৃষি ব্যাংক", "কৃষি ব্যাংক"],
+    "official_domain": "krishibank.org.bd",
+    "last_verified": "2026-10-01",
+    "notes": "State-owned specialized agricultural bank"
+  },
+  {
+    "id": "bank_12_rakub",
+    "canonical_name": "Rajshahi Krishi Unnayan Bank",
+    "aliases": ["RAKUB", "রাজশাহী কৃষি উন্নয়ন ব্যাংক", "রাকাব"],
+    "official_domain": "rakub.org.bd",
+    "last_verified": "2026-10-01",
+    "notes": "State-owned specialized regional agricultural bank"
+  },
+  {
+    "id": "bank_13_city",
+    "canonical_name": "City Bank PLC",
+    "aliases": ["City Bank", "The City Bank Limited", "CBL", "সিটি ব্যাংক পিএলসি", "সিটি ব্যাংক"],
+    "official_domain": "thecitybank.com",
+    "last_verified": "2026-10-01",
+    "notes": "Private commercial bank"
+  },
+  {
+    "id": "bank_14_ific",
+    "canonical_name": "IFIC Bank PLC",
+    "aliases": ["IFIC Bank", "IFIC Bank Limited", "IFIC", "আইএফআইসি ব্যাংক পিএলসি", "আইএফআইসি ব্যাংক"],
+    "official_domain": "ificbank.com.bd",
+    "last_verified": "2026-10-01",
+    "notes": "Private commercial bank"
+  },
+  {
+    "id": "bank_15_pubali",
+    "canonical_name": "Pubali Bank PLC",
+    "aliases": ["Pubali Bank", "Pubali Bank Limited", "PBL", "পুবালী ব্যাংক পিএলসি", "পূবালী ব্যাংক"],
+    "official_domain": "pubalibangla.com",
+    "last_verified": "2026-10-01",
+    "notes": "Private commercial bank"
+  },
+  {
+    "id": "bank_16_dhaka",
+    "canonical_name": "Dhaka Bank PLC",
+    "aliases": ["Dhaka Bank", "Dhaka Bank Limited", "DBL", "ঢাকা ব্যাংক পিএলসি", "ঢাকা ব্যাংক"],
+    "official_domain": "dhakabank.com.bd",
+    "last_verified": "2026-10-01",
+    "notes": "Private commercial bank"
+  },
+  {
+    "id": "bank_17_one",
+    "canonical_name": "ONE Bank PLC",
+    "aliases": ["ONE Bank", "One Bank Limited", "OBL", "ওয়ান ব্যাংক পিএলসি", "ওয়ান ব্যাংক"],
+    "official_domain": "onebank.com.bd",
+    "last_verified": "2026-10-01",
+    "notes": "Private commercial bank"
+  },
+  {
+    "id": "bank_18_mtb",
+    "canonical_name": "Mutual Trust Bank PLC",
+    "aliases": ["MTB", "Mutual Trust Bank", "Mutual Trust Bank Limited", "মিউচুয়াল ট্রাস্ট ব্যাংক পিএলসি", "মিউচুয়াল ট্রাস্ট ব্যাংক"],
+    "official_domain": "mutualtrustbank.com",
+    "last_verified": "2026-10-01",
+    "notes": "Private commercial bank"
+  },
+  {
+    "id": "bank_19_premier",
+    "canonical_name": "The Premier Bank PLC",
+    "aliases": ["Premier Bank", "The Premier Bank Limited", "PBL", "প্রিমিয়ার ব্যাংক পিএলসি", "প্রিমিয়ার ব্যাংক"],
+    "official_domain": "premierbankltd.com",
+    "last_verified": "2026-10-01",
+    "notes": "Private commercial bank"
+  },
+  {
+    "id": "bank_20_trust",
+    "canonical_name": "Trust Bank PLC",
+    "aliases": ["Trust Bank", "Trust Bank Limited", "TBL", "ট্রাস্ট ব্যাংক পিএলসি", "ট্রাস্ট ব্যাংক"],
+    "official_domain": "trustbank.com.bd",
+    "last_verified": "2026-10-01",
+    "notes": "Private commercial bank affiliated with Army Welfare Trust"
+  },
+  {
+    "id": "bank_21_meghna",
+    "canonical_name": "Meghna Bank PLC",
+    "aliases": ["Meghna Bank", "Meghna Bank Limited", "MGBL", "মেঘনা ব্যাংক পিএলসি", "মেঘনা ব্যাংক"],
+    "official_domain": "meghnabank.com.bd",
+    "last_verified": "2026-10-01",
+    "notes": "Private commercial bank"
+  },
+  {
+    "id": "bank_22_modhumoti",
+    "canonical_name": "Modhumoti Bank PLC",
+    "aliases": ["Modhumoti Bank", "Modhumoti Bank Limited", "MMBL", "মধুমতি ব্যাংক পিএলসি", "মধুমতি ব্যাংক"],
+    "official_domain": "modhumotibank.ltd",
+    "last_verified": "2026-10-01",
+    "notes": "Private commercial bank"
+  },
+  {
+    "id": "bank_23_shimanto",
+    "canonical_name": "Shimanto Bank PLC",
+    "aliases": ["Shimanto Bank", "Shimanto Bank Limited", "SHBL", "সীমান্ত ব্যাংক পিএলসি", "সীমান্ত ব্যাংক"],
+    "official_domain": "shimantobank.com",
+    "last_verified": "2026-10-01",
+    "notes": "Private commercial bank affiliated with BGB"
+  },
+  {
+    "id": "bank_24_community",
+    "canonical_name": "Community Bank Bangladesh PLC",
+    "aliases": ["Community Bank", "Community Bank Bangladesh Limited", "CBBL", "কমিউনিটি ব্যাংক বাংলাদেশ পিএলসি", "কমিউনিটি ব্যাংক"],
+    "official_domain": "communitybankbd.com",
+    "last_verified": "2026-10-01",
+    "notes": "Private commercial bank affiliated with Bangladesh Police"
+  },
+  {
+    "id": "bank_25_bengal",
+    "canonical_name": "Bengal Commercial Bank PLC",
+    "aliases": ["Bengal Commercial Bank", "Bengal Commercial Bank Limited", "BGCB", "বেঙ্গল কমার্শিয়াল ব্যাংক পিএলসি", "বেঙ্গল কমার্শিয়াল ব্যাংক"],
+    "official_domain": "bgcb.com.bd",
+    "last_verified": "2026-10-01",
+    "notes": "Private commercial bank"
+  },
+  {
+    "id": "bank_26_islami_bank",
+    "canonical_name": "Islami Bank Bangladesh PLC",
+    "aliases": ["IBBL", "Islami Bank Bangladesh", "Islami Bank Bangladesh Limited", "ইসলামী ব্যাংক বাংলাদেশ পিএলসি", "ইসলামী ব্যাংক"],
+    "official_domain": "islamibankbd.com",
+    "last_verified": "2026-10-01",
+    "notes": "Shariah-based Islamic commercial bank"
+  },
+  {
+    "id": "bank_27_icb_islamic",
+    "canonical_name": "ICB Islamic Bank PLC",
+    "aliases": ["ICB Islamic Bank", "ICB Islamic Bank Limited", "আইসিবি ইসলামিক ব্যাংক পিএলসি", "আইসিবি ইসলামিক ব্যাংক", "Al-Baraka Bank Bangladesh"],
+    "official_domain": "icbislamic-bank.com",
+    "last_verified": "2026-10-01",
+    "notes": "Shariah-based Islamic commercial bank"
+  },
+  {
+    "id": "bank_28_al_arafah",
+    "canonical_name": "Al-Arafah Islami Bank PLC",
+    "aliases": ["AIBL", "Al-Arafah Islami Bank", "Al-Arafah Islami Bank Limited", "আল-আরাফাহ ইসলামী ব্যাংক পিএলসি", "আল-আরাফাহ ইসলামী ব্যাংক"],
+    "official_domain": "aibl.com.bd",
+    "last_verified": "2026-10-01",
+    "notes": "Shariah-based Islamic commercial bank"
+  },
+  {
+    "id": "bank_29_combank_ceylon",
+    "canonical_name": "Commercial Bank of Ceylon PLC – Bangladesh",
+    "aliases": ["Commercial Bank of Ceylon", "CBC Bangladesh", "ComBank Bangladesh", "কমার্শিয়াল ব্যাংক অব সিলন"],
+    "official_domain": "combankbd.com",
+    "last_verified": "2026-10-01",
+    "notes": "Foreign commercial bank operating branches in Bangladesh"
+  },
+  {
+    "id": "bank_30_woori",
+    "canonical_name": "Woori Bank – Bangladesh",
+    "aliases": ["Woori Bank", "Woori Bank Dhaka", "উরি ব্যাংক", "Woori Bank Bangladesh"],
+    "official_domain": "wooribank.com/bd",
+    "last_verified": "2026-10-01",
+    "notes": "Foreign commercial bank operating branches in Bangladesh"
+  }
+]

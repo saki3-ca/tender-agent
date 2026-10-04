@@ -1,0 +1,25 @@
+# Core HTTP & Database
+httpx>=0.28.0
+supabase>=2.32.0
+pydantic>=2.10.0
+pyyaml>=6.0.2
+python-dotenv>=1.0.1
+
+# HTML, Parsing & Documents
+beautifulsoup4>=4.12.3
+lxml>=5.3.0
+pdfplumber>=0.11.4
+pypdfium2>=4.30.0
+openpyxl>=3.1.5
+python-docx>=1.1.2
+
+# OCR (Tesseract)
+pytesseract>=0.3.10
+Pillow>=10.4.0
+
+# Browser Automation (Optional for local, installed in CI)
+playwright>=1.49.0
+
+# Testing
+pytest>=8.3.0
+pytest-asyncio>=0.24.0

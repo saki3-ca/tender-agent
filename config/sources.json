@@ -1,0 +1,68 @@
+[
+  {
+    "id": "src_bb_tender",
+    "url": "https://www.bb.org.bd/en/index.php/about/tender",
+    "organization_id": "reg_bangladesh_bank",
+    "tier": 1,
+    "requires_js": false,
+    "verify_ssl": true,
+    "rate_limit_seconds": 5,
+    "enabled": true,
+    "notes": "Bangladesh Bank central tender notices (HTML + PDF links)"
+  },
+  {
+    "id": "src_agrani_tender",
+    "url": "https://www.agranibank.org/tender",
+    "organization_id": "bank_01_agrani",
+    "tier": 1,
+    "requires_js": false,
+    "verify_ssl": true,
+    "rate_limit_seconds": 5,
+    "enabled": true,
+    "notes": "Agrani Bank PLC tenders"
+  },
+  {
+    "id": "src_sonali_tender",
+    "url": "https://www.sonalibank.com.bd/tender.php",
+    "organization_id": "bank_07_sonali",
+    "tier": 1,
+    "requires_js": false,
+    "verify_ssl": true,
+    "rate_limit_seconds": 5,
+    "enabled": true,
+    "notes": "Sonali Bank PLC tender announcements (Bangla & English)"
+  },
+  {
+    "id": "src_city_tender",
+    "url": "https://www.thecitybank.com/tender",
+    "organization_id": "bank_13_city",
+    "tier": 1,
+    "requires_js": true,
+    "verify_ssl": true,
+    "rate_limit_seconds": 5,
+    "enabled": true,
+    "notes": "City Bank PLC procurement portal"
+  },
+  {
+    "id": "src_bppa_egp",
+    "url": "https://www.eprocure.gov.bd",
+    "organization_id": "gov_bppa_egp",
+    "tier": 1,
+    "requires_js": false,
+    "verify_ssl": true,
+    "rate_limit_seconds": 5,
+    "enabled": true,
+    "notes": "National BPPA e-GP Portal"
+  },
+  {
+    "id": "src_idlc_tender",
+    "url": "https://idlc.com/procurement",
+    "organization_id": "nbfi_idlc",
+    "tier": 1,
+    "requires_js": false,
+    "verify_ssl": true,
+    "rate_limit_seconds": 5,
+    "enabled": true,
+    "notes": "IDLC Finance PLC procurement notices"
+  }
+]

@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ACNABIN Tender & Opportunity Intelligence Dashboard</title>
+  <meta name="description" content="Production tender and opportunity intelligence monitoring system for ACNABIN Chartered Accountants, Bangladesh.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <!-- Supabase JS Client & SheetJS for Client-Side Excel Export -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+  <script src="js/config.js"></script>
+  <script src="js/app.js" defer></script>
+</head>
+<body>
+  <!-- Global Application Header -->
+  <header class="app-header">
+    <div class="brand-container">
+      <div class="brand-logo-badge">ACNABIN</div>
+      <div class="brand-title-wrap">
+        <h1>Tender & Opportunity Intelligence</h1>
+        <p>Chartered Accountants · Bangladesh Cloud Monitor</p>
+      </div>
+    </div>
+    <nav class="main-nav">
+      <a href="index.html" class="active">Today's Priority</a>
+      <a href="ifrs9.html">IFRS 9 Target (30)</a>
+      <a href="market.html">General Market</a>
+      <a href="intelligence.html">Market Intelligence</a>
+      <a href="sources.html">Source Health</a>
+      <a href="operations.html">Operations</a>
+    </nav>
+    <div class="header-actions">
+      <div class="user-badge">
+        <span class="live-indicator"></span>
+        <span id="user-display">Live Cloud Active</span>
+      </div>
+    </div>
+  </header>
+
+  <main class="app-container">
+    <!-- Page Header -->
+    <div class="page-header">
+      <div class="page-header-text">
+        <h2>Today's Priority Opportunities</h2>
+        <p>Recall-first capture with precision-first alerts for ACNABIN audit, advisory, and IFRS 9 engagements.</p>
+      </div>
+      <div class="btn-group">
+        <button id="btn-export-excel" class="btn btn-primary" id="btn-export-excel">Export Excel (XLSX)</button>
+        <button id="btn-export-csv" class="btn" id="btn-export-csv">Export CSV</button>
+      </div>
+    </div>
+
+    <!-- Executive KPI Summary Cards -->
+    <div class="kpi-grid">
+      <div class="kpi-card">
+        <div class="kpi-label">Organizations Monitored</div>
+        <div class="kpi-value" id="kpi-monitored">30+</div>
+        <div class="kpi-subtitle">Scheduled Banks & NBFIs</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">IFRS 9 Target Banks</div>
+        <div class="kpi-value" id="kpi-target-banks">30</div>
+        <div class="kpi-subtitle">Fixed Priority Cohort</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">VERY HIGH Priority</div>
+        <div class="kpi-value" id="kpi-very-high" style="color: var(--color-very-high);">0</div>
+        <div class="kpi-subtitle">Immediate Pursuit</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">HIGH Priority</div>
+        <div class="kpi-value" id="kpi-high" style="color: var(--color-high);">0</div>
+        <div class="kpi-subtitle">Active Evaluation</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Deadlines &le; 7 Days</div>
+        <div class="kpi-value" id="kpi-deadlines" style="color: #38bdf8;">0</div>
+        <div class="kpi-subtitle">Urgent Submissions</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Discovered Today</div>
+        <div class="kpi-value" id="kpi-new-today" style="color: var(--color-success);">0</div>
+        <div class="kpi-subtitle">New Procurement Notices</div>
+      </div>
+    </div>
+
+    <!-- Toolbar: Search and Filters -->
+    <div class="toolbar-card">
+      <div class="filter-group">
+        <input type="text" id="filter-search" class="search-input" placeholder="Search organization, title, ref #..." style="min-width: 280px;">
+        <select id="filter-priority" class="filter-select">
+          <option value="ALL">All Priorities</option>
+          <option value="VERY HIGH">VERY HIGH</option>
+          <option value="HIGH">HIGH</option>
+          <option value="MEDIUM">MEDIUM</option>
+          <option value="LOW">LOW</option>
+        </select>
+        <select id="filter-pipeline" class="filter-select">
+          <option value="ALL">All Pipelines</option>
+          <option value="IFRS9_TARGET">IFRS 9 Target Banks</option>
+          <option value="GENERAL_MARKET">General Market</option>
+        </select>
+      </div>
+      <div>
+        <span style="font-size: 0.8rem; color: var(--text-muted);">Deterministic scoring &amp; human-in-the-loop locked</span>
+      </div>
+    </div>
+
+    <!-- Opportunities Data Table -->
+    <div class="table-responsive">
+      <table class="data-table" id="opportunities-table">
+        <thead>
+          <tr>
+            <th>Organization &amp; Ref</th>
+            <th>Tender Title &amp; Category</th>
+            <th>Pipeline</th>
+            <th>Priority</th>
+            <th>Score</th>
+            <th>Deadline</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="opportunities-tbody">
+          <!-- Populated dynamically by app.js -->
+        </tbody>
+      </table>
+    </div>
+  </main>
+</body>
+</html>

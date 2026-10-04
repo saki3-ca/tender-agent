@@ -1,0 +1,52 @@
+# Scoring Configuration for ACNABIN Opportunities
+
+# Base score by category (enum)
+category_base_scores:
+  IFRS9_ECL: 60
+  AUDIT_ASSURANCE: 50
+  RISK_CONTROL: 50
+  ACCOUNTING_REPORTING: 50
+  PROCESS_ADVISORY: 45
+  TAX_VAT: 40
+  FINANCIAL_ADVISORY: 40
+  TRAINING: 35
+  OTHER_PROFESSIONAL: 25
+  NONE: 0
+
+# Score modifiers
+modifiers:
+  is_opportunity_yes: 15
+  is_financial_institution_or_regulator: 10
+  fit_type:
+    DIRECT_FIT: 10
+    PARTNERSHIP_REQUIRED: 3
+    NOT_SUITABLE: 0
+  source_tier_1_or_2: 5
+  confidence_penalty:
+    HIGH: 0
+    MEDIUM: -5
+    LOW: -15
+  aqr_or_banking_diagnostic_bonus: 10
+
+# Score Bounds
+bounds:
+  min: 0
+  max: 100
+
+# Priority thresholds
+priority_bands:
+  VERY_HIGH:
+    min_score: 85
+    max_score: 100
+  HIGH:
+    min_score: 70
+    max_score: 84
+  MEDIUM:
+    min_score: 55
+    max_score: 69
+  LOW:
+    min_score: 40
+    max_score: 54
+  IGNORE:
+    min_score: 0
+    max_score: 39
