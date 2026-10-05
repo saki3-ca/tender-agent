@@ -74,6 +74,10 @@ Dates are parsed into real dates (`05/10/2026`, `2026-10-05`, `05 Oct 2026`, `Oc
 | `config/relevance.json` | Relevance rules (see above) |
 | `config/settings.yaml` | Active window (7 days), crawler limits, run budget |
 
+### Aggregator: Bdjobs Tender/EOI
+
+`src_agg_bdjobs` reads the JSON feed behind the Tender/EOI section of [bdjobs.com/h/](https://bdjobs.com/h/) (`"type": "bdjobs_json"`). It covers many NGOs, INGOs and UN agencies whose own websites have no usable tender page. Each notice is attributed to the organization that published it (matched to `config/organizations.json` by name; unknown organizations are added as new ones, financial institutions under Bank). The dashboard marks these rows "via Bdjobs.com". When the same notice is also found on the organization's own page (same organization, same deadline, matching title), only the official copy is shown.
+
 ### Admin page (add or correct URLs without editing files)
 
 Dashboard → **Admin** (`admin.html`). After signing in you can:

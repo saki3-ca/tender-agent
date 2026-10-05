@@ -134,7 +134,8 @@
     const primary = t.document_url || t.notice_url || t.source_url;
     const label = t.document_url ? "View tender" : t.notice_url ? "View notice" : "Open source";
     let html = `<a href="${esc(primary)}" target="_blank" rel="noopener">${label} &#8599;</a>`;
-    if (primary !== t.source_url) html += `<a class="minor" href="${esc(t.source_url)}" target="_blank" rel="noopener">Source page</a>`;
+    const via = /bdjobs\.com/i.test(t.source_url || "") ? "via Bdjobs.com" : "Source page";
+    if (primary !== t.source_url) html += `<a class="minor" href="${esc(t.source_url)}" target="_blank" rel="noopener">${via}</a>`;
     return html;
   }
 

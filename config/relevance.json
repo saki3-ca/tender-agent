@@ -153,15 +153,16 @@
       "code": "TAX_VAT",
       "label": "Tax & VAT",
       "phrases": [
-        "tax (?:consultan(?:cy|t|ts)|advis(?:ory|er|or)|compliance|audit|services?|return|planning)",
-        "VAT (?:consultan(?:cy|t|ts)|advis(?:ory|er|or)|compliance|audit|services?|return)",
-        "income tax (?:consultan(?:cy|t)|advis|return|assessment)",
+        "tax (?:consultan(?:cy|t|ts)|advis(?:ory|er|or)|compliance|audit|services?|planning)",
+        "VAT (?:consultan(?:cy|t|ts)|advis(?:ory|er|or)|compliance|audit|services?)",
+        "income tax (?:consultan(?:cy|t)|advis|assessment)",
         "transfer pricing",
         "withholding tax (?:review|compliance)",
         "কর পরামর্শক",
         "ভ্যাট পরামর্শক",
         "(?:আয়)?কর[\\s-]*উপদেষ্টা",
-        "ভ্যাট[\\s-]*উপদেষ্টা"
+        "ভ্যাট[\\s-]*উপদেষ্টা",
+        "(?:income )?tax return (?:filing|preparation) (?:services?|consultan(?:cy|t))"
       ],
       "document_phrases": [
         "(?:tax|VAT) (?:consultan(?:cy|t)|advisory) services"
@@ -187,7 +188,12 @@
         "forensic",
         "fraud investigation",
         "financial (?:feasibility|viability) (?:study|assessment)",
-        "capital (?:raising|restructuring) advis"
+        "capital (?:raising|restructuring) advis",
+        "(?:financial|corporate|debt|business) restructuring",
+        "restructuring(?:,| and)? (?:revival|plan|advisory|consultan(?:cy|t))",
+        "business plan(?:ning)?",
+        "financial management (?:expert|specialist|consultan(?:cy|t|ts)|firm)",
+        "financial projections?"
       ],
       "document_phrases": [
         "financial due diligence",
@@ -226,7 +232,12 @@
     "audit logs?",
     "audit (?:management )?(?:software|module|tool)s?",
     "internal control (?:&|and) compliance (?:division|department|wing|unit)",
-    "(?:audit|compliance|risk management) (?:division|department|wing|unit|committee)"
+    "(?:audit|compliance|risk management) (?:division|department|wing|unit|committee)",
+    "(?:income )?tax returns? (?:certificate|acknowledg\\w*|copy|slip|receipt)s?",
+    "(?:TIN|BIN|VAT|trade licen[cs]e|tax|income tax) (?:registration |clearance )?(?:certificate|number|document)s?",
+    "VAT registration",
+    "(?:inclusive|exclusive) of (?:all )?(?:VAT|taxes|tax|AIT)",
+    "(?:VAT|AIT|tax) (?:and|&) (?:AIT|VAT|tax)(?:es)? (?:will be|shall be|as per)"
   ],
   "_priority_veto_comment": "If the TITLE matches one of these, the item is never Priority (it is a vacancy, not a service tender).",
   "priority_veto": [

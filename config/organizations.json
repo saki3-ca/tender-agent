@@ -2104,5 +2104,58 @@
     "last_verified": "2026-10-05",
     "last_checked": null,
     "notes": "Bangladesh NGO/INGO procurement source #98"
+  },
+  {
+    "organization_id": "dp_undp_bd",
+    "canonical_name": "UNDP Bangladesh",
+    "aliases": [
+      "UNDP Bangladesh",
+      "UNDP-BGD"
+    ],
+    "organization_type": "DEVELOPMENT_PARTNER",
+    "sector": "development_partners",
+    "official_domain": "procurement-notices.undp.org",
+    "procurement_url": "https://procurement-notices.undp.org/index.cfm",
+    "tender_url": "https://procurement-notices.undp.org/index.cfm",
+    "notice_url": "https://procurement-notices.undp.org/index.cfm",
+    "is_ifrs9_target": false,
+    "source_status": "OK",
+    "last_verified": "2026-10-05",
+    "last_checked": null,
+    "notes": "UNDP global procurement notices portal, filtered to Bangladesh"
+  },
+  {
+    "organization_id": "dp_who_bd",
+    "canonical_name": "WHO Bangladesh",
+    "aliases": [
+      "World Health Organization Bangladesh"
+    ],
+    "organization_type": "DEVELOPMENT_PARTNER",
+    "sector": "development_partners",
+    "official_domain": "who.int",
+    "procurement_url": "https://www.who.int/bangladesh/about-us/procurement-notice",
+    "tender_url": "https://www.who.int/bangladesh/about-us/procurement-notice",
+    "notice_url": "https://www.who.int/bangladesh/about-us/procurement-notice",
+    "is_ifrs9_target": false,
+    "source_status": "OK",
+    "last_verified": "2026-10-05",
+    "last_checked": null,
+    "notes": "WHO Country Office procurement notices"
+  },
+  {
+    "organization_id": "agg_bdjobs",
+    "canonical_name": "Bdjobs.com (Tender/EOI section)",
+    "aliases": [],
+    "organization_type": "AGGREGATOR",
+    "sector": "ngos",
+    "official_domain": "bdjobs.com",
+    "procurement_url": "https://bdjobs.com/h/",
+    "tender_url": "https://bdjobs.com/h/",
+    "notice_url": "https://bdjobs.com/h/",
+    "is_ifrs9_target": false,
+    "source_status": "OK",
+    "last_verified": "2026-10-05",
+    "last_checked": null,
+    "notes": "Aggregator: notices are attributed to the publishing organization, not to Bdjobs"
   }
 ]

@@ -48,6 +48,8 @@ _PATTERNS = [
     ("dmy", re.compile(r"(?<![\d./-])(\d{1,2})\s?([./-])\s?(\d{1,2})\s?\2\s?(\d{4}|\d{2})(?![\d./-])")),
     # 05 October 2026, 01-Oct-2026, 02 August, 2026, 28. Sep 2026, 5th Oct 2026
     ("d_mon_y", re.compile(r"(?<!\d)(\d{1,2})(?:st|nd|rd|th)?[\s.,-]{0,3}" + _MON + r"[\s.,-]{1,3}(\d{4})(?!\d)", re.I)),
+    # 18-Oct-26 (two-digit year only with a month name and hyphens, as on UN portals)
+    ("d_mon_yy", re.compile(r"(?<!\d)(\d{1,2})-" + _MON + r"-(\d{2})(?![\d-])", re.I)),
     # October 5, 2026 / Oct 5 2026
     ("mon_d_y", re.compile(r"\b" + _MON + r"\s{0,2}(\d{1,2})(?:st|nd|rd|th)?,?\s{1,3}(\d{4})(?!\d)", re.I)),
     # ২০ নভেম্বর ২০২৬ (after digit normalisation)
@@ -117,6 +119,8 @@ def _build_date(kind: str, m: re.Match) -> Optional[date]:
                 y += 2000
         elif kind == "d_mon_y":
             d, mo, y = int(m.group(1)), ENGLISH_MONTHS[m.group(2)[:3].lower()], int(m.group(3))
+        elif kind == "d_mon_yy":
+            d, mo, y = int(m.group(1)), ENGLISH_MONTHS[m.group(2)[:3].lower()], 2000 + int(m.group(3))
         elif kind == "mon_d_y":
             mo, d, y = ENGLISH_MONTHS[m.group(1)[:3].lower()], int(m.group(2)), int(m.group(3))
         elif kind == "bn":

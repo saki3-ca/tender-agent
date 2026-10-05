@@ -37,6 +37,12 @@ GENERIC_LINK_TEXT = re.compile(
     r"^(?:download(?: now| notice| file| tender| document)?|details?|view(?: details| notice)?|read more|more|"
     r"click here|here|pdf|download \[?pdf\]?|continue reading|see more|apply|open|link|\W*)$", re.I)
 
+SOCIAL_HOSTS = re.compile(r"(?:^|\.)(?:facebook|twitter|x|linkedin|whatsapp|t|telegram|youtube|instagram|pinterest)\.(?:com|me|org)$", re.I)
+FOREIGN_TZ = re.compile(r"new york|(?:EST|EDT|GMT|UTC|CET|CEST)|geneva|copenhagen|london", re.I)
+CARD_TITLE_CLASS = re.compile(r"(?:^|[-_])title(?:$|[-_])", re.I)
+CARD_DEADLINE_CLASS = re.compile(r"deadline|closing|close-?date|expir|due", re.I)
+CARD_PUBLISHED_CLASS = re.compile(r"publish|posted|issue-?date|post-?date|created", re.I)
+
 # Section labels inside a listing card that are not titles
 LABEL_HEADINGS = re.compile(r"^(?:tender details|details|methods? of application|how to apply|documents?|attachments?)\W*$", re.I)
 
@@ -51,9 +57,15 @@ def clean_title(title: str) -> str:
     """Removes field labels and page furniture from a listing title."""
     t = _clean(title)
     t = re.sub(r"^(?:(?:description|title|subject|name|details?)\s*:\s*)+", "", t, flags=re.I)
+    # leading posting date copied into the link text ("30 September 2026 Call for proposals ...")
+    lead = re.match(r"^(\d{1,2}(?:st|nd|rd|th)?[\s.-]+[A-Za-z]{3,9}[\s.,-]+\d{4}|[A-Za-z]{3,9}\s+\d{1,2},?\s+\d{4})\s+(?=\S)", t)
+    if lead and len(t) - lead.end() >= 15:
+        t = t[lead.end():]
     t = re.sub(r"\s+\d+\s+\d[\d,]*\s+downloads?$", "", t, flags=re.I)   # WordPress download counters
     # trailing "Tender Closing: 30-9-2026" / "Pre-Bid: ..." fields copied into the title cell
-    t = re.sub(r"\s+(?:pre[\s-]?bid(?: meeting)?|deadline|last date|(?:tender )?closing(?: date)?)\s*:.*$", "", t, flags=re.I)
+    m = re.search(r"\s+(?:pre[\s-]?bid(?: meeting)?|deadline|last date|(?:tender )?closing(?: date)?)\s*:.*$", t, flags=re.I)
+    if m and m.start() >= 20:   # only a trailing field, never the subject itself ("Minutes of Pre-Bid Meeting: ...")
+        t = t[:m.start()]
     return t.strip(" |:-–")
 
 NOISE_SELECTOR = re.compile(r"(?:^|[-_\s])(footer|navbar|nav|menu|breadcrumbs?|sidebar|cookie|topbar|social)(?:$|[-_\s])", re.I)
@@ -355,11 +367,14 @@ class HtmlNoticeExtractor:
         base = self.base_url.rstrip("/")
         for a in soup.find_all("a", href=True):
             url = _abs(self.base_url, a["href"])
-            if not url or url.rstrip("/") == base:
+            if not url or url.rstrip("/") == base or SOCIAL_HOSTS.search(urlparse(url).netloc):
                 continue
             text = _clean(a.get_text(" "))
             container = self._container(a)
             container_text = _clean(container.get_text(" ")) if container is not None else text
+            fields = self._labelled_fields(a)
+            if fields.get("title"):           # whole row is one link with "Title / Deadline / Posted" cells
+                text, container_text = fields["title"], text
             if not text or GENERIC_LINK_TEXT.match(text):
                 text = self._nearby_title(a, container)
             text = re.sub(r"^(?:continue reading|read more)\s*:?\s*", "", text, flags=re.I)
@@ -379,10 +394,63 @@ class HtmlNoticeExtractor:
                 item.document_url = url
             else:
                 item.link = url
+            if fields:
+                self._apply_labelled_fields(item, fields)
+            if container is not None:
+                self._fill_from_card_fields(item, container)
             self._fill_from_text(item, item.row_text, allow_unlabelled=True)
             item.title_is_weak = is_weak_title(item.title)
             out.append(item)
         return out
+
+    @staticmethod
+    def _labelled_fields(node: Tag) -> Dict[str, str]:
+        """Cells that carry their own label element, e.g. <div class="cell"><div class="label">Deadline</div>18-Oct-26</div>."""
+        fields: Dict[str, str] = {}
+        for label in node.find_all(class_=re.compile(r"label", re.I)):
+            name = _clean(label.get_text(" "))
+            if not name or len(name) > 40 or label.parent is None:
+                continue
+            value = _clean(label.parent.get_text(" "))
+            value = value[len(name):].strip(" :") if value.startswith(name) else value.replace(name, "", 1).strip(" :")
+            for role, pattern in HEADER_ROLES:
+                if role in ("serial",) or not value:
+                    continue
+                if pattern.search(name):
+                    fields.setdefault("published" if role == "date" else role, value)
+                    break
+        return fields
+
+    def _apply_labelled_fields(self, item: Listing, fields: Dict[str, str]) -> None:
+        if fields.get("reference") and not item.reference:
+            item.reference = fields["reference"][:120]
+        for role in ("published", "deadline"):
+            found = parse_first_date(fields.get(role, ""), self.today)
+            if not found:
+                continue
+            if role == "published" and item.published is None and found.value <= self.today:
+                item.published = found.value
+            elif role == "deadline" and item.deadline is None:
+                # a time given in another time zone ("New York time") is not shown as Dhaka time
+                t = None if FOREIGN_TZ.search(fields[role]) else found.time
+                item.deadline, item.deadline_has_time = deadline_datetime(found.value, t)
+
+    def _fill_from_card_fields(self, item: Listing, card: Tag) -> None:
+        """Cards whose fields are named by CSS class, e.g. <span class="item__deadline"><time datetime=…>."""
+        for el in card.find_all(class_=True):
+            cls = " ".join(el.get("class") or [])
+            role = "deadline" if CARD_DEADLINE_CLASS.search(cls) else "published" if CARD_PUBLISHED_CLASS.search(cls) else None
+            if not role:
+                continue
+            t = el.find("time", datetime=True) if el.name != "time" else el
+            text = t["datetime"] if t is not None and t.get("datetime") else _clean(el.get_text(" "))
+            found = parse_first_date(text, self.today)
+            if not found:
+                continue
+            if role == "deadline" and item.deadline is None:
+                item.deadline, item.deadline_has_time = deadline_datetime(found.value, found.time)
+            elif role == "published" and item.published is None and found.value <= self.today:
+                item.published = found.value
 
     @staticmethod
     def _nearby_title(a: Tag, container: Optional[Tag]) -> str:
@@ -392,7 +460,7 @@ class HtmlNoticeExtractor:
             t = _clean(el.get_text(" ")) if el is not None else ""
             return t if 12 <= len(t) <= 300 and not LABEL_HEADINGS.match(t) and not GENERIC_LINK_TEXT.match(t) else ""
         if container is not None:
-            for h in container.find_all(["h1", "h2", "h3", "h4", "h5", "h6", "strong"]):
+            for h in container.find_all(["h1", "h2", "h3", "h4", "h5", "h6", "strong"]) +                     container.find_all(class_=CARD_TITLE_CLASS):
                 if usable(h):
                     return usable(h)
         node = a

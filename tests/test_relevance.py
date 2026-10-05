@@ -115,3 +115,11 @@ def test_specific_document_phrase_makes_generic_title_priority():
     r = rc.classify("Request for Proposal",
                     document_text="The Foundation invites proposals for the selection of an external audit firm.")
     assert r.is_priority and "Audit & Assurance" in r.categories
+
+
+def test_bidder_eligibility_documents_are_not_tax_services():
+    notice = ("Submit the price quotation along with: Valid Trade License, TIN Certificate and Tax Return Certificate, "
+              "BIN Certificate, NID Copy. Prices must be inclusive of VAT and AIT.")
+    assert not rc.classify("Tender Notice - Agriculture Materials", description=notice).is_priority
+    assert not rc.classify("RFP: Production of TV talk show", description="Tax Return Acknowledgement, NID").is_priority
+    assert rc.classify("Appointment of Tax Consultant for income tax return filing").is_priority

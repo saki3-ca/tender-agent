@@ -383,10 +383,11 @@
     "url": "https://www.icddrb.org/tender-notices",
     "organization_id": "ngo_03_icddr_b",
     "tier": 1,
-    "requires_js": false,
+    "requires_js": true,
     "verify_ssl": true,
     "rate_limit_seconds": 3,
-    "enabled": true
+    "enabled": true,
+    "verified": "2026-10-05"
   },
   {
     "id": "src_ngo_04_actionaid_bangladesh",
@@ -477,13 +478,14 @@
   },
   {
     "id": "src_ngo_12_buro_bangladesh",
-    "url": "https://burobd.org/tender-notice/",
+    "url": "https://www.burobd.org/buro-tender",
     "organization_id": "ngo_12_buro_bangladesh",
     "tier": 1,
     "requires_js": false,
     "verify_ssl": true,
     "rate_limit_seconds": 3,
-    "enabled": true
+    "enabled": true,
+    "verified": "2026-10-05"
   },
   {
     "id": "src_ngo_13_jagorani_chakra_foundation",
@@ -716,11 +718,12 @@
     "url": "https://drc.ngo/tenders/",
     "organization_id": "ngo_34_danish_refugee_council",
     "tier": 2,
-    "requires_js": false,
+    "requires_js": true,
     "verify_ssl": true,
     "rate_limit_seconds": 3,
     "enabled": true,
-    "country_filter": true
+    "country_filter": true,
+    "verified": "2026-10-05"
   },
   {
     "id": "src_ngo_35_norwegian_refugee_council",
@@ -1181,13 +1184,14 @@
   },
   {
     "id": "src_ngo_77_wave_foundation",
-    "url": "https://wavefoundationbd.org/tender-notice/",
+    "url": "https://wavefoundationbd.org/notice/",
     "organization_id": "ngo_77_wave_foundation",
     "tier": 2,
     "requires_js": false,
     "verify_ssl": true,
     "rate_limit_seconds": 3,
-    "enabled": true
+    "enabled": true,
+    "verified": "2026-10-05"
   },
   {
     "id": "src_ngo_78_padakhep_manabik_unnayan",
@@ -1407,5 +1411,44 @@
     "verify_ssl": true,
     "rate_limit_seconds": 3,
     "enabled": true
+  },
+  {
+    "id": "src_dp_undp_bd",
+    "url": "https://procurement-notices.undp.org/index.cfm",
+    "organization_id": "dp_undp_bd",
+    "tier": 1,
+    "requires_js": false,
+    "verify_ssl": true,
+    "rate_limit_seconds": 3,
+    "enabled": true,
+    "country_filter": true,
+    "verified": "2026-10-05"
+  },
+  {
+    "id": "src_dp_who_bd",
+    "url": "https://www.who.int/bangladesh/about-us/procurement-notice",
+    "organization_id": "dp_who_bd",
+    "tier": 1,
+    "requires_js": false,
+    "verify_ssl": true,
+    "rate_limit_seconds": 3,
+    "enabled": true,
+    "verified": "2026-10-05"
+  },
+  {
+    "id": "src_agg_bdjobs",
+    "type": "bdjobs_json",
+    "url": "https://storage.googleapis.com/bdjobs-home-static/Tender_V1.json",
+    "public_url": "https://bdjobs.com/h/",
+    "organization_id": "agg_bdjobs",
+    "tier": 2,
+    "requires_js": false,
+    "verify_ssl": true,
+    "rate_limit_seconds": 2,
+    "enabled": true,
+    "notice_pages": true,
+    "max_documents": 80,
+    "verified": "2026-10-05",
+    "note": "Bdjobs Tender/EOI section (JSON feed used by bdjobs.com/h/). Covers many NGOs/INGOs whose own pages are unavailable."
   }
 ]

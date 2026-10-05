@@ -16,6 +16,7 @@ General is decided before relevance: relevance never removes a tender from Gener
 """
 
 import asyncio
+import json
 import re
 import time
 from datetime import date, datetime, timedelta, timezone
@@ -27,7 +28,7 @@ from app.classification.relevance import RelevanceClassifier
 from app.classification.status import StatusDetector, is_active
 from app.crawler.crawler import TenderCrawler
 from app.db.supabase import Store
-from app.parsers.date_cleaner import DHAKA_TZ, extract_dates, find_dates
+from app.parsers.date_cleaner import DHAKA_TZ, deadline_datetime, extract_dates, find_dates
 from app.parsers.document_parser import extract_document_text, is_readable_document
 from app.parsers.html_parser import (
     HtmlNoticeExtractor, Listing, clean_html_text, is_document_url, is_weak_title, page_document_links,
@@ -90,6 +91,37 @@ def _excerpt(text: str, title: str, limit: int = 400) -> Optional[str]:
     if title and t.lower().startswith(title.lower()[:40]):
         t = t[len(title):].strip(" |:-")
     return t[:limit] or None
+
+
+def _clean_name(name: str) -> str:
+    return re.sub(r"\s+", " ", name.replace("\u2019", "'")).strip()
+
+
+def _norm_org(name: str) -> str:
+    return re.sub(r"[^a-z0-9]+", " ", (name or "").lower().replace("&", " and ")).strip()
+
+
+_ORG_NAME_INDEX: Dict[str, str] = {}
+_FINANCIAL_ORG = re.compile(r"\bbank\b|leasing|financ|insurance|securities|investment", re.I)
+
+
+def organization_for_name(name: str) -> Dict[str, Any]:
+    """Configured organization with this name (or alias); otherwise a new one, sector guessed from the name."""
+    if not _ORG_NAME_INDEX:
+        names = [(o["organization_id"], [o["canonical_name"], *o.get("aliases", [])]) for o in config.organizations]
+        names += [(b["id"], [b["canonical_name"], *b.get("aliases", [])]) for b in config.ifrs9_banks]
+        for oid, variants in names:
+            for n in variants:
+                for key in (_norm_org(n), _norm_org(re.sub(r"\(.*?\)", "", n))):
+                    if len(key) > 4:
+                        _ORG_NAME_INDEX.setdefault(key, oid)
+    for key in (_norm_org(name), _norm_org(re.sub(r"\(.*?\)", "", name))):
+        oid = _ORG_NAME_INDEX.get(key)
+        if oid and config.organization(oid):
+            return config.organization(oid)
+    slug = _norm_org(name).replace(" ", "_")[:50]
+    return {"organization_id": f"ext_{slug}", "name": name, "type": None,
+            "sector": "BANK" if _FINANCIAL_ORG.search(name) else "NGO", "is_target_bank": False}
 
 
 def source_org(source: Dict[str, Any]) -> Dict[str, Any]:
@@ -224,30 +256,37 @@ class Monitor:
     # ---------------------------------------------------------------- source
     async def process_source(self, source: Dict[str, Any], state: Optional[Dict[str, Any]]
                              ) -> Tuple[List[Dict[str, Any]], Dict[str, Any]]:
-        org = source_org(source)
-        page = await self.crawler.fetch_page(source)
-        if not page.ok:
-            logger.warning(f"{source['id']}: {page.error}", extra={"url": source["url"], "status": page.status})
-            return [], self._state_row(source, state, page.status, page.error, 0)
-
-        listings = HtmlNoticeExtractor(page.final_url or source["url"], today=self.today).extract(page.text)
+        if source.get("type") == "bdjobs_json":
+            status_code, error, pairs = await self._bdjobs_listings(source)
+        else:
+            status_code, error, pairs = await self._page_listings(source)
+        if error:
+            logger.warning(f"{source['id']}: {error}", extra={"url": source["url"], "status": status_code})
+            return [], self._state_row(source, state, status_code, error, 0)
+        listings = [l for l, _ in pairs]
         self.stats["listings"] += len(listings)
+        # Aggregators link to full notice pages: their text counts as notice text, not as a tender document
+        notice_pages = bool(source.get("notice_pages"))
+        max_docs = int(source.get("max_documents") or self.max_docs)
         # Notices found on the first successful crawl of a page are the baseline: without a date
         # we cannot tell whether they are new, so they are not treated as recently published.
         # A notice is "new" only if the same page was read successfully, with listings, in the previous run.
         baseline = not (state and state.get("first_ok") and state.get("url") == source["url"]
                         and state.get("ok") and (state.get("listings_found") or 0) > 0)
 
-        candidate_ids = [self._listing_id(org, l) for l in listings]
+        candidate_ids = [self._listing_id(org, l) for l, org in pairs]
         known = self.store.known_tenders(candidate_ids)
-        docs_budget = self.max_docs
+        docs_budget = max_docs
         tenders: List[Dict[str, Any]] = []
-        for listing, tid in zip(listings, candidate_ids):
+        for (listing, org), tid in zip(pairs, candidate_ids):
             status = self.status_detector.status(f"{listing.title} {listing.row_text}")
             detail_text, doc_text = "", ""
             prev = known.get(tid)
             if prev and prev.get("document_checked"):
-                doc_text = prev.get("document_text") or ""
+                if notice_pages:
+                    detail_text = prev.get("document_text") or ""
+                else:
+                    doc_text = prev.get("document_text") or ""
                 listing.published = listing.published or _to_date(prev.get("published_date"))
                 if listing.deadline is None and prev.get("deadline"):
                     listing.deadline = _to_dt(prev["deadline"])
@@ -257,7 +296,7 @@ class Monitor:
                 document_checked = True
             elif status == "OPEN" and docs_budget > 0 and self._worth_enriching(listing):
                 docs_budget -= 1
-                detail_text, doc_text = await self._enrich(listing, source)
+                detail_text, doc_text = await self._enrich(listing, source, follow_documents=not notice_pages)
                 document_checked = True
             else:
                 document_checked = False
@@ -273,7 +312,49 @@ class Monitor:
                 tender["_old_dates"] = old_dates
             if tender:
                 tenders.append(tender)
-        return tenders, self._state_row(source, state, page.status, None, len(listings))
+        return tenders, self._state_row(source, state, status_code, None, len(listings))
+
+    async def _page_listings(self, source: Dict[str, Any]):
+        """Listings from an organization's own tender page; all belong to that organization."""
+        page = await self.crawler.fetch_page(source)
+        if not page.ok:
+            return page.status, page.error, []
+        org = source_org(source)
+        listings = HtmlNoticeExtractor(page.final_url or source["url"], today=self.today).extract(page.text)
+        return page.status, None, [(l, org) for l in listings]
+
+    async def _bdjobs_listings(self, source: Dict[str, Any]):
+        """
+        Bdjobs.com "Tender/EOI" section (the JSON feed behind bdjobs.com/h/). Each notice is attributed
+        to the organization that published it; the Bdjobs notice page is the link.
+        """
+        res = await self.crawler.fetch(source["url"], verify_ssl=source.get("verify_ssl", True), binary=True)
+        if not res.ok:
+            return res.status, res.error, []
+        try:
+            data = json.loads(res.content.decode("utf-8-sig"))
+        except ValueError as e:
+            return res.status, f"INVALID_JSON: {e}", []
+        pairs = []
+        for company in data if isinstance(data, list) else []:
+            name = _clean_name((company.get("CompanyName") or {}).get("En") or "")
+            if not name:
+                continue
+            org = organization_for_name(name)
+            published = _to_date(company.get("PublishedOn"))
+            deadline = _to_date(company.get("Deadline"))
+            for t in company.get("Tenders") or []:
+                title = re.sub(r"\s+", " ", (t.get("Titles") or {}).get("En") or "").strip()
+                link = (t.get("Link") or "").strip()
+                if len(title) < 5 or not link.startswith("http"):
+                    continue
+                listing = Listing(title=title, row_text=f"{name} {title}", source_url=source["url"], link=link)
+                listing.published = published if published and published <= self.today else None
+                if deadline:
+                    listing.deadline, listing.deadline_has_time = deadline_datetime(deadline, None)
+                listing.title_is_weak = is_weak_title(title)
+                pairs.append((listing, org))
+        return res.status, None, pairs
 
     def _only_old_dates(self, listing: Listing) -> bool:
         """The listing shows dates, all older than the recent window: it is evidently not a new notice."""
@@ -291,7 +372,7 @@ class Monitor:
             return listing.published >= self.today - timedelta(days=45)
         return True
 
-    async def _enrich(self, listing: Listing, source: Dict[str, Any]) -> Tuple[str, str]:
+    async def _enrich(self, listing: Listing, source: Dict[str, Any], follow_documents: bool = True) -> Tuple[str, str]:
         """Text of the notice detail page and of the tender document, if any."""
         verify = source.get("verify_ssl", True)
         detail_text, doc_text = "", ""
@@ -299,7 +380,7 @@ class Monitor:
             page = await self.crawler.fetch(listing.link, verify_ssl=verify)
             if page.ok and "html" in (page.content_type or "html"):
                 detail_text = clean_html_text(page.text, max_chars=8000)
-                if not listing.document_url:
+                if not listing.document_url and follow_documents:
                     docs = page_document_links(page.text, page.final_url or listing.link)
                     listing.document_url = docs[0] if docs else None
         if listing.document_url and is_readable_document(listing.document_url):
@@ -363,14 +444,16 @@ class Monitor:
             "categories": rel.categories,
             "matched_keywords": rel.matched_keywords,
             "source_id": source["id"],
-            "source_url": source["url"],
+            "source_url": source.get("public_url") or source["url"],
             "notice_url": listing.link,
             "document_url": listing.document_url,
-            "document_text": (doc_text or detail_text)[:DOC_TEXT_KEEP] or None,
+            "document_text": ((detail_text if source.get("notice_pages") else doc_text) or doc_text
+                              or detail_text)[:DOC_TEXT_KEEP] or None,
             "document_checked": document_checked,
             "is_baseline": baseline,
             "first_seen": now_utc,
             "last_seen": now_utc,
+            "_aggregator": bool(source.get("notice_pages")),
         }
         return tender
 

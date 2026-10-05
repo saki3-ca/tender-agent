@@ -36,6 +36,43 @@ def tender_id(organization_id: str, title: str, deadline: Optional[datetime],
     return "t_" + hashlib.sha1(basis.encode("utf-8")).hexdigest()[:20]
 
 
+_STOP = {"the", "and", "for", "of", "to", "in", "on", "at", "a", "an", "by", "with", "from", "under", "rfp", "rfq",
+         "eoi", "tor", "tender", "notice", "request", "proposal", "proposals", "quotation", "invitation", "hiring",
+         "terms", "reference", "bangladesh", "project", "supply"}
+
+
+def _tokens(title: str) -> set:
+    return {w for w in normalize_title(title).split() if len(w) > 2 and w not in _STOP}
+
+
+def same_notice(a: dict, b: dict) -> bool:
+    """Same organization, same deadline date, and most significant words of the shorter title in the longer one."""
+    if a["organization_id"] != b["organization_id"] or not a.get("deadline") or not b.get("deadline"):
+        return False
+    if str(a["deadline"])[:10] != str(b["deadline"])[:10]:
+        return False
+    ta, tb = _tokens(a["title"]), _tokens(b["title"])
+    short, long_ = (ta, tb) if len(ta) <= len(tb) else (tb, ta)
+    return len(short) >= 2 and len(short & long_) / len(short) >= 0.6
+
+
+def drop_aggregator_copies(tenders: List[dict]) -> List[dict]:
+    """A notice found on an aggregator (e.g. Bdjobs) and on the organization's own page is shown once,
+    from the organization's own page."""
+    official = [t for t in tenders if not t.get("_aggregator")]
+    kept = []
+    for t in tenders:
+        if t.get("_aggregator"):
+            twin = next((o for o in official if same_notice(t, o)), None)
+            if twin is not None:
+                for field in ("published_date", "description", "reference_number"):
+                    if twin.get(field) in (None, "") and t.get(field) not in (None, ""):
+                        twin[field] = t[field]
+                continue
+        kept.append(t)
+    return kept
+
+
 def dedupe(tenders: List[dict]) -> List[dict]:
     """Removes duplicates within one run, keeping the first and filling its missing fields."""
     by_id: Dict[str, dict] = {}
@@ -54,4 +91,4 @@ def dedupe(tenders: List[dict]) -> List[dict]:
         for field, value in t.items():
             if existing.get(field) in (None, "", []) and value not in (None, "", []):
                 existing[field] = value
-    return list(by_id.values())
+    return drop_aggregator_copies(list(by_id.values()))

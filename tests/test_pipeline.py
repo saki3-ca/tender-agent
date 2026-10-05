@@ -172,3 +172,26 @@ def test_admin_url_replaces_configured_source_and_adds_new_ones():
     assert new["verify_ssl"] is False
     assert source_org(merged["src_admin_bank"])["is_target_bank"] is True   # existing target bank keeps its flag
     assert "src_admin_bad" not in merged
+
+
+def test_aggregator_copy_of_official_notice_is_dropped():
+    dl = datetime(2026, 10, 12, 23, 59, tzinfo=DHAKA_TZ)
+    official = {"id": "a", "organization_id": "ngo_09", "title": "Engagement of an agency to provide digital media "
+                "buying, motion graphic content creation and campaign strategy", "deadline": dl, "published_date": None}
+    copy = {"id": "b", "organization_id": "ngo_09", "title": "Request for Proposal (RFP) - Hiring Media Buying & "
+            "Motion Graphic Content Creation Agency", "deadline": dl, "published_date": date(2026, 10, 4),
+            "_aggregator": True}
+    other = {"id": "c", "organization_id": "ngo_09", "title": "Hiring a Consultant for Dengue Risk Analysis",
+             "deadline": dl, "_aggregator": True}
+    result = dedupe([official, copy, other])
+    assert [t["id"] for t in result] == ["a", "c"]
+    assert result[0]["published_date"] == date(2026, 10, 4)
+
+
+def test_bdjobs_organizations_are_matched_to_configured_ones():
+    from app.pipeline import organization_for_name
+    assert organization_for_name("Eco Social Development Organization (ESDO)")["organization_id"] == "ngo_07_eco_social_development"
+    assert organization_for_name("Bangladesh Red Crescent Society (BDRCS)")["sector"] == "NGO"
+    new = organization_for_name("Helen Keller Intl")
+    assert new["organization_id"] == "ext_helen_keller_intl" and new["sector"] == "NGO"
+    assert organization_for_name("People's Leasing and Financial Services Ltd (PLFS)")["sector"] == "BANK"

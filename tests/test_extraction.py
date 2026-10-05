@@ -87,3 +87,25 @@ def test_weak_titles():
     assert is_weak_title("Invitation for Tender")
     assert is_weak_title("Download Notice")
     assert not is_weak_title("Supply of 3 KVA Online UPS for ATM Booth")
+
+
+def test_title_cleanup():
+    from app.parsers.html_parser import clean_title
+    assert clean_title("30 September 2026 Call for proposals Preventive Oral Cholera Vaccination") == \
+        "Call for proposals Preventive Oral Cholera Vaccination"
+    assert clean_title("Minutes of Pre-Bid Meeting: RFP for Hiring Sub-Awardee") == "Minutes of Pre-Bid Meeting: RFP for Hiring Sub-Awardee"
+    assert clean_title("Description: Description: Supplying of PPE and Visibility Tender Closing: 30-9-2026") == \
+        "Supplying of PPE and Visibility"
+
+
+def test_row_link_with_labelled_cells():
+    html = """<main><a class="row" href="view_negotiation.cfm?nego_id=1">
+      <div class="cell"><div class="cell__label">Title</div><span>RFP Audit Performance Assessment of 26 Upazila Parishad</span></div>
+      <div class="cell"><div class="cell__label">Ref No</div><span>UNDP-BGD-01200</span></div>
+      <div class="cell"><div class="cell__label">Deadline</div><span>07-Oct-26 11:59 PM (New York time)</span></div>
+      <div class="cell"><div class="cell__label">Posted</div><span>23-Sep-26</span></div></a></main>"""
+    [item] = extract(html)
+    assert item.title == "RFP Audit Performance Assessment of 26 Upazila Parishad"
+    assert item.reference == "UNDP-BGD-01200"
+    assert item.published == date(2026, 9, 23)
+    assert item.deadline.date() == date(2026, 10, 7) and not item.deadline_has_time
