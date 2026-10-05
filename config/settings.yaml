@@ -9,6 +9,9 @@ pipeline_b_sectors:
   - "capital_market"
   - "regulators"
   - "public_donor"
+  - "ngos"
+  - "ingos"
+  - "development_partners"
 
 # Free-Tier Constraints & Safeguards
 free_tier_caps:

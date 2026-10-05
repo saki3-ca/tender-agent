@@ -46,12 +46,12 @@ class ScoringEngine:
         else:
             breakdown["is_opportunity"] = 0
 
-        # 3. Financial institution / regulator (+10)
-        is_fi = is_target_bank or any(t in str(organization_type).lower() for t in ["bank", "nbfi", "regulator", "insurer"])
-        if is_fi:
+        # 3. Financial institution / regulator / NGO / Donor (+10)
+        is_fi_or_ngo = is_target_bank or any(t in str(organization_type).lower() for t in ["bank", "nbfi", "regulator", "insurer", "ngo", "ingo", "donor", "development_partner"])
+        if is_fi_or_ngo:
             fi_mod = self.modifiers.get("is_financial_institution_or_regulator", 10)
             breakdown["financial_institution_bonus"] = fi_mod
-            reasoning_parts.append(f"Target financial institution/regulator (+{fi_mod})")
+            reasoning_parts.append(f"Target institution/NGO/donor (+{fi_mod})")
         else:
             breakdown["financial_institution_bonus"] = 0
 

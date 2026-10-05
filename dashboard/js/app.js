@@ -65,6 +65,36 @@ async function loadOpportunities(viewName = "v_today_priority") {
   }
 }
 
+async function loadNgoOpportunities() {
+  const tbody = document.getElementById("opportunities-tbody");
+  if (!tbody) return;
+
+  tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; padding: 2rem;">Loading live NGO &amp; Development Partner opportunities...</td></tr>`;
+
+  if (!supabaseClient) return;
+
+  try {
+    const { data, error } = await supabaseClient.from("opportunities")
+      .select("*")
+      .order("score", { ascending: false });
+
+    if (error) throw error;
+
+    const ngoKeywords = ["brac", "icddrb", "pksf", "asa", "tmss", "sajida", "care", "save the children", "oxfam", "actionaid", "undp", "friendship", "mjf", "ngo", "foundation", "donor"];
+    
+    currentOpportunities = (data || []).filter(o => 
+      (o.organization_type && ["NGO", "INGO", "DONOR", "DEVELOPMENT_PARTNER"].includes(o.organization_type.toUpperCase())) ||
+      (o.organization_id && o.organization_id.startsWith("ngo_")) ||
+      ngoKeywords.some(k => (o.organization_name || "").toLowerCase().includes(k))
+    );
+
+    renderTable(currentOpportunities);
+  } catch (err) {
+    console.error("Failed to load NGO opportunities:", err);
+    tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; color: var(--color-very-high); padding: 2rem;">Error loading NGO data from database.</td></tr>`;
+  }
+}
+
 function renderTable(items) {
   const tbody = document.getElementById("opportunities-tbody");
   if (!tbody) return;
@@ -84,9 +114,10 @@ function renderTable(items) {
 
   tbody.innerHTML = items.map(opp => {
     const priorityClass = `badge-${(opp.priority || 'low').toLowerCase().replace(' ', '-')}`;
+    const isNgo = (opp.organization_type && ["NGO", "INGO", "DONOR", "DEVELOPMENT_PARTNER"].includes(opp.organization_type.toUpperCase())) || (opp.organization_id && opp.organization_id.startsWith("ngo_"));
     const pipelineBadge = opp.pipeline === 'IFRS9_TARGET' 
       ? `<span class="badge badge-target">IFRS 9 Target</span>` 
-      : `<span class="badge badge-market">General Market</span>`;
+      : (isNgo ? `<span class="badge badge-ngo">${escapeHtml(opp.organization_type || 'NGO')}</span>` : `<span class="badge badge-market">General Market</span>`);
 
     const daysRemaining = opp.days_remaining !== null && opp.days_remaining !== undefined 
       ? `<span style="color: ${opp.days_remaining <= 3 ? 'var(--color-very-high)' : 'inherit'}; font-weight: 600;">${opp.days_remaining}d left</span>` 

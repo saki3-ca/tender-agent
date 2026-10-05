@@ -2,7 +2,12 @@
   {
     "organization_id": "bank_01_agrani",
     "canonical_name": "Agrani Bank PLC",
-    "aliases": ["Agrani Bank", "Agrani Bank Limited", "ABL", "অগ্রণী ব্যাংক"],
+    "aliases": [
+      "Agrani Bank",
+      "Agrani Bank Limited",
+      "ABL",
+      "অগ্রণী ব্যাংক"
+    ],
     "organization_type": "STATE_OWNED_COMMERCIAL_BANK",
     "sector": "banking",
     "official_domain": "agranibank.org",
@@ -18,7 +23,12 @@
   {
     "organization_id": "bank_02_janata",
     "canonical_name": "Janata Bank PLC",
-    "aliases": ["Janata Bank", "Janata Bank Limited", "JBL", "জনতা ব্যাংক"],
+    "aliases": [
+      "Janata Bank",
+      "Janata Bank Limited",
+      "JBL",
+      "জনতা ব্যাংক"
+    ],
     "organization_type": "STATE_OWNED_COMMERCIAL_BANK",
     "sector": "banking",
     "official_domain": "jb.com.bd",
@@ -34,7 +44,12 @@
   {
     "organization_id": "bank_03_rupali",
     "canonical_name": "Rupali Bank PLC",
-    "aliases": ["Rupali Bank", "Rupali Bank Limited", "RBL", "রূপালী ব্যাংক"],
+    "aliases": [
+      "Rupali Bank",
+      "Rupali Bank Limited",
+      "RBL",
+      "রূপালী ব্যাংক"
+    ],
     "organization_type": "STATE_OWNED_COMMERCIAL_BANK",
     "sector": "banking",
     "official_domain": "rupalibank.com.bd",
@@ -50,7 +65,12 @@
   {
     "organization_id": "bank_07_sonali",
     "canonical_name": "Sonali Bank PLC",
-    "aliases": ["Sonali Bank", "Sonali Bank Limited", "SBL", "সোনালী ব্যাংক"],
+    "aliases": [
+      "Sonali Bank",
+      "Sonali Bank Limited",
+      "SBL",
+      "সোনালী ব্যাংক"
+    ],
     "organization_type": "STATE_OWNED_COMMERCIAL_BANK",
     "sector": "banking",
     "official_domain": "sonalibank.com.bd",
@@ -66,7 +86,12 @@
   {
     "organization_id": "bank_13_city",
     "canonical_name": "City Bank PLC",
-    "aliases": ["City Bank", "The City Bank Limited", "CBL", "সিটি ব্যাংক"],
+    "aliases": [
+      "City Bank",
+      "The City Bank Limited",
+      "CBL",
+      "সিটি ব্যাংক"
+    ],
     "organization_type": "PRIVATE_COMMERCIAL_BANK",
     "sector": "banking",
     "official_domain": "thecitybank.com",
@@ -82,7 +107,11 @@
   {
     "organization_id": "bank_18_mtb",
     "canonical_name": "Mutual Trust Bank PLC",
-    "aliases": ["MTB", "Mutual Trust Bank", "মিউচুয়াল ট্রাস্ট ব্যাংক"],
+    "aliases": [
+      "MTB",
+      "Mutual Trust Bank",
+      "মিউচুয়াল ট্রাস্ট ব্যাংক"
+    ],
     "organization_type": "PRIVATE_COMMERCIAL_BANK",
     "sector": "banking",
     "official_domain": "mutualtrustbank.com",
@@ -98,7 +127,11 @@
   {
     "organization_id": "bank_26_islami_bank",
     "canonical_name": "Islami Bank Bangladesh PLC",
-    "aliases": ["IBBL", "Islami Bank Bangladesh", "ইসলামী ব্যাংক"],
+    "aliases": [
+      "IBBL",
+      "Islami Bank Bangladesh",
+      "ইসলামী ব্যাংক"
+    ],
     "organization_type": "ISLAMIC_COMMERCIAL_BANK",
     "sector": "banking",
     "official_domain": "islamibankbd.com",
@@ -114,7 +147,11 @@
   {
     "organization_id": "reg_bangladesh_bank",
     "canonical_name": "Bangladesh Bank",
-    "aliases": ["BB", "Central Bank of Bangladesh", "বাংলাদেশ ব্যাংক"],
+    "aliases": [
+      "BB",
+      "Central Bank of Bangladesh",
+      "বাংলাদেশ ব্যাংক"
+    ],
     "organization_type": "REGULATOR",
     "sector": "regulators",
     "official_domain": "bb.org.bd",
@@ -130,7 +167,12 @@
   {
     "organization_id": "gov_bppa_egp",
     "canonical_name": "Bangladesh Public Procurement Authority (BPPA) e-GP",
-    "aliases": ["BPPA", "CPTU", "e-GP Bangladesh", "ই-জিপি"],
+    "aliases": [
+      "BPPA",
+      "CPTU",
+      "e-GP Bangladesh",
+      "ই-জিপি"
+    ],
     "organization_type": "GOVERNMENT_PORTAL",
     "sector": "public_donor",
     "official_domain": "eprocure.gov.bd",
@@ -146,7 +188,11 @@
   {
     "organization_id": "donor_world_bank_bd",
     "canonical_name": "World Bank – Bangladesh",
-    "aliases": ["World Bank Bangladesh", "WB Bangladesh", "বিশ্বব্যাংক"],
+    "aliases": [
+      "World Bank Bangladesh",
+      "WB Bangladesh",
+      "বিশ্বব্যাংক"
+    ],
     "organization_type": "DEVELOPMENT_PARTNER",
     "sector": "public_donor",
     "official_domain": "worldbank.org",
@@ -162,7 +208,11 @@
   {
     "organization_id": "donor_adb_bd",
     "canonical_name": "Asian Development Bank – Bangladesh",
-    "aliases": ["ADB Bangladesh", "ADB", "এশীয় উন্নয়ন ব্যাংক"],
+    "aliases": [
+      "ADB Bangladesh",
+      "ADB",
+      "এশীয় উন্নয়ন ব্যাংক"
+    ],
     "organization_type": "DEVELOPMENT_PARTNER",
     "sector": "public_donor",
     "official_domain": "adb.org",
@@ -178,7 +228,11 @@
   {
     "organization_id": "nbfi_idlc",
     "canonical_name": "IDLC Finance PLC",
-    "aliases": ["IDLC", "IDLC Finance", "আইডিএলসি ফাইন্যান্স"],
+    "aliases": [
+      "IDLC",
+      "IDLC Finance",
+      "আইডিএলসি ফাইন্যান্স"
+    ],
     "organization_type": "NBFI",
     "sector": "nbfis",
     "official_domain": "idlc.com",
@@ -194,7 +248,11 @@
   {
     "organization_id": "reg_bsec",
     "canonical_name": "Bangladesh Securities and Exchange Commission",
-    "aliases": ["BSEC", "বিএসইসি", "সিকিউরিটিজ অ্যান্ড এক্সচেঞ্জ কমিশন"],
+    "aliases": [
+      "BSEC",
+      "বিএসইসি",
+      "সিকিউরিটিজ অ্যান্ড এক্সচেঞ্জ কমিশন"
+    ],
     "organization_type": "REGULATOR",
     "sector": "regulators",
     "official_domain": "sec.gov.bd",
@@ -206,5 +264,1845 @@
     "last_verified": "2026-10-01",
     "last_checked": null,
     "notes": "Capital market regulator"
+  },
+  {
+    "organization_id": "ngo_01_brac",
+    "canonical_name": "BRAC",
+    "aliases": [
+      "BRAC"
+    ],
+    "organization_type": "NGO",
+    "sector": "ngos",
+    "official_domain": "tender.brac.net",
+    "procurement_url": "https://tender.brac.net/tender/liveTenderTemplate",
+    "tender_url": "https://tender.brac.net/tender/liveTenderTemplate",
+    "notice_url": "https://tender.brac.net/tender/liveTenderTemplate",
+    "is_ifrs9_target": false,
+    "source_status": "OK",
+    "last_verified": "2026-10-05",
+    "last_checked": null,
+    "notes": "Bangladesh NGO/INGO procurement source #1"
+  },
+  {
+    "organization_id": "ngo_02_palli_karma_sahayak",
+    "canonical_name": "Palli Karma-Sahayak Foundation (PKSF)",
+    "aliases": [
+      "Palli Karma-Sahayak Foundation",
+      "Palli Karma-Sahayak Foundation (PKSF)",
+      "PKSF"
+    ],
+    "organization_type": "DEVELOPMENT_PARTNER",
+    "sector": "ngos",
+    "official_domain": "pksf.org.bd",
+    "procurement_url": "https://pksf.org.bd/procurement/",
+    "tender_url": "https://pksf.org.bd/procurement/",
+    "notice_url": "https://pksf.org.bd/procurement/",
+    "is_ifrs9_target": false,
+    "source_status": "OK",
+    "last_verified": "2026-10-05",
+    "last_checked": null,
+    "notes": "Bangladesh NGO/INGO procurement source #2"
+  },
+  {
+    "organization_id": "ngo_03_icddr_b",
+    "canonical_name": "icddr,b",
+    "aliases": [
+      "icddr,b"
+    ],
+    "organization_type": "NGO",
+    "sector": "ngos",
+    "official_domain": "www.icddrb.org",
+    "procurement_url": "https://www.icddrb.org/tender-notices",
+    "tender_url": "https://www.icddrb.org/tender-notices",
+    "notice_url": "https://www.icddrb.org/tender-notices",
+    "is_ifrs9_target": false,
+    "source_status": "OK",
+    "last_verified": "2026-10-05",
+    "last_checked": null,
+    "notes": "Bangladesh NGO/INGO procurement source #3"
+  },
+  {
+    "organization_id": "ngo_04_actionaid_bangladesh",
+    "canonical_name": "ActionAid Bangladesh",
+    "aliases": [
+      "ActionAid Bangladesh"
+    ],
+    "organization_type": "NGO",
+    "sector": "ngos",
+    "official_domain": "actionaidbd.org",
+    "procurement_url": "https://actionaidbd.org/category/tender-notice",
+    "tender_url": "https://actionaidbd.org/category/tender-notice",
+    "notice_url": "https://actionaidbd.org/category/tender-notice",
+    "is_ifrs9_target": false,
+    "source_status": "OK",
+    "last_verified": "2026-10-05",
+    "last_checked": null,
+    "notes": "Bangladesh NGO/INGO procurement source #4"
+  },
+  {
+    "organization_id": "ngo_05_ucep_bangladesh",
+    "canonical_name": "UCEP Bangladesh",
+    "aliases": [
+      "UCEP Bangladesh"
+    ],
+    "organization_type": "NGO",
+    "sector": "ngos",
+    "official_domain": "tender.ucepbd.org",
+    "procurement_url": "https://tender.ucepbd.org/",
+    "tender_url": "https://tender.ucepbd.org/",
+    "notice_url": "https://tender.ucepbd.org/",
+    "is_ifrs9_target": false,
+    "source_status": "OK",
+    "last_verified": "2026-10-05",
+    "last_checked": null,
+    "notes": "Bangladesh NGO/INGO procurement source #5"
+  },
+  {
+    "organization_id": "ngo_06_caritas_bangladesh",
+    "canonical_name": "Caritas Bangladesh",
+    "aliases": [
+      "Caritas Bangladesh"
+    ],
+    "organization_type": "NGO",
+    "sector": "ngos",
+    "official_domain": "caritasbd.org",
+    "procurement_url": "https://caritasbd.org/notice/tender/",
+    "tender_url": "https://caritasbd.org/notice/tender/",
+    "notice_url": "https://caritasbd.org/notice/tender/",
+    "is_ifrs9_target": false,
+    "source_status": "OK",
+    "last_verified": "2026-10-05",
+    "last_checked": null,
+    "notes": "Bangladesh NGO/INGO procurement source #6"
+  },
+  {
+    "organization_id": "ngo_07_eco_social_development",
+    "canonical_name": "Eco-Social Development Organization (ESDO)",
+    "aliases": [
+      "Eco-Social Development Organization",
+      "Eco-Social Development Organization (ESDO)",
+      "ESDO"
+    ],
+    "organization_type": "NGO",
+    "sector": "ngos",
+    "official_domain": "esdo.net.bd",
+    "procurement_url": "https://esdo.net.bd/notice/",
+    "tender_url": "https://esdo.net.bd/notice/",
+    "notice_url": "https://esdo.net.bd/notice/",
+    "is_ifrs9_target": false,
+    "source_status": "OK",
+    "last_verified": "2026-10-05",
+    "last_checked": null,
+    "notes": "Bangladesh NGO/INGO procurement source #7"
+  },
+  {
+    "organization_id": "ngo_08_tmss_thengamara_mohila",
+    "canonical_name": "TMSS (Thengamara Mohila Sabuj Sangha)",
+    "aliases": [
+      "TMSS (Thengamara Mohila Sabuj Sangha)",
+      "TMSS",
+      "Thengamara Mohila Sabuj Sangha"
+    ],
+    "organization_type": "NGO",
+    "sector": "ngos",
+    "official_domain": "tmss-bd.org",
+    "procurement_url": "https://tmss-bd.org/category/tender-notice/",
+    "tender_url": "https://tmss-bd.org/category/tender-notice/",
+    "notice_url": "https://tmss-bd.org/category/tender-notice/",
+    "is_ifrs9_target": false,
+    "source_status": "OK",
+    "last_verified": "2026-10-05",
+    "last_checked": null,
+    "notes": "Bangladesh NGO/INGO procurement source #8"
+  },
+  {
+    "organization_id": "ngo_09_bangladesh_red_crescent",
+    "canonical_name": "Bangladesh Red Crescent Society (BDRCS)",
+    "aliases": [
+      "Bangladesh Red Crescent Society",
+      "BDRCS",
+      "Bangladesh Red Crescent Society (BDRCS)"
+    ],
+    "organization_type": "INGO",
+    "sector": "ngos",
+    "official_domain": "bdrcs.org",
+    "procurement_url": "https://bdrcs.org/tenders/",
+    "tender_url": "https://bdrcs.org/tenders/",
+    "notice_url": "https://bdrcs.org/tenders/",
+    "is_ifrs9_target": false,
+    "source_status": "OK",
+    "last_verified": "2026-10-05",
+    "last_checked": null,
+    "notes": "Bangladesh NGO/INGO procurement source #9"
+  },
+  {
+    "organization_id": "ngo_10_friendship_ngo",
+    "canonical_name": "Friendship NGO",
+    "aliases": [
+      "Friendship NGO"
+    ],
+    "organization_type": "NGO",
+    "sector": "ngos",
+    "official_domain": "friendship.ngo",
+    "procurement_url": "https://friendship.ngo/procurement/",
+    "tender_url": "https://friendship.ngo/procurement/",
+    "notice_url": "https://friendship.ngo/procurement/",
+    "is_ifrs9_target": false,
+    "source_status": "OK",
+    "last_verified": "2026-10-05",
+    "last_checked": null,
+    "notes": "Bangladesh NGO/INGO procurement source #10"
+  },
+  {
+    "organization_id": "ngo_11_sajida_foundation",
+    "canonical_name": "Sajida Foundation",
+    "aliases": [
+      "Sajida Foundation"
+    ],
+    "organization_type": "NGO",
+    "sector": "ngos",
+    "official_domain": "sajidafoundation.org",
+    "procurement_url": "https://sajidafoundation.org/tenders-notices/",
+    "tender_url": "https://sajidafoundation.org/tenders-notices/",
+    "notice_url": "https://sajidafoundation.org/tenders-notices/",
+    "is_ifrs9_target": false,
+    "source_status": "OK",
+    "last_verified": "2026-10-05",
+    "last_checked": null,
+    "notes": "Bangladesh NGO/INGO procurement source #11"
+  },
+  {
+    "organization_id": "ngo_12_buro_bangladesh",
+    "canonical_name": "BURO Bangladesh",
+    "aliases": [
+      "BURO Bangladesh"
+    ],
+    "organization_type": "NGO",
+    "sector": "ngos",
+    "official_domain": "burobd.org",
+    "procurement_url": "https://burobd.org/tender-notice/",
+    "tender_url": "https://burobd.org/tender-notice/",
+    "notice_url": "https://burobd.org/tender-notice/",
+    "is_ifrs9_target": false,
+    "source_status": "OK",
+    "last_verified": "2026-10-05",
+    "last_checked": null,
+    "notes": "Bangladesh NGO/INGO procurement source #12"
+  },
+  {
+    "organization_id": "ngo_13_jagorani_chakra_foundation",
+    "canonical_name": "Jagorani Chakra Foundation (JCF)",
+    "aliases": [
+      "JCF",
+      "Jagorani Chakra Foundation (JCF)",
+      "Jagorani Chakra Foundation"
+    ],
+    "organization_type": "NGO",
+    "sector": "ngos",
+    "official_domain": "jcf.org.bd",
+    "procurement_url": "https://jcf.org.bd/tender-notice/",
+    "tender_url": "https://jcf.org.bd/tender-notice/",
+    "notice_url": "https://jcf.org.bd/tender-notice/",
+    "is_ifrs9_target": false,
+    "source_status": "OK",
+    "last_verified": "2026-10-05",
+    "last_checked": null,
+    "notes": "Bangladesh NGO/INGO procurement source #13"
+  },
+  {
+    "organization_id": "ngo_14_dhaka_ahsania_mission",
+    "canonical_name": "Dhaka Ahsania Mission (DAM)",
+    "aliases": [
+      "Dhaka Ahsania Mission",
+      "DAM",
+      "Dhaka Ahsania Mission (DAM)"
+    ],
+    "organization_type": "NGO",
+    "sector": "ngos",
+    "official_domain": "ahsaniamission.org.bd",
+    "procurement_url": "https://ahsaniamission.org.bd/tender/",
+    "tender_url": "https://ahsaniamission.org.bd/tender/",
+    "notice_url": "https://ahsaniamission.org.bd/tender/",
+    "is_ifrs9_target": false,
+    "source_status": "OK",
+    "last_verified": "2026-10-05",
+    "last_checked": null,
+    "notes": "Bangladesh NGO/INGO procurement source #14"
+  },
+  {
+    "organization_id": "ngo_15_centre_for_the",
+    "canonical_name": "Centre for the Rehabilitation of the Paralysed (CRP)",
+    "aliases": [
+      "Centre for the Rehabilitation of the Paralysed (CRP)",
+      "CRP",
+      "Centre for the Rehabilitation of the Paralysed"
+    ],
+    "organization_type": "NGO",
+    "sector": "ngos",
+    "official_domain": "crp-bangladesh.org",
+    "procurement_url": "https://crp-bangladesh.org/tender-notices/",
+    "tender_url": "https://crp-bangladesh.org/tender-notices/",
+    "notice_url": "https://crp-bangladesh.org/tender-notices/",
+    "is_ifrs9_target": false,
+    "source_status": "OK",
+    "last_verified": "2026-10-05",
+    "last_checked": null,
+    "notes": "Bangladesh NGO/INGO procurement source #15"
+  },
+  {
+    "organization_id": "ngo_16_rdrs_bangladesh",
+    "canonical_name": "RDRS Bangladesh",
+    "aliases": [
+      "RDRS Bangladesh"
+    ],
+    "organization_type": "NGO",
+    "sector": "ngos",
+    "official_domain": "rdrsbangladesh.org",
+    "procurement_url": "https://rdrsbangladesh.org/tender-notices/",
+    "tender_url": "https://rdrsbangladesh.org/tender-notices/",
+    "notice_url": "https://rdrsbangladesh.org/tender-notices/",
+    "is_ifrs9_target": false,
+    "source_status": "OK",
+    "last_verified": "2026-10-05",
+    "last_checked": null,
+    "notes": "Bangladesh NGO/INGO procurement source #16"
+  },
+  {
+    "organization_id": "ngo_17_save_the_children",
+    "canonical_name": "Save the Children Bangladesh",
+    "aliases": [
+      "Save the Children Bangladesh"
+    ],
+    "organization_type": "INGO",
+    "sector": "ngos",
+    "official_domain": "bangladesh.savethechildren.net",
+    "procurement_url": "https://bangladesh.savethechildren.net/tenders",
+    "tender_url": "https://bangladesh.savethechildren.net/tenders",
+    "notice_url": "https://bangladesh.savethechildren.net/tenders",
+    "is_ifrs9_target": false,
+    "source_status": "OK",
+    "last_verified": "2026-10-05",
+    "last_checked": null,
+    "notes": "Bangladesh NGO/INGO procurement source #17"
+  },
+  {
+    "organization_id": "ngo_18_oxfam_in_bangladesh",
+    "canonical_name": "Oxfam in Bangladesh",
+    "aliases": [
+      "Oxfam in Bangladesh"
+    ],
+    "organization_type": "INGO",
+    "sector": "ngos",
+    "official_domain": "bangladesh.oxfam.org",
+    "procurement_url": "https://bangladesh.oxfam.org/latest/tenders",
+    "tender_url": "https://bangladesh.oxfam.org/latest/tenders",
+    "notice_url": "https://bangladesh.oxfam.org/latest/tenders",
+    "is_ifrs9_target": false,
+    "source_status": "OK",
+    "last_verified": "2026-10-05",
+    "last_checked": null,
+    "notes": "Bangladesh NGO/INGO procurement source #18"
+  },
+  {
+    "organization_id": "ngo_19_care_bangladesh",
+    "canonical_name": "CARE Bangladesh",
+    "aliases": [
+      "CARE Bangladesh"
+    ],
+    "organization_type": "INGO",
+    "sector": "ngos",
+    "official_domain": "carebangladesh.org",
+    "procurement_url": "https://carebangladesh.org/procurement/",
+    "tender_url": "https://carebangladesh.org/procurement/",
+    "notice_url": "https://carebangladesh.org/procurement/",
+    "is_ifrs9_target": false,
+    "source_status": "OK",
+    "last_verified": "2026-10-05",
+    "last_checked": null,
+    "notes": "Bangladesh NGO/INGO procurement source #19"
+  },
+  {
+    "organization_id": "ngo_20_plan_international_bangladesh",
+    "canonical_name": "Plan International Bangladesh",
+    "aliases": [
+      "Plan International Bangladesh"
+    ],
+    "organization_type": "INGO",
+    "sector": "ngos",
+    "official_domain": "plan-international.org",
+    "procurement_url": "https://plan-international.org/bangladesh/tenders-and-procurement/",
+    "tender_url": "https://plan-international.org/bangladesh/tenders-and-procurement/",
+    "notice_url": "https://plan-international.org/bangladesh/tenders-and-procurement/",
+    "is_ifrs9_target": false,
+    "source_status": "OK",
+    "last_verified": "2026-10-05",
+    "last_checked": null,
+    "notes": "Bangladesh NGO/INGO procurement source #20"
+  },
+  {
+    "organization_id": "ngo_21_world_vision_bangladesh",
+    "canonical_name": "World Vision Bangladesh",
+    "aliases": [
+      "World Vision Bangladesh"
+    ],
+    "organization_type": "INGO",
+    "sector": "ngos",
+    "official_domain": "www.wvi.org",
+    "procurement_url": "https://www.wvi.org/bangladesh/procurement-and-tenders",
+    "tender_url": "https://www.wvi.org/bangladesh/procurement-and-tenders",
+    "notice_url": "https://www.wvi.org/bangladesh/procurement-and-tenders",
+    "is_ifrs9_target": false,
+    "source_status": "OK",
+    "last_verified": "2026-10-05",
+    "last_checked": null,
+    "notes": "Bangladesh NGO/INGO procurement source #21"
+  },
+  {
+    "organization_id": "ngo_22_swisscontact_bangladesh",
+    "canonical_name": "Swisscontact Bangladesh",
+    "aliases": [
+      "Swisscontact Bangladesh"
+    ],
+    "organization_type": "INGO",
+    "sector": "ngos",
+    "official_domain": "www.swisscontact.org",
+    "procurement_url": "https://www.swisscontact.org/en/countries/bangladesh/procurement",
+    "tender_url": "https://www.swisscontact.org/en/countries/bangladesh/procurement",
+    "notice_url": "https://www.swisscontact.org/en/countries/bangladesh/procurement",
+    "is_ifrs9_target": false,
+    "source_status": "OK",
+    "last_verified": "2026-10-05",
+    "last_checked": null,
+    "notes": "Bangladesh NGO/INGO procurement source #22"
+  },
+  {
+    "organization_id": "ngo_23_solidarites_international_bangladesh",
+    "canonical_name": "Solidarites International Bangladesh",
+    "aliases": [
+      "Solidarites International Bangladesh"
+    ],
+    "organization_type": "INGO",
+    "sector": "ngos",
+    "official_domain": "www.solidarites.org",
+    "procurement_url": "https://www.solidarites.org/en/calls-for-tenders/",
+    "tender_url": "https://www.solidarites.org/en/calls-for-tenders/",
+    "notice_url": "https://www.solidarites.org/en/calls-for-tenders/",
+    "is_ifrs9_target": false,
+    "source_status": "OK",
+    "last_verified": "2026-10-05",
+    "last_checked": null,
+    "notes": "Bangladesh NGO/INGO procurement source #23"
+  },
+  {
+    "organization_id": "ngo_24_action_against_hunger",
+    "canonical_name": "Action Against Hunger (ACF) Bangladesh",
+    "aliases": [
+      "Action Against Hunger (ACF) Bangladesh",
+      "Action Against Hunger  Bangladesh",
+      "ACF"
+    ],
+    "organization_type": "INGO",
+    "sector": "ngos",
+    "official_domain": "www.actionagainsthunger.org",
+    "procurement_url": "https://www.actionagainsthunger.org/procurement/",
+    "tender_url": "https://www.actionagainsthunger.org/procurement/",
+    "notice_url": "https://www.actionagainsthunger.org/procurement/",
+    "is_ifrs9_target": false,
+    "source_status": "OK",
+    "last_verified": "2026-10-05",
+    "last_checked": null,
+    "notes": "Bangladesh NGO/INGO procurement source #24"
+  },
+  {
+    "organization_id": "ngo_25_christian_commission_for",
+    "canonical_name": "Christian Commission for Development in Bangladesh (CCDB)",
+    "aliases": [
+      "Christian Commission for Development in Bangladesh",
+      "CCDB",
+      "Christian Commission for Development in Bangladesh (CCDB)"
+    ],
+    "organization_type": "NGO",
+    "sector": "ngos",
+    "official_domain": "ccdb-bd.org",
+    "procurement_url": "https://ccdb-bd.org/tender-procurement/",
+    "tender_url": "https://ccdb-bd.org/tender-procurement/",
+    "notice_url": "https://ccdb-bd.org/tender-procurement/",
+    "is_ifrs9_target": false,
+    "source_status": "OK",
+    "last_verified": "2026-10-05",
+    "last_checked": null,
+    "notes": "Bangladesh NGO/INGO procurement source #25"
+  },
+  {
+    "organization_id": "ngo_26_muslim_aid_bangladesh",
+    "canonical_name": "Muslim Aid Bangladesh",
+    "aliases": [
+      "Muslim Aid Bangladesh"
+    ],
+    "organization_type": "INGO",
+    "sector": "ngos",
+    "official_domain": "muslimaid.org.bd",
+    "procurement_url": "https://muslimaid.org.bd/tenders/",
+    "tender_url": "https://muslimaid.org.bd/tenders/",
+    "notice_url": "https://muslimaid.org.bd/tenders/",
+    "is_ifrs9_target": false,
+    "source_status": "OK",
+    "last_verified": "2026-10-05",
+    "last_checked": null,
+    "notes": "Bangladesh NGO/INGO procurement source #26"
+  },
+  {
+    "organization_id": "ngo_27_islamic_relief_bangladesh",
+    "canonical_name": "Islamic Relief Bangladesh",
+    "aliases": [
+      "Islamic Relief Bangladesh"
+    ],
+    "organization_type": "INGO",
+    "sector": "ngos",
+    "official_domain": "islamicrelief.org.bd",
+    "procurement_url": "https://islamicrelief.org.bd/tenders/",
+    "tender_url": "https://islamicrelief.org.bd/tenders/",
+    "notice_url": "https://islamicrelief.org.bd/tenders/",
+    "is_ifrs9_target": false,
+    "source_status": "OK",
+    "last_verified": "2026-10-05",
+    "last_checked": null,
+    "notes": "Bangladesh NGO/INGO procurement source #27"
+  },
+  {
+    "organization_id": "ngo_28_voluntary_service_overseas",
+    "canonical_name": "Voluntary Service Overseas (VSO) Bangladesh",
+    "aliases": [
+      "VSO",
+      "Voluntary Service Overseas  Bangladesh",
+      "Voluntary Service Overseas (VSO) Bangladesh"
+    ],
+    "organization_type": "INGO",
+    "sector": "ngos",
+    "official_domain": "www.vsointernational.org",
+    "procurement_url": "https://www.vsointernational.org/about/procurement",
+    "tender_url": "https://www.vsointernational.org/about/procurement",
+    "notice_url": "https://www.vsointernational.org/about/procurement",
+    "is_ifrs9_target": false,
+    "source_status": "OK",
+    "last_verified": "2026-10-05",
+    "last_checked": null,
+    "notes": "Bangladesh NGO/INGO procurement source #28"
+  },
+  {
+    "organization_id": "ngo_29_practical_action_bangladesh",
+    "canonical_name": "Practical Action Bangladesh",
+    "aliases": [
+      "Practical Action Bangladesh"
+    ],
+    "organization_type": "INGO",
+    "sector": "ngos",
+    "official_domain": "practicalaction.org",
+    "procurement_url": "https://practicalaction.org/procurement/",
+    "tender_url": "https://practicalaction.org/procurement/",
+    "notice_url": "https://practicalaction.org/procurement/",
+    "is_ifrs9_target": false,
+    "source_status": "OK",
+    "last_verified": "2026-10-05",
+    "last_checked": null,
+    "notes": "Bangladesh NGO/INGO procurement source #29"
+  },
+  {
+    "organization_id": "ngo_30_concern_worldwide_bangladesh",
+    "canonical_name": "Concern Worldwide Bangladesh",
+    "aliases": [
+      "Concern Worldwide Bangladesh"
+    ],
+    "organization_type": "INGO",
+    "sector": "ngos",
+    "official_domain": "www.concern.net",
+    "procurement_url": "https://www.concern.net/tenders",
+    "tender_url": "https://www.concern.net/tenders",
+    "notice_url": "https://www.concern.net/tenders",
+    "is_ifrs9_target": false,
+    "source_status": "OK",
+    "last_verified": "2026-10-05",
+    "last_checked": null,
+    "notes": "Bangladesh NGO/INGO procurement source #30"
+  },
+  {
+    "organization_id": "ngo_31_helvetas_bangladesh",
+    "canonical_name": "Helvetas Bangladesh",
+    "aliases": [
+      "Helvetas Bangladesh"
+    ],
+    "organization_type": "INGO",
+    "sector": "ngos",
+    "official_domain": "www.helvetas.org",
+    "procurement_url": "https://www.helvetas.org/en/bangladesh/who-we-are/jobs-tenders",
+    "tender_url": "https://www.helvetas.org/en/bangladesh/who-we-are/jobs-tenders",
+    "notice_url": "https://www.helvetas.org/en/bangladesh/who-we-are/jobs-tenders",
+    "is_ifrs9_target": false,
+    "source_status": "OK",
+    "last_verified": "2026-10-05",
+    "last_checked": null,
+    "notes": "Bangladesh NGO/INGO procurement source #31"
+  },
+  {
+    "organization_id": "ngo_32_handicap_international_humanity",
+    "canonical_name": "Handicap International (Humanity & Inclusion) Bangladesh",
+    "aliases": [
+      "Handicap International (Humanity & Inclusion) Bangladesh",
+      "Handicap International  Bangladesh",
+      "Humanity & Inclusion"
+    ],
+    "organization_type": "INGO",
+    "sector": "ngos",
+    "official_domain": "www.hi.org",
+    "procurement_url": "https://www.hi.org/en/calls-for-tenders",
+    "tender_url": "https://www.hi.org/en/calls-for-tenders",
+    "notice_url": "https://www.hi.org/en/calls-for-tenders",
+    "is_ifrs9_target": false,
+    "source_status": "OK",
+    "last_verified": "2026-10-05",
+    "last_checked": null,
+    "notes": "Bangladesh NGO/INGO procurement source #32"
+  },
+  {
+    "organization_id": "ngo_33_sightsavers_bangladesh",
+    "canonical_name": "Sightsavers Bangladesh",
+    "aliases": [
+      "Sightsavers Bangladesh"
+    ],
+    "organization_type": "INGO",
+    "sector": "ngos",
+    "official_domain": "www.sightsavers.org",
+    "procurement_url": "https://www.sightsavers.org/procurement/",
+    "tender_url": "https://www.sightsavers.org/procurement/",
+    "notice_url": "https://www.sightsavers.org/procurement/",
+    "is_ifrs9_target": false,
+    "source_status": "OK",
+    "last_verified": "2026-10-05",
+    "last_checked": null,
+    "notes": "Bangladesh NGO/INGO procurement source #33"
+  },
+  {
+    "organization_id": "ngo_34_danish_refugee_council",
+    "canonical_name": "Danish Refugee Council (DRC) Bangladesh",
+    "aliases": [
+      "DRC",
+      "Danish Refugee Council  Bangladesh",
+      "Danish Refugee Council (DRC) Bangladesh"
+    ],
+    "organization_type": "INGO",
+    "sector": "ngos",
+    "official_domain": "drc.ngo",
+    "procurement_url": "https://drc.ngo/tenders/",
+    "tender_url": "https://drc.ngo/tenders/",
+    "notice_url": "https://drc.ngo/tenders/",
+    "is_ifrs9_target": false,
+    "source_status": "OK",
+    "last_verified": "2026-10-05",
+    "last_checked": null,
+    "notes": "Bangladesh NGO/INGO procurement source #34"
+  },
+  {
+    "organization_id": "ngo_35_norwegian_refugee_council",
+    "canonical_name": "Norwegian Refugee Council (NRC) Bangladesh",
+    "aliases": [
+      "Norwegian Refugee Council (NRC) Bangladesh",
+      "NRC",
+      "Norwegian Refugee Council  Bangladesh"
+    ],
+    "organization_type": "INGO",
+    "sector": "ngos",
+    "official_domain": "www.nrc.no",
+    "procurement_url": "https://www.nrc.no/tenders/",
+    "tender_url": "https://www.nrc.no/tenders/",
+    "notice_url": "https://www.nrc.no/tenders/",
+    "is_ifrs9_target": false,
+    "source_status": "OK",
+    "last_verified": "2026-10-05",
+    "last_checked": null,
+    "notes": "Bangladesh NGO/INGO procurement source #35"
+  },
+  {
+    "organization_id": "ngo_36_international_rescue_committee",
+    "canonical_name": "International Rescue Committee (IRC) Bangladesh",
+    "aliases": [
+      "International Rescue Committee  Bangladesh",
+      "International Rescue Committee (IRC) Bangladesh",
+      "IRC"
+    ],
+    "organization_type": "INGO",
+    "sector": "ngos",
+    "official_domain": "www.rescue.org",
+    "procurement_url": "https://www.rescue.org/procurement",
+    "tender_url": "https://www.rescue.org/procurement",
+    "notice_url": "https://www.rescue.org/procurement",
+    "is_ifrs9_target": false,
+    "source_status": "OK",
+    "last_verified": "2026-10-05",
+    "last_checked": null,
+    "notes": "Bangladesh NGO/INGO procurement source #36"
+  },
+  {
+    "organization_id": "ngo_37_relief_international_bangladesh",
+    "canonical_name": "Relief International Bangladesh",
+    "aliases": [
+      "Relief International Bangladesh"
+    ],
+    "organization_type": "INGO",
+    "sector": "ngos",
+    "official_domain": "www.ri.org",
+    "procurement_url": "https://www.ri.org/procurement/",
+    "tender_url": "https://www.ri.org/procurement/",
+    "notice_url": "https://www.ri.org/procurement/",
+    "is_ifrs9_target": false,
+    "source_status": "OK",
+    "last_verified": "2026-10-05",
+    "last_checked": null,
+    "notes": "Bangladesh NGO/INGO procurement source #37"
+  },
+  {
+    "organization_id": "ngo_38_medecins_du_monde",
+    "canonical_name": "Medecins du Monde (MdM) Bangladesh",
+    "aliases": [
+      "Medecins du Monde  Bangladesh",
+      "Medecins du Monde (MdM) Bangladesh",
+      "MdM"
+    ],
+    "organization_type": "INGO",
+    "sector": "ngos",
+    "official_domain": "www.medecinsdumonde.org",
+    "procurement_url": "https://www.medecinsdumonde.org/en/calls-for-tenders/",
+    "tender_url": "https://www.medecinsdumonde.org/en/calls-for-tenders/",
+    "notice_url": "https://www.medecinsdumonde.org/en/calls-for-tenders/",
+    "is_ifrs9_target": false,
+    "source_status": "OK",
+    "last_verified": "2026-10-05",
+    "last_checked": null,
+    "notes": "Bangladesh NGO/INGO procurement source #38"
+  },
+  {
+    "organization_id": "ngo_39_malteser_international_bangladesh",
+    "canonical_name": "Malteser International Bangladesh",
+    "aliases": [
+      "Malteser International Bangladesh"
+    ],
+    "organization_type": "INGO",
+    "sector": "ngos",
+    "official_domain": "www.malteser-international.org",
+    "procurement_url": "https://www.malteser-international.org/en/procurement.html",
+    "tender_url": "https://www.malteser-international.org/en/procurement.html",
+    "notice_url": "https://www.malteser-international.org/en/procurement.html",
+    "is_ifrs9_target": false,
+    "source_status": "OK",
+    "last_verified": "2026-10-05",
+    "last_checked": null,
+    "notes": "Bangladesh NGO/INGO procurement source #39"
+  },
+  {
+    "organization_id": "ngo_40_room_to_read",
+    "canonical_name": "Room to Read Bangladesh",
+    "aliases": [
+      "Room to Read Bangladesh"
+    ],
+    "organization_type": "INGO",
+    "sector": "ngos",
+    "official_domain": "www.roomtoread.org",
+    "procurement_url": "https://www.roomtoread.org/procurement/",
+    "tender_url": "https://www.roomtoread.org/procurement/",
+    "notice_url": "https://www.roomtoread.org/procurement/",
+    "is_ifrs9_target": false,
+    "source_status": "OK",
+    "last_verified": "2026-10-05",
+    "last_checked": null,
+    "notes": "Bangladesh NGO/INGO procurement source #40"
+  },
+  {
+    "organization_id": "ngo_41_marie_stopes_bangladesh",
+    "canonical_name": "Marie Stopes Bangladesh",
+    "aliases": [
+      "Marie Stopes Bangladesh"
+    ],
+    "organization_type": "INGO",
+    "sector": "ngos",
+    "official_domain": "mariestopes-bd.org",
+    "procurement_url": "https://mariestopes-bd.org/tender-notice/",
+    "tender_url": "https://mariestopes-bd.org/tender-notice/",
+    "notice_url": "https://mariestopes-bd.org/tender-notice/",
+    "is_ifrs9_target": false,
+    "source_status": "OK",
+    "last_verified": "2026-10-05",
+    "last_checked": null,
+    "notes": "Bangladesh NGO/INGO procurement source #41"
+  },
+  {
+    "organization_id": "ngo_42_engenderhealth_bangladesh",
+    "canonical_name": "EngenderHealth Bangladesh",
+    "aliases": [
+      "EngenderHealth Bangladesh"
+    ],
+    "organization_type": "INGO",
+    "sector": "ngos",
+    "official_domain": "www.engenderhealth.org",
+    "procurement_url": "https://www.engenderhealth.org/procurement",
+    "tender_url": "https://www.engenderhealth.org/procurement",
+    "notice_url": "https://www.engenderhealth.org/procurement",
+    "is_ifrs9_target": false,
+    "source_status": "OK",
+    "last_verified": "2026-10-05",
+    "last_checked": null,
+    "notes": "Bangladesh NGO/INGO procurement source #42"
+  },
+  {
+    "organization_id": "ngo_43_pathfinder_international_bangladesh",
+    "canonical_name": "Pathfinder International Bangladesh",
+    "aliases": [
+      "Pathfinder International Bangladesh"
+    ],
+    "organization_type": "INGO",
+    "sector": "ngos",
+    "official_domain": "www.pathfinder.org",
+    "procurement_url": "https://www.pathfinder.org/requests-for-proposals/",
+    "tender_url": "https://www.pathfinder.org/requests-for-proposals/",
+    "notice_url": "https://www.pathfinder.org/requests-for-proposals/",
+    "is_ifrs9_target": false,
+    "source_status": "OK",
+    "last_verified": "2026-10-05",
+    "last_checked": null,
+    "notes": "Bangladesh NGO/INGO procurement source #43"
+  },
+  {
+    "organization_id": "ngo_44_nutrition_international_bangladesh",
+    "canonical_name": "Nutrition International Bangladesh",
+    "aliases": [
+      "Nutrition International Bangladesh"
+    ],
+    "organization_type": "INGO",
+    "sector": "ngos",
+    "official_domain": "www.nutritionintl.org",
+    "procurement_url": "https://www.nutritionintl.org/work-with-us/procurement-rfps/",
+    "tender_url": "https://www.nutritionintl.org/work-with-us/procurement-rfps/",
+    "notice_url": "https://www.nutritionintl.org/work-with-us/procurement-rfps/",
+    "is_ifrs9_target": false,
+    "source_status": "OK",
+    "last_verified": "2026-10-05",
+    "last_checked": null,
+    "notes": "Bangladesh NGO/INGO procurement source #44"
+  },
+  {
+    "organization_id": "ngo_45_jhpiego_bangladesh",
+    "canonical_name": "Jhpiego Bangladesh",
+    "aliases": [
+      "Jhpiego Bangladesh"
+    ],
+    "organization_type": "INGO",
+    "sector": "ngos",
+    "official_domain": "www.jhpiego.org",
+    "procurement_url": "https://www.jhpiego.org/procurement-portal/",
+    "tender_url": "https://www.jhpiego.org/procurement-portal/",
+    "notice_url": "https://www.jhpiego.org/procurement-portal/",
+    "is_ifrs9_target": false,
+    "source_status": "OK",
+    "last_verified": "2026-10-05",
+    "last_checked": null,
+    "notes": "Bangladesh NGO/INGO procurement source #45"
+  },
+  {
+    "organization_id": "ngo_46_chemonics_international_bangladesh",
+    "canonical_name": "Chemonics International (Bangladesh Operations)",
+    "aliases": [
+      "Bangladesh Operations",
+      "Chemonics International (Bangladesh Operations)",
+      "Chemonics International"
+    ],
+    "organization_type": "INGO",
+    "sector": "ngos",
+    "official_domain": "chemonics.com",
+    "procurement_url": "https://chemonics.com/procurement-opportunities/",
+    "tender_url": "https://chemonics.com/procurement-opportunities/",
+    "notice_url": "https://chemonics.com/procurement-opportunities/",
+    "is_ifrs9_target": false,
+    "source_status": "OK",
+    "last_verified": "2026-10-05",
+    "last_checked": null,
+    "notes": "Bangladesh NGO/INGO procurement source #46"
+  },
+  {
+    "organization_id": "ngo_47_dai_development_alternatives",
+    "canonical_name": "DAI (Development Alternatives Inc. - Bangladesh)",
+    "aliases": [
+      "Development Alternatives Inc. - Bangladesh",
+      "DAI (Development Alternatives Inc. - Bangladesh)",
+      "DAI"
+    ],
+    "organization_type": "INGO",
+    "sector": "ngos",
+    "official_domain": "www.dai.com",
+    "procurement_url": "https://www.dai.com/work-with-us/procurement-opportunities",
+    "tender_url": "https://www.dai.com/work-with-us/procurement-opportunities",
+    "notice_url": "https://www.dai.com/work-with-us/procurement-opportunities",
+    "is_ifrs9_target": false,
+    "source_status": "OK",
+    "last_verified": "2026-10-05",
+    "last_checked": null,
+    "notes": "Bangladesh NGO/INGO procurement source #47"
+  },
+  {
+    "organization_id": "ngo_48_rti_international_bangladesh",
+    "canonical_name": "RTI International Bangladesh",
+    "aliases": [
+      "RTI International Bangladesh"
+    ],
+    "organization_type": "INGO",
+    "sector": "ngos",
+    "official_domain": "www.rti.org",
+    "procurement_url": "https://www.rti.org/procurement-opportunities",
+    "tender_url": "https://www.rti.org/procurement-opportunities",
+    "notice_url": "https://www.rti.org/procurement-opportunities",
+    "is_ifrs9_target": false,
+    "source_status": "OK",
+    "last_verified": "2026-10-05",
+    "last_checked": null,
+    "notes": "Bangladesh NGO/INGO procurement source #48"
+  },
+  {
+    "organization_id": "ngo_49_fhi_360_bangladesh",
+    "canonical_name": "FHI 360 Bangladesh",
+    "aliases": [
+      "FHI 360 Bangladesh"
+    ],
+    "organization_type": "INGO",
+    "sector": "ngos",
+    "official_domain": "www.fhi360.org",
+    "procurement_url": "https://www.fhi360.org/working-with-fhi-360/procurement/",
+    "tender_url": "https://www.fhi360.org/working-with-fhi-360/procurement/",
+    "notice_url": "https://www.fhi360.org/working-with-fhi-360/procurement/",
+    "is_ifrs9_target": false,
+    "source_status": "OK",
+    "last_verified": "2026-10-05",
+    "last_checked": null,
+    "notes": "Bangladesh NGO/INGO procurement source #49"
+  },
+  {
+    "organization_id": "ngo_50_winrock_international_bangladesh",
+    "canonical_name": "Winrock International Bangladesh",
+    "aliases": [
+      "Winrock International Bangladesh"
+    ],
+    "organization_type": "INGO",
+    "sector": "ngos",
+    "official_domain": "winrock.org",
+    "procurement_url": "https://winrock.org/procurement-opportunities/",
+    "tender_url": "https://winrock.org/procurement-opportunities/",
+    "notice_url": "https://winrock.org/procurement-opportunities/",
+    "is_ifrs9_target": false,
+    "source_status": "OK",
+    "last_verified": "2026-10-05",
+    "last_checked": null,
+    "notes": "Bangladesh NGO/INGO procurement source #50"
+  },
+  {
+    "organization_id": "ngo_51_ide_international_development",
+    "canonical_name": "iDE (International Development Enterprises) Bangladesh",
+    "aliases": [
+      "iDE  Bangladesh",
+      "iDE (International Development Enterprises) Bangladesh",
+      "International Development Enterprises"
+    ],
+    "organization_type": "INGO",
+    "sector": "ngos",
+    "official_domain": "www.ideglobal.org",
+    "procurement_url": "https://www.ideglobal.org/tenders",
+    "tender_url": "https://www.ideglobal.org/tenders",
+    "notice_url": "https://www.ideglobal.org/tenders",
+    "is_ifrs9_target": false,
+    "source_status": "OK",
+    "last_verified": "2026-10-05",
+    "last_checked": null,
+    "notes": "Bangladesh NGO/INGO procurement source #51"
+  },
+  {
+    "organization_id": "ngo_52_land_o_lakes",
+    "canonical_name": "Land O'Lakes Venture37 Bangladesh",
+    "aliases": [
+      "Land O'Lakes Venture37 Bangladesh"
+    ],
+    "organization_type": "INGO",
+    "sector": "ngos",
+    "official_domain": "www.venture37.org",
+    "procurement_url": "https://www.venture37.org/procurement",
+    "tender_url": "https://www.venture37.org/procurement",
+    "notice_url": "https://www.venture37.org/procurement",
+    "is_ifrs9_target": false,
+    "source_status": "OK",
+    "last_verified": "2026-10-05",
+    "last_checked": null,
+    "notes": "Bangladesh NGO/INGO procurement source #52"
+  },
+  {
+    "organization_id": "ngo_53_acdi_voca_bangladesh",
+    "canonical_name": "ACDI/VOCA Bangladesh",
+    "aliases": [
+      "ACDI/VOCA Bangladesh"
+    ],
+    "organization_type": "INGO",
+    "sector": "ngos",
+    "official_domain": "www.acdivoca.org",
+    "procurement_url": "https://www.acdivoca.org/work-with-us/procurement/",
+    "tender_url": "https://www.acdivoca.org/work-with-us/procurement/",
+    "notice_url": "https://www.acdivoca.org/work-with-us/procurement/",
+    "is_ifrs9_target": false,
+    "source_status": "OK",
+    "last_verified": "2026-10-05",
+    "last_checked": null,
+    "notes": "Bangladesh NGO/INGO procurement source #53"
+  },
+  {
+    "organization_id": "ngo_54_habitat_for_humanity",
+    "canonical_name": "Habitat for Humanity Bangladesh",
+    "aliases": [
+      "Habitat for Humanity Bangladesh"
+    ],
+    "organization_type": "INGO",
+    "sector": "ngos",
+    "official_domain": "www.habitatbangladesh.org",
+    "procurement_url": "https://www.habitatbangladesh.org/procurement-tender/",
+    "tender_url": "https://www.habitatbangladesh.org/procurement-tender/",
+    "notice_url": "https://www.habitatbangladesh.org/procurement-tender/",
+    "is_ifrs9_target": false,
+    "source_status": "OK",
+    "last_verified": "2026-10-05",
+    "last_checked": null,
+    "notes": "Bangladesh NGO/INGO procurement source #54"
+  },
+  {
+    "organization_id": "ngo_55_wateraid_bangladesh",
+    "canonical_name": "WaterAid Bangladesh",
+    "aliases": [
+      "WaterAid Bangladesh"
+    ],
+    "organization_type": "INGO",
+    "sector": "ngos",
+    "official_domain": "www.wateraid.org",
+    "procurement_url": "https://www.wateraid.org/bd/procurement-and-tender-notices",
+    "tender_url": "https://www.wateraid.org/bd/procurement-and-tender-notices",
+    "notice_url": "https://www.wateraid.org/bd/procurement-and-tender-notices",
+    "is_ifrs9_target": false,
+    "source_status": "OK",
+    "last_verified": "2026-10-05",
+    "last_checked": null,
+    "notes": "Bangladesh NGO/INGO procurement source #55"
+  },
+  {
+    "organization_id": "ngo_56_orbis_international_bangladesh",
+    "canonical_name": "ORBIS International Bangladesh",
+    "aliases": [
+      "ORBIS International Bangladesh"
+    ],
+    "organization_type": "INGO",
+    "sector": "ngos",
+    "official_domain": "www.orbis.org",
+    "procurement_url": "https://www.orbis.org/en/procurement-opportunities",
+    "tender_url": "https://www.orbis.org/en/procurement-opportunities",
+    "notice_url": "https://www.orbis.org/en/procurement-opportunities",
+    "is_ifrs9_target": false,
+    "source_status": "OK",
+    "last_verified": "2026-10-05",
+    "last_checked": null,
+    "notes": "Bangladesh NGO/INGO procurement source #56"
+  },
+  {
+    "organization_id": "ngo_57_fred_hollows_foundation",
+    "canonical_name": "Fred Hollows Foundation Bangladesh",
+    "aliases": [
+      "Fred Hollows Foundation Bangladesh"
+    ],
+    "organization_type": "INGO",
+    "sector": "ngos",
+    "official_domain": "www.hollows.org",
+    "procurement_url": "https://www.hollows.org/procurement",
+    "tender_url": "https://www.hollows.org/procurement",
+    "notice_url": "https://www.hollows.org/procurement",
+    "is_ifrs9_target": false,
+    "source_status": "OK",
+    "last_verified": "2026-10-05",
+    "last_checked": null,
+    "notes": "Bangladesh NGO/INGO procurement source #57"
+  },
+  {
+    "organization_id": "ngo_58_lepra_bangladesh",
+    "canonical_name": "Lepra Bangladesh",
+    "aliases": [
+      "Lepra Bangladesh"
+    ],
+    "organization_type": "INGO",
+    "sector": "ngos",
+    "official_domain": "www.lepra.org.uk",
+    "procurement_url": "https://www.lepra.org.uk/work-with-us/tenders",
+    "tender_url": "https://www.lepra.org.uk/work-with-us/tenders",
+    "notice_url": "https://www.lepra.org.uk/work-with-us/tenders",
+    "is_ifrs9_target": false,
+    "source_status": "OK",
+    "last_verified": "2026-10-05",
+    "last_checked": null,
+    "notes": "Bangladesh NGO/INGO procurement source #58"
+  },
+  {
+    "organization_id": "ngo_59_heks_eper_bangladesh",
+    "canonical_name": "HEKS/EPER Bangladesh",
+    "aliases": [
+      "HEKS/EPER Bangladesh"
+    ],
+    "organization_type": "INGO",
+    "sector": "ngos",
+    "official_domain": "en.heks.ch",
+    "procurement_url": "https://en.heks.ch/tenders",
+    "tender_url": "https://en.heks.ch/tenders",
+    "notice_url": "https://en.heks.ch/tenders",
+    "is_ifrs9_target": false,
+    "source_status": "OK",
+    "last_verified": "2026-10-05",
+    "last_checked": null,
+    "notes": "Bangladesh NGO/INGO procurement source #59"
+  },
+  {
+    "organization_id": "ngo_60_stromme_foundation_bangladesh",
+    "canonical_name": "Stromme Foundation Bangladesh",
+    "aliases": [
+      "Stromme Foundation Bangladesh"
+    ],
+    "organization_type": "INGO",
+    "sector": "ngos",
+    "official_domain": "strommefoundation.org",
+    "procurement_url": "https://strommefoundation.org/tenders",
+    "tender_url": "https://strommefoundation.org/tenders",
+    "notice_url": "https://strommefoundation.org/tenders",
+    "is_ifrs9_target": false,
+    "source_status": "OK",
+    "last_verified": "2026-10-05",
+    "last_checked": null,
+    "notes": "Bangladesh NGO/INGO procurement source #60"
+  },
+  {
+    "organization_id": "ngo_61_terre_des_hommes",
+    "canonical_name": "Terre des Hommes (TdH) Foundation Bangladesh",
+    "aliases": [
+      "TdH",
+      "Terre des Hommes  Foundation Bangladesh",
+      "Terre des Hommes (TdH) Foundation Bangladesh"
+    ],
+    "organization_type": "INGO",
+    "sector": "ngos",
+    "official_domain": "www.tdh.org",
+    "procurement_url": "https://www.tdh.org/en/calls-for-tenders",
+    "tender_url": "https://www.tdh.org/en/calls-for-tenders",
+    "notice_url": "https://www.tdh.org/en/calls-for-tenders",
+    "is_ifrs9_target": false,
+    "source_status": "OK",
+    "last_verified": "2026-10-05",
+    "last_checked": null,
+    "notes": "Bangladesh NGO/INGO procurement source #61"
+  },
+  {
+    "organization_id": "ngo_62_educo_bangladesh",
+    "canonical_name": "Educo Bangladesh",
+    "aliases": [
+      "Educo Bangladesh"
+    ],
+    "organization_type": "INGO",
+    "sector": "ngos",
+    "official_domain": "educo.org",
+    "procurement_url": "https://educo.org/bangladesh-tender/",
+    "tender_url": "https://educo.org/bangladesh-tender/",
+    "notice_url": "https://educo.org/bangladesh-tender/",
+    "is_ifrs9_target": false,
+    "source_status": "OK",
+    "last_verified": "2026-10-05",
+    "last_checked": null,
+    "notes": "Bangladesh NGO/INGO procurement source #62"
+  },
+  {
+    "organization_id": "ngo_63_sos_children_s",
+    "canonical_name": "SOS Children's Villages Bangladesh",
+    "aliases": [
+      "SOS Children's Villages Bangladesh"
+    ],
+    "organization_type": "INGO",
+    "sector": "ngos",
+    "official_domain": "www.sos-childrensvillages.org",
+    "procurement_url": "https://www.sos-childrensvillages.org/procurement",
+    "tender_url": "https://www.sos-childrensvillages.org/procurement",
+    "notice_url": "https://www.sos-childrensvillages.org/procurement",
+    "is_ifrs9_target": false,
+    "source_status": "OK",
+    "last_verified": "2026-10-05",
+    "last_checked": null,
+    "notes": "Bangladesh NGO/INGO procurement source #63"
+  },
+  {
+    "organization_id": "ngo_64_good_neighbors_bangladesh",
+    "canonical_name": "Good Neighbors Bangladesh",
+    "aliases": [
+      "Good Neighbors Bangladesh"
+    ],
+    "organization_type": "INGO",
+    "sector": "ngos",
+    "official_domain": "gnbangladesh.org",
+    "procurement_url": "https://gnbangladesh.org/tender/",
+    "tender_url": "https://gnbangladesh.org/tender/",
+    "notice_url": "https://gnbangladesh.org/tender/",
+    "is_ifrs9_target": false,
+    "source_status": "OK",
+    "last_verified": "2026-10-05",
+    "last_checked": null,
+    "notes": "Bangladesh NGO/INGO procurement source #64"
+  },
+  {
+    "organization_id": "ngo_65_childfund_bangladesh",
+    "canonical_name": "ChildFund Bangladesh",
+    "aliases": [
+      "ChildFund Bangladesh"
+    ],
+    "organization_type": "INGO",
+    "sector": "ngos",
+    "official_domain": "www.childfund.org",
+    "procurement_url": "https://www.childfund.org/procurement/",
+    "tender_url": "https://www.childfund.org/procurement/",
+    "notice_url": "https://www.childfund.org/procurement/",
+    "is_ifrs9_target": false,
+    "source_status": "OK",
+    "last_verified": "2026-10-05",
+    "last_checked": null,
+    "notes": "Bangladesh NGO/INGO procurement source #65"
+  },
+  {
+    "organization_id": "ngo_66_world_fish_bangladesh",
+    "canonical_name": "World Fish Bangladesh",
+    "aliases": [
+      "World Fish Bangladesh"
+    ],
+    "organization_type": "INGO",
+    "sector": "ngos",
+    "official_domain": "worldfishcenter.org",
+    "procurement_url": "https://worldfishcenter.org/procurement-tenders",
+    "tender_url": "https://worldfishcenter.org/procurement-tenders",
+    "notice_url": "https://worldfishcenter.org/procurement-tenders",
+    "is_ifrs9_target": false,
+    "source_status": "OK",
+    "last_verified": "2026-10-05",
+    "last_checked": null,
+    "notes": "Bangladesh NGO/INGO procurement source #66"
+  },
+  {
+    "organization_id": "ngo_67_cimmyt_bangladesh",
+    "canonical_name": "CIMMYT Bangladesh",
+    "aliases": [
+      "CIMMYT Bangladesh"
+    ],
+    "organization_type": "INGO",
+    "sector": "ngos",
+    "official_domain": "www.cimmyt.org",
+    "procurement_url": "https://www.cimmyt.org/about-cimmyt/procurement/",
+    "tender_url": "https://www.cimmyt.org/about-cimmyt/procurement/",
+    "notice_url": "https://www.cimmyt.org/about-cimmyt/procurement/",
+    "is_ifrs9_target": false,
+    "source_status": "OK",
+    "last_verified": "2026-10-05",
+    "last_checked": null,
+    "notes": "Bangladesh NGO/INGO procurement source #67"
+  },
+  {
+    "organization_id": "ngo_68_irri_international_rice",
+    "canonical_name": "IRRI (International Rice Research Institute) Bangladesh",
+    "aliases": [
+      "IRRI  Bangladesh",
+      "International Rice Research Institute",
+      "IRRI (International Rice Research Institute) Bangladesh"
+    ],
+    "organization_type": "INGO",
+    "sector": "ngos",
+    "official_domain": "www.irri.org",
+    "procurement_url": "https://www.irri.org/procurement",
+    "tender_url": "https://www.irri.org/procurement",
+    "notice_url": "https://www.irri.org/procurement",
+    "is_ifrs9_target": false,
+    "source_status": "OK",
+    "last_verified": "2026-10-05",
+    "last_checked": null,
+    "notes": "Bangladesh NGO/INGO procurement source #68"
+  },
+  {
+    "organization_id": "ngo_69_association_for_land",
+    "canonical_name": "Association for Land Reform and Development (ALRD)",
+    "aliases": [
+      "Association for Land Reform and Development (ALRD)",
+      "Association for Land Reform and Development",
+      "ALRD"
+    ],
+    "organization_type": "NGO",
+    "sector": "ngos",
+    "official_domain": "www.alrd.org",
+    "procurement_url": "https://www.alrd.org/notice/",
+    "tender_url": "https://www.alrd.org/notice/",
+    "notice_url": "https://www.alrd.org/notice/",
+    "is_ifrs9_target": false,
+    "source_status": "OK",
+    "last_verified": "2026-10-05",
+    "last_checked": null,
+    "notes": "Bangladesh NGO/INGO procurement source #69"
+  },
+  {
+    "organization_id": "ngo_70_ain_o_salish",
+    "canonical_name": "Ain o Salish Kendra (ASK)",
+    "aliases": [
+      "Ain o Salish Kendra (ASK)",
+      "ASK",
+      "Ain o Salish Kendra"
+    ],
+    "organization_type": "NGO",
+    "sector": "ngos",
+    "official_domain": "www.askbd.org",
+    "procurement_url": "https://www.askbd.org/ask/notices/",
+    "tender_url": "https://www.askbd.org/ask/notices/",
+    "notice_url": "https://www.askbd.org/ask/notices/",
+    "is_ifrs9_target": false,
+    "source_status": "OK",
+    "last_verified": "2026-10-05",
+    "last_checked": null,
+    "notes": "Bangladesh NGO/INGO procurement source #70"
+  },
+  {
+    "organization_id": "ngo_71_bangladesh_legal_aid",
+    "canonical_name": "Bangladesh Legal Aid and Services Trust (BLAST)",
+    "aliases": [
+      "BLAST",
+      "Bangladesh Legal Aid and Services Trust (BLAST)",
+      "Bangladesh Legal Aid and Services Trust"
+    ],
+    "organization_type": "NGO",
+    "sector": "ngos",
+    "official_domain": "www.blast.org.bd",
+    "procurement_url": "https://www.blast.org.bd/notices/",
+    "tender_url": "https://www.blast.org.bd/notices/",
+    "notice_url": "https://www.blast.org.bd/notices/",
+    "is_ifrs9_target": false,
+    "source_status": "OK",
+    "last_verified": "2026-10-05",
+    "last_checked": null,
+    "notes": "Bangladesh NGO/INGO procurement source #71"
+  },
+  {
+    "organization_id": "ngo_72_transparency_international_bangladesh",
+    "canonical_name": "Transparency International Bangladesh (TIB)",
+    "aliases": [
+      "TIB",
+      "Transparency International Bangladesh",
+      "Transparency International Bangladesh (TIB)"
+    ],
+    "organization_type": "INGO",
+    "sector": "ngos",
+    "official_domain": "www.ti-bangladesh.org",
+    "procurement_url": "https://www.ti-bangladesh.org/procurement",
+    "tender_url": "https://www.ti-bangladesh.org/procurement",
+    "notice_url": "https://www.ti-bangladesh.org/procurement",
+    "is_ifrs9_target": false,
+    "source_status": "OK",
+    "last_verified": "2026-10-05",
+    "last_checked": null,
+    "notes": "Bangladesh NGO/INGO procurement source #72"
+  },
+  {
+    "organization_id": "ngo_73_centre_for_policy",
+    "canonical_name": "Centre for Policy Dialogue (CPD)",
+    "aliases": [
+      "Centre for Policy Dialogue",
+      "CPD",
+      "Centre for Policy Dialogue (CPD)"
+    ],
+    "organization_type": "NGO",
+    "sector": "ngos",
+    "official_domain": "cpd.org.bd",
+    "procurement_url": "https://cpd.org.bd/procurement/",
+    "tender_url": "https://cpd.org.bd/procurement/",
+    "notice_url": "https://cpd.org.bd/procurement/",
+    "is_ifrs9_target": false,
+    "source_status": "OK",
+    "last_verified": "2026-10-05",
+    "last_checked": null,
+    "notes": "Bangladesh NGO/INGO procurement source #73"
+  },
+  {
+    "organization_id": "ngo_74_bangladesh_rural_advanced",
+    "canonical_name": "Bangladesh Rural Advanced Committee - Ultra Poor Graduation (BRAC UPG)",
+    "aliases": [
+      "Bangladesh Rural Advanced Committee - Ultra Poor Graduation",
+      "BRAC UPG",
+      "Bangladesh Rural Advanced Committee - Ultra Poor Graduation (BRAC UPG)"
+    ],
+    "organization_type": "NGO",
+    "sector": "ngos",
+    "official_domain": "tender.brac.net",
+    "procurement_url": "https://tender.brac.net/",
+    "tender_url": "https://tender.brac.net/",
+    "notice_url": "https://tender.brac.net/",
+    "is_ifrs9_target": false,
+    "source_status": "OK",
+    "last_verified": "2026-10-05",
+    "last_checked": null,
+    "notes": "Bangladesh NGO/INGO procurement source #74"
+  },
+  {
+    "organization_id": "ngo_75_coast_foundation",
+    "canonical_name": "COAST Foundation",
+    "aliases": [
+      "COAST Foundation"
+    ],
+    "organization_type": "NGO",
+    "sector": "ngos",
+    "official_domain": "coastbd.net",
+    "procurement_url": "https://coastbd.net/tenders/",
+    "tender_url": "https://coastbd.net/tenders/",
+    "notice_url": "https://coastbd.net/tenders/",
+    "is_ifrs9_target": false,
+    "source_status": "OK",
+    "last_verified": "2026-10-05",
+    "last_checked": null,
+    "notes": "Bangladesh NGO/INGO procurement source #75"
+  },
+  {
+    "organization_id": "ngo_76_codec_community_development",
+    "canonical_name": "CODEC (Community Development Centre)",
+    "aliases": [
+      "Community Development Centre",
+      "CODEC",
+      "CODEC (Community Development Centre)"
+    ],
+    "organization_type": "NGO",
+    "sector": "ngos",
+    "official_domain": "codec.org.bd",
+    "procurement_url": "https://codec.org.bd/notice-board/",
+    "tender_url": "https://codec.org.bd/notice-board/",
+    "notice_url": "https://codec.org.bd/notice-board/",
+    "is_ifrs9_target": false,
+    "source_status": "OK",
+    "last_verified": "2026-10-05",
+    "last_checked": null,
+    "notes": "Bangladesh NGO/INGO procurement source #76"
+  },
+  {
+    "organization_id": "ngo_77_wave_foundation",
+    "canonical_name": "WAVE Foundation",
+    "aliases": [
+      "WAVE Foundation"
+    ],
+    "organization_type": "NGO",
+    "sector": "ngos",
+    "official_domain": "wavefoundationbd.org",
+    "procurement_url": "https://wavefoundationbd.org/tender-notice/",
+    "tender_url": "https://wavefoundationbd.org/tender-notice/",
+    "notice_url": "https://wavefoundationbd.org/tender-notice/",
+    "is_ifrs9_target": false,
+    "source_status": "OK",
+    "last_verified": "2026-10-05",
+    "last_checked": null,
+    "notes": "Bangladesh NGO/INGO procurement source #77"
+  },
+  {
+    "organization_id": "ngo_78_padakhep_manabik_unnayan",
+    "canonical_name": "Padakhep Manabik Unnayan Kendra",
+    "aliases": [
+      "Padakhep Manabik Unnayan Kendra"
+    ],
+    "organization_type": "NGO",
+    "sector": "ngos",
+    "official_domain": "padakhep.org",
+    "procurement_url": "https://padakhep.org/tender-notices/",
+    "tender_url": "https://padakhep.org/tender-notices/",
+    "notice_url": "https://padakhep.org/tender-notices/",
+    "is_ifrs9_target": false,
+    "source_status": "OK",
+    "last_verified": "2026-10-05",
+    "last_checked": null,
+    "notes": "Bangladesh NGO/INGO procurement source #78"
+  },
+  {
+    "organization_id": "ngo_79_sks_foundation",
+    "canonical_name": "SKS Foundation",
+    "aliases": [
+      "SKS Foundation"
+    ],
+    "organization_type": "NGO",
+    "sector": "ngos",
+    "official_domain": "sks-bd.org",
+    "procurement_url": "https://sks-bd.org/tender-notice/",
+    "tender_url": "https://sks-bd.org/tender-notice/",
+    "notice_url": "https://sks-bd.org/tender-notice/",
+    "is_ifrs9_target": false,
+    "source_status": "OK",
+    "last_verified": "2026-10-05",
+    "last_checked": null,
+    "notes": "Bangladesh NGO/INGO procurement source #79"
+  },
+  {
+    "organization_id": "ngo_80_ghashful",
+    "canonical_name": "Ghashful",
+    "aliases": [
+      "Ghashful"
+    ],
+    "organization_type": "NGO",
+    "sector": "ngos",
+    "official_domain": "ghashful-bd.org",
+    "procurement_url": "https://ghashful-bd.org/tenders/",
+    "tender_url": "https://ghashful-bd.org/tenders/",
+    "notice_url": "https://ghashful-bd.org/tenders/",
+    "is_ifrs9_target": false,
+    "source_status": "OK",
+    "last_verified": "2026-10-05",
+    "last_checked": null,
+    "notes": "Bangladesh NGO/INGO procurement source #80"
+  },
+  {
+    "organization_id": "ngo_81_shakti_foundation_for",
+    "canonical_name": "Shakti Foundation for Disadvantaged Women",
+    "aliases": [
+      "Shakti Foundation for Disadvantaged Women"
+    ],
+    "organization_type": "NGO",
+    "sector": "ngos",
+    "official_domain": "shakti.org.bd",
+    "procurement_url": "https://shakti.org.bd/tenders",
+    "tender_url": "https://shakti.org.bd/tenders",
+    "notice_url": "https://shakti.org.bd/tenders",
+    "is_ifrs9_target": false,
+    "source_status": "OK",
+    "last_verified": "2026-10-05",
+    "last_checked": null,
+    "notes": "Bangladesh NGO/INGO procurement source #81"
+  },
+  {
+    "organization_id": "ngo_82_dushtha_shasthya_kendra",
+    "canonical_name": "Dushtha Shasthya Kendra (DSK)",
+    "aliases": [
+      "Dushtha Shasthya Kendra",
+      "Dushtha Shasthya Kendra (DSK)",
+      "DSK"
+    ],
+    "organization_type": "NGO",
+    "sector": "ngos",
+    "official_domain": "dskbangladesh.org",
+    "procurement_url": "https://dskbangladesh.org/tender-notices/",
+    "tender_url": "https://dskbangladesh.org/tender-notices/",
+    "notice_url": "https://dskbangladesh.org/tender-notices/",
+    "is_ifrs9_target": false,
+    "source_status": "OK",
+    "last_verified": "2026-10-05",
+    "last_checked": null,
+    "notes": "Bangladesh NGO/INGO procurement source #82"
+  },
+  {
+    "organization_id": "ngo_83_manabik_shahajya_sangstha",
+    "canonical_name": "Manabik Shahajya Sangstha (MSS)",
+    "aliases": [
+      "MSS",
+      "Manabik Shahajya Sangstha",
+      "Manabik Shahajya Sangstha (MSS)"
+    ],
+    "organization_type": "NGO",
+    "sector": "ngos",
+    "official_domain": "mssbd.org",
+    "procurement_url": "https://mssbd.org/tender/",
+    "tender_url": "https://mssbd.org/tender/",
+    "notice_url": "https://mssbd.org/tender/",
+    "is_ifrs9_target": false,
+    "source_status": "OK",
+    "last_verified": "2026-10-05",
+    "last_checked": null,
+    "notes": "Bangladesh NGO/INGO procurement source #83"
+  },
+  {
+    "organization_id": "ngo_84_popi_people_s",
+    "canonical_name": "POPI (People's Oriented Program Implementation)",
+    "aliases": [
+      "POPI (People's Oriented Program Implementation)",
+      "POPI",
+      "People's Oriented Program Implementation"
+    ],
+    "organization_type": "NGO",
+    "sector": "ngos",
+    "official_domain": "popibd.org",
+    "procurement_url": "https://popibd.org/procurement/",
+    "tender_url": "https://popibd.org/procurement/",
+    "notice_url": "https://popibd.org/procurement/",
+    "is_ifrs9_target": false,
+    "source_status": "OK",
+    "last_verified": "2026-10-05",
+    "last_checked": null,
+    "notes": "Bangladesh NGO/INGO procurement source #84"
+  },
+  {
+    "organization_id": "ngo_85_ric_resource_integration",
+    "canonical_name": "RIC (Resource Integration Centre)",
+    "aliases": [
+      "RIC",
+      "Resource Integration Centre",
+      "RIC (Resource Integration Centre)"
+    ],
+    "organization_type": "NGO",
+    "sector": "ngos",
+    "official_domain": "ric-bd.org",
+    "procurement_url": "https://ric-bd.org/notice-board/",
+    "tender_url": "https://ric-bd.org/notice-board/",
+    "notice_url": "https://ric-bd.org/notice-board/",
+    "is_ifrs9_target": false,
+    "source_status": "OK",
+    "last_verified": "2026-10-05",
+    "last_checked": null,
+    "notes": "Bangladesh NGO/INGO procurement source #85"
+  },
+  {
+    "organization_id": "ngo_86_ypsa_young_power",
+    "canonical_name": "YPSA (Young Power in Social Action)",
+    "aliases": [
+      "YPSA",
+      "Young Power in Social Action",
+      "YPSA (Young Power in Social Action)"
+    ],
+    "organization_type": "NGO",
+    "sector": "ngos",
+    "official_domain": "ypsa.org",
+    "procurement_url": "https://ypsa.org/tender-notice/",
+    "tender_url": "https://ypsa.org/tender-notice/",
+    "notice_url": "https://ypsa.org/tender-notice/",
+    "is_ifrs9_target": false,
+    "source_status": "OK",
+    "last_verified": "2026-10-05",
+    "last_checked": null,
+    "notes": "Bangladesh NGO/INGO procurement source #86"
+  },
+  {
+    "organization_id": "ngo_87_heed_bangladesh",
+    "canonical_name": "HEED Bangladesh",
+    "aliases": [
+      "HEED Bangladesh"
+    ],
+    "organization_type": "NGO",
+    "sector": "ngos",
+    "official_domain": "heed-bangladesh.com",
+    "procurement_url": "https://heed-bangladesh.com/notice/",
+    "tender_url": "https://heed-bangladesh.com/notice/",
+    "notice_url": "https://heed-bangladesh.com/notice/",
+    "is_ifrs9_target": false,
+    "source_status": "OK",
+    "last_verified": "2026-10-05",
+    "last_checked": null,
+    "notes": "Bangladesh NGO/INGO procurement source #87"
+  },
+  {
+    "organization_id": "ngo_88_ashrai",
+    "canonical_name": "Ashrai",
+    "aliases": [
+      "Ashrai"
+    ],
+    "organization_type": "NGO",
+    "sector": "ngos",
+    "official_domain": "ashrai.org",
+    "procurement_url": "https://ashrai.org/notice/",
+    "tender_url": "https://ashrai.org/notice/",
+    "notice_url": "https://ashrai.org/notice/",
+    "is_ifrs9_target": false,
+    "source_status": "OK",
+    "last_verified": "2026-10-05",
+    "last_checked": null,
+    "notes": "Bangladesh NGO/INGO procurement source #88"
+  },
+  {
+    "organization_id": "ngo_89_gram_bikash_kendra",
+    "canonical_name": "Gram Bikash Kendra (GBK)",
+    "aliases": [
+      "Gram Bikash Kendra (GBK)",
+      "Gram Bikash Kendra",
+      "GBK"
+    ],
+    "organization_type": "NGO",
+    "sector": "ngos",
+    "official_domain": "gbk-bd.org",
+    "procurement_url": "https://gbk-bd.org/notice-tender/",
+    "tender_url": "https://gbk-bd.org/notice-tender/",
+    "notice_url": "https://gbk-bd.org/notice-tender/",
+    "is_ifrs9_target": false,
+    "source_status": "OK",
+    "last_verified": "2026-10-05",
+    "last_checked": null,
+    "notes": "Bangladesh NGO/INGO procurement source #89"
+  },
+  {
+    "organization_id": "ngo_90_idea_institute_of",
+    "canonical_name": "IDEA (Institute of Development Affairs)",
+    "aliases": [
+      "Institute of Development Affairs",
+      "IDEA",
+      "IDEA (Institute of Development Affairs)"
+    ],
+    "organization_type": "INGO",
+    "sector": "ngos",
+    "official_domain": "ideabd.org",
+    "procurement_url": "https://ideabd.org/notice/",
+    "tender_url": "https://ideabd.org/notice/",
+    "notice_url": "https://ideabd.org/notice/",
+    "is_ifrs9_target": false,
+    "source_status": "OK",
+    "last_verified": "2026-10-05",
+    "last_checked": null,
+    "notes": "Bangladesh NGO/INGO procurement source #90"
+  },
+  {
+    "organization_id": "ngo_91_cnrs_center_for",
+    "canonical_name": "CNRS (Center for Natural Resource Studies)",
+    "aliases": [
+      "CNRS",
+      "Center for Natural Resource Studies",
+      "CNRS (Center for Natural Resource Studies)"
+    ],
+    "organization_type": "NGO",
+    "sector": "ngos",
+    "official_domain": "cnrs.org.bd",
+    "procurement_url": "https://cnrs.org.bd/tenders-and-vacancies/",
+    "tender_url": "https://cnrs.org.bd/tenders-and-vacancies/",
+    "notice_url": "https://cnrs.org.bd/tenders-and-vacancies/",
+    "is_ifrs9_target": false,
+    "source_status": "OK",
+    "last_verified": "2026-10-05",
+    "last_checked": null,
+    "notes": "Bangladesh NGO/INGO procurement source #91"
+  },
+  {
+    "organization_id": "ngo_92_bcas_bangladesh_centre",
+    "canonical_name": "BCAS (Bangladesh Centre for Advanced Studies)",
+    "aliases": [
+      "BCAS",
+      "BCAS (Bangladesh Centre for Advanced Studies)",
+      "Bangladesh Centre for Advanced Studies"
+    ],
+    "organization_type": "NGO",
+    "sector": "ngos",
+    "official_domain": "bcas.net",
+    "procurement_url": "https://bcas.net/tenders/",
+    "tender_url": "https://bcas.net/tenders/",
+    "notice_url": "https://bcas.net/tenders/",
+    "is_ifrs9_target": false,
+    "source_status": "OK",
+    "last_verified": "2026-10-05",
+    "last_checked": null,
+    "notes": "Bangladesh NGO/INGO procurement source #92"
+  },
+  {
+    "organization_id": "ngo_93_cdd_centre_for",
+    "canonical_name": "CDD (Centre for Disability in Development)",
+    "aliases": [
+      "CDD",
+      "CDD (Centre for Disability in Development)",
+      "Centre for Disability in Development"
+    ],
+    "organization_type": "NGO",
+    "sector": "ngos",
+    "official_domain": "cdd.org.bd",
+    "procurement_url": "https://cdd.org.bd/procurement-notice/",
+    "tender_url": "https://cdd.org.bd/procurement-notice/",
+    "notice_url": "https://cdd.org.bd/procurement-notice/",
+    "is_ifrs9_target": false,
+    "source_status": "OK",
+    "last_verified": "2026-10-05",
+    "last_checked": null,
+    "notes": "Bangladesh NGO/INGO procurement source #93"
+  },
+  {
+    "organization_id": "ngo_94_prodipan",
+    "canonical_name": "Prodipan",
+    "aliases": [
+      "Prodipan"
+    ],
+    "organization_type": "NGO",
+    "sector": "ngos",
+    "official_domain": "prodipan-bd.org",
+    "procurement_url": "https://prodipan-bd.org/tender-notice/",
+    "tender_url": "https://prodipan-bd.org/tender-notice/",
+    "notice_url": "https://prodipan-bd.org/tender-notice/",
+    "is_ifrs9_target": false,
+    "source_status": "OK",
+    "last_verified": "2026-10-05",
+    "last_checked": null,
+    "notes": "Bangladesh NGO/INGO procurement source #94"
+  },
+  {
+    "organization_id": "ngo_95_uttaran",
+    "canonical_name": "Uttaran",
+    "aliases": [
+      "Uttaran"
+    ],
+    "organization_type": "NGO",
+    "sector": "ngos",
+    "official_domain": "uttaran.net",
+    "procurement_url": "https://uttaran.net/tender-notice/",
+    "tender_url": "https://uttaran.net/tender-notice/",
+    "notice_url": "https://uttaran.net/tender-notice/",
+    "is_ifrs9_target": false,
+    "source_status": "OK",
+    "last_verified": "2026-10-05",
+    "last_checked": null,
+    "notes": "Bangladesh NGO/INGO procurement source #95"
+  },
+  {
+    "organization_id": "ngo_96_banchte_shekha",
+    "canonical_name": "Banchte Shekha",
+    "aliases": [
+      "Banchte Shekha"
+    ],
+    "organization_type": "NGO",
+    "sector": "ngos",
+    "official_domain": "banckteshekha.org",
+    "procurement_url": "https://banckteshekha.org/notice/",
+    "tender_url": "https://banckteshekha.org/notice/",
+    "notice_url": "https://banckteshekha.org/notice/",
+    "is_ifrs9_target": false,
+    "source_status": "OK",
+    "last_verified": "2026-10-05",
+    "last_checked": null,
+    "notes": "Bangladesh NGO/INGO procurement source #96"
+  },
+  {
+    "organization_id": "ngo_97_vard_voluntary_association",
+    "canonical_name": "VARD (Voluntary Association for Rural Development)",
+    "aliases": [
+      "VARD",
+      "VARD (Voluntary Association for Rural Development)",
+      "Voluntary Association for Rural Development"
+    ],
+    "organization_type": "NGO",
+    "sector": "ngos",
+    "official_domain": "vardbd.org",
+    "procurement_url": "https://vardbd.org/procurement/",
+    "tender_url": "https://vardbd.org/procurement/",
+    "notice_url": "https://vardbd.org/procurement/",
+    "is_ifrs9_target": false,
+    "source_status": "OK",
+    "last_verified": "2026-10-05",
+    "last_checked": null,
+    "notes": "Bangladesh NGO/INGO procurement source #97"
+  },
+  {
+    "organization_id": "ngo_98_jaago_foundation",
+    "canonical_name": "JAAGO Foundation",
+    "aliases": [
+      "JAAGO Foundation"
+    ],
+    "organization_type": "NGO",
+    "sector": "ngos",
+    "official_domain": "jaago.com.bd",
+    "procurement_url": "https://jaago.com.bd/request-for-proposals",
+    "tender_url": "https://jaago.com.bd/request-for-proposals",
+    "notice_url": "https://jaago.com.bd/request-for-proposals",
+    "is_ifrs9_target": false,
+    "source_status": "OK",
+    "last_verified": "2026-10-05",
+    "last_checked": null,
+    "notes": "Bangladesh NGO/INGO procurement source #98"
   }
 ]

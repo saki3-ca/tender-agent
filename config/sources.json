@@ -328,5 +328,985 @@
     "verify_ssl": true,
     "rate_limit_seconds": 3,
     "enabled": true
+  },
+  {
+    "id": "src_ngo_01_brac",
+    "url": "https://tender.brac.net/tender/liveTenderTemplate",
+    "organization_id": "ngo_01_brac",
+    "tier": 1,
+    "requires_js": false,
+    "verify_ssl": true,
+    "rate_limit_seconds": 3,
+    "enabled": true
+  },
+  {
+    "id": "src_ngo_02_palli_karma_sahayak",
+    "url": "https://pksf.org.bd/procurement/",
+    "organization_id": "ngo_02_palli_karma_sahayak",
+    "tier": 1,
+    "requires_js": false,
+    "verify_ssl": true,
+    "rate_limit_seconds": 3,
+    "enabled": true
+  },
+  {
+    "id": "src_ngo_03_icddr_b",
+    "url": "https://www.icddrb.org/tender-notices",
+    "organization_id": "ngo_03_icddr_b",
+    "tier": 1,
+    "requires_js": false,
+    "verify_ssl": true,
+    "rate_limit_seconds": 3,
+    "enabled": true
+  },
+  {
+    "id": "src_ngo_04_actionaid_bangladesh",
+    "url": "https://actionaidbd.org/category/tender-notice",
+    "organization_id": "ngo_04_actionaid_bangladesh",
+    "tier": 1,
+    "requires_js": false,
+    "verify_ssl": true,
+    "rate_limit_seconds": 3,
+    "enabled": true
+  },
+  {
+    "id": "src_ngo_05_ucep_bangladesh",
+    "url": "https://tender.ucepbd.org/",
+    "organization_id": "ngo_05_ucep_bangladesh",
+    "tier": 1,
+    "requires_js": false,
+    "verify_ssl": true,
+    "rate_limit_seconds": 3,
+    "enabled": true
+  },
+  {
+    "id": "src_ngo_06_caritas_bangladesh",
+    "url": "https://caritasbd.org/notice/tender/",
+    "organization_id": "ngo_06_caritas_bangladesh",
+    "tier": 1,
+    "requires_js": false,
+    "verify_ssl": true,
+    "rate_limit_seconds": 3,
+    "enabled": true
+  },
+  {
+    "id": "src_ngo_07_eco_social_development",
+    "url": "https://esdo.net.bd/notice/",
+    "organization_id": "ngo_07_eco_social_development",
+    "tier": 1,
+    "requires_js": false,
+    "verify_ssl": true,
+    "rate_limit_seconds": 3,
+    "enabled": true
+  },
+  {
+    "id": "src_ngo_08_tmss_thengamara_mohila",
+    "url": "https://tmss-bd.org/category/tender-notice/",
+    "organization_id": "ngo_08_tmss_thengamara_mohila",
+    "tier": 1,
+    "requires_js": false,
+    "verify_ssl": true,
+    "rate_limit_seconds": 3,
+    "enabled": true
+  },
+  {
+    "id": "src_ngo_09_bangladesh_red_crescent",
+    "url": "https://bdrcs.org/tenders/",
+    "organization_id": "ngo_09_bangladesh_red_crescent",
+    "tier": 1,
+    "requires_js": false,
+    "verify_ssl": true,
+    "rate_limit_seconds": 3,
+    "enabled": true
+  },
+  {
+    "id": "src_ngo_10_friendship_ngo",
+    "url": "https://friendship.ngo/procurement/",
+    "organization_id": "ngo_10_friendship_ngo",
+    "tier": 1,
+    "requires_js": false,
+    "verify_ssl": true,
+    "rate_limit_seconds": 3,
+    "enabled": true
+  },
+  {
+    "id": "src_ngo_11_sajida_foundation",
+    "url": "https://sajidafoundation.org/tenders-notices/",
+    "organization_id": "ngo_11_sajida_foundation",
+    "tier": 1,
+    "requires_js": false,
+    "verify_ssl": true,
+    "rate_limit_seconds": 3,
+    "enabled": true
+  },
+  {
+    "id": "src_ngo_12_buro_bangladesh",
+    "url": "https://burobd.org/tender-notice/",
+    "organization_id": "ngo_12_buro_bangladesh",
+    "tier": 1,
+    "requires_js": false,
+    "verify_ssl": true,
+    "rate_limit_seconds": 3,
+    "enabled": true
+  },
+  {
+    "id": "src_ngo_13_jagorani_chakra_foundation",
+    "url": "https://jcf.org.bd/tender-notice/",
+    "organization_id": "ngo_13_jagorani_chakra_foundation",
+    "tier": 1,
+    "requires_js": false,
+    "verify_ssl": true,
+    "rate_limit_seconds": 3,
+    "enabled": true
+  },
+  {
+    "id": "src_ngo_14_dhaka_ahsania_mission",
+    "url": "https://ahsaniamission.org.bd/tender/",
+    "organization_id": "ngo_14_dhaka_ahsania_mission",
+    "tier": 1,
+    "requires_js": false,
+    "verify_ssl": true,
+    "rate_limit_seconds": 3,
+    "enabled": true
+  },
+  {
+    "id": "src_ngo_15_centre_for_the",
+    "url": "https://crp-bangladesh.org/tender-notices/",
+    "organization_id": "ngo_15_centre_for_the",
+    "tier": 1,
+    "requires_js": false,
+    "verify_ssl": true,
+    "rate_limit_seconds": 3,
+    "enabled": true
+  },
+  {
+    "id": "src_ngo_16_rdrs_bangladesh",
+    "url": "https://rdrsbangladesh.org/tender-notices/",
+    "organization_id": "ngo_16_rdrs_bangladesh",
+    "tier": 1,
+    "requires_js": false,
+    "verify_ssl": true,
+    "rate_limit_seconds": 3,
+    "enabled": true
+  },
+  {
+    "id": "src_ngo_17_save_the_children",
+    "url": "https://bangladesh.savethechildren.net/tenders",
+    "organization_id": "ngo_17_save_the_children",
+    "tier": 1,
+    "requires_js": false,
+    "verify_ssl": true,
+    "rate_limit_seconds": 3,
+    "enabled": true
+  },
+  {
+    "id": "src_ngo_18_oxfam_in_bangladesh",
+    "url": "https://bangladesh.oxfam.org/latest/tenders",
+    "organization_id": "ngo_18_oxfam_in_bangladesh",
+    "tier": 1,
+    "requires_js": false,
+    "verify_ssl": true,
+    "rate_limit_seconds": 3,
+    "enabled": true
+  },
+  {
+    "id": "src_ngo_19_care_bangladesh",
+    "url": "https://carebangladesh.org/procurement/",
+    "organization_id": "ngo_19_care_bangladesh",
+    "tier": 1,
+    "requires_js": false,
+    "verify_ssl": true,
+    "rate_limit_seconds": 3,
+    "enabled": true
+  },
+  {
+    "id": "src_ngo_20_plan_international_bangladesh",
+    "url": "https://plan-international.org/bangladesh/tenders-and-procurement/",
+    "organization_id": "ngo_20_plan_international_bangladesh",
+    "tier": 1,
+    "requires_js": false,
+    "verify_ssl": true,
+    "rate_limit_seconds": 3,
+    "enabled": true
+  },
+  {
+    "id": "src_ngo_21_world_vision_bangladesh",
+    "url": "https://www.wvi.org/bangladesh/procurement-and-tenders",
+    "organization_id": "ngo_21_world_vision_bangladesh",
+    "tier": 2,
+    "requires_js": false,
+    "verify_ssl": true,
+    "rate_limit_seconds": 3,
+    "enabled": true
+  },
+  {
+    "id": "src_ngo_22_swisscontact_bangladesh",
+    "url": "https://www.swisscontact.org/en/countries/bangladesh/procurement",
+    "organization_id": "ngo_22_swisscontact_bangladesh",
+    "tier": 2,
+    "requires_js": false,
+    "verify_ssl": true,
+    "rate_limit_seconds": 3,
+    "enabled": true
+  },
+  {
+    "id": "src_ngo_23_solidarites_international_bangladesh",
+    "url": "https://www.solidarites.org/en/calls-for-tenders/",
+    "organization_id": "ngo_23_solidarites_international_bangladesh",
+    "tier": 2,
+    "requires_js": false,
+    "verify_ssl": true,
+    "rate_limit_seconds": 3,
+    "enabled": true
+  },
+  {
+    "id": "src_ngo_24_action_against_hunger",
+    "url": "https://www.actionagainsthunger.org/procurement/",
+    "organization_id": "ngo_24_action_against_hunger",
+    "tier": 2,
+    "requires_js": false,
+    "verify_ssl": true,
+    "rate_limit_seconds": 3,
+    "enabled": true
+  },
+  {
+    "id": "src_ngo_25_christian_commission_for",
+    "url": "https://ccdb-bd.org/tender-procurement/",
+    "organization_id": "ngo_25_christian_commission_for",
+    "tier": 2,
+    "requires_js": false,
+    "verify_ssl": true,
+    "rate_limit_seconds": 3,
+    "enabled": true
+  },
+  {
+    "id": "src_ngo_26_muslim_aid_bangladesh",
+    "url": "https://muslimaid.org.bd/tenders/",
+    "organization_id": "ngo_26_muslim_aid_bangladesh",
+    "tier": 2,
+    "requires_js": false,
+    "verify_ssl": true,
+    "rate_limit_seconds": 3,
+    "enabled": true
+  },
+  {
+    "id": "src_ngo_27_islamic_relief_bangladesh",
+    "url": "https://islamicrelief.org.bd/tenders/",
+    "organization_id": "ngo_27_islamic_relief_bangladesh",
+    "tier": 2,
+    "requires_js": false,
+    "verify_ssl": true,
+    "rate_limit_seconds": 3,
+    "enabled": true
+  },
+  {
+    "id": "src_ngo_28_voluntary_service_overseas",
+    "url": "https://www.vsointernational.org/about/procurement",
+    "organization_id": "ngo_28_voluntary_service_overseas",
+    "tier": 2,
+    "requires_js": false,
+    "verify_ssl": true,
+    "rate_limit_seconds": 3,
+    "enabled": true
+  },
+  {
+    "id": "src_ngo_29_practical_action_bangladesh",
+    "url": "https://practicalaction.org/procurement/",
+    "organization_id": "ngo_29_practical_action_bangladesh",
+    "tier": 2,
+    "requires_js": false,
+    "verify_ssl": true,
+    "rate_limit_seconds": 3,
+    "enabled": true
+  },
+  {
+    "id": "src_ngo_30_concern_worldwide_bangladesh",
+    "url": "https://www.concern.net/tenders",
+    "organization_id": "ngo_30_concern_worldwide_bangladesh",
+    "tier": 2,
+    "requires_js": false,
+    "verify_ssl": true,
+    "rate_limit_seconds": 3,
+    "enabled": true
+  },
+  {
+    "id": "src_ngo_31_helvetas_bangladesh",
+    "url": "https://www.helvetas.org/en/bangladesh/who-we-are/jobs-tenders",
+    "organization_id": "ngo_31_helvetas_bangladesh",
+    "tier": 2,
+    "requires_js": false,
+    "verify_ssl": true,
+    "rate_limit_seconds": 3,
+    "enabled": true
+  },
+  {
+    "id": "src_ngo_32_handicap_international_humanity",
+    "url": "https://www.hi.org/en/calls-for-tenders",
+    "organization_id": "ngo_32_handicap_international_humanity",
+    "tier": 2,
+    "requires_js": false,
+    "verify_ssl": true,
+    "rate_limit_seconds": 3,
+    "enabled": true
+  },
+  {
+    "id": "src_ngo_33_sightsavers_bangladesh",
+    "url": "https://www.sightsavers.org/procurement/",
+    "organization_id": "ngo_33_sightsavers_bangladesh",
+    "tier": 2,
+    "requires_js": false,
+    "verify_ssl": true,
+    "rate_limit_seconds": 3,
+    "enabled": true
+  },
+  {
+    "id": "src_ngo_34_danish_refugee_council",
+    "url": "https://drc.ngo/tenders/",
+    "organization_id": "ngo_34_danish_refugee_council",
+    "tier": 2,
+    "requires_js": false,
+    "verify_ssl": true,
+    "rate_limit_seconds": 3,
+    "enabled": true
+  },
+  {
+    "id": "src_ngo_35_norwegian_refugee_council",
+    "url": "https://www.nrc.no/tenders/",
+    "organization_id": "ngo_35_norwegian_refugee_council",
+    "tier": 2,
+    "requires_js": false,
+    "verify_ssl": true,
+    "rate_limit_seconds": 3,
+    "enabled": true
+  },
+  {
+    "id": "src_ngo_36_international_rescue_committee",
+    "url": "https://www.rescue.org/procurement",
+    "organization_id": "ngo_36_international_rescue_committee",
+    "tier": 2,
+    "requires_js": false,
+    "verify_ssl": true,
+    "rate_limit_seconds": 3,
+    "enabled": true
+  },
+  {
+    "id": "src_ngo_37_relief_international_bangladesh",
+    "url": "https://www.ri.org/procurement/",
+    "organization_id": "ngo_37_relief_international_bangladesh",
+    "tier": 2,
+    "requires_js": false,
+    "verify_ssl": true,
+    "rate_limit_seconds": 3,
+    "enabled": true
+  },
+  {
+    "id": "src_ngo_38_medecins_du_monde",
+    "url": "https://www.medecinsdumonde.org/en/calls-for-tenders/",
+    "organization_id": "ngo_38_medecins_du_monde",
+    "tier": 2,
+    "requires_js": false,
+    "verify_ssl": true,
+    "rate_limit_seconds": 3,
+    "enabled": true
+  },
+  {
+    "id": "src_ngo_39_malteser_international_bangladesh",
+    "url": "https://www.malteser-international.org/en/procurement.html",
+    "organization_id": "ngo_39_malteser_international_bangladesh",
+    "tier": 2,
+    "requires_js": false,
+    "verify_ssl": true,
+    "rate_limit_seconds": 3,
+    "enabled": true
+  },
+  {
+    "id": "src_ngo_40_room_to_read",
+    "url": "https://www.roomtoread.org/procurement/",
+    "organization_id": "ngo_40_room_to_read",
+    "tier": 2,
+    "requires_js": false,
+    "verify_ssl": true,
+    "rate_limit_seconds": 3,
+    "enabled": true
+  },
+  {
+    "id": "src_ngo_41_marie_stopes_bangladesh",
+    "url": "https://mariestopes-bd.org/tender-notice/",
+    "organization_id": "ngo_41_marie_stopes_bangladesh",
+    "tier": 2,
+    "requires_js": false,
+    "verify_ssl": true,
+    "rate_limit_seconds": 3,
+    "enabled": true
+  },
+  {
+    "id": "src_ngo_42_engenderhealth_bangladesh",
+    "url": "https://www.engenderhealth.org/procurement",
+    "organization_id": "ngo_42_engenderhealth_bangladesh",
+    "tier": 2,
+    "requires_js": false,
+    "verify_ssl": true,
+    "rate_limit_seconds": 3,
+    "enabled": true
+  },
+  {
+    "id": "src_ngo_43_pathfinder_international_bangladesh",
+    "url": "https://www.pathfinder.org/requests-for-proposals/",
+    "organization_id": "ngo_43_pathfinder_international_bangladesh",
+    "tier": 2,
+    "requires_js": false,
+    "verify_ssl": true,
+    "rate_limit_seconds": 3,
+    "enabled": true
+  },
+  {
+    "id": "src_ngo_44_nutrition_international_bangladesh",
+    "url": "https://www.nutritionintl.org/work-with-us/procurement-rfps/",
+    "organization_id": "ngo_44_nutrition_international_bangladesh",
+    "tier": 2,
+    "requires_js": false,
+    "verify_ssl": true,
+    "rate_limit_seconds": 3,
+    "enabled": true
+  },
+  {
+    "id": "src_ngo_45_jhpiego_bangladesh",
+    "url": "https://www.jhpiego.org/procurement-portal/",
+    "organization_id": "ngo_45_jhpiego_bangladesh",
+    "tier": 2,
+    "requires_js": false,
+    "verify_ssl": true,
+    "rate_limit_seconds": 3,
+    "enabled": true
+  },
+  {
+    "id": "src_ngo_46_chemonics_international_bangladesh",
+    "url": "https://chemonics.com/procurement-opportunities/",
+    "organization_id": "ngo_46_chemonics_international_bangladesh",
+    "tier": 2,
+    "requires_js": false,
+    "verify_ssl": true,
+    "rate_limit_seconds": 3,
+    "enabled": true
+  },
+  {
+    "id": "src_ngo_47_dai_development_alternatives",
+    "url": "https://www.dai.com/work-with-us/procurement-opportunities",
+    "organization_id": "ngo_47_dai_development_alternatives",
+    "tier": 2,
+    "requires_js": false,
+    "verify_ssl": true,
+    "rate_limit_seconds": 3,
+    "enabled": true
+  },
+  {
+    "id": "src_ngo_48_rti_international_bangladesh",
+    "url": "https://www.rti.org/procurement-opportunities",
+    "organization_id": "ngo_48_rti_international_bangladesh",
+    "tier": 2,
+    "requires_js": false,
+    "verify_ssl": true,
+    "rate_limit_seconds": 3,
+    "enabled": true
+  },
+  {
+    "id": "src_ngo_49_fhi_360_bangladesh",
+    "url": "https://www.fhi360.org/working-with-fhi-360/procurement/",
+    "organization_id": "ngo_49_fhi_360_bangladesh",
+    "tier": 2,
+    "requires_js": false,
+    "verify_ssl": true,
+    "rate_limit_seconds": 3,
+    "enabled": true
+  },
+  {
+    "id": "src_ngo_50_winrock_international_bangladesh",
+    "url": "https://winrock.org/procurement-opportunities/",
+    "organization_id": "ngo_50_winrock_international_bangladesh",
+    "tier": 2,
+    "requires_js": false,
+    "verify_ssl": true,
+    "rate_limit_seconds": 3,
+    "enabled": true
+  },
+  {
+    "id": "src_ngo_51_ide_international_development",
+    "url": "https://www.ideglobal.org/tenders",
+    "organization_id": "ngo_51_ide_international_development",
+    "tier": 2,
+    "requires_js": false,
+    "verify_ssl": true,
+    "rate_limit_seconds": 3,
+    "enabled": true
+  },
+  {
+    "id": "src_ngo_52_land_o_lakes",
+    "url": "https://www.venture37.org/procurement",
+    "organization_id": "ngo_52_land_o_lakes",
+    "tier": 2,
+    "requires_js": false,
+    "verify_ssl": true,
+    "rate_limit_seconds": 3,
+    "enabled": true
+  },
+  {
+    "id": "src_ngo_53_acdi_voca_bangladesh",
+    "url": "https://www.acdivoca.org/work-with-us/procurement/",
+    "organization_id": "ngo_53_acdi_voca_bangladesh",
+    "tier": 2,
+    "requires_js": false,
+    "verify_ssl": true,
+    "rate_limit_seconds": 3,
+    "enabled": true
+  },
+  {
+    "id": "src_ngo_54_habitat_for_humanity",
+    "url": "https://www.habitatbangladesh.org/procurement-tender/",
+    "organization_id": "ngo_54_habitat_for_humanity",
+    "tier": 2,
+    "requires_js": false,
+    "verify_ssl": true,
+    "rate_limit_seconds": 3,
+    "enabled": true
+  },
+  {
+    "id": "src_ngo_55_wateraid_bangladesh",
+    "url": "https://www.wateraid.org/bd/procurement-and-tender-notices",
+    "organization_id": "ngo_55_wateraid_bangladesh",
+    "tier": 2,
+    "requires_js": false,
+    "verify_ssl": true,
+    "rate_limit_seconds": 3,
+    "enabled": true
+  },
+  {
+    "id": "src_ngo_56_orbis_international_bangladesh",
+    "url": "https://www.orbis.org/en/procurement-opportunities",
+    "organization_id": "ngo_56_orbis_international_bangladesh",
+    "tier": 2,
+    "requires_js": false,
+    "verify_ssl": true,
+    "rate_limit_seconds": 3,
+    "enabled": true
+  },
+  {
+    "id": "src_ngo_57_fred_hollows_foundation",
+    "url": "https://www.hollows.org/procurement",
+    "organization_id": "ngo_57_fred_hollows_foundation",
+    "tier": 2,
+    "requires_js": false,
+    "verify_ssl": true,
+    "rate_limit_seconds": 3,
+    "enabled": true
+  },
+  {
+    "id": "src_ngo_58_lepra_bangladesh",
+    "url": "https://www.lepra.org.uk/work-with-us/tenders",
+    "organization_id": "ngo_58_lepra_bangladesh",
+    "tier": 2,
+    "requires_js": false,
+    "verify_ssl": true,
+    "rate_limit_seconds": 3,
+    "enabled": true
+  },
+  {
+    "id": "src_ngo_59_heks_eper_bangladesh",
+    "url": "https://en.heks.ch/tenders",
+    "organization_id": "ngo_59_heks_eper_bangladesh",
+    "tier": 2,
+    "requires_js": false,
+    "verify_ssl": true,
+    "rate_limit_seconds": 3,
+    "enabled": true
+  },
+  {
+    "id": "src_ngo_60_stromme_foundation_bangladesh",
+    "url": "https://strommefoundation.org/tenders",
+    "organization_id": "ngo_60_stromme_foundation_bangladesh",
+    "tier": 2,
+    "requires_js": false,
+    "verify_ssl": true,
+    "rate_limit_seconds": 3,
+    "enabled": true
+  },
+  {
+    "id": "src_ngo_61_terre_des_hommes",
+    "url": "https://www.tdh.org/en/calls-for-tenders",
+    "organization_id": "ngo_61_terre_des_hommes",
+    "tier": 2,
+    "requires_js": false,
+    "verify_ssl": true,
+    "rate_limit_seconds": 3,
+    "enabled": true
+  },
+  {
+    "id": "src_ngo_62_educo_bangladesh",
+    "url": "https://educo.org/bangladesh-tender/",
+    "organization_id": "ngo_62_educo_bangladesh",
+    "tier": 2,
+    "requires_js": false,
+    "verify_ssl": true,
+    "rate_limit_seconds": 3,
+    "enabled": true
+  },
+  {
+    "id": "src_ngo_63_sos_children_s",
+    "url": "https://www.sos-childrensvillages.org/procurement",
+    "organization_id": "ngo_63_sos_children_s",
+    "tier": 2,
+    "requires_js": false,
+    "verify_ssl": true,
+    "rate_limit_seconds": 3,
+    "enabled": true
+  },
+  {
+    "id": "src_ngo_64_good_neighbors_bangladesh",
+    "url": "https://gnbangladesh.org/tender/",
+    "organization_id": "ngo_64_good_neighbors_bangladesh",
+    "tier": 2,
+    "requires_js": false,
+    "verify_ssl": true,
+    "rate_limit_seconds": 3,
+    "enabled": true
+  },
+  {
+    "id": "src_ngo_65_childfund_bangladesh",
+    "url": "https://www.childfund.org/procurement/",
+    "organization_id": "ngo_65_childfund_bangladesh",
+    "tier": 2,
+    "requires_js": false,
+    "verify_ssl": true,
+    "rate_limit_seconds": 3,
+    "enabled": true
+  },
+  {
+    "id": "src_ngo_66_world_fish_bangladesh",
+    "url": "https://worldfishcenter.org/procurement-tenders",
+    "organization_id": "ngo_66_world_fish_bangladesh",
+    "tier": 2,
+    "requires_js": false,
+    "verify_ssl": true,
+    "rate_limit_seconds": 3,
+    "enabled": true
+  },
+  {
+    "id": "src_ngo_67_cimmyt_bangladesh",
+    "url": "https://www.cimmyt.org/about-cimmyt/procurement/",
+    "organization_id": "ngo_67_cimmyt_bangladesh",
+    "tier": 2,
+    "requires_js": false,
+    "verify_ssl": true,
+    "rate_limit_seconds": 3,
+    "enabled": true
+  },
+  {
+    "id": "src_ngo_68_irri_international_rice",
+    "url": "https://www.irri.org/procurement",
+    "organization_id": "ngo_68_irri_international_rice",
+    "tier": 2,
+    "requires_js": false,
+    "verify_ssl": true,
+    "rate_limit_seconds": 3,
+    "enabled": true
+  },
+  {
+    "id": "src_ngo_69_association_for_land",
+    "url": "https://www.alrd.org/notice/",
+    "organization_id": "ngo_69_association_for_land",
+    "tier": 2,
+    "requires_js": false,
+    "verify_ssl": true,
+    "rate_limit_seconds": 3,
+    "enabled": true
+  },
+  {
+    "id": "src_ngo_70_ain_o_salish",
+    "url": "https://www.askbd.org/ask/notices/",
+    "organization_id": "ngo_70_ain_o_salish",
+    "tier": 2,
+    "requires_js": false,
+    "verify_ssl": true,
+    "rate_limit_seconds": 3,
+    "enabled": true
+  },
+  {
+    "id": "src_ngo_71_bangladesh_legal_aid",
+    "url": "https://www.blast.org.bd/notices/",
+    "organization_id": "ngo_71_bangladesh_legal_aid",
+    "tier": 2,
+    "requires_js": false,
+    "verify_ssl": true,
+    "rate_limit_seconds": 3,
+    "enabled": true
+  },
+  {
+    "id": "src_ngo_72_transparency_international_bangladesh",
+    "url": "https://www.ti-bangladesh.org/procurement",
+    "organization_id": "ngo_72_transparency_international_bangladesh",
+    "tier": 2,
+    "requires_js": false,
+    "verify_ssl": true,
+    "rate_limit_seconds": 3,
+    "enabled": true
+  },
+  {
+    "id": "src_ngo_73_centre_for_policy",
+    "url": "https://cpd.org.bd/procurement/",
+    "organization_id": "ngo_73_centre_for_policy",
+    "tier": 2,
+    "requires_js": false,
+    "verify_ssl": true,
+    "rate_limit_seconds": 3,
+    "enabled": true
+  },
+  {
+    "id": "src_ngo_74_bangladesh_rural_advanced",
+    "url": "https://tender.brac.net/",
+    "organization_id": "ngo_74_bangladesh_rural_advanced",
+    "tier": 2,
+    "requires_js": false,
+    "verify_ssl": true,
+    "rate_limit_seconds": 3,
+    "enabled": true
+  },
+  {
+    "id": "src_ngo_75_coast_foundation",
+    "url": "https://coastbd.net/tenders/",
+    "organization_id": "ngo_75_coast_foundation",
+    "tier": 2,
+    "requires_js": false,
+    "verify_ssl": true,
+    "rate_limit_seconds": 3,
+    "enabled": true
+  },
+  {
+    "id": "src_ngo_76_codec_community_development",
+    "url": "https://codec.org.bd/notice-board/",
+    "organization_id": "ngo_76_codec_community_development",
+    "tier": 2,
+    "requires_js": false,
+    "verify_ssl": true,
+    "rate_limit_seconds": 3,
+    "enabled": true
+  },
+  {
+    "id": "src_ngo_77_wave_foundation",
+    "url": "https://wavefoundationbd.org/tender-notice/",
+    "organization_id": "ngo_77_wave_foundation",
+    "tier": 2,
+    "requires_js": false,
+    "verify_ssl": true,
+    "rate_limit_seconds": 3,
+    "enabled": true
+  },
+  {
+    "id": "src_ngo_78_padakhep_manabik_unnayan",
+    "url": "https://padakhep.org/tender-notices/",
+    "organization_id": "ngo_78_padakhep_manabik_unnayan",
+    "tier": 2,
+    "requires_js": false,
+    "verify_ssl": true,
+    "rate_limit_seconds": 3,
+    "enabled": true
+  },
+  {
+    "id": "src_ngo_79_sks_foundation",
+    "url": "https://sks-bd.org/tender-notice/",
+    "organization_id": "ngo_79_sks_foundation",
+    "tier": 2,
+    "requires_js": false,
+    "verify_ssl": true,
+    "rate_limit_seconds": 3,
+    "enabled": true
+  },
+  {
+    "id": "src_ngo_80_ghashful",
+    "url": "https://ghashful-bd.org/tenders/",
+    "organization_id": "ngo_80_ghashful",
+    "tier": 2,
+    "requires_js": false,
+    "verify_ssl": true,
+    "rate_limit_seconds": 3,
+    "enabled": true
+  },
+  {
+    "id": "src_ngo_81_shakti_foundation_for",
+    "url": "https://shakti.org.bd/tenders",
+    "organization_id": "ngo_81_shakti_foundation_for",
+    "tier": 2,
+    "requires_js": false,
+    "verify_ssl": true,
+    "rate_limit_seconds": 3,
+    "enabled": true
+  },
+  {
+    "id": "src_ngo_82_dushtha_shasthya_kendra",
+    "url": "https://dskbangladesh.org/tender-notices/",
+    "organization_id": "ngo_82_dushtha_shasthya_kendra",
+    "tier": 2,
+    "requires_js": false,
+    "verify_ssl": true,
+    "rate_limit_seconds": 3,
+    "enabled": true
+  },
+  {
+    "id": "src_ngo_83_manabik_shahajya_sangstha",
+    "url": "https://mssbd.org/tender/",
+    "organization_id": "ngo_83_manabik_shahajya_sangstha",
+    "tier": 2,
+    "requires_js": false,
+    "verify_ssl": true,
+    "rate_limit_seconds": 3,
+    "enabled": true
+  },
+  {
+    "id": "src_ngo_84_popi_people_s",
+    "url": "https://popibd.org/procurement/",
+    "organization_id": "ngo_84_popi_people_s",
+    "tier": 2,
+    "requires_js": false,
+    "verify_ssl": true,
+    "rate_limit_seconds": 3,
+    "enabled": true
+  },
+  {
+    "id": "src_ngo_85_ric_resource_integration",
+    "url": "https://ric-bd.org/notice-board/",
+    "organization_id": "ngo_85_ric_resource_integration",
+    "tier": 2,
+    "requires_js": false,
+    "verify_ssl": true,
+    "rate_limit_seconds": 3,
+    "enabled": true
+  },
+  {
+    "id": "src_ngo_86_ypsa_young_power",
+    "url": "https://ypsa.org/tender-notice/",
+    "organization_id": "ngo_86_ypsa_young_power",
+    "tier": 2,
+    "requires_js": false,
+    "verify_ssl": true,
+    "rate_limit_seconds": 3,
+    "enabled": true
+  },
+  {
+    "id": "src_ngo_87_heed_bangladesh",
+    "url": "https://heed-bangladesh.com/notice/",
+    "organization_id": "ngo_87_heed_bangladesh",
+    "tier": 2,
+    "requires_js": false,
+    "verify_ssl": true,
+    "rate_limit_seconds": 3,
+    "enabled": true
+  },
+  {
+    "id": "src_ngo_88_ashrai",
+    "url": "https://ashrai.org/notice/",
+    "organization_id": "ngo_88_ashrai",
+    "tier": 2,
+    "requires_js": false,
+    "verify_ssl": true,
+    "rate_limit_seconds": 3,
+    "enabled": true
+  },
+  {
+    "id": "src_ngo_89_gram_bikash_kendra",
+    "url": "https://gbk-bd.org/notice-tender/",
+    "organization_id": "ngo_89_gram_bikash_kendra",
+    "tier": 2,
+    "requires_js": false,
+    "verify_ssl": true,
+    "rate_limit_seconds": 3,
+    "enabled": true
+  },
+  {
+    "id": "src_ngo_90_idea_institute_of",
+    "url": "https://ideabd.org/notice/",
+    "organization_id": "ngo_90_idea_institute_of",
+    "tier": 2,
+    "requires_js": false,
+    "verify_ssl": true,
+    "rate_limit_seconds": 3,
+    "enabled": true
+  },
+  {
+    "id": "src_ngo_91_cnrs_center_for",
+    "url": "https://cnrs.org.bd/tenders-and-vacancies/",
+    "organization_id": "ngo_91_cnrs_center_for",
+    "tier": 2,
+    "requires_js": false,
+    "verify_ssl": true,
+    "rate_limit_seconds": 3,
+    "enabled": true
+  },
+  {
+    "id": "src_ngo_92_bcas_bangladesh_centre",
+    "url": "https://bcas.net/tenders/",
+    "organization_id": "ngo_92_bcas_bangladesh_centre",
+    "tier": 2,
+    "requires_js": false,
+    "verify_ssl": true,
+    "rate_limit_seconds": 3,
+    "enabled": true
+  },
+  {
+    "id": "src_ngo_93_cdd_centre_for",
+    "url": "https://cdd.org.bd/procurement-notice/",
+    "organization_id": "ngo_93_cdd_centre_for",
+    "tier": 2,
+    "requires_js": false,
+    "verify_ssl": true,
+    "rate_limit_seconds": 3,
+    "enabled": true
+  },
+  {
+    "id": "src_ngo_94_prodipan",
+    "url": "https://prodipan-bd.org/tender-notice/",
+    "organization_id": "ngo_94_prodipan",
+    "tier": 2,
+    "requires_js": false,
+    "verify_ssl": true,
+    "rate_limit_seconds": 3,
+    "enabled": true
+  },
+  {
+    "id": "src_ngo_95_uttaran",
+    "url": "https://uttaran.net/tender-notice/",
+    "organization_id": "ngo_95_uttaran",
+    "tier": 2,
+    "requires_js": false,
+    "verify_ssl": true,
+    "rate_limit_seconds": 3,
+    "enabled": true
+  },
+  {
+    "id": "src_ngo_96_banchte_shekha",
+    "url": "https://banckteshekha.org/notice/",
+    "organization_id": "ngo_96_banchte_shekha",
+    "tier": 2,
+    "requires_js": false,
+    "verify_ssl": true,
+    "rate_limit_seconds": 3,
+    "enabled": true
+  },
+  {
+    "id": "src_ngo_97_vard_voluntary_association",
+    "url": "https://vardbd.org/procurement/",
+    "organization_id": "ngo_97_vard_voluntary_association",
+    "tier": 2,
+    "requires_js": false,
+    "verify_ssl": true,
+    "rate_limit_seconds": 3,
+    "enabled": true
+  },
+  {
+    "id": "src_ngo_98_jaago_foundation",
+    "url": "https://jaago.com.bd/request-for-proposals",
+    "organization_id": "ngo_98_jaago_foundation",
+    "tier": 2,
+    "requires_js": false,
+    "verify_ssl": true,
+    "rate_limit_seconds": 3,
+    "enabled": true
   }
 ]

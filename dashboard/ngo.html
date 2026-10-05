@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NGO &amp; Development Partner Tenders — ACNABIN Intelligence</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+  <script src="js/config.js"></script>
+  <script src="js/app.js" defer></script>
+</head>
+<body>
+  <header class="app-header">
+    <div class="brand-container">
+      <div class="brand-logo-badge">ACNABIN</div>
+      <div class="brand-title-wrap">
+        <h1>Tender &amp; Opportunity Intelligence</h1>
+        <p>NGOs, INGOs &amp; Development Partners in Bangladesh</p>
+      </div>
+    </div>
+    <nav class="main-nav">
+      <a href="index.html">Today's Priority</a>
+      <a href="ifrs9.html">Bank Dashboard</a>
+      <a href="ngo.html" class="active">NGO Dashboard</a>
+      <a href="market.html">General Market</a>
+      <a href="intelligence.html">Market Intelligence</a>
+      <a href="sources.html">Source Health</a>
+      <a href="operations.html">Operations</a>
+    </nav>
+    <div class="header-actions">
+      <div class="user-badge" style="background: rgba(16, 185, 129, 0.1); border-color: rgba(16, 185, 129, 0.3);">
+        <span class="live-indicator" style="background-color: #10b981; box-shadow: 0 0 8px #10b981;"></span>
+        <span style="color: #34d399;">NGO Sector Active</span>
+      </div>
+    </div>
+  </header>
+
+  <main class="app-container">
+    <div class="page-header">
+      <div class="page-header-text">
+        <h2>NGO &amp; Development Partner Opportunities</h2>
+        <p>Monitoring all procurement across national NGOs, INGOs, and donors in Bangladesh (BRAC, icddr,b, PKSF, ASA, TMSS, Sajida, CARE, Save the Children, Oxfam, ActionAid, etc.).</p>
+      </div>
+      <div class="btn-group">
+        <button id="btn-export-excel" class="btn btn-primary">Export Excel</button>
+        <button id="btn-export-csv" class="btn">Export CSV</button>
+      </div>
+    </div>
+
+    <!-- Strategy banner -->
+    <div style="background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(6, 182, 212, 0.05)); border: 1px solid rgba(16, 185, 129, 0.25); border-radius: var(--radius-md); padding: 1rem 1.25rem; margin-bottom: 1.5rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.75rem;">
+      <div style="display: flex; align-items: center; gap: 0.75rem;">
+        <span style="font-size: 1.5rem;">🎯</span>
+        <div>
+          <div style="font-weight: 600; color: #fff; font-size: 0.95rem;">ACNABIN Capability Focus</div>
+          <div style="font-size: 0.8rem; color: var(--text-muted);">Priority boosted for Project/Donor Audits, Internal Controls, Tax/VAT Exemption, Due Diligence &amp; Fixed Asset Verification.</div>
+        </div>
+      </div>
+      <span style="font-size: 0.8rem; color: #34d399; font-weight: 600;">12 Top NGOs &amp; Donors Monitored</span>
+    </div>
+
+    <!-- Toolbar -->
+    <div class="toolbar-card">
+      <div class="filter-group">
+        <input type="text" id="filter-search" class="search-input" placeholder="Search NGO, project name, ref #..." style="min-width: 280px;">
+        <select id="filter-category" class="filter-select">
+          <option value="ALL">All Categories / All Tenders</option>
+          <option value="AUDIT_ASSURANCE">Audit &amp; Assurance (Donor/Project)</option>
+          <option value="RISK_CONTROL">Risk &amp; Internal Control</option>
+          <option value="ACCOUNTING_REPORTING">Accounting &amp; Reporting</option>
+          <option value="TAX_VAT">Tax &amp; VAT Compliance</option>
+          <option value="FINANCIAL_ADVISORY">Financial Due Diligence &amp; M&amp;E</option>
+          <option value="TRAINING">Training &amp; Capacity Building</option>
+          <option value="PROCESS_ADVISORY">Process &amp; SOP Advisory</option>
+          <option value="OTHER_PROFESSIONAL">General NGO Procurement</option>
+        </select>
+        <select id="filter-priority" class="filter-select">
+          <option value="ALL">All Priorities</option>
+          <option value="VERY HIGH">VERY HIGH (ACNABIN Core Fit)</option>
+          <option value="HIGH">HIGH</option>
+          <option value="MEDIUM">MEDIUM</option>
+          <option value="LOW">LOW (General Goods/Works)</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="table-responsive">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>NGO &amp; Ref</th>
+            <th>Tender Title &amp; Category</th>
+            <th>Sector</th>
+            <th>Priority</th>
+            <th>Score</th>
+            <th>Deadline</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="opportunities-tbody">
+          <!-- Populated from loadNgoOpportunities -->
+        </tbody>
+      </table>
+    </div>
+  </main>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      if (typeof loadNgoOpportunities === "function") {
+        loadNgoOpportunities();
+      } else {
+        loadOpportunities("v_general_market");
+      }
+    });
+  </script>
+</body>
+</html>
