@@ -6,42 +6,8 @@
     "tier": 1,
     "requires_js": false,
     "verify_ssl": true,
-    "rate_limit_seconds": 5,
-    "enabled": true,
-    "notes": "Bangladesh Bank central tender notices (HTML + PDF links)"
-  },
-  {
-    "id": "src_agrani_tender",
-    "url": "https://www.agranibank.org/tender",
-    "organization_id": "bank_01_agrani",
-    "tier": 1,
-    "requires_js": false,
-    "verify_ssl": true,
-    "rate_limit_seconds": 5,
-    "enabled": true,
-    "notes": "Agrani Bank PLC tenders"
-  },
-  {
-    "id": "src_sonali_tender",
-    "url": "https://www.sonalibank.com.bd/tender.php",
-    "organization_id": "bank_07_sonali",
-    "tier": 1,
-    "requires_js": false,
-    "verify_ssl": true,
-    "rate_limit_seconds": 5,
-    "enabled": true,
-    "notes": "Sonali Bank PLC tender announcements (Bangla & English)"
-  },
-  {
-    "id": "src_city_tender",
-    "url": "https://www.thecitybank.com/tender",
-    "organization_id": "bank_13_city",
-    "tier": 1,
-    "requires_js": true,
-    "verify_ssl": true,
-    "rate_limit_seconds": 5,
-    "enabled": true,
-    "notes": "City Bank PLC procurement portal"
+    "rate_limit_seconds": 3,
+    "enabled": true
   },
   {
     "id": "src_bppa_egp",
@@ -50,9 +16,8 @@
     "tier": 1,
     "requires_js": false,
     "verify_ssl": true,
-    "rate_limit_seconds": 5,
-    "enabled": true,
-    "notes": "National BPPA e-GP Portal"
+    "rate_limit_seconds": 3,
+    "enabled": true
   },
   {
     "id": "src_idlc_tender",
@@ -61,8 +26,307 @@
     "tier": 1,
     "requires_js": false,
     "verify_ssl": true,
-    "rate_limit_seconds": 5,
-    "enabled": true,
-    "notes": "IDLC Finance PLC procurement notices"
+    "rate_limit_seconds": 3,
+    "enabled": true
+  },
+  {
+    "id": "src_01_agrani_tender",
+    "url": "https://www.agranibank.org/tender",
+    "organization_id": "bank_01_agrani",
+    "tier": 1,
+    "requires_js": false,
+    "verify_ssl": true,
+    "rate_limit_seconds": 3,
+    "enabled": true
+  },
+  {
+    "id": "src_02_janata_tender",
+    "url": "https://www.jb.com.bd/tender",
+    "organization_id": "bank_02_janata",
+    "tier": 1,
+    "requires_js": false,
+    "verify_ssl": true,
+    "rate_limit_seconds": 3,
+    "enabled": true
+  },
+  {
+    "id": "src_03_rupali_tender",
+    "url": "https://www.rupalibank.com.bd/tender",
+    "organization_id": "bank_03_rupali",
+    "tier": 1,
+    "requires_js": false,
+    "verify_ssl": true,
+    "rate_limit_seconds": 3,
+    "enabled": true
+  },
+  {
+    "id": "src_04_mercantile_tender",
+    "url": "https://www.mblbd.com/tender",
+    "organization_id": "bank_04_mercantile",
+    "tier": 1,
+    "requires_js": false,
+    "verify_ssl": true,
+    "rate_limit_seconds": 3,
+    "enabled": true
+  },
+  {
+    "id": "src_05_midland_tender",
+    "url": "https://www.midlandbankbd.net/tender",
+    "organization_id": "bank_05_midland",
+    "tier": 1,
+    "requires_js": false,
+    "verify_ssl": true,
+    "rate_limit_seconds": 3,
+    "enabled": true
+  },
+  {
+    "id": "src_06_citizens_tender",
+    "url": "https://www.citizensbankbd.com/tender",
+    "organization_id": "bank_06_citizens",
+    "tier": 1,
+    "requires_js": false,
+    "verify_ssl": true,
+    "rate_limit_seconds": 3,
+    "enabled": true
+  },
+  {
+    "id": "src_07_sonali_tender",
+    "url": "https://www.sonalibank.com.bd/tender.php",
+    "organization_id": "bank_07_sonali",
+    "tier": 1,
+    "requires_js": false,
+    "verify_ssl": true,
+    "rate_limit_seconds": 3,
+    "enabled": true
+  },
+  {
+    "id": "src_08_basic_tender",
+    "url": "https://www.basicbank.com.bd/tender",
+    "organization_id": "bank_08_basic",
+    "tier": 1,
+    "requires_js": false,
+    "verify_ssl": true,
+    "rate_limit_seconds": 3,
+    "enabled": true
+  },
+  {
+    "id": "src_09_bdbl_tender",
+    "url": "https://www.bdbl.com.bd/tender",
+    "organization_id": "bank_09_bdbl",
+    "tier": 1,
+    "requires_js": false,
+    "verify_ssl": true,
+    "rate_limit_seconds": 3,
+    "enabled": true
+  },
+  {
+    "id": "src_10_sammilito_islami_tender",
+    "url": "https://www.sammilitoislamibank.com.bd/tender",
+    "organization_id": "bank_10_sammilito_islami",
+    "tier": 1,
+    "requires_js": false,
+    "verify_ssl": true,
+    "rate_limit_seconds": 3,
+    "enabled": true
+  },
+  {
+    "id": "src_11_krishi_tender",
+    "url": "https://www.krishibank.org.bd/tender",
+    "organization_id": "bank_11_krishi",
+    "tier": 1,
+    "requires_js": false,
+    "verify_ssl": true,
+    "rate_limit_seconds": 3,
+    "enabled": true
+  },
+  {
+    "id": "src_12_rakub_tender",
+    "url": "https://www.rakub.org.bd/tender",
+    "organization_id": "bank_12_rakub",
+    "tier": 1,
+    "requires_js": false,
+    "verify_ssl": true,
+    "rate_limit_seconds": 3,
+    "enabled": true
+  },
+  {
+    "id": "src_13_city_tender",
+    "url": "https://www.thecitybank.com/tender",
+    "organization_id": "bank_13_city",
+    "tier": 1,
+    "requires_js": false,
+    "verify_ssl": true,
+    "rate_limit_seconds": 3,
+    "enabled": true
+  },
+  {
+    "id": "src_14_ific_tender",
+    "url": "https://www.ificbank.com.bd/tender",
+    "organization_id": "bank_14_ific",
+    "tier": 1,
+    "requires_js": false,
+    "verify_ssl": true,
+    "rate_limit_seconds": 3,
+    "enabled": true
+  },
+  {
+    "id": "src_15_pubali_tender",
+    "url": "https://www.pubalibangla.com/tender",
+    "organization_id": "bank_15_pubali",
+    "tier": 1,
+    "requires_js": false,
+    "verify_ssl": true,
+    "rate_limit_seconds": 3,
+    "enabled": true
+  },
+  {
+    "id": "src_16_dhaka_tender",
+    "url": "https://www.dhakabank.com.bd/tender",
+    "organization_id": "bank_16_dhaka",
+    "tier": 1,
+    "requires_js": false,
+    "verify_ssl": true,
+    "rate_limit_seconds": 3,
+    "enabled": true
+  },
+  {
+    "id": "src_17_one_tender",
+    "url": "https://www.onebank.com.bd/tender",
+    "organization_id": "bank_17_one",
+    "tier": 1,
+    "requires_js": false,
+    "verify_ssl": true,
+    "rate_limit_seconds": 3,
+    "enabled": true
+  },
+  {
+    "id": "src_18_mtb_tender",
+    "url": "https://www.mutualtrustbank.com/tender",
+    "organization_id": "bank_18_mtb",
+    "tier": 1,
+    "requires_js": false,
+    "verify_ssl": true,
+    "rate_limit_seconds": 3,
+    "enabled": true
+  },
+  {
+    "id": "src_19_premier_tender",
+    "url": "https://www.premierbankltd.com/tender",
+    "organization_id": "bank_19_premier",
+    "tier": 1,
+    "requires_js": false,
+    "verify_ssl": true,
+    "rate_limit_seconds": 3,
+    "enabled": true
+  },
+  {
+    "id": "src_20_trust_tender",
+    "url": "https://www.trustbank.com.bd/tender",
+    "organization_id": "bank_20_trust",
+    "tier": 1,
+    "requires_js": false,
+    "verify_ssl": true,
+    "rate_limit_seconds": 3,
+    "enabled": true
+  },
+  {
+    "id": "src_21_meghna_tender",
+    "url": "https://www.meghnabank.com.bd/tender",
+    "organization_id": "bank_21_meghna",
+    "tier": 1,
+    "requires_js": false,
+    "verify_ssl": true,
+    "rate_limit_seconds": 3,
+    "enabled": true
+  },
+  {
+    "id": "src_22_modhumoti_tender",
+    "url": "https://www.modhumotibank.ltd/tender",
+    "organization_id": "bank_22_modhumoti",
+    "tier": 1,
+    "requires_js": false,
+    "verify_ssl": true,
+    "rate_limit_seconds": 3,
+    "enabled": true
+  },
+  {
+    "id": "src_23_shimanto_tender",
+    "url": "https://www.shimantobank.com/tender",
+    "organization_id": "bank_23_shimanto",
+    "tier": 1,
+    "requires_js": false,
+    "verify_ssl": true,
+    "rate_limit_seconds": 3,
+    "enabled": true
+  },
+  {
+    "id": "src_24_community_tender",
+    "url": "https://www.communitybankbd.com/tender",
+    "organization_id": "bank_24_community",
+    "tier": 1,
+    "requires_js": false,
+    "verify_ssl": true,
+    "rate_limit_seconds": 3,
+    "enabled": true
+  },
+  {
+    "id": "src_25_bengal_tender",
+    "url": "https://www.bgcb.com.bd/tender",
+    "organization_id": "bank_25_bengal",
+    "tier": 1,
+    "requires_js": false,
+    "verify_ssl": true,
+    "rate_limit_seconds": 3,
+    "enabled": true
+  },
+  {
+    "id": "src_26_islami_bank_tender",
+    "url": "https://www.islamibankbd.com/tender",
+    "organization_id": "bank_26_islami_bank",
+    "tier": 1,
+    "requires_js": false,
+    "verify_ssl": true,
+    "rate_limit_seconds": 3,
+    "enabled": true
+  },
+  {
+    "id": "src_27_icb_islamic_tender",
+    "url": "https://www.icbislamic-bank.com/tender",
+    "organization_id": "bank_27_icb_islamic",
+    "tier": 1,
+    "requires_js": false,
+    "verify_ssl": true,
+    "rate_limit_seconds": 3,
+    "enabled": true
+  },
+  {
+    "id": "src_28_al_arafah_tender",
+    "url": "https://www.aibl.com.bd/tender",
+    "organization_id": "bank_28_al_arafah",
+    "tier": 1,
+    "requires_js": false,
+    "verify_ssl": true,
+    "rate_limit_seconds": 3,
+    "enabled": true
+  },
+  {
+    "id": "src_29_comceylon_tender",
+    "url": "https://www.combankbd.com/tender",
+    "organization_id": "bank_29_combank_ceylon",
+    "tier": 1,
+    "requires_js": false,
+    "verify_ssl": true,
+    "rate_limit_seconds": 3,
+    "enabled": true
+  },
+  {
+    "id": "src_30_woori_tender",
+    "url": "https://www.wooribank.com/bd/tender",
+    "organization_id": "bank_30_woori",
+    "tier": 1,
+    "requires_js": false,
+    "verify_ssl": true,
+    "rate_limit_seconds": 3,
+    "enabled": true
   }
 ]

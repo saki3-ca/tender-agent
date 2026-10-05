@@ -1,6 +1,5 @@
 // Supabase Dashboard Config
-// Values replaced during Cloudflare Pages deployment or local test
 window.ENV = {
-  SUPABASE_URL: window.location.hostname === "localhost" ? "" : "__SUPABASE_URL__",
-  SUPABASE_ANON_KEY: window.location.hostname === "localhost" ? "" : "__SUPABASE_ANON_KEY__"
+  SUPABASE_URL: "https://lhlklttxkchknbjplbvn.supabase.co",
+  SUPABASE_ANON_KEY: "sb_publishable_MpVRbNQCuLlXyU1czkf6aw_Jh1zt9mo"
 };

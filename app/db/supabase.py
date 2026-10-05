@@ -195,9 +195,10 @@ class SupabaseDatabase:
                 logger.error("Failed to upsert source into Supabase", extra={"source_id": data.get("id"), "error": str(e)})
 
     def record_source_check(self, source_id: str, http_status: Optional[int], duration_ms: int, items_found: int, new_items: int, error: Optional[str] = None) -> None:
+        now_iso = datetime.now(timezone.utc).isoformat()
         payload = {
             "source_id": source_id,
-            "check_time": datetime.now(timezone.utc).isoformat(),
+            "check_time": now_iso,
             "http_status": http_status,
             "duration_ms": duration_ms,
             "items_found": items_found,
@@ -208,6 +209,13 @@ class SupabaseDatabase:
         if self.client:
             try:
                 self.client.table("source_checks").insert(payload).execute()
+                # Also update source health in sources table
+                status_enum = "OK" if (http_status and http_status in (200, 304) and not error) else "ERROR"
+                self.client.table("sources").update({
+                    "last_checked": now_iso,
+                    "last_status": status_enum,
+                    "error_message": error
+                }).eq("id", source_id).execute()
             except Exception as e:
                 logger.error("Failed to insert source_check into Supabase", extra={"error": str(e)})
 
@@ -249,6 +257,22 @@ class SupabaseDatabase:
                 logger.error("Failed to get opportunity from Supabase", extra={"opp_id": opp_id, "error": str(e)})
         return self.mock_adapter.get_opportunity(opp_id)
 
+    OPPORTUNITY_FIELDS = {
+        "id", "organization_id", "organization_name", "organization_type", "title",
+        "reference_number", "tender_type", "category", "pipeline", "outside_ifrs9_target",
+        "priority", "score", "fit_type", "publication_date", "publication_date_raw",
+        "submission_deadline", "deadline_raw", "days_remaining", "opening_datetime",
+        "prebid_meeting", "clarification_deadline", "scope_of_work", "eligibility",
+        "eligibility_concerns", "minimum_experience", "required_certifications",
+        "required_team", "required_documents", "bid_security", "tender_fee",
+        "contract_period", "estimated_value", "submission_method", "submission_address",
+        "contact_person", "contact_email", "contact_phone", "source_url", "document_url",
+        "source_tier", "source_verification", "record_type", "lifecycle_status",
+        "review_status", "is_baseline", "ai_confidence", "extraction_result",
+        "review_result", "score_breakdown", "embedding", "content_hash", "document_hash",
+        "first_seen", "last_checked", "updated_at"
+    }
+
     def upsert_opportunity(self, data: Dict[str, Any]) -> None:
         # Check manual overrides first: do not overwrite human-locked fields
         overrides = self.get_manual_overrides(data["id"])
@@ -259,7 +283,9 @@ class SupabaseDatabase:
         self.mock_adapter.upsert_opportunity(data)
         if self.client:
             try:
-                self.client.table("opportunities").upsert(data).execute()
+                # Sanitize to valid schema columns
+                cleaned_payload = {k: v for k, v in data.items() if k in self.OPPORTUNITY_FIELDS}
+                self.client.table("opportunities").upsert(cleaned_payload).execute()
             except Exception as e:
                 logger.error("Failed to upsert opportunity into Supabase", extra={"opp_id": data.get("id"), "error": str(e)})
 
