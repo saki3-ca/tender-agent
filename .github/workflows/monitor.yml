@@ -101,7 +101,7 @@ jobs:
           SEARCH_ENGINE_ID: ${{ secrets.SEARCH_ENGINE_ID }}
           SEARCH_DAILY_QUERY_LIMIT: ${{ secrets.SEARCH_DAILY_QUERY_LIMIT || '100' }}
           CRAWLER_CONTACT_EMAIL: ${{ secrets.CRAWLER_CONTACT_EMAIL || 'tenders@acnabin.com' }}
-          RUN_TIME_BUDGET_MINUTES: ${{ secrets.RUN_TIME_BUDGET_MINUTES || '4' }}
+          RUN_TIME_BUDGET_MINUTES: ${{ secrets.RUN_TIME_BUDGET_MINUTES || '14' }}
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
           SMTP_HOST: ${{ secrets.SMTP_HOST }}
