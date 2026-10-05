@@ -129,7 +129,19 @@ class MonitorWorker:
 
                     # If rejected as IRRELEVANT, store minimally or skip
                     if opp_data.get("record_type") == "IRRELEVANT":
-                        continue
+                        # General tab lists every tender notice, not only ACNABIN-relevant ones.
+                        if not config.settings.get("capture_all_tenders", True):
+                            continue
+                        opp_data = {
+                            **opp_data,
+                            "record_type": "OPPORTUNITY",
+                            "pipeline": "GENERAL_MARKET",
+                            "category": "OTHER_PROFESSIONAL",
+                            "fit_type": "NOT_SUITABLE",
+                            "title": opp_data.get("title") or cand.get("title"),
+                            "review_status": "AI_REVIEW_PENDING",
+                        }
+                        opp_data["deadline_utc"] = opp_data.get("deadline_utc") or cand.get("deadline_utc")
 
                     stats["new_candidates"] += 1
 

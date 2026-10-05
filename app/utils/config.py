@@ -161,7 +161,7 @@ class AppConfig:
                 return float(val)
             except ValueError:
                 pass
-        return float(self.settings.get("free_tier_caps", {}).get("github_actions_run_budget_minutes", 4))
+        return float(self.settings.get("free_tier_caps", {}).get("github_actions_run_budget_minutes", 14))
 
 
 # Global configuration singleton
