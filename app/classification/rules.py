@@ -174,21 +174,8 @@ class RulesClassifier:
         # 1. Organization match
         org_id, org_name, is_target = self.match_organization(text, org_hint)
 
-        # 2. Check irrelevant procurement
-        is_irrelevant, irr_term = self.check_irrelevant_procurement(text)
-        if is_irrelevant:
-            return {
-                "organization_id": org_id,
-                "organization_name": org_name,
-                "is_target": is_target,
-                "record_type": "IRRELEVANT",
-                "pipeline": "GENERAL_MARKET",
-                "outside_ifrs9_target": False,
-                "category": "NONE",
-                "ifrs9_ecl_relevant": False,
-                "rejection_reason": f"Irrelevant procurement: matched '{irr_term}'",
-                "acnabin_relevant": False
-            }
+        # 2. Check irrelevant procurement terms
+        is_physical_or_general, irr_term = self.check_irrelevant_procurement(text)
 
         # 3. Check IFRS 9 / ECL relevance
         is_ifrs9, matched_terms = self.check_ifrs9_relevance(text)
@@ -197,16 +184,28 @@ class RulesClassifier:
         has_procurement, proc_hits = self.check_procurement_language(text)
         parsed_dt, dt_note = parse_deadline(text)
 
-        # 5. Opportunity vs Market Intelligence
-        if has_procurement and (parsed_dt is not None or "deadline" in text.lower() or "submission" in text.lower() or "শেষ তারিখ" in text):
+        # 5. Opportunity vs Market Intelligence determination
+        # Keep ALL procurement notices from all banks as OPPORTUNITY so no tenders are discarded.
+        is_tender_signal = (
+            has_procurement or 
+            is_physical_or_general or 
+            parsed_dt is not None or 
+            any(w in text.lower() for w in ["tender", "rfp", "eoi", "quotation", "procurement", "দরপত্র", "বিজ্ঞপ্তি", "deadline", "submission", "শেষ তারিখ"])
+        )
+
+        if is_tender_signal:
             record_type = "OPPORTUNITY"
         elif is_ifrs9 or any(ac in text.lower() for ac in ["audit", "circular", "annual report", "financial statement", "নিরীক্ষা"]):
             record_type = "MARKET_INTELLIGENCE"
         else:
-            record_type = "IRRELEVANT"
+            # Still default to OPPORTUNITY if coming from a monitored bank source
+            record_type = "OPPORTUNITY"
 
-        # 6. Category
-        category, cat_conf = self.determine_service_category(text, is_ifrs9)
+        # 6. Category determination
+        if is_physical_or_general and not is_ifrs9:
+            category, cat_conf = "OTHER_PROFESSIONAL", 0.5
+        else:
+            category, cat_conf = self.determine_service_category(text, is_ifrs9)
 
         # 7. Pipeline Routing (Section 4)
         if is_target and is_ifrs9:

@@ -120,6 +120,7 @@ function applyFilters() {
   const search = (document.getElementById("filter-search")?.value || "").toLowerCase();
   const priority = document.getElementById("filter-priority")?.value || "ALL";
   const pipeline = document.getElementById("filter-pipeline")?.value || "ALL";
+  const category = document.getElementById("filter-category")?.value || "ALL";
 
   const filtered = currentOpportunities.filter(item => {
     const matchesSearch = !search || 
@@ -129,8 +130,9 @@ function applyFilters() {
 
     const matchesPriority = priority === "ALL" || item.priority === priority;
     const matchesPipeline = pipeline === "ALL" || item.pipeline === pipeline;
+    const matchesCategory = category === "ALL" || item.category === category;
 
-    return matchesSearch && matchesPriority && matchesPipeline;
+    return matchesSearch && matchesPriority && matchesPipeline && matchesCategory;
   });
 
   renderTable(filtered);
@@ -223,6 +225,7 @@ document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("filter-search")?.addEventListener("input", applyFilters);
   document.getElementById("filter-priority")?.addEventListener("change", applyFilters);
   document.getElementById("filter-pipeline")?.addEventListener("change", applyFilters);
+  document.getElementById("filter-category")?.addEventListener("change", applyFilters);
   document.getElementById("btn-export-csv")?.addEventListener("click", exportToCSV);
   document.getElementById("btn-export-excel")?.addEventListener("click", exportToExcel);
 });

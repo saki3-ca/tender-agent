@@ -109,11 +109,12 @@ def test_deterministic_pipeline_routing():
     assert res3["pipeline"] == "GENERAL_MARKET"
     assert res3["category"] == "AUDIT_ASSURANCE"
 
-    # Case 4: Irrelevant procurement (Construction / Renovation) -> Auto-rejected as IRRELEVANT
-    text4 = "Civil works and building renovation of branch office. Supply of office furniture and painting."
+    # Case 4: General procurement (Construction / Renovation) -> Routed to GENERAL_MARKET as OPPORTUNITY (OTHER_PROFESSIONAL)
+    text4 = "Civil works and building renovation of branch office. Supply of office furniture and painting. Submission deadline: 15/10/2026."
     res4 = classifier.classify_candidate(text4, org_hint="Rupali Bank PLC")
-    assert res4["record_type"] == "IRRELEVANT"
-    assert res4["acnabin_relevant"] is False
+    assert res4["pipeline"] == "GENERAL_MARKET"
+    assert res4["record_type"] == "OPPORTUNITY"
+    assert res4["category"] == "OTHER_PROFESSIONAL"
 
     # Case 5: Acronym 'PD' meaning Project Director -> must NOT hit IFRS 9 false positive!
     text5 = "Office of the Project Director (PD). Invitation for Quotation for Local Consultant. Deadline 15/10/2026."

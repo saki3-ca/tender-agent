@@ -33,7 +33,8 @@
       "id": "fixture_construction_rejected",
       "is_synthetic_fixture": true,
       "organization": "Janata Bank PLC",
-      "expected_record_type": "IRRELEVANT",
+      "expected_record_type": "OPPORTUNITY",
+      "expected_category": "OTHER_PROFESSIONAL",
       "text": "Janata Bank PLC. Tender for civil works, building renovation and painting of Motijheel Corporate Branch. Submission date: 15/10/2026."
     },
     {
