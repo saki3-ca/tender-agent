@@ -1,6 +1,7 @@
 -- General Market tab: every tender that is still active (deadline not passed or unknown)
 -- or was first seen in the last 7 days.
-CREATE OR REPLACE VIEW v_general_market AS
+DROP VIEW IF EXISTS v_general_market;
+CREATE VIEW v_general_market AS
 SELECT
     o.id, o.organization_id, o.organization_name, o.organization_type, o.title,
     o.reference_number, o.category, o.outside_ifrs9_target, o.priority, o.score,
