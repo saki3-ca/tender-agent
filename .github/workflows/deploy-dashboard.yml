@@ -24,10 +24,8 @@ jobs:
           sed -i "s|__SUPABASE_ANON_KEY__|${{ secrets.SUPABASE_ANON_KEY }}|g" dashboard/js/config.js
 
       - name: Deploy to Cloudflare Pages
-        uses: cloudflare/pages-action@v1
+        uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          projectName: "acnabin-tenders"
-          directory: "dashboard"
-          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
+          command: pages deploy dashboard --project-name=acnabin-tenders --commit-dirty=true
