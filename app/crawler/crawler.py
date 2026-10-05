@@ -45,7 +45,7 @@ class TenderCrawler:
             default_interval=float(config.settings.get("crawler", {}).get("default_rate_limit_seconds", 5.0))
         )
         self.contact_email = config.crawler_contact_email
-        self.user_agent = f"ACNABIN-Tender-Intelligence-Bot/1.0 (+https://acnabin-tenders.pages.dev; contact: {self.contact_email})"
+        self.user_agent = f"ACNABIN-Tender-Intelligence-Bot/1.0 (+https://tender-agent-d01.pages.dev; contact: {self.contact_email})"
         self.timeout = float(config.settings.get("crawler", {}).get("request_timeout_seconds", 30))
 
     def _get_headers(self, etag: Optional[str] = None, last_modified: Optional[str] = None) -> Dict[str, str]:

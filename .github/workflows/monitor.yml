@@ -109,6 +109,6 @@ jobs:
           SMTP_USERNAME: ${{ secrets.SMTP_USERNAME }}
           SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
           ALERT_EMAIL_TO: ${{ secrets.ALERT_EMAIL_TO }}
-          DASHBOARD_BASE_URL: ${{ secrets.DASHBOARD_BASE_URL || 'https://acnabin-tenders.pages.dev' }}
+          DASHBOARD_BASE_URL: ${{ secrets.DASHBOARD_BASE_URL || 'https://tender-agent-d01.pages.dev' }}
         run: |
           python run_monitor.py

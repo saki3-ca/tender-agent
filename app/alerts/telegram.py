@@ -17,7 +17,7 @@ class TelegramAlerter:
     def __init__(self):
         self.bot_token = config.telegram_bot_token
         self.chat_id = config.telegram_chat_id
-        self.dashboard_url = config.settings.get("dashboard_base_url", "https://acnabin-tenders.pages.dev")
+        self.dashboard_url = config.settings.get("dashboard_base_url", "https://tender-agent-d01.pages.dev")
 
     def is_configured(self) -> bool:
         return bool(self.bot_token and self.chat_id)

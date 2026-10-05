@@ -44,6 +44,6 @@ jobs:
           SEARCH_ENGINE_ID: ${{ secrets.SEARCH_ENGINE_ID }}
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
-          DASHBOARD_BASE_URL: ${{ secrets.DASHBOARD_BASE_URL || 'https://acnabin-tenders.pages.dev' }}
+          DASHBOARD_BASE_URL: ${{ secrets.DASHBOARD_BASE_URL || 'https://tender-agent-d01.pages.dev' }}
         run: |
           python run_weekly.py

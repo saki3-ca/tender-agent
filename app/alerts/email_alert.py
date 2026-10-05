@@ -22,7 +22,7 @@ class EmailAlerter:
         self.username = os.getenv("SMTP_USERNAME", "")
         self.password = os.getenv("SMTP_PASSWORD", "")
         self.recipient = os.getenv("ALERT_EMAIL_TO", "")
-        self.dashboard_url = config.settings.get("dashboard_base_url", "https://acnabin-tenders.pages.dev")
+        self.dashboard_url = config.settings.get("dashboard_base_url", "https://tender-agent-d01.pages.dev")
 
     def is_configured(self) -> bool:
         return bool(self.host and self.username and self.password and self.recipient)
