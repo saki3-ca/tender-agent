@@ -1,230 +1,139 @@
-# ACNABIN Tender & Opportunity Intelligence Agent (v3 — Cloud, Free Tier)
+# ACNABIN Tender Monitoring
 
-A fully automated, production-grade tender, RFP, and procurement intelligence system developed for **ACNABIN Chartered Accountants, Bangladesh**.
+Monitors the tender, procurement and notice pages of **banks** and **NGOs / development organizations** in Bangladesh and answers one question:
 
-Hosted **entirely in the cloud on free-tier services** with zero dependencies on local workstations:
-* **Compute:** GitHub Actions (scheduled worker running in Asia/Dhaka business hours).
-* **Database & Persistence:** Supabase (Postgres with `pgvector`, Row Level Security, Storage, Auth).
-* **Dashboard:** Cloudflare Pages (responsive static single-page application with client-side Excel/CSV export).
-* **AI Intelligence Tier:** Multi-stage pipeline leveraging Cloudflare Workers AI, Groq, and Google Gemini with deterministic rule-based fallbacks.
-* **Alerts:** Immediate push notifications to Telegram and email.
+> What active tenders are the monitored organizations publishing, and which of them matter to ACNABIN?
 
----
-
-## 1. System Architecture
-
-```text
- GitHub Actions (worker, Python, scheduled)          Cloudflare Pages (dashboard, static)
- ├─ crawl (httpx + Playwright)                        ├─ plain HTML/JS + supabase-js
- ├─ extract (PDF/DOCX/XLSX, Tesseract eng+ben)        ├─ Supabase Auth login (allow-listed emails)
- ├─ rules pre-filter                                  ├─ reads/edits via RLS-protected tables
- ├─ AI: Cloudflare Workers AI · Groq · Gemini         └─ client-side CSV/XLSX export
- ├─ scoring, dedupe, deadlines
- └─ alerts (Telegram, email)
-            │                                                   │
-            └───────────────►  SUPABASE  ◄──────────────────────┘
-                        Postgres (+ pgvector) · Storage · Auth
+```
+Home
+ ├── Bank   ── General  (all active bank tenders)
+ │          └─ Priority (active + relevant to ACNABIN; IFRS 9 / ECL flagged)
+ └── NGO    ── General  (all active NGO tenders)
+            └─ Priority (active + relevant to ACNABIN)
 ```
 
-### Two Deterministic Pipelines
-All routing decisions are performed by deterministic code, **never** delegated to an LLM:
+- **General** = every *active* opportunity found on a monitored source, whatever the subject (furniture, IT equipment, construction, audit…).
+- **Priority** = active **and** relevant to ACNABIN's services: audit & assurance, IT/IS audit, accounting & financial reporting, IFRS / IFRS 9 / ECL, risk & internal control, tax & VAT, financial & management advisory, professional training.
+- **IFRS 9 / ECL** is a Priority signal, not the definition of Priority. The 30 IFRS 9 target banks are all monitored for *every* tender, and IFRS 9 / ECL notices are flagged.
 
-| Organization in fixed 30-bank list? | IFRS 9 / ECL relevant? | Pipeline | `record_type` |
-|---|---|---|---|
-| **Yes** | **Yes** | `IFRS9_TARGET` (Pipeline A) | `OPPORTUNITY` or `MARKET_INTELLIGENCE` |
-| **No** | **Yes** | `GENERAL_MARKET` (Pipeline B), category `IFRS9_ECL`, `outside_ifrs9_target=true` | `OPPORTUNITY` or `MARKET_INTELLIGENCE` |
-| **Either** | **No, but other ACNABIN service** | `GENERAL_MARKET` (Pipeline B) | `OPPORTUNITY` or `MARKET_INTELLIGENCE` |
-| **Either** | **Not relevant** | — | `IRRELEVANT` (auto-rejected) |
+## How a run works
 
----
-
-## 2. Directory Structure
-
-```text
-acnabin-tender-monitor/
-├── .github/workflows/
-│   ├── monitor.yml            # Hourly schedule (00:00 & 08:00–20:00 Asia/Dhaka)
-│   ├── weekly.yml             # Discovery, market intelligence, retention
-│   ├── keepalive.yml          # Supabase ping to prevent 7-day pause
-│   ├── tests.yml              # CI automated test runner
-│   └── deploy-dashboard.yml   # Cloudflare Pages deployment
-├── app/
-│   ├── crawler/               # Async httpx + Playwright web crawler
-│   ├── parsers/               # HTML, PDF, DOCX, XLSX, and Bangla date parsers
-│   ├── classification/        # Deterministic rules pre-filter and deduplication engine
-│   ├── ai/                    # Cloudflare, Groq, Gemini clients & multi-stage router
-│   ├── scoring/               # Deterministic scoring engine (0-100) and priority bands
-│   ├── alerts/                # Telegram and SMTP email alerting modules
-│   ├── db/                    # Supabase PostgREST client and in-memory mock adapter
-│   └── utils/                 # Structured JSON logging & configuration validator
-├── config/
-│   ├── settings.yaml          # Free-tier caps, rate limits, timeouts, modes
-│   ├── ifrs9_banks.json       # Exactly 30 fixed target banks with aliases
-│   ├── organizations.json     # Seed registry of banks, NBFIs, regulators
-│   ├── sources.json           # Per-source URLs, tiers, SSL and JS configurations
-│   ├── keywords.json          # Strong/weak IFRS 9, Bangla terms, procurement language
-│   ├── categories.json        # 9 official ACNABIN service categories
-│   └── scoring.yaml           # Deterministic weights and priority thresholds
-├── supabase/
-│   ├── migrations/            # 20261001000001_initial_schema.sql, 20261001000002_views_and_rls.sql
-│   └── seed.sql               # Seed data for 30 target banks and initial users
-├── dashboard/                 # Static dashboard ready for Cloudflare Pages
-│   ├── index.html             # Today's Priority Opportunities & KPIs
-│   ├── ifrs9.html             # Pipeline A (30 target banks only)
-│   ├── market.html            # Pipeline B (General market opportunities)
-│   ├── opportunity.html       # Detailed dossier, verified evidence, partner locks
-│   ├── intelligence.html      # Regulatory circulars & early market signals
-│   ├── sources.html           # Real-time source health, SSL and geo-block telemetry
-│   ├── operations.html        # GitHub Actions duration, DB storage & AI quotas
-│   ├── css/style.css          # Glassmorphism dark-mode design system
-│   └── js/                    # config.js and app.js with Excel (SheetJS) export
-├── tests/                     # Comprehensive test suite (23 unit & integration tests)
-│   └── fixtures/              # Synthetic test fixtures
-├── run_monitor.py             # Main entry point for hourly runs and local debugging
-├── run_weekly.py              # Weekly maintenance, discovery, and cleanup runner
-├── requirements.txt           # Pinned Python dependencies
-└── .env.example               # Template environment configuration
+```
+config/sources.json → fetch page → extract listings → read notice page / tender PDF
+  → dates (publication, deadline) → open/closed status → ACTIVE? → General
+  → ACNABIN relevance → Priority (+ IFRS 9 flag) → de-duplicate → Supabase → dashboard
 ```
 
----
+All logic is deterministic (no LLM calls). Code lives in `app/`:
 
-## 3. Step-by-Step Setup Guide
+| Module | Responsibility |
+|---|---|
+| `app/pipeline.py` | One monitoring run; ties the steps together |
+| `app/crawler/crawler.py` | HTTP fetching, politeness delay, detection of 404 / soft-404 / bot-challenge pages |
+| `app/parsers/html_parser.py` | Tender tables (columns identified from headers), link listings, detail cards |
+| `app/parsers/document_parser.py` | Text of the first pages of PDF / DOCX / XLSX notices (OCR when Tesseract is installed) |
+| `app/parsers/date_cleaner.py` | Date parsing and labelling (deadline vs publication date) |
+| `app/classification/status.py` | Closed / cancelled / awarded detection and the ACTIVE rule |
+| `app/classification/relevance.py` | Priority categories and IFRS 9 / ECL detection, driven by `config/relevance.json` |
+| `app/classification/dedupe.py` | Stable tender ids and duplicate merging |
+| `app/db/supabase.py` | Storage (`tenders`, `source_status`, `runs`) |
+| `app/alerts/telegram.py` | Optional Telegram message for each newly found Priority tender |
 
-### 3.1 Setting Up Supabase (Free Tier)
-1. Sign up for a free account at [supabase.com](https://supabase.com) and create a new project.
-2. In the Supabase Dashboard, navigate to **Project Settings -> Database** and copy the **Project URL** and **Service Role Key** (under API Keys).
-3. Open the **SQL Editor** in Supabase and execute the migration files in order:
-   - Run `supabase/migrations/20261001000001_initial_schema.sql` (Creates enums, tables, indexes, pgvector).
-   - Run `supabase/migrations/20261001000002_views_and_rls.sql` (Creates dashboard views, helper functions, and RLS policies).
-   - Run `supabase/seed.sql` (Seeds default allow-listed users and 30 target banks).
-4. Navigate to **Storage** and ensure a bucket named `documents` exists (set to private).
-5. In **Authentication -> Configuration**, disable public sign-ups so only invited partner emails can access. Add partner emails to the `app_users` table.
+### Active rule
 
-### 3.2 Setting Up GitHub Repository & Secrets
-1. Push this repository to your GitHub account (private repository recommended).
-2. Go to **Settings -> Secrets and variables -> Actions** and add the following repository secrets:
+A tender is **active** when its status is open and
 
-```text
-SUPABASE_URL               = https://your-project.supabase.co
-SUPABASE_SERVICE_ROLE_KEY  = your-supabase-service-role-key
-SUPABASE_ANON_KEY          = your-supabase-anon-key
+1. it has a deadline and the deadline has not passed, **or**
+2. no deadline is stated and it was published within the last **7 days**, **or**
+3. no date is stated at all, but it newly appeared on a page that was already being monitored, within the last 7 days.
 
-# AI Modes & Providers (Free tier keys)
-AI_MODE                    = full  # full | triage_only | off
-GROQ_API_KEY               = gsk_...
-GROQ_TRIAGE_MODEL          = llama-3.3-70b-versatile
-GROQ_REVIEW_MODEL          = mixtral-8x7b-32768
-GEMINI_API_KEY             = AIzaSy...
-GEMINI_MODEL               = gemini-2.5-flash
-CLOUDFLARE_ACCOUNT_ID      = your_cloudflare_account_id
-CLOUDFLARE_API_TOKEN       = your_cloudflare_workers_ai_token
-CLOUDFLARE_EMBED_MODEL     = @cf/baai/bge-m3
+A stated deadline always decides (a past deadline is expired even if the notice is recent). Notices marked closed, cancelled, withdrawn or awarded are never active. The rule is evaluated at query time by the `v_active_tenders` view, so tenders expire automatically; nothing is tied to a fixed date.
 
-# Telegram Alerts
-TELEGRAM_BOT_TOKEN         = 123456789:ABC...
-TELEGRAM_CHAT_ID           = -1001234567890
+### Dates
 
-# Optional Email & Search Discovery
-SMTP_HOST                  = smtp.gmail.com
-SMTP_PORT                  = 587
-SMTP_USERNAME              = tenders@acnabin.com
-SMTP_PASSWORD              = your_google_app_password
-ALERT_EMAIL_TO             = tender-committee@acnabin.com
-SEARCH_PROVIDER            = google
-SEARCH_API_KEY             = your_google_api_key
-SEARCH_ENGINE_ID           = your_custom_search_engine_id
+Dates are parsed into real dates (`05/10/2026`, `2026-10-05`, `05 Oct 2026`, `October 5, 2026`, `01-Oct-2026`, Bangla digits and month names). Numeric dates are read day-first (Bangladesh convention). A date only counts as a deadline or a publication date when a label says so ("Closing Date", "Last date of submission", "Published", "Date:" on a memo, table column headers…). If no date can be found, the field stays empty; dates are never estimated.
+
+### Relevance
+
+`config/relevance.json` holds every phrase list and can be edited without touching code:
+
+- `categories`: per service area, `phrases` (matched on the title and listing/notice text) and `document_phrases` (specific phrases also matched in tender documents, e.g. "appointment of external auditor"). Generic words like "audit" are deliberately **not** matched in PDF text, because bidding documents always mention "audited financial statements", "VAT registration" etc.
+- `ifrs9.strong`: terms that alone indicate IFRS 9 work (IFRS 9 / IFRS-9 / IFRS9, Expected Credit Loss, ECL model / methodology / validation, financial instrument impairment…).
+- `ifrs9.contextual`: generic terms (ECL, PD, LGD, impairment model, credit risk model) that only count with IFRS 9 context nearby. "Credit officer recruitment" or "loan collection services" are not IFRS 9.
+- `exclusions`: phrases removed before matching (energy audit, audited financial statements, Audit Department, Oracle Audit Vault…).
+- `priority_veto`: titles that are never Priority (recruitment, vacancies, sale of old assets, auctions).
+- `closed_status`: wording that marks a notice as closed / cancelled / awarded.
+
+## Configuration
+
+| File | Content |
+|---|---|
+| `config/ifrs9_banks.json` | The fixed list of **30 IFRS 9 target banks** (startup fails if it is not exactly 30) |
+| `config/organizations.json` | Organization names, types and sectors (bank / NGO) |
+| `config/sources.json` | Tender pages to crawl. Options: `verify_ssl`, `requires_js` (render with Playwright), `country_filter` (global INGO pages: keep only Bangladesh notices), `enabled` + `note` |
+| `config/relevance.json` | Relevance rules (see above) |
+| `config/settings.yaml` | Active window (7 days), crawler limits, run budget |
+
+### Admin page (add or correct URLs without editing files)
+
+Dashboard → **Admin** (`admin.html`). After signing in you can:
+
+- **Add a tender page**: enter the URL, pick an existing organization (or "New organization…" with a name and Bank/NGO section), and set options (needs JavaScript, ignore SSL errors, keep only Bangladesh notices).
+- **Correct a broken source**: every source that failed or showed no notices in the last run is listed; enter the real URL and save.
+- **Manage** what was added: see the result of its last check, switch monitoring on/off, or remove it (a removed correction falls back to the address in `config/sources.json`).
+
+Entries are stored in the `admin_sources` table and merged with `config/sources.json` at the start of every run. Only signed-in users listed in `app_users` (active) can write; the database enforces this with row-level security.
+
+To give someone access: Supabase dashboard → Authentication → Users → **Add user** (email + password, auto-confirm), then add the same email to the `app_users` table.
+
+### Keeping sources healthy
+
+Many organizations move their tender pages. Every run records each source's result in `source_status` (dashboard → **Sources**). To repair broken sources:
+
+```bash
+python scripts/check_sources.py            # all sources
+python scripts/check_sources.py --sector NGO
 ```
 
-### 3.3 Deploying the Dashboard to Cloudflare Pages
-1. Sign in to the [Cloudflare Dashboard](https://dash.cloudflare.com) and go to **Workers & Pages -> Create Application -> Pages -> Connect to Git**.
-2. Select your repository, set the build output directory to `dashboard`, and leave the build command blank (no build step required).
-3. Under **Settings -> Environment variables**, set:
-   - `SUPABASE_URL` = your Supabase URL
-   - `SUPABASE_ANON_KEY` = your Supabase Anon (public) key
-4. Deploy the site. Your dashboard will be live at `https://<your-project>.pages.dev`.
+The script checks every configured page and, for broken or empty ones, lists tender/procurement pages linked from the organization's **own homepage**, with how many listings each yields. Review the candidates and update `config/sources.json`. URLs are never constructed by guesswork. The same check runs weekly in GitHub Actions (`weekly.yml`) and uploads the report.
 
----
+Sources that could not be repaired on 2026-10-05 remain enabled and are reported as errors (some sites block automated access, some domains no longer resolve). The e-GP homepage is disabled (login portal), and CCDB is disabled because its domain currently serves unrelated content.
 
-## 4. Operational Workflows & Scheduling
+## Running
 
-All operations are automated via GitHub Actions scheduled workflows in `.github/workflows/`:
-
-* `monitor.yml`: Runs at **00:00 and hourly from 08:00 to 20:00 Asia/Dhaka time** (UTC 18:00 and 02:00–14:00). Performs crawling, document downloads, extraction, AI classification, scoring, database updates, deadline tracking, and Telegram alerts.
-* `weekly.yml`: Runs every Sunday at 07:00 Asia/Dhaka (01:00 UTC) to perform weekly organization discovery, search API discovery, and retention clean-up.
-* `keepalive.yml`: Pings the Supabase REST endpoint twice a week to prevent the project from pausing due to inactivity on the free tier.
-* `tests.yml`: Automatically runs linting, secret leak scanning, and the 23-test Pytest suite on every commit and pull request.
-
----
-
-## 5. Local Development & Debugging
-
-The system runs cleanly on any local development environment:
-
-```powershell
-# 1. Clone the repository
-git clone <repo-url>
-cd "Tender Agent"
-
-# 2. Install dependencies
+```bash
 pip install -r requirements.txt
+python -m playwright install chromium     # only needed for sources with requires_js
 
-# 3. Create .env from template
-cp .env.example .env
-# Edit .env with your local settings or test credentials
+python run_monitor.py                     # all sources, writes to Supabase if configured
+python run_monitor.py --sector NGO        # one sector
+python run_monitor.py --source src_07_sonali_tender
+python run_monitor.py --local             # do not write to Supabase; writes data/local_run.json
 
-# 4. Run the full test suite
-pytest -v tests/
-
-# 5. Execute a single manual crawl cycle
-python run_monitor.py
-
-# 6. Execute a weekly maintenance cycle
-python run_weekly.py
+pytest                                    # test suite
 ```
 
----
+Environment variables: see `.env.example` (`SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`, optional Telegram).
 
-## 6. Business Rule Customization
+### Database
 
-All business rules live in `config/`, never in application code:
+Apply migrations with the Supabase CLI (`supabase db push`). `20261005000004_tenders_general_priority.sql` creates:
 
-* **IFRS 9 Target Banks (`config/ifrs9_banks.json`):** Contains the 30 designated target banks with their canonical names, aliases, and official domains. Startup checks assert **exactly 30 unique banks**; any modification that violates this count will cause a loud failure.
-* **Keywords (`config/keywords.json`):**
-  - **Strong Terms:** Terms that independently qualify an opportunity as IFRS 9 relevant.
-  - **Weak Terms:** Terms (such as "PD", "Stage 1", "ECL") that require co-occurrence with procurement terms to prevent false positives (e.g. Project Director).
-  - **Bangla Terms:** Procurement and audit vocabulary in Bengali (দরপত্র, নিরীক্ষা, পরামর্শক, etc.).
-  - **Irrelevant Procurement:** Terms for construction, AC maintenance, stationery, vehicles, etc., that trigger auto-rejection unless explicit advisory/audit scope is present.
-* **Categories (`config/categories.json`):** Official enum codes: `IFRS9_ECL`, `AUDIT_ASSURANCE`, `RISK_CONTROL`, `ACCOUNTING_REPORTING`, `PROCESS_ADVISORY`, `TAX_VAT`, `FINANCIAL_ADVISORY`, `TRAINING`, `OTHER_PROFESSIONAL`.
-* **Deterministic Scoring (`config/scoring.yaml`):** Transparent base scores and modifiers:
-  - Base: `IFRS9_ECL` (60), `AUDIT_ASSURANCE` (50), `RISK_CONTROL` (50), `ACCOUNTING_REPORTING` (50), etc.
-  - Modifiers: Genuine procurement (+15), Financial institution / Regulator (+10), Direct Fit (+10), Source Tier 1/2 (+5), AQR/Banking Diagnostic (+10), Low confidence (-15).
-  - Priority Bands: 85–100 (VERY HIGH), 70–84 (HIGH), 55–69 (MEDIUM), 40–54 (LOW), <40 (IGNORE).
+- `tenders`: one row per notice (organization, title, description, reference, published date, deadline, status, priority, IFRS 9 flag, categories, matched keywords, source page, notice/document link)
+- `source_status`: last result per source
+- `v_active_tenders`: active tenders only (the dashboard reads this)
+- `v_last_run`: time of the last completed run
 
----
+The tables and views of the previous design (`opportunities`, `v_general_market`, …) are left in place and are no longer used; they can be dropped once the new dashboard is deployed.
 
-## 7. Free-Tier Safeguards & Hardening
+### Automation (GitHub Actions)
 
-* **Database Size Limits:** Extracted full text is stored only for relevant records (`OPPORTUNITY` or `MARKET_INTELLIGENCE`). Files for irrelevant records are skipped.
-* **Actions Run Duration:** Average runs complete in under 2 minutes. A 4-minute time budget is enforced; if reached, the runner stops gracefully and resumes remaining sources next cycle.
-* **AI Quota Tracking:** Free-tier limits (Groq 1000/day, Gemini 500/day, Cloudflare 5000/day) are monitored in the `ai_usage` table. If a provider's daily quota is exhausted, tasks fall back to secondary providers or queue as `AI_REVIEW_PENDING` without failing the run.
-* **Offline / Pure Rules Mode:** Setting `AI_MODE=off` allows the full pipeline to execute using deterministic regex and keyword algorithms with zero external AI calls.
+- `monitor.yml`: hourly 08:00–20:00 and at 00:00 Asia/Dhaka; runs `run_monitor.py`
+- `weekly.yml`: Sunday source health check (`scripts/check_sources.py`)
+- `tests.yml`: test suite on every push
+- `deploy-dashboard.yml`: deploys `dashboard/` to Cloudflare Pages on changes
+- `keepalive.yml`: keeps the free Supabase project awake
 
----
+### Dashboard
 
-## 8. Human-in-the-Loop & Partner Overrides
-
-* Automated outputs present eligibility disclaimers: *"Potentially eligible — verify tender eligibility and ACNABIN credentials."*
-* From the dashboard opportunity view (`opportunity.html`), partners can override priority, review status, category, or fit type.
-* Every edit is persisted to the `manual_overrides` table and **locked** against automated overwrite during subsequent crawls.
-
----
-
-## 9. Troubleshooting & FAQ
-
-* **Site blocked or SSL error:** Bangladeshi government or banking portals occasionally use self-signed certificates or block foreign IP ranges. In `config/sources.json`, set `"verify_ssl": false` for that specific source. Suspected foreign blocks are tagged as `GEO_BLOCK_SUSPECTED` in the source health monitor.
-* **Scanned Bangla PDFs:** The GitHub Actions runner installs Tesseract OCR with `tesseract-ocr-ben` and `tesseract-ocr`. Scanned documents are automatically OCR'd or routed to Gemini's native PDF multimodal reader.
-* **Duplicate Merging Across Banks:** The deduplication engine strictly enforces organizational boundaries: near-identical tenders from different banks are **never** merged.
-
----
-
-*ACNABIN Chartered Accountants — Procurement & Opportunity Intelligence Engine.*
+Static pages in `dashboard/` (`index.html`, `bank.html`, `ngo.html`, `sources.html`) reading Supabase with the public anon key (`dashboard/js/config.js`). Filters: search, organization, category, deadline window, publication date, and on Bank: IFRS 9 / ECL only and 30 target banks only. Results can be exported to CSV.

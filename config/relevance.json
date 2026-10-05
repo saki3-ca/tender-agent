@@ -1,0 +1,261 @@
+{
+  "_comment": "ACNABIN relevance rules. All patterns are case-insensitive regular expressions matched on word boundaries. 'phrases' are matched against the listing title/description; 'document_phrases' are also matched against tender document text (keep these specific, because tender documents contain boilerplate such as 'audited financial statements of the bidder').",
+  "ifrs9": {
+    "strong": [
+      "IFRS[\\s-]*0?9",
+      "আইএফআরএস[\\s-]*(?:৯|9)",
+      "expected credit loss(?:es)?",
+      "এক্সপেক্টেড ক্রেডিট লস",
+      "ECL[\\s-]+(?:model(?:s|ling|ing)?|methodology|framework|solution|system|software|engine|tool|calculation|computation|implementation|validation|review|assessment|consultan(?:cy|t))",
+      "ইসিএল মডেল",
+      "(?:expected )?credit loss model(?:s|ling|ing)?",
+      "impairment of financial (?:instruments|assets)",
+      "financial instruments? impairment"
+    ],
+    "contextual": [
+      {
+        "term": "ECL",
+        "context": [
+          "model",
+          "methodolog",
+          "IFRS",
+          "impairment",
+          "provision",
+          "stag(?:e|ing)",
+          "probability of default",
+          "PD",
+          "LGD",
+          "validation",
+          "credit loss"
+        ]
+      },
+      {
+        "term": "(?:probability of default|loss given default|exposure at default|PD/LGD|LGD|SICR|significant increase in credit risk)",
+        "context": [
+          "IFRS",
+          "ECL",
+          "impairment",
+          "expected (?:credit )?loss",
+          "staging"
+        ]
+      },
+      {
+        "term": "impairment (?:model(?:s|ling|ing)?|methodology|assessment)",
+        "context": [
+          "IFRS",
+          "ECL",
+          "expected (?:credit )?loss",
+          "financial instrument",
+          "loan",
+          "credit"
+        ]
+      },
+      {
+        "term": "credit risk model(?:s|ling|ing)?",
+        "context": [
+          "IFRS",
+          "ECL",
+          "impairment",
+          "expected (?:credit )?loss",
+          "provision"
+        ]
+      }
+    ],
+    "context_window_chars": 200
+  },
+  "categories": [
+    {
+      "code": "AUDIT",
+      "label": "Audit & Assurance",
+      "phrases": [
+        "audit(?:s|ing)?",
+        "auditors?",
+        "assurance (?:engagement|services?|review)",
+        "agreed[\\s-]upon procedures?",
+        "নিরীক্ষা",
+        "নিরীক্ষক",
+        "অডিট",
+        "(?:নিরীক্ষা|অডিট)[\\s-]*ফার্ম"
+      ],
+      "document_phrases": [
+        "(?:selection|appointment|engagement|hiring) of (?:an? |the )?(?:external |statutory |internal |independent |chartered accountant )?(?:audit firms?|auditors?)",
+        "(?:external|statutory|internal|project|financial|compliance|special|forensic|concurrent|branch|donor|grant|performance|stock|shariah) audit (?:services?|firm|of)",
+        "audit of (?:the )?(?:financial statements|accounts|books of accounts|project|programme|program|grant)",
+        "terms of reference for (?:the )?(?:external |internal |financial |project )?audit"
+      ]
+    },
+    {
+      "code": "IT_AUDIT",
+      "label": "IT / IS Audit",
+      "phrases": [
+        "IT audit",
+        "IS audit",
+        "information (?:systems?|technology|security) audit",
+        "cyber[\\s-]?security (?:audit|assessment|review)",
+        "SWIFT (?:CSP|customer security programme)",
+        "CSP (?:assessor|assessment)",
+        "ISO[\\s/-]*27001 (?:audit|assessment|certification)"
+      ],
+      "document_phrases": [
+        "information systems? audit",
+        "SWIFT (?:CSP|customer security programme) (?:independent )?assessment"
+      ]
+    },
+    {
+      "code": "RISK_CONTROL",
+      "label": "Risk & Internal Control",
+      "phrases": [
+        "internal controls?(?: over financial reporting)?",
+        "control (?:framework|assessment|review|environment)",
+        "risk advisory",
+        "risk management (?:framework|consultan(?:cy|t)|advisory|review|policy)",
+        "enterprise risk management",
+        "ERM",
+        "operational risk (?:review|assessment|framework)",
+        "fraud risk",
+        "risk[\\s-]based (?:internal )?audit",
+        "compliance (?:review|assessment|audit)",
+        "regulatory compliance",
+        "corporate governance",
+        "governance (?:review|assessment|framework)",
+        "AML(?:/CFT)? (?:review|assessment|audit)",
+        "asset quality review",
+        "AQR"
+      ],
+      "document_phrases": [
+        "internal control (?:assessment|review|framework|system review)",
+        "enterprise risk management (?:framework|consultan)"
+      ]
+    },
+    {
+      "code": "ACCOUNTING",
+      "label": "Accounting & Financial Reporting",
+      "phrases": [
+        "IFRS(?![\\s-]*0?9)",
+        "IAS[\\s-]?\\d{1,2}",
+        "international financial reporting standards?",
+        "financial reporting",
+        "financial statements? (?:preparation|review|compilation)",
+        "preparation of financial statements",
+        "accounting (?:consultan(?:cy|t|ts)|advisory|services?|firm|manual|policies|policy)",
+        "chart of accounts",
+        "book[\\s-]?keeping",
+        "finance (?:manual|function review)",
+        "financial management (?:manual|assessment|review|capacity assessment)",
+        "reconciliation (?:services?|of accounts)"
+      ],
+      "document_phrases": [
+        "preparation of (?:the )?financial statements",
+        "IFRS (?:conversion|implementation|adoption)"
+      ]
+    },
+    {
+      "code": "TAX_VAT",
+      "label": "Tax & VAT",
+      "phrases": [
+        "tax (?:consultan(?:cy|t|ts)|advis(?:ory|er|or)|compliance|audit|services?|return|planning)",
+        "VAT (?:consultan(?:cy|t|ts)|advis(?:ory|er|or)|compliance|audit|services?|return)",
+        "income tax (?:consultan(?:cy|t)|advis|return|assessment)",
+        "transfer pricing",
+        "withholding tax (?:review|compliance)",
+        "কর পরামর্শক",
+        "ভ্যাট পরামর্শক",
+        "(?:আয়)?কর[\\s-]*উপদেষ্টা",
+        "ভ্যাট[\\s-]*উপদেষ্টা"
+      ],
+      "document_phrases": [
+        "(?:tax|VAT) (?:consultan(?:cy|t)|advisory) services"
+      ]
+    },
+    {
+      "code": "ADVISORY",
+      "label": "Financial & Management Advisory",
+      "phrases": [
+        "due diligence",
+        "(?:business|share|equity|asset|company|enterprise) valuation",
+        "valuation (?:services?|of (?:shares|business|assets|the company))",
+        "fixed asset (?:verification|register|valuation|tagging)",
+        "transaction advisory",
+        "financial advisory",
+        "financial advis(?:er|or)",
+        "management consult(?:ancy|ing|ant|ants)",
+        "business process (?:review|re[\\s-]?engineering|improvement|mapping)",
+        "process (?:improvement|re[\\s-]?engineering) (?:consultan|advisory)",
+        "BPR",
+        "procurement (?:advisory|review|audit|post review)",
+        "ERP (?:controls|audit|review)",
+        "forensic",
+        "fraud investigation",
+        "financial (?:feasibility|viability) (?:study|assessment)",
+        "capital (?:raising|restructuring) advis"
+      ],
+      "document_phrases": [
+        "financial due diligence",
+        "business process re[\\s-]?engineering"
+      ]
+    },
+    {
+      "code": "TRAINING",
+      "label": "Professional Training",
+      "phrases": [
+        "(?:IFRS|accounting|audit|tax|VAT|financial management|internal control|risk management) training"
+      ],
+      "document_phrases": []
+    }
+  ],
+  "_exclusions_comment": "Phrases removed from the text before category matching, so they cannot trigger a category on their own (e.g. an 'energy audit' is not an ACNABIN audit).",
+  "exclusions": [
+    "energy audit",
+    "fire(?: safety)? audit",
+    "electrical(?: safety)? audit",
+    "structural audit",
+    "safety audit",
+    "environmental audit",
+    "social audit",
+    "accessibility audit",
+    "building audit",
+    "audited financial statements?",
+    "audit(?:ed)? reports? (?:of|for) the (?:bidder|tenderer|applicant|firm)",
+    "surveyors?(?: and| &)? (?:valuation|valuers?)",
+    "valuation (?:and|&) survey(?:or|ors|ing)?",
+    "property valuation",
+    "land valuation",
+    "collateral valuation",
+    "audit vault",
+    "audit trails?",
+    "audit logs?",
+    "audit (?:management )?(?:software|module|tool)s?",
+    "internal control (?:&|and) compliance (?:division|department|wing|unit)",
+    "(?:audit|compliance|risk management) (?:division|department|wing|unit|committee)"
+  ],
+  "_priority_veto_comment": "If the TITLE matches one of these, the item is never Priority (it is a vacancy, not a service tender).",
+  "priority_veto": [
+    "recruitment",
+    "vacancy",
+    "vacancies",
+    "job (?:circular|opening|advertisement)",
+    "career",
+    "internship",
+    "sale of (?:old|used|scrap)",
+    "selling of",
+    "auction"
+  ],
+  "_closed_status_comment": "If the listing title/row text matches one of these, the notice is not an open opportunity.",
+  "closed_status": [
+    "cancel+ed",
+    "cancel+ation",
+    "withdrawn",
+    "awarded",
+    "award notice",
+    "notification of award",
+    "notice of award",
+    "contract award",
+    "tender result",
+    "evaluation result",
+    "result of (?:the )?(?:tender|evaluation|bid|rfq|rfp|eoi)",
+    "status:? *(?:closed|expired|completed)",
+    "\\(closed\\)",
+    "\\[closed\\]",
+    "বাতিল"
+  ]
+}

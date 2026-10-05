@@ -1,144 +1,161 @@
 """
-Asynchronous Web Crawler module for ACNABIN Tender Agent.
-Implements polite domain rate-limiting, conditional GETs (ETag / If-Modified-Since),
-custom User-Agent with contact email, Playwright fallback for JavaScript-rendered sites,
-and graceful timeout budgeting.
+HTTP fetching for tender pages and tender documents.
+
+- One shared async client; requests to the same domain are spaced out (politeness delay).
+- Failures are returned as error strings, never raised, so one broken source cannot stop a run.
+- Pages that return 200 but are really "not found" pages or bot-challenge pages are reported
+  as SOFT_404 / BLOCKED instead of being parsed for tenders.
 """
 
-import time
 import asyncio
-from datetime import datetime, timezone
+import re
+import time
+from dataclasses import dataclass
+from typing import Dict, Optional
 from urllib.parse import urlparse
-from typing import Any, Dict, List, Optional, Tuple
 
 import httpx
-from app.utils.logging import logger
+
 from app.utils.config import config
-from app.parsers.html_parser import HtmlNoticeExtractor, clean_html_text, compute_content_hash
-from app.parsers.document_parser import DocumentParser
+from app.utils.logging import logger
+
+USER_AGENT = (
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) "
+    "Chrome/124.0 Safari/537.36 ACNABIN-TenderMonitor/2.0"
+)
+
+_NOT_FOUND = re.compile(r"page not found|404 not found|\b404\b.*not found|the page you (?:are looking for|requested)", re.I)
+_CHALLENGE = re.compile(
+    r"security check required|client challenge|just a moment|attention required|verify you are human|"
+    r"captcha|access denied|request rejected|enable javascript and cookies", re.I)
 
 
-class DomainRateLimiter:
-    """Tracks last request timestamp per domain to enforce rate limits."""
+@dataclass
+class FetchResult:
+    url: str
+    final_url: str = ""
+    status: int = 0
+    text: str = ""
+    content: bytes = b""
+    content_type: str = ""
+    error: Optional[str] = None
 
-    def __init__(self, default_interval: float = 5.0):
-        self.default_interval = default_interval
-        self._last_access: Dict[str, float] = {}
-
-    async def wait_for_domain(self, url: str, interval: Optional[float] = None) -> None:
-        domain = urlparse(url).netloc
-        needed_interval = interval if interval is not None else self.default_interval
-        now = time.time()
-        last_time = self._last_access.get(domain, 0.0)
-        elapsed = now - last_time
-        if elapsed < needed_interval:
-            wait_time = needed_interval - elapsed
-            await asyncio.sleep(wait_time)
-        self._last_access[domain] = time.time()
+    @property
+    def ok(self) -> bool:
+        return self.error is None
 
 
 class TenderCrawler:
-    """Manages crawling of sources, conditional HTTP fetching, and document extraction."""
-
     def __init__(self):
-        self.rate_limiter = DomainRateLimiter(
-            default_interval=float(config.settings.get("crawler", {}).get("default_rate_limit_seconds", 5.0))
-        )
-        self.contact_email = config.crawler_contact_email
-        self.user_agent = f"ACNABIN-Tender-Intelligence-Bot/1.0 (+https://acnabin-tenders.pages.dev; contact: {self.contact_email})"
-        self.timeout = float(config.settings.get("crawler", {}).get("request_timeout_seconds", 30))
+        self.timeout = float(config.crawler_setting("request_timeout_seconds", 30))
+        self.domain_delay = float(config.crawler_setting("per_domain_delay_seconds", 1.5))
+        self.max_doc_bytes = int(config.crawler_setting("max_document_bytes", 15_000_000))
+        self._locks: Dict[str, asyncio.Lock] = {}
+        self._last: Dict[str, float] = {}
+        self._clients: Dict[bool, httpx.AsyncClient] = {}
 
-    def _get_headers(self, etag: Optional[str] = None, last_modified: Optional[str] = None) -> Dict[str, str]:
-        headers = {
-            "User-Agent": self.user_agent,
-            "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,application/pdf,*/*;q=0.8",
-            "Accept-Language": "en-US,en;q=0.9,bn;q=0.8",
-        }
-        if etag:
-            headers["If-None-Match"] = etag
-        if last_modified:
-            headers["If-Modified-Since"] = last_modified
-        return headers
-
-    async def fetch_source_html(self, source: Dict[str, Any]) -> Tuple[int, Optional[str], Dict[str, str], Optional[str]]:
-        """
-        Fetches HTML from a source URL using conditional GETs.
-        Returns: (http_status, html_content, response_headers, error_message)
-        """
-        url = source["url"]
-        verify_ssl = source.get("verify_ssl", True)
-        if not verify_ssl:
-            logger.warning("Crawling source with verify_ssl=False", extra={"url": url, "source_id": source.get("id")})
-
-        await self.rate_limiter.wait_for_domain(url, interval=float(source.get("rate_limit_seconds", 5.0)))
-
-        headers = self._get_headers(etag=source.get("etag"), last_modified=source.get("last_modified"))
-
-        # If requires_js is True, try Playwright if installed
-        if source.get("requires_js", False):
-            return await self._fetch_with_playwright(url)
-
-        try:
-            async with httpx.AsyncClient(
+    def _client(self, verify_ssl: bool) -> httpx.AsyncClient:
+        if verify_ssl not in self._clients:
+            self._clients[verify_ssl] = httpx.AsyncClient(
                 verify=verify_ssl,
                 timeout=self.timeout,
-                follow_redirects=True
-            ) as client:
-                resp = await client.get(url, headers=headers)
+                follow_redirects=True,
+                headers={
+                    "User-Agent": USER_AGENT,
+                    "From": config.crawler_contact_email,
+                    "Accept": "text/html,application/xhtml+xml,application/pdf,*/*;q=0.8",
+                    "Accept-Language": "en-US,en;q=0.9,bn;q=0.8",
+                },
+            )
+        return self._clients[verify_ssl]
 
-                # 304 Not Modified
-                if resp.status_code == 304:
-                    return 304, None, dict(resp.headers), None
+    async def close(self) -> None:
+        for client in self._clients.values():
+            await client.aclose()
+        self._clients.clear()
 
-                # Suspected geo-block or access denied
-                if resp.status_code in (403, 401) and any(kw in resp.text.lower() for kw in ["geo", "forbidden", "cloudflare", "access denied"]):
-                    return resp.status_code, None, dict(resp.headers), "GEO_BLOCK_SUSPECTED"
+    async def _polite(self, url: str) -> asyncio.Lock:
+        domain = urlparse(url).netloc
+        lock = self._locks.setdefault(domain, asyncio.Lock())
+        await lock.acquire()
+        wait = self.domain_delay - (time.monotonic() - self._last.get(domain, 0.0))
+        if wait > 0:
+            await asyncio.sleep(wait)
+        return lock
 
-                resp.raise_for_status()
-                return resp.status_code, resp.text, dict(resp.headers), None
+    def _release(self, url: str, lock: asyncio.Lock) -> None:
+        self._last[urlparse(url).netloc] = time.monotonic()
+        lock.release()
 
-        except httpx.HTTPStatusError as e:
-            return e.response.status_code, None, {}, str(e)
-        except httpx.ConnectTimeout:
-            return 0, None, {}, "CONNECTION_TIMEOUT"
+    async def fetch(self, url: str, verify_ssl: bool = True, binary: bool = False) -> FetchResult:
+        result = FetchResult(url=url)
+        lock = await self._polite(url)
+        try:
+            resp = await self._client(verify_ssl).get(url)
+            result.status = resp.status_code
+            result.final_url = str(resp.url)
+            result.content_type = resp.headers.get("content-type", "").lower()
+            if resp.status_code >= 400:
+                body = resp.text[:3000] if not binary else ""
+                result.error = "BLOCKED" if (resp.status_code in (401, 403, 429, 503) and _CHALLENGE.search(body)) \
+                    else f"HTTP_{resp.status_code}"
+                return result
+            if binary:
+                if len(resp.content) > self.max_doc_bytes:
+                    result.error = "DOCUMENT_TOO_LARGE"
+                    return result
+                result.content = resp.content
+            else:
+                result.text = resp.text
+        except httpx.TimeoutException:
+            result.error = "TIMEOUT"
         except httpx.ConnectError as e:
-            # Often broken TLS or DNS resolution
-            if "certificate" in str(e).lower() or "ssl" in str(e).lower():
-                return 0, None, {}, f"SSL_ERROR: {e}"
-            return 0, None, {}, f"CONNECT_ERROR: {e}"
-        except Exception as e:
-            return 0, None, {}, f"UNEXPECTED_ERROR: {e}"
+            msg = str(e)
+            result.error = "SSL_ERROR" if ("certificate" in msg.lower() or "ssl" in msg.lower()) else "CONNECTION_FAILED"
+        except Exception as e:  # noqa: BLE001 - any failure is reported, never raised
+            result.error = f"ERROR: {type(e).__name__}: {str(e)[:150]}"
+        finally:
+            self._release(url, lock)
+        return result
 
-    async def _fetch_with_playwright(self, url: str) -> Tuple[int, Optional[str], Dict[str, str], Optional[str]]:
-        """Renders dynamic JavaScript pages with Playwright Chromium."""
+    async def fetch_page(self, source: Dict) -> FetchResult:
+        """Fetches a source page and classifies soft failures (not-found and challenge pages)."""
+        if source.get("requires_js"):
+            result = await self._fetch_with_playwright(source["url"])
+        else:
+            result = await self.fetch(source["url"], verify_ssl=source.get("verify_ssl", True))
+        if result.ok:
+            head = result.text[:6000]
+            title_m = re.search(r"<title[^>]*>(.*?)</title>", head, re.I | re.S)
+            title = title_m.group(1) if title_m else ""
+            final_path = urlparse(result.final_url or result.url).path.lower()
+            if "/404" in final_path or _NOT_FOUND.search(title):
+                result.error = "SOFT_404"
+            elif _CHALLENGE.search(title) or (len(result.text) < 8000 and _CHALLENGE.search(result.text)):
+                result.error = "BLOCKED"
+            elif urlparse(source["url"]).path.strip("/") and not final_path.strip("/"):
+                result.error = "REDIRECTED_TO_HOMEPAGE"
+        return result
+
+    async def _fetch_with_playwright(self, url: str) -> FetchResult:
+        result = FetchResult(url=url)
         try:
             from playwright.async_api import async_playwright
+        except ImportError:
+            result.error = "PLAYWRIGHT_NOT_INSTALLED"
+            return result
+        try:
             async with async_playwright() as p:
                 browser = await p.chromium.launch(headless=True)
-                page = await browser.new_page(user_agent=self.user_agent)
-                response = await page.goto(url, wait_until="networkidle", timeout=int(self.timeout * 1000))
-                status = response.status if response else 200
-                content = await page.content()
+                page = await browser.new_page(user_agent=USER_AGENT)
+                resp = await page.goto(url, wait_until="networkidle", timeout=int(self.timeout * 1000))
+                result.status = resp.status if resp else 0
+                result.final_url = page.url
+                result.text = await page.content()
                 await browser.close()
-                return status, content, {}, None
-        except Exception as e:
-            logger.warning(f"Playwright render failed for {url}: {e}; falling back to httpx")
-            # Fallback to standard httpx
-            try:
-                async with httpx.AsyncClient(verify=False, timeout=self.timeout, follow_redirects=True) as client:
-                    resp = await client.get(url, headers=self._get_headers())
-                    return resp.status_code, resp.text, dict(resp.headers), None
-            except Exception as fe:
-                return 0, None, {}, str(fe)
-
-    async def download_document(self, doc_url: str, verify_ssl: bool = True) -> Tuple[Optional[bytes], Optional[str]]:
-        """Downloads document binary (PDF/DOCX/XLSX) with rate limiting."""
-        await self.rate_limiter.wait_for_domain(doc_url, interval=2.0)
-        try:
-            async with httpx.AsyncClient(verify=verify_ssl, timeout=self.timeout, follow_redirects=True) as client:
-                resp = await client.get(doc_url, headers={"User-Agent": self.user_agent})
-                resp.raise_for_status()
-                return resp.content, None
-        except Exception as e:
-            logger.error(f"Failed to download document from {doc_url}: {e}")
-            return None, str(e)
+                if result.status >= 400:
+                    result.error = f"HTTP_{result.status}"
+        except Exception as e:  # noqa: BLE001
+            logger.warning(f"Playwright render failed for {url}: {e}")
+            result.error = f"RENDER_FAILED: {str(e)[:150]}"
+        return result

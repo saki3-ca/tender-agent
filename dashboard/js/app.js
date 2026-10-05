@@ -1,262 +1,309 @@
-/**
- * ACNABIN Tender Dashboard Client Application
- * Connects via supabase-js with anon key and provides real-time filtering & client-side Excel/CSV exports.
+/*
+ * ACNABIN Tender Monitoring dashboard.
+ * Reads the Supabase view v_active_tenders (active tenders only; the ACTIVE rule is applied
+ * in the database against the current time). General = all rows of a sector,
+ * Priority = rows flagged is_priority.
  */
+(function () {
+  "use strict";
 
-// Initialize Supabase Client if credentials injected
-let supabaseClient = null;
-if (window.ENV && window.ENV.SUPABASE_URL && !window.ENV.SUPABASE_URL.startsWith("__")) {
-  try {
-    supabaseClient = supabase.createClient(window.ENV.SUPABASE_URL, window.ENV.SUPABASE_ANON_KEY);
-  } catch (e) {
-    console.warn("Supabase client init error:", e);
+  const env = window.ENV || {};
+  let db = null;
+  if (env.SUPABASE_URL && !env.SUPABASE_URL.startsWith("__") && window.supabase) {
+    db = window.supabase.createClient(env.SUPABASE_URL, env.SUPABASE_ANON_KEY);
   }
-}
 
-// Current dataset for filtering and export
-let currentOpportunities = [];
+  // ------------------------------------------------------------------ helpers
+  const $ = (sel) => document.querySelector(sel);
+  const esc = (v) => String(v == null ? "" : v)
+    .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;").replace(/'/g, "&#39;");
+  const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  const TZ = "Asia/Dhaka";
 
-async function loadKPIs() {
-  if (!supabaseClient) return;
-  try {
-    const { data, error } = await supabaseClient.from("v_kpis").select("*").single();
-    if (!error && data) {
-      if (document.getElementById("kpi-monitored")) document.getElementById("kpi-monitored").innerText = data.total_organizations || 0;
-      if (document.getElementById("kpi-target-banks")) document.getElementById("kpi-target-banks").innerText = data.ifrs9_target_banks || 30;
-      if (document.getElementById("kpi-very-high")) document.getElementById("kpi-very-high").innerText = data.very_high_priority || 0;
-      if (document.getElementById("kpi-high")) document.getElementById("kpi-high").innerText = data.high_priority || 0;
-      if (document.getElementById("kpi-deadlines")) document.getElementById("kpi-deadlines").innerText = data.deadlines_within_7_days || 0;
-      if (document.getElementById("kpi-new-today")) document.getElementById("kpi-new-today").innerText = data.new_today || 0;
+  function dhakaParts(d) {
+    const p = new Intl.DateTimeFormat("en-GB", { timeZone: TZ, year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit", hour12: false })
+      .formatToParts(d).reduce((acc, x) => (acc[x.type] = x.value, acc), {});
+    return { y: +p.year, m: +p.month, d: +p.day, hh: p.hour, mm: p.minute };
+  }
+  function fmtDate(y, m, d) { return `${String(d).padStart(2, "0")} ${MONTHS[m - 1]} ${y}`; }
+  function fmtPublished(iso) {
+    if (!iso) return null;
+    const [y, m, d] = iso.split("-").map(Number);
+    return fmtDate(y, m, d);
+  }
+  function fmtDeadline(t) {
+    if (!t.deadline) return null;
+    const p = dhakaParts(new Date(t.deadline));
+    return fmtDate(p.y, p.m, p.d) + (t.deadline_has_time ? ` ${p.hh}:${p.mm}` : "");
+  }
+  function todayDhaka() {
+    const p = dhakaParts(new Date());
+    return Date.UTC(p.y, p.m - 1, p.d);
+  }
+  function daysUntil(t) {
+    if (!t.deadline) return null;
+    const p = dhakaParts(new Date(t.deadline));
+    return Math.round((Date.UTC(p.y, p.m - 1, p.d) - todayDhaka()) / 86400000);
+  }
+  function daysSincePublished(t) {
+    if (!t.published_date) return null;
+    const [y, m, d] = t.published_date.split("-").map(Number);
+    return Math.round((todayDhaka() - Date.UTC(y, m - 1, d)) / 86400000);
+  }
+  function setText(sel, text) { const el = $(sel); if (el) el.textContent = text; }
+
+  async function loadLastRun() {
+    if (!db) { setText("#last-run", "Database not configured"); return; }
+    const { data } = await db.from("v_last_run").select("end_time").limit(1);
+    if (data && data.length && data[0].end_time) {
+      const p = dhakaParts(new Date(data[0].end_time));
+      setText("#last-run", `Last updated ${fmtDate(p.y, p.m, p.d)} ${p.hh}:${p.mm} (Dhaka)`);
+    } else {
+      setText("#last-run", "No completed run yet");
     }
-  } catch (err) {
-    console.error("Error loading KPIs:", err);
-  }
-}
-
-async function loadOpportunities(viewName = "v_today_priority") {
-  const tbody = document.getElementById("opportunities-tbody");
-  if (!tbody) return;
-
-  tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; padding: 2rem;">Loading live opportunities...</td></tr>`;
-
-  if (!supabaseClient) {
-    // Demo / offline placeholder
-    tbody.innerHTML = `
-      <tr>
-        <td colspan="7" class="empty-state">
-          <div class="empty-state-icon">📊</div>
-          <h3>Running in Local/Demo Mode</h3>
-          <p>Configure SUPABASE_URL and SUPABASE_ANON_KEY in settings or deploy to Cloudflare Pages to view live production data.</p>
-        </td>
-      </tr>
-    `;
-    return;
   }
 
-  try {
-    const { data, error } = await supabaseClient.from(viewName).select("*");
+  async function fetchActive(sector) {
+    let q = db.from("v_active_tenders").select("*");
+    if (sector) q = q.eq("sector", sector);
+    const { data, error } = await q.limit(5000);
     if (error) throw error;
-
-    currentOpportunities = data || [];
-    renderTable(currentOpportunities);
-  } catch (err) {
-    console.error("Failed to load opportunities:", err);
-    tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; color: var(--color-very-high); padding: 2rem;">Error loading data from database.</td></tr>`;
-  }
-}
-
-async function loadNgoOpportunities() {
-  const tbody = document.getElementById("opportunities-tbody");
-  if (!tbody) return;
-
-  tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; padding: 2rem;">Loading live NGO &amp; Development Partner opportunities...</td></tr>`;
-
-  if (!supabaseClient) return;
-
-  try {
-    const { data, error } = await supabaseClient.from("opportunities")
-      .select("*")
-      .order("score", { ascending: false });
-
-    if (error) throw error;
-
-    const ngoKeywords = ["brac", "icddrb", "pksf", "asa", "tmss", "sajida", "care", "save the children", "oxfam", "actionaid", "undp", "friendship", "mjf", "ngo", "foundation", "donor"];
-    
-    currentOpportunities = (data || []).filter(o => 
-      (o.organization_type && ["NGO", "INGO", "DONOR", "DEVELOPMENT_PARTNER"].includes(o.organization_type.toUpperCase())) ||
-      (o.organization_id && o.organization_id.startsWith("ngo_")) ||
-      ngoKeywords.some(k => (o.organization_name || "").toLowerCase().includes(k))
-    );
-
-    renderTable(currentOpportunities);
-  } catch (err) {
-    console.error("Failed to load NGO opportunities:", err);
-    tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; color: var(--color-very-high); padding: 2rem;">Error loading NGO data from database.</td></tr>`;
-  }
-}
-
-function renderTable(items) {
-  const tbody = document.getElementById("opportunities-tbody");
-  if (!tbody) return;
-
-  if (!items || items.length === 0) {
-    tbody.innerHTML = `
-      <tr>
-        <td colspan="7" class="empty-state">
-          <div class="empty-state-icon">🔍</div>
-          <h3>No opportunities match the criteria</h3>
-          <p>Try adjusting your search query or filters.</p>
-        </td>
-      </tr>
-    `;
-    return;
+    return data || [];
   }
 
-  tbody.innerHTML = items.map(opp => {
-    const priorityClass = `badge-${(opp.priority || 'low').toLowerCase().replace(' ', '-')}`;
-    const isNgo = (opp.organization_type && ["NGO", "INGO", "DONOR", "DEVELOPMENT_PARTNER"].includes(opp.organization_type.toUpperCase())) || (opp.organization_id && opp.organization_id.startsWith("ngo_"));
-    const pipelineBadge = opp.pipeline === 'IFRS9_TARGET' 
-      ? `<span class="badge badge-target">IFRS 9 Target</span>` 
-      : (isNgo ? `<span class="badge badge-ngo">${escapeHtml(opp.organization_type || 'NGO')}</span>` : `<span class="badge badge-market">General Market</span>`);
+  // ------------------------------------------------------------------ home
+  async function initHome() {
+    if (!db) return;
+    try {
+      const rows = await fetchActive(null);
+      for (const sector of ["BANK", "NGO"]) {
+        const s = rows.filter((r) => r.sector === sector);
+        setText(`#${sector}-general`, s.length);
+        setText(`#${sector}-priority`, s.filter((r) => r.is_priority).length);
+        if (sector === "BANK") setText("#BANK-ifrs9", s.filter((r) => r.is_ifrs9).length);
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  }
 
-    const daysRemaining = opp.days_remaining !== null && opp.days_remaining !== undefined 
-      ? `<span style="color: ${opp.days_remaining <= 3 ? 'var(--color-very-high)' : 'inherit'}; font-weight: 600;">${opp.days_remaining}d left</span>` 
-      : 'N/A';
+  // ------------------------------------------------------------------ sector page
+  const state = { rows: [], tab: "general", sortKey: "deadline", sortDir: 1 };
 
-    return `
-      <tr>
-        <td>
-          <div style="font-weight: 600; color: #fff;">${escapeHtml(opp.organization_name || 'N/A')}</div>
-          <div style="font-size: 0.75rem; color: var(--text-dim);">${escapeHtml(opp.reference_number || 'No Ref')}</div>
+  function filtered() {
+    const q = ($("#f-search").value || "").trim().toLowerCase();
+    const org = $("#f-org").value;
+    const cat = $("#f-cat").value;
+    const due = $("#f-due").value;
+    const pub = $("#f-pub").value;
+    const onlyIfrs9 = $("#f-ifrs9") && $("#f-ifrs9").checked;
+    const onlyTarget = $("#f-target") && $("#f-target").checked;
+    return state.rows.filter((t) => {
+      if (state.tab === "priority" && !t.is_priority) return false;
+      if (org && t.organization_name !== org) return false;
+      if (cat && !(t.categories || []).includes(cat)) return false;
+      if (onlyIfrs9 && !t.is_ifrs9) return false;
+      if (onlyTarget && !t.is_target_bank) return false;
+      const dl = daysUntil(t);
+      if (due === "7" && !(dl !== null && dl <= 7)) return false;
+      if (due === "30" && !(dl !== null && dl <= 30)) return false;
+      if (due === "none" && dl !== null) return false;
+      if (pub === "7") { const ds = daysSincePublished(t); if (ds === null || ds > 7) return false; }
+      if (q) {
+        const hay = [t.title, t.organization_name, t.reference_number, t.description, (t.categories || []).join(" ")].join(" ").toLowerCase();
+        if (!hay.includes(q)) return false;
+      }
+      return true;
+    }).sort(compare);
+  }
+
+  function compare(a, b) {
+    const k = state.sortKey, dir = state.sortDir;
+    const val = (t) => {
+      if (k === "deadline") return t.deadline ? Date.parse(t.deadline) : Number.MAX_SAFE_INTEGER;
+      if (k === "published") return t.published_date ? -Date.parse(t.published_date) : Number.MAX_SAFE_INTEGER;
+      if (k === "organization") return (t.organization_name || "").toLowerCase();
+      return (t.title || "").toLowerCase();
+    };
+    const va = val(a), vb = val(b);
+    return (va < vb ? -1 : va > vb ? 1 : 0) * dir;
+  }
+
+  function sourceLinks(t) {
+    const primary = t.document_url || t.notice_url || t.source_url;
+    const label = t.document_url ? "View tender" : t.notice_url ? "View notice" : "Open source";
+    let html = `<a href="${esc(primary)}" target="_blank" rel="noopener">${label} &#8599;</a>`;
+    if (primary !== t.source_url) html += `<a class="minor" href="${esc(t.source_url)}" target="_blank" rel="noopener">Source page</a>`;
+    return html;
+  }
+
+  function relevanceCell(t) {
+    if (!t.is_priority) return `<span class="muted">—</span>`;
+    return (t.categories || []).map((c) =>
+      `<span class="tag ${c === "IFRS 9 / ECL" ? "tag-ifrs9" : "tag-priority"}">${esc(c)}</span>`).join("");
+  }
+
+  function render() {
+    const items = filtered();
+    const body = $("#rows");
+    setText("#result-count", `${items.length} of ${state.tab === "priority" ? state.rows.filter((r) => r.is_priority).length : state.rows.length} shown`);
+    if (!items.length) {
+      body.innerHTML = `<tr><td colspan="6" class="empty">No active opportunities found.</td></tr>`;
+      return;
+    }
+    body.innerHTML = items.map((t) => {
+      const dl = daysUntil(t);
+      const deadline = fmtDeadline(t);
+      const published = fmtPublished(t.published_date);
+      let dlSub = "";
+      if (dl !== null) dlSub = dl === 0 ? "closes today" : dl === 1 ? "closes tomorrow" : `in ${dl} days`;
+      const target = t.is_target_bank ? `<div class="sub target">IFRS 9 target bank</div>` : "";
+      return `<tr>
+        <td class="org"><div class="name">${esc(t.organization_name)}</div>${target}</td>
+        <td class="title">
+          <div class="t">${esc(t.title)}</div>
+          ${t.reference_number ? `<div class="ref">${esc(t.reference_number)}</div>` : ""}
+          ${t.description ? `<div class="desc">${esc(t.description)}</div>` : ""}
         </td>
-        <td>
-          <div style="font-weight: 500;">
-            <a href="opportunity.html?id=${opp.id}" style="color: #67e8f9; text-decoration: none;">${escapeHtml(opp.title)}</a>
-          </div>
-          <div style="font-size: 0.775rem; color: var(--text-muted); margin-top: 0.2rem;">${escapeHtml(opp.category)}</div>
-        </td>
-        <td>${pipelineBadge}</td>
-        <td><span class="badge ${priorityClass}">${opp.priority}</span></td>
-        <td style="font-weight: 700; color: #fff;">${opp.score}/100</td>
-        <td>${daysRemaining}</td>
-        <td>
-          <a href="${opp.source_url}" target="_blank" rel="noopener" class="btn" style="padding: 0.25rem 0.6rem; font-size: 0.75rem;">Source ↗</a>
-        </td>
-      </tr>
-    `;
-  }).join("");
-}
+        <td class="date">${published ? esc(published) : `<span class="muted">Not stated</span>`}</td>
+        <td class="date">${deadline ? `${esc(deadline)}<div class="sub ${dl !== null && dl <= 3 ? "soon" : ""}">${dlSub}</div>` : `<span class="muted">Not stated</span>`}</td>
+        <td class="rel">${relevanceCell(t)}</td>
+        <td class="src">${sourceLinks(t)}</td>
+      </tr>`;
+    }).join("");
+  }
 
-function applyFilters() {
-  const search = (document.getElementById("filter-search")?.value || "").toLowerCase();
-  const priority = document.getElementById("filter-priority")?.value || "ALL";
-  const pipeline = document.getElementById("filter-pipeline")?.value || "ALL";
-  const category = document.getElementById("filter-category")?.value || "ALL";
+  function setTab(tab) {
+    state.tab = tab === "priority" ? "priority" : "general";
+    document.querySelectorAll(".tab").forEach((b) => {
+      const on = b.dataset.tab === state.tab;
+      b.classList.toggle("active", on);
+      b.setAttribute("aria-selected", on ? "true" : "false");
+    });
+    document.querySelectorAll("[data-note]").forEach((n) => { n.hidden = n.dataset.note !== state.tab; });
+    const url = new URL(window.location.href);
+    url.searchParams.set("tab", state.tab);
+    history.replaceState(null, "", url);
+    render();
+  }
 
-  const filtered = currentOpportunities.filter(item => {
-    const matchesSearch = !search || 
-      (item.title && item.title.toLowerCase().includes(search)) ||
-      (item.organization_name && item.organization_name.toLowerCase().includes(search)) ||
-      (item.reference_number && item.reference_number.toLowerCase().includes(search));
+  function fillSelect(sel, values, allLabel) {
+    const el = $(sel);
+    const current = el.value;
+    el.innerHTML = `<option value="">${allLabel}</option>` + values.map((v) => `<option value="${esc(v)}">${esc(v)}</option>`).join("");
+    if (values.includes(current)) el.value = current;
+  }
 
-    const matchesPriority = priority === "ALL" || item.priority === priority;
-    const matchesPipeline = pipeline === "ALL" || item.pipeline === pipeline;
-    const matchesCategory = category === "ALL" || item.category === category;
+  async function loadSector(sector) {
+    const body = $("#rows");
+    if (!db) {
+      body.innerHTML = `<tr><td colspan="6" class="empty">The database connection is not configured (js/config.js).</td></tr>`;
+      return;
+    }
+    body.innerHTML = `<tr><td colspan="6" class="empty">Loading…</td></tr>`;
+    try {
+      state.rows = await fetchActive(sector);
+      $("#load-error").hidden = true;
+    } catch (e) {
+      console.error(e);
+      state.rows = [];
+      $("#load-error").hidden = false;
+    }
+    setText("#count-general", state.rows.length);
+    setText("#count-priority", state.rows.filter((r) => r.is_priority).length);
+    fillSelect("#f-org", [...new Set(state.rows.map((r) => r.organization_name))].sort(), "All organizations");
+    fillSelect("#f-cat", [...new Set(state.rows.flatMap((r) => r.categories || []))].sort(), "All categories");
+    render();
+    loadSourceErrors(sector);
+  }
 
-    return matchesSearch && matchesPriority && matchesPipeline && matchesCategory;
+  async function loadSourceErrors(sector) {
+    const { data } = await db.from("source_status").select("source_id,ok").eq("sector", sector);
+    if (!data) return;
+    const failed = data.filter((s) => !s.ok).length;
+    setText("#source-summary", `${data.length - failed} of ${data.length} sources read successfully in the last run.`);
+  }
+
+  function initSector(sector) {
+    const params = new URLSearchParams(window.location.search);
+    document.querySelectorAll(".tab").forEach((b) => b.addEventListener("click", () => setTab(b.dataset.tab)));
+    ["#f-search"].forEach((s) => $(s).addEventListener("input", render));
+    ["#f-org", "#f-cat", "#f-due", "#f-pub", "#f-ifrs9", "#f-target"].forEach((s) => { const el = $(s); if (el) el.addEventListener("change", render); });
+    $("#btn-refresh").addEventListener("click", () => { loadSector(sector); loadLastRun(); });
+    $("#btn-export").addEventListener("click", exportCsv);
+    document.querySelectorAll("th.sortable").forEach((th) => th.addEventListener("click", () => {
+      const key = th.dataset.sort;
+      state.sortDir = state.sortKey === key ? -state.sortDir : 1;
+      state.sortKey = key;
+      document.querySelectorAll("th.sortable .dir").forEach((d) => d.textContent = "");
+      th.querySelector(".dir").textContent = state.sortDir === 1 ? "▲" : "▼";
+      render();
+    }));
+    setTab(params.get("tab"));
+    loadSector(sector);
+  }
+
+  function exportCsv() {
+    const items = filtered();
+    const cols = [
+      ["Organization", (t) => t.organization_name],
+      ["Opportunity", (t) => t.title],
+      ["Reference", (t) => t.reference_number],
+      ["Published", (t) => t.published_date],
+      ["Deadline", (t) => fmtDeadline(t)],
+      ["Priority", (t) => (t.is_priority ? "Yes" : "No")],
+      ["IFRS 9", (t) => (t.is_ifrs9 ? "Yes" : "No")],
+      ["Category", (t) => (t.categories || []).join("; ")],
+      ["Matched keywords", (t) => (t.matched_keywords || []).join("; ")],
+      ["Tender link", (t) => t.document_url || t.notice_url || ""],
+      ["Source page", (t) => t.source_url],
+    ];
+    const cell = (v) => `"${String(v == null ? "" : v).replace(/"/g, '""')}"`;
+    const csv = [cols.map((c) => cell(c[0])).join(","), ...items.map((t) => cols.map((c) => cell(c[1](t))).join(","))].join("\r\n");
+    const blob = new Blob(["﻿" + csv], { type: "text/csv;charset=utf-8" });
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = `ACNABIN_${document.body.dataset.sector}_${state.tab}_${new Date().toISOString().slice(0, 10)}.csv`;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+  }
+
+  // ------------------------------------------------------------------ sources page
+  async function initSources() {
+    const body = $("#rows");
+    if (!db) { body.innerHTML = `<tr><td colspan="6" class="empty">The database connection is not configured.</td></tr>`; return; }
+    const { data, error } = await db.from("source_status").select("*").order("organization_name");
+    if (error || !data) { body.innerHTML = `<tr><td colspan="6" class="empty">Could not load source status.</td></tr>`; return; }
+    const draw = () => {
+      const sector = $("#f-sector").value;
+      const onlyErrors = $("#f-errors").checked;
+      const rows = data.filter((s) => (!sector || s.sector === sector) && (!onlyErrors || !s.ok));
+      setText("#result-count", `${rows.length} sources · ${data.filter((s) => !s.ok).length} with errors`);
+      body.innerHTML = rows.length ? rows.map((s) => {
+        const p = s.last_checked ? dhakaParts(new Date(s.last_checked)) : null;
+        return `<tr>
+          <td class="org"><div class="name">${esc(s.organization_name)}</div>${s.is_target_bank ? `<div class="sub target">IFRS 9 target bank</div>` : ""}</td>
+          <td>${s.sector === "BANK" ? "Bank" : "NGO"}</td>
+          <td>${!s.ok ? `<span class="tag tag-error">${esc(s.error || "Error")}</span>` : s.listings_found ? `<span class="tag tag-ok">OK</span>` : `<span class="tag tag-priority">NO LISTINGS</span>`}</td>
+          <td>${s.ok ? s.listings_found : `<span class="muted">—</span>`}</td>
+          <td class="date">${p ? `${fmtDate(p.y, p.m, p.d)} ${p.hh}:${p.mm}` : "—"}${!s.ok && s.consecutive_failures > 1 ? `<div class="sub">${s.consecutive_failures} failed runs</div>` : ""}</td>
+          <td><a href="${esc(s.url)}" target="_blank" rel="noopener">${esc(s.url)}</a></td>
+        </tr>`;
+      }).join("") : `<tr><td colspan="6" class="empty">No sources match.</td></tr>`;
+    };
+    $("#f-sector").addEventListener("change", draw);
+    $("#f-errors").addEventListener("change", draw);
+    draw();
+  }
+
+  // ------------------------------------------------------------------ boot
+  document.addEventListener("DOMContentLoaded", () => {
+    loadLastRun();
+    const page = document.body.dataset.page;
+    if (page === "home") initHome();
+    else if (page === "sector") initSector(document.body.dataset.sector);
+    else if (page === "sources") initSources();
   });
-
-  renderTable(filtered);
-}
-
-// Client-Side CSV Export (Section 24)
-function exportToCSV() {
-  if (!currentOpportunities || currentOpportunities.length === 0) {
-    alert("No opportunities available to export.");
-    return;
-  }
-
-  const headers = [
-    "Organization", "Organization Type", "Pipeline", "Tender Title", "Reference",
-    "Category", "Priority", "Score", "Fit Type", "Publication Date", "Deadline",
-    "Scope", "Potential Service", "Eligibility", "Source URL", "Confidence", "First Seen"
-  ];
-
-  const rows = currentOpportunities.map(o => [
-    `"${(o.organization_name || '').replace(/"/g, '""')}"`,
-    `"${(o.organization_type || '').replace(/"/g, '""')}"`,
-    `"${o.pipeline || ''}"`,
-    `"${(o.title || '').replace(/"/g, '""')}"`,
-    `"${(o.reference_number || '').replace(/"/g, '""')}"`,
-    `"${o.category || ''}"`,
-    `"${o.priority || ''}"`,
-    o.score || 0,
-    `"${o.fit_type || ''}"`,
-    `"${o.publication_date || ''}"`,
-    `"${o.submission_deadline || ''}"`,
-    `"${(o.scope_of_work || o.title || '').replace(/"/g, '""')}"`,
-    `"${(o.potential_acnabin_service || '').replace(/"/g, '""')}"`,
-    `"${(o.eligibility || '').replace(/"/g, '""')}"`,
-    `"${o.source_url || ''}"`,
-    `"${o.ai_confidence || ''}"`,
-    `"${o.first_seen || ''}"`
-  ]);
-
-  const csvContent = "data:text/csv;charset=utf-8," + [headers.join(","), ...rows.map(r => r.join(","))].join("\n");
-  const encodedUri = encodeURI(csvContent);
-  const link = document.createElement("a");
-  link.setAttribute("href", encodedUri);
-  link.setAttribute("download", `ACNABIN_Opportunities_${new Date().toISOString().split('T')[0]}.csv`);
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
-}
-
-// Client-Side Excel Export using SheetJS if available
-function exportToExcel() {
-  if (typeof XLSX === "undefined") {
-    // Fallback to CSV if SheetJS CDN is offline
-    exportToCSV();
-    return;
-  }
-
-  const dataToExport = currentOpportunities.map(o => ({
-    "Organization": o.organization_name,
-    "Pipeline": o.pipeline,
-    "Tender Title": o.title,
-    "Reference": o.reference_number,
-    "Category": o.category,
-    "Priority": o.priority,
-    "Score": o.score,
-    "Fit Type": o.fit_type,
-    "Deadline": o.submission_deadline,
-    "Source URL": o.source_url
-  }));
-
-  const worksheet = XLSX.utils.json_to_sheet(dataToExport);
-  const workbook = XLSX.utils.book_new();
-  XLSX.utils.book_append_sheet(workbook, worksheet, "Opportunities");
-  XLSX.writeFile(workbook, `ACNABIN_Opportunities_${new Date().toISOString().split('T')[0]}.xlsx`);
-}
-
-function escapeHtml(str) {
-  if (!str) return "";
-  return String(str)
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#039;");
-}
-
-document.addEventListener("DOMContentLoaded", () => {
-  loadKPIs();
-  loadOpportunities();
-
-  document.getElementById("filter-search")?.addEventListener("input", applyFilters);
-  document.getElementById("filter-priority")?.addEventListener("change", applyFilters);
-  document.getElementById("filter-pipeline")?.addEventListener("change", applyFilters);
-  document.getElementById("filter-category")?.addEventListener("change", applyFilters);
-  document.getElementById("btn-export-csv")?.addEventListener("click", exportToCSV);
-  document.getElementById("btn-export-excel")?.addEventListener("click", exportToExcel);
-});
+})();

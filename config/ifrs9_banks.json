@@ -59,7 +59,7 @@
     "id": "bank_08_basic",
     "canonical_name": "BASIC Bank PLC",
     "aliases": ["BASIC Bank", "BASIC Bank Limited", "বেসিক ব্যাংক পিএলসি", "বেসিক ব্যাংক"],
-    "official_domain": "basicbank.com.bd",
+    "official_domain": "basicbankplc.com",
     "last_verified": "2026-10-01",
     "notes": "State-owned specialized commercial bank"
   },
@@ -106,7 +106,7 @@
     "id": "bank_13_city",
     "canonical_name": "City Bank PLC",
     "aliases": ["City Bank", "The City Bank Limited", "CBL", "সিটি ব্যাংক পিএলসি", "সিটি ব্যাংক"],
-    "official_domain": "thecitybank.com",
+    "official_domain": "citybankplc.com",
     "last_verified": "2026-10-01",
     "notes": "Private commercial bank"
   },
@@ -154,7 +154,7 @@
     "id": "bank_19_premier",
     "canonical_name": "The Premier Bank PLC",
     "aliases": ["Premier Bank", "The Premier Bank Limited", "PBL", "প্রিমিয়ার ব্যাংক পিএলসি", "প্রিমিয়ার ব্যাংক"],
-    "official_domain": "premierbankltd.com",
+    "official_domain": "thepremierbankplc.com",
     "last_verified": "2026-10-01",
     "notes": "Private commercial bank"
   },
@@ -178,7 +178,7 @@
     "id": "bank_22_modhumoti",
     "canonical_name": "Modhumoti Bank PLC",
     "aliases": ["Modhumoti Bank", "Modhumoti Bank Limited", "MMBL", "মধুমতি ব্যাংক পিএলসি", "মধুমতি ব্যাংক"],
-    "official_domain": "modhumotibank.ltd",
+    "official_domain": "modhumotibankplc.com",
     "last_verified": "2026-10-01",
     "notes": "Private commercial bank"
   },
@@ -218,7 +218,7 @@
     "id": "bank_27_icb_islamic",
     "canonical_name": "ICB Islamic Bank PLC",
     "aliases": ["ICB Islamic Bank", "ICB Islamic Bank Limited", "আইসিবি ইসলামিক ব্যাংক পিএলসি", "আইসিবি ইসলামিক ব্যাংক", "Al-Baraka Bank Bangladesh"],
-    "official_domain": "icbislamic-bank.com",
+    "official_domain": "icbislamic-bd.com",
     "last_verified": "2026-10-01",
     "notes": "Shariah-based Islamic commercial bank"
   },

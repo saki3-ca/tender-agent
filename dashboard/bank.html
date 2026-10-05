@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>NGO Tenders — ACNABIN</title>
+  <title>Bank Tenders — ACNABIN</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -12,13 +12,13 @@
   <script src="js/config.js"></script>
   <script src="js/app.js" defer></script>
 </head>
-<body data-page="sector" data-sector="NGO">
+<body data-page="sector" data-sector="BANK">
   <header class="topbar">
     <a class="brand" href="index.html"><span class="brand-mark">ACNABIN</span><span class="brand-name">Tender Monitoring</span></a>
     <nav class="topnav">
       <a href="index.html">Home</a>
-      <a href="bank.html">Bank</a>
-      <a href="ngo.html" class="active">NGO</a>
+      <a href="bank.html" class="active">Bank</a>
+      <a href="ngo.html">NGO</a>
       <a href="sources.html">Sources</a>
       <a href="admin.html">Admin</a>
     </nav>
@@ -27,17 +27,17 @@
 
   <main class="page">
     <div class="section-head">
-      <div class="crumbs"><a href="index.html">Home</a> / NGO</div>
-      <h1>NGO Tenders</h1>
-      <p class="lead">Tender, RFP, EOI and consultancy notices published by NGOs, INGOs and development organizations working in Bangladesh.</p>
+      <div class="crumbs"><a href="index.html">Home</a> / Bank</div>
+      <h1>Bank Tenders</h1>
+      <p class="lead">Notices published on bank websites. The 30 IFRS 9 target banks are monitored closely for IFRS 9 / ECL work as well as all other tenders.</p>
     </div>
 
     <div class="tabs" role="tablist">
       <button class="tab" role="tab" data-tab="general">General<span class="count" id="count-general">–</span></button>
       <button class="tab" role="tab" data-tab="priority">Priority<span class="count" id="count-priority">–</span></button>
     </div>
-    <p class="tab-note" data-note="general">All active NGO opportunities.</p>
-    <p class="tab-note" data-note="priority" hidden>Active NGO opportunities relevant to ACNABIN.</p>
+    <p class="tab-note" data-note="general">All active bank opportunities.</p>
+    <p class="tab-note" data-note="priority" hidden>Active bank opportunities relevant to ACNABIN.</p>
 
     <div class="toolbar">
       <input type="search" id="f-search" placeholder="Search title, organization, reference" aria-label="Search">
@@ -53,6 +53,8 @@
         <option value="">Any publication date</option>
         <option value="7">Published in last 7 days</option>
       </select>
+      <label class="check"><input type="checkbox" id="f-ifrs9"> IFRS 9 / ECL only</label>
+      <label class="check"><input type="checkbox" id="f-target"> 30 target banks only</label>
       <span class="spacer"></span>
       <span class="result-count" id="result-count"></span>
       <button class="btn" id="btn-refresh" type="button">Refresh</button>

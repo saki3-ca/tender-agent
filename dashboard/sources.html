@@ -3,104 +3,55 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Source Health Monitoring — ACNABIN Tender Agent</title>
+  <title>Source Status — ACNABIN</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="js/config.js"></script>
   <script src="js/app.js" defer></script>
 </head>
-<body>
-  <header class="app-header">
-    <div class="brand-container">
-      <div class="brand-logo-badge">ACNABIN</div>
-      <div class="brand-title-wrap">
-        <h1>Tender &amp; Opportunity Intelligence</h1>
-        <p>Operational Reliability &amp; Source Health</p>
-      </div>
-    </div>
-    <nav class="main-nav">
-      <a href="index.html">Today's Priority</a>
-      <a href="ifrs9.html">Bank Dashboard</a>
-      <a href="ngo.html">NGO Dashboard</a>
-      <a href="market.html">General Market</a>
-      <a href="intelligence.html">Market Intelligence</a>
-      <a href="sources.html" class="active">Source Health</a>
-      <a href="operations.html">Operations</a>
+<body data-page="sources">
+  <header class="topbar">
+    <a class="brand" href="index.html"><span class="brand-mark">ACNABIN</span><span class="brand-name">Tender Monitoring</span></a>
+    <nav class="topnav">
+      <a href="index.html">Home</a>
+      <a href="bank.html">Bank</a>
+      <a href="ngo.html">NGO</a>
+      <a href="sources.html" class="active">Sources</a>
+      <a href="admin.html">Admin</a>
     </nav>
+    <div class="topbar-meta" id="last-run"></div>
   </header>
 
-  <main class="app-container">
-    <div class="page-header">
-      <div class="page-header-text">
-        <h2>Source Health &amp; Ingestion Reliability</h2>
-        <p>Real-time status of monitored bank portals, procurement sites, SSL overrides, and suspected foreign geo-blocks.</p>
-      </div>
+  <main class="page">
+    <div class="section-head">
+      <div class="crumbs"><a href="index.html">Home</a> / Sources</div>
+      <h1>Source Status</h1>
+      <p class="lead">Result of the last check of each monitored tender page. A failed source does not stop the others; it is listed here so the page address can be corrected in <code>config/sources.json</code>.</p>
     </div>
 
-    <div class="table-responsive">
-      <table class="data-table">
+    <div class="toolbar">
+      <select id="f-sector" aria-label="Sector">
+        <option value="">Bank and NGO</option>
+        <option value="BANK">Bank</option>
+        <option value="NGO">NGO</option>
+      </select>
+      <label class="check"><input type="checkbox" id="f-errors"> Errors only</label>
+      <span class="spacer"></span>
+      <span class="result-count" id="result-count"></span>
+    </div>
+
+    <div class="table-wrap">
+      <table>
         <thead>
-          <tr>
-            <th>Organization &amp; Domain</th>
-            <th>Source URL &amp; Tier</th>
-            <th>Status</th>
-            <th>SSL Verify</th>
-            <th>JS Render</th>
-            <th>Consecutive Fails</th>
-            <th>Last Checked</th>
-          </tr>
+          <tr><th>Organization</th><th>Sector</th><th>Status</th><th>Listings</th><th>Last checked</th><th>Page</th></tr>
         </thead>
-        <tbody id="sources-tbody">
-          <!-- Populated from v_source_health -->
-        </tbody>
+        <tbody id="rows"><tr><td colspan="6" class="empty">Loading…</td></tr></tbody>
       </table>
     </div>
+    <p class="footnote">HTTP_404: page not found · SOFT_404: the site shows a "not found" page · NO LISTINGS: the page loaded but no tender notices could be read from it · BLOCKED: the site blocks automated access · SSL_ERROR / CONNECTION_FAILED: the site could not be reached.</p>
   </main>
-
-  <script>
-    document.addEventListener("DOMContentLoaded", async () => {
-      const tbody = document.getElementById("sources-tbody");
-      if (!supabaseClient) {
-        tbody.innerHTML = `<tr><td colspan="7" class="empty-state">Running in demo/local mode. Configure Supabase credentials to view live source health.</td></tr>`;
-        return;
-      }
-      try {
-        const { data, error } = await supabaseClient.from("v_source_health").select("*");
-        if (error) throw error;
-        if (!data || data.length === 0) {
-          tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; padding: 2rem;">No sources currently registered.</td></tr>`;
-          return;
-        }
-
-        tbody.innerHTML = data.map(s => {
-          let statusBadge = '<span class="badge" style="background:rgba(16,185,129,0.15); color:#10b981; border:1px solid rgba(16,185,129,0.3)">OK</span>';
-          if (s.last_status === 'ERROR') {
-            statusBadge = '<span class="badge badge-very-high">ERROR</span>';
-          } else if (s.last_status === 'GEO_BLOCK_SUSPECTED') {
-            statusBadge = '<span class="badge badge-high">GEO BLOCK SUSPECTED</span>';
-          } else if (s.last_status === 'SOURCE_REQUIRES_REVIEW') {
-            statusBadge = '<span class="badge badge-high">REQUIRES REVIEW</span>';
-          }
-
-          return `
-            <tr>
-              <td><strong>${escapeHtml(s.organization_name || 'General')}</strong></td>
-              <td><a href="${s.url}" target="_blank" rel="noopener" style="color:#67e8f9; text-decoration:none;">${escapeHtml(s.url)}</a> (Tier ${s.tier})</td>
-              <td>${statusBadge}</td>
-              <td>${s.verify_ssl ? 'Strict' : '<span style="color:var(--color-high);">Disabled</span>'}</td>
-              <td>${s.requires_js ? 'Playwright' : 'Fast HTTP'}</td>
-              <td style="font-weight:600; color:${s.consecutive_failures > 0 ? 'var(--color-very-high)' : 'inherit'};">${s.consecutive_failures}</td>
-              <td style="font-size:0.75rem; color:var(--text-muted);">${s.last_checked || 'Pending'}</td>
-            </tr>
-          `;
-        }).join("");
-      } catch (err) {
-        tbody.innerHTML = `<tr><td colspan="7" style="color:var(--color-very-high); padding:2rem;">Failed to load source health.</td></tr>`;
-      }
-    });
-  </script>
 </body>
 </html>

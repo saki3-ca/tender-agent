@@ -1,13 +1,14 @@
 [
   {
     "id": "src_bb_tender",
-    "url": "https://www.bb.org.bd/en/index.php/about/tender",
+    "url": "https://www.bb.org.bd/en/index.php/about/tenders",
     "organization_id": "reg_bangladesh_bank",
     "tier": 1,
     "requires_js": false,
     "verify_ssl": true,
     "rate_limit_seconds": 3,
-    "enabled": true
+    "enabled": true,
+    "verified": "2026-10-05"
   },
   {
     "id": "src_bppa_egp",
@@ -17,7 +18,8 @@
     "requires_js": false,
     "verify_ssl": true,
     "rate_limit_seconds": 3,
-    "enabled": true
+    "enabled": false,
+    "note": "Disabled: the e-GP homepage is a login portal; tender search requires an account. Bank e-GP notices are picked up from the banks' own pages."
   },
   {
     "id": "src_idlc_tender",
@@ -31,23 +33,25 @@
   },
   {
     "id": "src_01_agrani_tender",
-    "url": "https://www.agranibank.org/tender",
+    "url": "https://www.agranibank.org/index.php/home/notice",
     "organization_id": "bank_01_agrani",
     "tier": 1,
     "requires_js": false,
     "verify_ssl": true,
     "rate_limit_seconds": 3,
-    "enabled": true
+    "enabled": true,
+    "verified": "2026-10-05"
   },
   {
     "id": "src_02_janata_tender",
-    "url": "https://www.jb.com.bd/tender",
+    "url": "https://www.jb.com.bd/home/tender/",
     "organization_id": "bank_02_janata",
     "tier": 1,
     "requires_js": false,
     "verify_ssl": true,
     "rate_limit_seconds": 3,
-    "enabled": true
+    "enabled": true,
+    "verified": "2026-10-05"
   },
   {
     "id": "src_03_rupali_tender",
@@ -81,13 +85,14 @@
   },
   {
     "id": "src_06_citizens_tender",
-    "url": "https://www.citizensbankbd.com/tender",
+    "url": "https://www.citizensbankbd.com/invitation-tender",
     "organization_id": "bank_06_citizens",
     "tier": 1,
     "requires_js": false,
     "verify_ssl": true,
     "rate_limit_seconds": 3,
-    "enabled": true
+    "enabled": true,
+    "verified": "2026-10-05"
   },
   {
     "id": "src_07_sonali_tender",
@@ -97,27 +102,41 @@
     "requires_js": false,
     "verify_ssl": true,
     "rate_limit_seconds": 3,
-    "enabled": true
+    "enabled": true,
+    "verified": "2026-10-05"
   },
   {
     "id": "src_08_basic_tender",
-    "url": "https://www.basicbank.com.bd/tender",
+    "url": "https://basicbankplc.com/en/tenders-page",
     "organization_id": "bank_08_basic",
     "tier": 1,
     "requires_js": false,
     "verify_ssl": true,
     "rate_limit_seconds": 3,
-    "enabled": true
+    "enabled": true,
+    "verified": "2026-10-05"
   },
   {
     "id": "src_09_bdbl_tender",
-    "url": "https://www.bdbl.com.bd/tender",
+    "url": "https://bdbl.com.bd/pages/tenders",
     "organization_id": "bank_09_bdbl",
     "tier": 1,
     "requires_js": false,
-    "verify_ssl": true,
+    "verify_ssl": false,
     "rate_limit_seconds": 3,
-    "enabled": true
+    "enabled": true,
+    "verified": "2026-10-05"
+  },
+  {
+    "id": "src_09_bdbl_notices",
+    "url": "https://bdbl.com.bd/pages/notices",
+    "organization_id": "bank_09_bdbl",
+    "tier": 1,
+    "requires_js": false,
+    "verify_ssl": false,
+    "rate_limit_seconds": 3,
+    "enabled": true,
+    "verified": "2026-10-05"
   },
   {
     "id": "src_10_sammilito_islami_tender",
@@ -141,13 +160,14 @@
   },
   {
     "id": "src_12_rakub_tender",
-    "url": "https://www.rakub.org.bd/tender",
+    "url": "https://www.rakub.org.bd/AllTender.php",
     "organization_id": "bank_12_rakub",
     "tier": 1,
     "requires_js": false,
-    "verify_ssl": true,
+    "verify_ssl": false,
     "rate_limit_seconds": 3,
-    "enabled": true
+    "enabled": true,
+    "verified": "2026-10-05"
   },
   {
     "id": "src_13_city_tender",
@@ -211,53 +231,58 @@
   },
   {
     "id": "src_19_premier_tender",
-    "url": "https://www.premierbankltd.com/tender",
+    "url": "https://thepremierbankplc.com/procurement/",
     "organization_id": "bank_19_premier",
     "tier": 1,
     "requires_js": false,
     "verify_ssl": true,
     "rate_limit_seconds": 3,
-    "enabled": true
+    "enabled": true,
+    "verified": "2026-10-05"
   },
   {
     "id": "src_20_trust_tender",
-    "url": "https://www.trustbank.com.bd/tender",
+    "url": "https://www.trustbank.com.bd/tenders/",
     "organization_id": "bank_20_trust",
     "tier": 1,
     "requires_js": false,
-    "verify_ssl": true,
+    "verify_ssl": false,
     "rate_limit_seconds": 3,
-    "enabled": true
+    "enabled": true,
+    "verified": "2026-10-05"
   },
   {
     "id": "src_21_meghna_tender",
-    "url": "https://www.meghnabank.com.bd/tender",
+    "url": "https://www.meghnabank.com.bd/notice-board",
     "organization_id": "bank_21_meghna",
     "tier": 1,
     "requires_js": false,
     "verify_ssl": true,
     "rate_limit_seconds": 3,
-    "enabled": true
+    "enabled": true,
+    "verified": "2026-10-05"
   },
   {
     "id": "src_22_modhumoti_tender",
-    "url": "https://www.modhumotibank.ltd/tender",
+    "url": "https://www.modhumotibankplc.com/tender/",
     "organization_id": "bank_22_modhumoti",
     "tier": 1,
     "requires_js": false,
     "verify_ssl": true,
     "rate_limit_seconds": 3,
-    "enabled": true
+    "enabled": true,
+    "verified": "2026-10-05"
   },
   {
     "id": "src_23_shimanto_tender",
-    "url": "https://www.shimantobank.com/tender",
+    "url": "https://www.shimantobank.com/tenders",
     "organization_id": "bank_23_shimanto",
     "tier": 1,
     "requires_js": false,
     "verify_ssl": true,
     "rate_limit_seconds": 3,
-    "enabled": true
+    "enabled": true,
+    "verified": "2026-10-05"
   },
   {
     "id": "src_24_community_tender",
@@ -271,33 +296,36 @@
   },
   {
     "id": "src_25_bengal_tender",
-    "url": "https://www.bgcb.com.bd/tender",
+    "url": "https://www.bgcb.com.bd/e-tender",
     "organization_id": "bank_25_bengal",
     "tier": 1,
     "requires_js": false,
     "verify_ssl": true,
     "rate_limit_seconds": 3,
-    "enabled": true
+    "enabled": true,
+    "verified": "2026-10-05"
   },
   {
     "id": "src_26_islami_bank_tender",
-    "url": "https://www.islamibankbd.com/tender",
+    "url": "https://www.islamibankbd.com/tender-notice",
     "organization_id": "bank_26_islami_bank",
     "tier": 1,
     "requires_js": false,
     "verify_ssl": true,
     "rate_limit_seconds": 3,
-    "enabled": true
+    "enabled": true,
+    "verified": "2026-10-05"
   },
   {
     "id": "src_27_icb_islamic_tender",
-    "url": "https://www.icbislamic-bank.com/tender",
+    "url": "https://icbislamic-bd.com/tenders/",
     "organization_id": "bank_27_icb_islamic",
     "tier": 1,
     "requires_js": false,
     "verify_ssl": true,
     "rate_limit_seconds": 3,
-    "enabled": true
+    "enabled": true,
+    "verified": "2026-10-05"
   },
   {
     "id": "src_28_al_arafah_tender",
@@ -334,20 +362,21 @@
     "url": "https://tender.brac.net/tender/liveTenderTemplate",
     "organization_id": "ngo_01_brac",
     "tier": 1,
-    "requires_js": false,
+    "requires_js": true,
     "verify_ssl": true,
     "rate_limit_seconds": 3,
     "enabled": true
   },
   {
     "id": "src_ngo_02_palli_karma_sahayak",
-    "url": "https://pksf.org.bd/procurement/",
+    "url": "https://pksf.org.bd/tender/",
     "organization_id": "ngo_02_palli_karma_sahayak",
     "tier": 1,
     "requires_js": false,
     "verify_ssl": true,
     "rate_limit_seconds": 3,
-    "enabled": true
+    "enabled": true,
+    "verified": "2026-10-05"
   },
   {
     "id": "src_ngo_03_icddr_b",
@@ -367,7 +396,8 @@
     "requires_js": false,
     "verify_ssl": true,
     "rate_limit_seconds": 3,
-    "enabled": true
+    "enabled": true,
+    "verified": "2026-10-05"
   },
   {
     "id": "src_ngo_05_ucep_bangladesh",
@@ -377,7 +407,8 @@
     "requires_js": false,
     "verify_ssl": true,
     "rate_limit_seconds": 3,
-    "enabled": true
+    "enabled": true,
+    "verified": "2026-10-05"
   },
   {
     "id": "src_ngo_06_caritas_bangladesh",
@@ -387,17 +418,19 @@
     "requires_js": false,
     "verify_ssl": true,
     "rate_limit_seconds": 3,
-    "enabled": true
+    "enabled": true,
+    "verified": "2026-10-05"
   },
   {
     "id": "src_ngo_07_eco_social_development",
-    "url": "https://esdo.net.bd/notice/",
+    "url": "https://esdo.net.bd/portal/?ref=TenderNotice",
     "organization_id": "ngo_07_eco_social_development",
     "tier": 1,
     "requires_js": false,
     "verify_ssl": true,
     "rate_limit_seconds": 3,
-    "enabled": true
+    "enabled": true,
+    "verified": "2026-10-05"
   },
   {
     "id": "src_ngo_08_tmss_thengamara_mohila",
@@ -407,17 +440,19 @@
     "requires_js": false,
     "verify_ssl": true,
     "rate_limit_seconds": 3,
-    "enabled": true
+    "enabled": true,
+    "verified": "2026-10-05"
   },
   {
     "id": "src_ngo_09_bangladesh_red_crescent",
-    "url": "https://bdrcs.org/tenders/",
+    "url": "https://bdrcs.org/tender/",
     "organization_id": "ngo_09_bangladesh_red_crescent",
     "tier": 1,
     "requires_js": false,
     "verify_ssl": true,
     "rate_limit_seconds": 3,
-    "enabled": true
+    "enabled": true,
+    "verified": "2026-10-05"
   },
   {
     "id": "src_ngo_10_friendship_ngo",
@@ -431,13 +466,14 @@
   },
   {
     "id": "src_ngo_11_sajida_foundation",
-    "url": "https://sajidafoundation.org/tenders-notices/",
+    "url": "https://www.sajida.org/engage-with-us/procurement/",
     "organization_id": "ngo_11_sajida_foundation",
     "tier": 1,
     "requires_js": false,
     "verify_ssl": true,
     "rate_limit_seconds": 3,
-    "enabled": true
+    "enabled": true,
+    "verified": "2026-10-05"
   },
   {
     "id": "src_ngo_12_buro_bangladesh",
@@ -461,13 +497,14 @@
   },
   {
     "id": "src_ngo_14_dhaka_ahsania_mission",
-    "url": "https://ahsaniamission.org.bd/tender/",
+    "url": "https://www.ahsaniamission.org.bd/tender-notice/",
     "organization_id": "ngo_14_dhaka_ahsania_mission",
     "tier": 1,
     "requires_js": false,
     "verify_ssl": true,
     "rate_limit_seconds": 3,
-    "enabled": true
+    "enabled": true,
+    "verified": "2026-10-05"
   },
   {
     "id": "src_ngo_15_centre_for_the",
@@ -481,13 +518,14 @@
   },
   {
     "id": "src_ngo_16_rdrs_bangladesh",
-    "url": "https://rdrsbangladesh.org/tender-notices/",
+    "url": "https://www.rdrsbangladesh.org/tender-notice/",
     "organization_id": "ngo_16_rdrs_bangladesh",
     "tier": 1,
     "requires_js": false,
-    "verify_ssl": true,
+    "verify_ssl": false,
     "rate_limit_seconds": 3,
-    "enabled": true
+    "enabled": true,
+    "verified": "2026-10-05"
   },
   {
     "id": "src_ngo_17_save_the_children",
@@ -521,13 +559,15 @@
   },
   {
     "id": "src_ngo_20_plan_international_bangladesh",
-    "url": "https://plan-international.org/bangladesh/tenders-and-procurement/",
+    "url": "https://plan-international.org/calls-tender/",
     "organization_id": "ngo_20_plan_international_bangladesh",
     "tier": 1,
     "requires_js": false,
     "verify_ssl": true,
     "rate_limit_seconds": 3,
-    "enabled": true
+    "enabled": true,
+    "verified": "2026-10-05",
+    "country_filter": true
   },
   {
     "id": "src_ngo_21_world_vision_bangladesh",
@@ -557,17 +597,20 @@
     "requires_js": false,
     "verify_ssl": true,
     "rate_limit_seconds": 3,
-    "enabled": true
+    "enabled": true,
+    "country_filter": true
   },
   {
     "id": "src_ngo_24_action_against_hunger",
-    "url": "https://www.actionagainsthunger.org/procurement/",
+    "url": "https://www.actionagainsthunger.org/tenders/",
     "organization_id": "ngo_24_action_against_hunger",
     "tier": 2,
     "requires_js": false,
     "verify_ssl": true,
     "rate_limit_seconds": 3,
-    "enabled": true
+    "enabled": true,
+    "verified": "2026-10-05",
+    "country_filter": true
   },
   {
     "id": "src_ngo_25_christian_commission_for",
@@ -577,17 +620,19 @@
     "requires_js": false,
     "verify_ssl": true,
     "rate_limit_seconds": 3,
-    "enabled": true
+    "enabled": false,
+    "note": "Disabled: ccdb-bd.org currently serves unrelated spam content (checked 2026-10-05). Find the official CCDB tender page before re-enabling."
   },
   {
     "id": "src_ngo_26_muslim_aid_bangladesh",
-    "url": "https://muslimaid.org.bd/tenders/",
+    "url": "https://www.muslimaid.org.bd/tender-schedules---others",
     "organization_id": "ngo_26_muslim_aid_bangladesh",
     "tier": 2,
     "requires_js": false,
     "verify_ssl": true,
     "rate_limit_seconds": 3,
-    "enabled": true
+    "enabled": true,
+    "verified": "2026-10-05"
   },
   {
     "id": "src_ngo_27_islamic_relief_bangladesh",
@@ -597,7 +642,8 @@
     "requires_js": false,
     "verify_ssl": true,
     "rate_limit_seconds": 3,
-    "enabled": true
+    "enabled": true,
+    "verified": "2026-10-05"
   },
   {
     "id": "src_ngo_28_voluntary_service_overseas",
@@ -607,7 +653,8 @@
     "requires_js": false,
     "verify_ssl": true,
     "rate_limit_seconds": 3,
-    "enabled": true
+    "enabled": true,
+    "country_filter": true
   },
   {
     "id": "src_ngo_29_practical_action_bangladesh",
@@ -617,17 +664,20 @@
     "requires_js": false,
     "verify_ssl": true,
     "rate_limit_seconds": 3,
-    "enabled": true
+    "enabled": true,
+    "country_filter": true
   },
   {
     "id": "src_ngo_30_concern_worldwide_bangladesh",
-    "url": "https://www.concern.net/tenders",
+    "url": "https://www.concern.net/accountability/supply-chains",
     "organization_id": "ngo_30_concern_worldwide_bangladesh",
     "tier": 2,
     "requires_js": false,
     "verify_ssl": true,
     "rate_limit_seconds": 3,
-    "enabled": true
+    "enabled": true,
+    "verified": "2026-10-05",
+    "country_filter": true
   },
   {
     "id": "src_ngo_31_helvetas_bangladesh",
@@ -647,7 +697,8 @@
     "requires_js": false,
     "verify_ssl": true,
     "rate_limit_seconds": 3,
-    "enabled": true
+    "enabled": true,
+    "country_filter": true
   },
   {
     "id": "src_ngo_33_sightsavers_bangladesh",
@@ -657,7 +708,8 @@
     "requires_js": false,
     "verify_ssl": true,
     "rate_limit_seconds": 3,
-    "enabled": true
+    "enabled": true,
+    "country_filter": true
   },
   {
     "id": "src_ngo_34_danish_refugee_council",
@@ -667,7 +719,8 @@
     "requires_js": false,
     "verify_ssl": true,
     "rate_limit_seconds": 3,
-    "enabled": true
+    "enabled": true,
+    "country_filter": true
   },
   {
     "id": "src_ngo_35_norwegian_refugee_council",
@@ -677,7 +730,9 @@
     "requires_js": false,
     "verify_ssl": true,
     "rate_limit_seconds": 3,
-    "enabled": true
+    "enabled": true,
+    "verified": "2026-10-05",
+    "country_filter": true
   },
   {
     "id": "src_ngo_36_international_rescue_committee",
@@ -687,7 +742,9 @@
     "requires_js": false,
     "verify_ssl": true,
     "rate_limit_seconds": 3,
-    "enabled": true
+    "enabled": true,
+    "verified": "2026-10-05",
+    "country_filter": true
   },
   {
     "id": "src_ngo_37_relief_international_bangladesh",
@@ -697,7 +754,8 @@
     "requires_js": false,
     "verify_ssl": true,
     "rate_limit_seconds": 3,
-    "enabled": true
+    "enabled": true,
+    "country_filter": true
   },
   {
     "id": "src_ngo_38_medecins_du_monde",
@@ -707,7 +765,8 @@
     "requires_js": false,
     "verify_ssl": true,
     "rate_limit_seconds": 3,
-    "enabled": true
+    "enabled": true,
+    "country_filter": true
   },
   {
     "id": "src_ngo_39_malteser_international_bangladesh",
@@ -717,7 +776,8 @@
     "requires_js": false,
     "verify_ssl": true,
     "rate_limit_seconds": 3,
-    "enabled": true
+    "enabled": true,
+    "country_filter": true
   },
   {
     "id": "src_ngo_40_room_to_read",
@@ -727,7 +787,8 @@
     "requires_js": false,
     "verify_ssl": true,
     "rate_limit_seconds": 3,
-    "enabled": true
+    "enabled": true,
+    "country_filter": true
   },
   {
     "id": "src_ngo_41_marie_stopes_bangladesh",
@@ -737,7 +798,8 @@
     "requires_js": false,
     "verify_ssl": true,
     "rate_limit_seconds": 3,
-    "enabled": true
+    "enabled": true,
+    "country_filter": true
   },
   {
     "id": "src_ngo_42_engenderhealth_bangladesh",
@@ -747,7 +809,8 @@
     "requires_js": false,
     "verify_ssl": true,
     "rate_limit_seconds": 3,
-    "enabled": true
+    "enabled": true,
+    "country_filter": true
   },
   {
     "id": "src_ngo_43_pathfinder_international_bangladesh",
@@ -757,7 +820,8 @@
     "requires_js": false,
     "verify_ssl": true,
     "rate_limit_seconds": 3,
-    "enabled": true
+    "enabled": true,
+    "country_filter": true
   },
   {
     "id": "src_ngo_44_nutrition_international_bangladesh",
@@ -767,7 +831,8 @@
     "requires_js": false,
     "verify_ssl": true,
     "rate_limit_seconds": 3,
-    "enabled": true
+    "enabled": true,
+    "country_filter": true
   },
   {
     "id": "src_ngo_45_jhpiego_bangladesh",
@@ -777,7 +842,8 @@
     "requires_js": false,
     "verify_ssl": true,
     "rate_limit_seconds": 3,
-    "enabled": true
+    "enabled": true,
+    "country_filter": true
   },
   {
     "id": "src_ngo_46_chemonics_international_bangladesh",
@@ -787,7 +853,8 @@
     "requires_js": false,
     "verify_ssl": true,
     "rate_limit_seconds": 3,
-    "enabled": true
+    "enabled": true,
+    "country_filter": true
   },
   {
     "id": "src_ngo_47_dai_development_alternatives",
@@ -797,7 +864,8 @@
     "requires_js": false,
     "verify_ssl": true,
     "rate_limit_seconds": 3,
-    "enabled": true
+    "enabled": true,
+    "country_filter": true
   },
   {
     "id": "src_ngo_48_rti_international_bangladesh",
@@ -807,7 +875,8 @@
     "requires_js": false,
     "verify_ssl": true,
     "rate_limit_seconds": 3,
-    "enabled": true
+    "enabled": true,
+    "country_filter": true
   },
   {
     "id": "src_ngo_49_fhi_360_bangladesh",
@@ -817,7 +886,8 @@
     "requires_js": false,
     "verify_ssl": true,
     "rate_limit_seconds": 3,
-    "enabled": true
+    "enabled": true,
+    "country_filter": true
   },
   {
     "id": "src_ngo_50_winrock_international_bangladesh",
@@ -827,7 +897,8 @@
     "requires_js": false,
     "verify_ssl": true,
     "rate_limit_seconds": 3,
-    "enabled": true
+    "enabled": true,
+    "country_filter": true
   },
   {
     "id": "src_ngo_51_ide_international_development",
@@ -837,7 +908,8 @@
     "requires_js": false,
     "verify_ssl": true,
     "rate_limit_seconds": 3,
-    "enabled": true
+    "enabled": true,
+    "country_filter": true
   },
   {
     "id": "src_ngo_52_land_o_lakes",
@@ -847,7 +919,8 @@
     "requires_js": false,
     "verify_ssl": true,
     "rate_limit_seconds": 3,
-    "enabled": true
+    "enabled": true,
+    "country_filter": true
   },
   {
     "id": "src_ngo_53_acdi_voca_bangladesh",
@@ -857,7 +930,8 @@
     "requires_js": false,
     "verify_ssl": true,
     "rate_limit_seconds": 3,
-    "enabled": true
+    "enabled": true,
+    "country_filter": true
   },
   {
     "id": "src_ngo_54_habitat_for_humanity",
@@ -887,7 +961,8 @@
     "requires_js": false,
     "verify_ssl": true,
     "rate_limit_seconds": 3,
-    "enabled": true
+    "enabled": true,
+    "country_filter": true
   },
   {
     "id": "src_ngo_57_fred_hollows_foundation",
@@ -897,7 +972,8 @@
     "requires_js": false,
     "verify_ssl": true,
     "rate_limit_seconds": 3,
-    "enabled": true
+    "enabled": true,
+    "country_filter": true
   },
   {
     "id": "src_ngo_58_lepra_bangladesh",
@@ -907,7 +983,8 @@
     "requires_js": false,
     "verify_ssl": true,
     "rate_limit_seconds": 3,
-    "enabled": true
+    "enabled": true,
+    "country_filter": true
   },
   {
     "id": "src_ngo_59_heks_eper_bangladesh",
@@ -917,7 +994,8 @@
     "requires_js": false,
     "verify_ssl": true,
     "rate_limit_seconds": 3,
-    "enabled": true
+    "enabled": true,
+    "country_filter": true
   },
   {
     "id": "src_ngo_60_stromme_foundation_bangladesh",
@@ -927,7 +1005,8 @@
     "requires_js": false,
     "verify_ssl": true,
     "rate_limit_seconds": 3,
-    "enabled": true
+    "enabled": true,
+    "country_filter": true
   },
   {
     "id": "src_ngo_61_terre_des_hommes",
@@ -937,7 +1016,8 @@
     "requires_js": false,
     "verify_ssl": true,
     "rate_limit_seconds": 3,
-    "enabled": true
+    "enabled": true,
+    "country_filter": true
   },
   {
     "id": "src_ngo_62_educo_bangladesh",
@@ -957,7 +1037,8 @@
     "requires_js": false,
     "verify_ssl": true,
     "rate_limit_seconds": 3,
-    "enabled": true
+    "enabled": true,
+    "country_filter": true
   },
   {
     "id": "src_ngo_64_good_neighbors_bangladesh",
@@ -977,7 +1058,8 @@
     "requires_js": false,
     "verify_ssl": true,
     "rate_limit_seconds": 3,
-    "enabled": true
+    "enabled": true,
+    "country_filter": true
   },
   {
     "id": "src_ngo_66_world_fish_bangladesh",
@@ -987,7 +1069,8 @@
     "requires_js": false,
     "verify_ssl": true,
     "rate_limit_seconds": 3,
-    "enabled": true
+    "enabled": true,
+    "country_filter": true
   },
   {
     "id": "src_ngo_67_cimmyt_bangladesh",
@@ -997,7 +1080,8 @@
     "requires_js": false,
     "verify_ssl": true,
     "rate_limit_seconds": 3,
-    "enabled": true
+    "enabled": true,
+    "country_filter": true
   },
   {
     "id": "src_ngo_68_irri_international_rice",
@@ -1007,17 +1091,19 @@
     "requires_js": false,
     "verify_ssl": true,
     "rate_limit_seconds": 3,
-    "enabled": true
+    "enabled": true,
+    "country_filter": true
   },
   {
     "id": "src_ngo_69_association_for_land",
-    "url": "https://www.alrd.org/notice/",
+    "url": "https://www.alrd.org/page/procurement/72",
     "organization_id": "ngo_69_association_for_land",
     "tier": 2,
     "requires_js": false,
     "verify_ssl": true,
     "rate_limit_seconds": 3,
-    "enabled": true
+    "enabled": true,
+    "verified": "2026-10-05"
   },
   {
     "id": "src_ngo_70_ain_o_salish",
@@ -1031,13 +1117,14 @@
   },
   {
     "id": "src_ngo_71_bangladesh_legal_aid",
-    "url": "https://www.blast.org.bd/notices/",
+    "url": "https://blast.org.bd/tender-eoi-vacancy/",
     "organization_id": "ngo_71_bangladesh_legal_aid",
     "tier": 2,
     "requires_js": false,
     "verify_ssl": true,
     "rate_limit_seconds": 3,
-    "enabled": true
+    "enabled": true,
+    "verified": "2026-10-05"
   },
   {
     "id": "src_ngo_72_transparency_international_bangladesh",
@@ -1051,13 +1138,14 @@
   },
   {
     "id": "src_ngo_73_centre_for_policy",
-    "url": "https://cpd.org.bd/procurement/",
+    "url": "https://cpd.org.bd/rfq/",
     "organization_id": "ngo_73_centre_for_policy",
     "tier": 2,
     "requires_js": false,
     "verify_ssl": true,
     "rate_limit_seconds": 3,
-    "enabled": true
+    "enabled": true,
+    "verified": "2026-10-05"
   },
   {
     "id": "src_ngo_74_bangladesh_rural_advanced",
@@ -1067,7 +1155,8 @@
     "requires_js": false,
     "verify_ssl": true,
     "rate_limit_seconds": 3,
-    "enabled": true
+    "enabled": true,
+    "verified": "2026-10-05"
   },
   {
     "id": "src_ngo_75_coast_foundation",
@@ -1081,13 +1170,14 @@
   },
   {
     "id": "src_ngo_76_codec_community_development",
-    "url": "https://codec.org.bd/notice-board/",
+    "url": "https://codec.org.bd/notice/",
     "organization_id": "ngo_76_codec_community_development",
     "tier": 2,
     "requires_js": false,
     "verify_ssl": true,
     "rate_limit_seconds": 3,
-    "enabled": true
+    "enabled": true,
+    "verified": "2026-10-05"
   },
   {
     "id": "src_ngo_77_wave_foundation",
@@ -1101,33 +1191,36 @@
   },
   {
     "id": "src_ngo_78_padakhep_manabik_unnayan",
-    "url": "https://padakhep.org/tender-notices/",
+    "url": "https://www.padakhep.org/circular",
     "organization_id": "ngo_78_padakhep_manabik_unnayan",
     "tier": 2,
     "requires_js": false,
     "verify_ssl": true,
     "rate_limit_seconds": 3,
-    "enabled": true
+    "enabled": true,
+    "verified": "2026-10-05"
   },
   {
     "id": "src_ngo_79_sks_foundation",
-    "url": "https://sks-bd.org/tender-notice/",
+    "url": "https://www.sks-bd.org/index.php/eol-tender",
     "organization_id": "ngo_79_sks_foundation",
     "tier": 2,
     "requires_js": false,
     "verify_ssl": true,
     "rate_limit_seconds": 3,
-    "enabled": true
+    "enabled": true,
+    "verified": "2026-10-05"
   },
   {
     "id": "src_ngo_80_ghashful",
-    "url": "https://ghashful-bd.org/tenders/",
+    "url": "https://www.ghashful-bd.org/tender/",
     "organization_id": "ngo_80_ghashful",
     "tier": 2,
     "requires_js": false,
     "verify_ssl": true,
     "rate_limit_seconds": 3,
-    "enabled": true
+    "enabled": true,
+    "verified": "2026-10-05"
   },
   {
     "id": "src_ngo_81_shakti_foundation_for",
@@ -1141,13 +1234,14 @@
   },
   {
     "id": "src_ngo_82_dushtha_shasthya_kendra",
-    "url": "https://dskbangladesh.org/tender-notices/",
+    "url": "http://www.dskbangladesh.org/tender-notice/",
     "organization_id": "ngo_82_dushtha_shasthya_kendra",
     "tier": 2,
     "requires_js": false,
     "verify_ssl": true,
     "rate_limit_seconds": 3,
-    "enabled": true
+    "enabled": true,
+    "verified": "2026-10-05"
   },
   {
     "id": "src_ngo_83_manabik_shahajya_sangstha",
@@ -1157,7 +1251,8 @@
     "requires_js": false,
     "verify_ssl": true,
     "rate_limit_seconds": 3,
-    "enabled": true
+    "enabled": true,
+    "verified": "2026-10-05"
   },
   {
     "id": "src_ngo_84_popi_people_s",
@@ -1171,23 +1266,25 @@
   },
   {
     "id": "src_ngo_85_ric_resource_integration",
-    "url": "https://ric-bd.org/notice-board/",
+    "url": "https://www.ric-bd.org/news-procurement",
     "organization_id": "ngo_85_ric_resource_integration",
     "tier": 2,
     "requires_js": false,
     "verify_ssl": true,
     "rate_limit_seconds": 3,
-    "enabled": true
+    "enabled": true,
+    "verified": "2026-10-05"
   },
   {
     "id": "src_ngo_86_ypsa_young_power",
-    "url": "https://ypsa.org/tender-notice/",
+    "url": "https://ypsa.org/tender-notic/",
     "organization_id": "ngo_86_ypsa_young_power",
     "tier": 2,
     "requires_js": false,
     "verify_ssl": true,
     "rate_limit_seconds": 3,
-    "enabled": true
+    "enabled": true,
+    "verified": "2026-10-05"
   },
   {
     "id": "src_ngo_87_heed_bangladesh",
@@ -1227,7 +1324,8 @@
     "requires_js": false,
     "verify_ssl": true,
     "rate_limit_seconds": 3,
-    "enabled": true
+    "enabled": true,
+    "country_filter": true
   },
   {
     "id": "src_ngo_91_cnrs_center_for",
@@ -1271,13 +1369,14 @@
   },
   {
     "id": "src_ngo_95_uttaran",
-    "url": "https://uttaran.net/tender-notice/",
+    "url": "https://uttaranbd.org/tender/",
     "organization_id": "ngo_95_uttaran",
     "tier": 2,
     "requires_js": false,
     "verify_ssl": true,
     "rate_limit_seconds": 3,
-    "enabled": true
+    "enabled": true,
+    "verified": "2026-10-05"
   },
   {
     "id": "src_ngo_96_banchte_shekha",

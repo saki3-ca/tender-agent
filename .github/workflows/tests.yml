@@ -55,7 +55,5 @@ jobs:
           "
 
       - name: Run Pytest Test Suite
-        env:
-          AI_MODE: "off"
         run: |
           pytest -v tests/

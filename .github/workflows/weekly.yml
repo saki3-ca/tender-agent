@@ -1,4 +1,4 @@
-name: Weekly Organization Discovery & Maintenance
+name: Weekly Source Health Check
 
 on:
   schedule:
@@ -30,20 +30,13 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Run Weekly Discovery & Retention Cleanup
-        env:
-          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
-          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
-          AI_MODE: ${{ secrets.AI_MODE || 'full' }}
-          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
-          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          SEARCH_PROVIDER: ${{ secrets.SEARCH_PROVIDER || 'google' }}
-          SEARCH_API_KEY: ${{ secrets.SEARCH_API_KEY }}
-          SEARCH_ENGINE_ID: ${{ secrets.SEARCH_ENGINE_ID }}
-          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
-          DASHBOARD_BASE_URL: ${{ secrets.DASHBOARD_BASE_URL || 'https://acnabin-tenders.pages.dev' }}
+      - name: Run      - name: Check every tender source and suggest replacements for broken ones
         run: |
-          python run_weekly.py
+          python scripts/check_sources.py
+
+      - name: Upload source report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: source-check-report
+          path: data/source_check.json

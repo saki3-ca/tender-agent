@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin — ACNABIN</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/config.js"></script>
+  <script src="js/admin.js" defer></script>
+</head>
+<body data-page="admin">
+  <header class="topbar">
+    <a class="brand" href="index.html"><span class="brand-mark">ACNABIN</span><span class="brand-name">Tender Monitoring</span></a>
+    <nav class="topnav">
+      <a href="index.html">Home</a>
+      <a href="bank.html">Bank</a>
+      <a href="ngo.html">NGO</a>
+      <a href="sources.html">Sources</a>
+      <a href="admin.html" class="active">Admin</a>
+    </nav>
+    <div class="topbar-meta" id="who"></div>
+  </header>
+
+  <main class="page">
+    <div class="section-head">
+      <div class="crumbs"><a href="index.html">Home</a> / Admin</div>
+      <h1>Admin — Tender Sources</h1>
+      <p class="lead">Add the real address of a bank or NGO tender page, or correct a source that is not working. Changes are used from the next monitoring run (hourly, 08:00–20:00 Dhaka time).</p>
+    </div>
+
+    <!-- Sign in -->
+    <section class="panel form-panel" id="signin-panel" hidden>
+      <h2>SIGN IN</h2>
+      <form id="signin-form" class="form-grid">
+        <label>Email<input type="email" id="si-email" autocomplete="username" required></label>
+        <label>Password<input type="password" id="si-password" autocomplete="current-password" required></label>
+        <div class="form-actions"><button class="btn btn-primary" type="submit">Sign in</button></div>
+      </form>
+      <p class="form-msg" id="signin-msg"></p>
+    </section>
+
+    <div id="admin-area" hidden>
+      <!-- Add -->
+      <section class="panel form-panel">
+        <h2>ADD A TENDER PAGE</h2>
+        <form id="add-form" class="form-grid">
+          <label class="wide">Page URL<input type="url" id="a-url" placeholder="https://www.example.org/tenders" required></label>
+          <label>Organization
+            <select id="a-org" required></select>
+          </label>
+          <label id="a-name-wrap" hidden>Organization name<input type="text" id="a-name" maxlength="200"></label>
+          <label id="a-sector-wrap" hidden>Section
+            <select id="a-sector"><option value="BANK">Bank</option><option value="NGO">NGO</option></select>
+          </label>
+          <label class="wide">Notes (optional)<input type="text" id="a-notes" maxlength="500" placeholder="e.g. Procurement page linked from the homepage"></label>
+          <div class="wide checks">
+            <label class="check"><input type="checkbox" id="a-js"> Page needs JavaScript to show the list</label>
+            <label class="check"><input type="checkbox" id="a-ssl"> Ignore SSL certificate errors</label>
+            <label class="check"><input type="checkbox" id="a-country"> Keep only Bangladesh notices (international sites)</label>
+          </div>
+          <div class="form-actions wide"><button class="btn btn-primary" type="submit">Add source</button></div>
+        </form>
+        <p class="form-msg" id="add-msg"></p>
+      </section>
+
+      <!-- Broken -->
+      <section class="admin-section">
+        <h2 class="admin-h2">Sources that need a correct URL</h2>
+        <p class="tab-note">Sources that failed or showed no tender notices in the last run. Enter the real tender page address and save.</p>
+        <div class="toolbar">
+          <input type="search" id="broken-search" placeholder="Find organization" aria-label="Find organization">
+          <select id="broken-sector" aria-label="Sector"><option value="">Bank and NGO</option><option value="BANK">Bank</option><option value="NGO">NGO</option></select>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Organization</th><th>Problem</th><th>Current URL</th><th>Correct URL</th><th></th></tr></thead>
+            <tbody id="broken-rows"><tr><td colspan="5" class="empty">Loading…</td></tr></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Managed -->
+      <section class="admin-section">
+        <h2 class="admin-h2">URLs added or corrected here</h2>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Organization</th><th>URL</th><th>Last check</th><th>Enabled</th><th></th></tr></thead>
+            <tbody id="managed-rows"><tr><td colspan="5" class="empty">Loading…</td></tr></tbody>
+          </table>
+        </div>
+        <p class="footnote">Removing a correction makes the source use its original address from <code>config/sources.json</code> again.</p>
+      </section>
+    </div>
+  </main>
+</body>
+</html>

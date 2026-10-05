@@ -20,7 +20,7 @@ jobs:
             exit 0
           fi
           echo "Pinging Supabase REST endpoint to keep project active..."
-          curl -s -X GET "${SUPABASE_URL}/rest/v1/organizations?select=organization_id&limit=1" \
+          curl -s -X GET "${SUPABASE_URL}/rest/v1/tenders?select=id&limit=1" \
                -H "apikey: ${SUPABASE_SERVICE_ROLE_KEY}" \
                -H "Authorization: Bearer ${SUPABASE_SERVICE_ROLE_KEY}"
           echo "Ping completed successfully."
