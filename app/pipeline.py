@@ -24,12 +24,13 @@ from typing import Any, Dict, List, Optional, Tuple
 
 from app.alerts.email import EmailAlerter
 from app.alerts.telegram import TelegramAlerter
-from app.classification.dedupe import dedupe, tender_id
+from app.classification.dedupe import dedupe, same_notice, tender_id
 from app.classification.relevance import RelevanceClassifier
 from app.classification.status import StatusDetector, is_active
+from app.crawler import alltender
 from app.crawler.crawler import TenderCrawler
 from app.db.supabase import Store
-from app.parsers.date_cleaner import DHAKA_TZ, deadline_datetime, extract_dates, find_dates
+from app.parsers.date_cleaner import DHAKA_TZ, deadline_datetime, extract_dates, find_dates, parse_first_date
 from app.parsers.document_parser import extract_document_text, is_readable_document
 from app.parsers.html_parser import (
     HtmlNoticeExtractor, Listing, clean_html_text, is_document_url, is_weak_title, page_document_links,
@@ -106,6 +107,15 @@ _ORG_NAME_INDEX: Dict[str, str] = {}
 _FINANCIAL_ORG = re.compile(r"\bbank\b|leasing|financ|insurance|securities|investment", re.I)
 
 
+def _org_keys(name: str) -> List[str]:
+    """Name variants used for matching: as written, without "(…)", without a trailing "Bangladesh"."""
+    keys = []
+    for variant in (name, re.sub(r"\(.*?\)", "", name)):
+        key = _norm_org(variant)
+        keys += [key, re.sub(r" (?:bangladesh|bd)$", "", key)]
+    return [k for k in dict.fromkeys(keys) if len(k) >= 3]
+
+
 def organization_for_name(name: str) -> Dict[str, Any]:
     """Configured organization with this name (or alias); otherwise a new one, sector guessed from the name."""
     if not _ORG_NAME_INDEX:
@@ -113,10 +123,10 @@ def organization_for_name(name: str) -> Dict[str, Any]:
         names += [(b["id"], [b["canonical_name"], *b.get("aliases", [])]) for b in config.ifrs9_banks]
         for oid, variants in names:
             for n in variants:
-                for key in (_norm_org(n), _norm_org(re.sub(r"\(.*?\)", "", n))):
-                    if len(key) > 4:
-                        _ORG_NAME_INDEX.setdefault(key, oid)
-    for key in (_norm_org(name), _norm_org(re.sub(r"\(.*?\)", "", name))):
+                for key in _org_keys(n):
+                    _ORG_NAME_INDEX.setdefault(key, oid)
+    # "World Health Organization (WHO)": the acronym in brackets is tried last
+    for key in _org_keys(name) + [_norm_org(a) for a in re.findall(r"\((.*?)\)", name)]:
         oid = _ORG_NAME_INDEX.get(key)
         if oid and config.organization(oid):
             return config.organization(oid)
@@ -198,6 +208,8 @@ class Monitor:
 
         async def guarded(source):
             async with sem:
+                if not source_ids and self._too_soon(source, states.get(source["id"])):
+                    return None
                 if time.monotonic() > self.deadline_ts:
                     return [], self._state_row(source, states.get(source["id"]), None, "SKIPPED_TIME_BUDGET", 0)
                 try:
@@ -211,7 +223,10 @@ class Monitor:
 
         all_tenders: List[Dict[str, Any]] = []
         state_rows = []
-        for tenders, state in results:
+        for result in results:
+            if result is None:          # not due yet (min_interval_hours); last result is kept
+                continue
+            tenders, state = result
             all_tenders.extend(tenders)
             state_rows.append(state)
             if state["error"] == "SKIPPED_TIME_BUDGET":
@@ -221,7 +236,7 @@ class Monitor:
             else:
                 self.stats["sources_failed"] += 1
 
-        all_tenders = dedupe(all_tenders)
+        all_tenders = self._drop_stored_twins(dedupe(all_tenders))
         known = self.store.known_tenders([t["id"] for t in all_tenders])
         for t in all_tenders:
             if t["id"] in known:
@@ -270,6 +285,8 @@ class Monitor:
                              ) -> Tuple[List[Dict[str, Any]], Dict[str, Any]]:
         if source.get("type") == "bdjobs_json":
             status_code, error, pairs = await self._bdjobs_listings(source)
+        elif source.get("type") == "alltender":
+            status_code, error, pairs = await self._alltender_listings(source)
         else:
             status_code, error, pairs = await self._page_listings(source)
         if error:
@@ -279,7 +296,7 @@ class Monitor:
         self.stats["listings"] += len(listings)
         # Aggregators link to full notice pages: their text counts as notice text, not as a tender document
         notice_pages = bool(source.get("notice_pages"))
-        max_docs = int(source.get("max_documents") or self.max_docs)
+        max_docs = int(source["max_documents"]) if "max_documents" in source else self.max_docs
         # Notices found on the first successful crawl of a page are the baseline: without a date
         # we cannot tell whether they are new, so they are not treated as recently published.
         # A notice is "new" only if the same page was read successfully, with listings, in the previous run.
@@ -367,6 +384,34 @@ class Monitor:
                 listing.title_is_weak = is_weak_title(title)
                 pairs.append((listing, org))
         return res.status, None, pairs
+
+    async def _alltender_listings(self, source: Dict[str, Any]):
+        """Alltender.com "My Tenders" list of the ACNABIN account (see app/crawler/alltender.py).
+        Government tenders are outside the Bank / NGO scope and are left out."""
+        status, error, items = await alltender.fetch_my_tenders()
+        if error:
+            return status, error, []
+        pairs = []
+        for item in items:
+            sector = alltender.sector(item)
+            if not sector:
+                continue
+            name = alltender.organization_name(item)
+            org = organization_for_name(name)
+            if org["organization_id"].startswith("ext_"):
+                org = {**org, "sector": sector}
+            f = item.fields
+            title = f["Name of Work"].rstrip(".")
+            row_text = " | ".join(f"{k}: {v}" for k, v in f.items() if k != "For More Details")
+            listing = Listing(title=title, row_text=row_text, source_url=source["url"], link=item.link)
+            published = parse_first_date(f.get("Published in", ""), self.today)
+            if published and published.value <= self.today:
+                listing.published = published.value
+            closing = parse_first_date(f.get("Closing date", ""), self.today)
+            if closing:
+                listing.deadline, listing.deadline_has_time = deadline_datetime(closing.value, None)
+            pairs.append((listing, org))
+        return status, None, pairs
 
     def _only_old_dates(self, listing: Listing) -> bool:
         """The listing shows dates, all older than the recent window: it is evidently not a new notice."""
@@ -465,9 +510,50 @@ class Monitor:
             "is_baseline": baseline,
             "first_seen": now_utc,
             "last_seen": now_utc,
-            "_aggregator": bool(source.get("notice_pages")),
+            "members_only": bool(source.get("members_only")),
+            "_aggregator": bool(source.get("notice_pages") or source.get("aggregator")),
         }
         return tender
+
+    def _drop_stored_twins(self, tenders: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+        """dedupe() keeps the official copy of a notice within one run. Aggregator sources (Bdjobs,
+        Alltender) and official pages are not always read in the same run, so the stored tenders are
+        checked too: an aggregator copy of a stored official notice is dropped (and deleted if stored),
+        and a stored aggregator copy of a notice now found on the official page is deleted."""
+        if not tenders:
+            return tenders
+        try:
+            stored = self.store.open_tenders_for_orgs({t["organization_id"] for t in tenders})
+        except Exception as e:  # noqa: BLE001 - duplicate cleanup must never stop a run
+            logger.warning(f"Duplicate check against stored tenders skipped: {e}")
+            return tenders
+        aggregators = {s["id"] for s in config.sources if s.get("aggregator") or s.get("notice_pages")}
+        run_ids = {t["id"] for t in tenders}
+        for row in stored:
+            row["deadline"] = _to_dt(row["deadline"]).astimezone(DHAKA_TZ)
+        official = [r for r in stored if r["source_id"] not in aggregators and r["id"] not in run_ids]
+        copies = [r for r in stored if r["source_id"] in aggregators]
+        keep, delete = [], set()
+        for t in tenders:
+            if t.get("_aggregator"):
+                if any(same_notice(t, r) for r in official):
+                    delete.add(t["id"])
+                    continue
+            else:
+                delete |= {r["id"] for r in copies if same_notice(t, r)}
+            keep.append(t)
+        delete -= {t["id"] for t in keep}
+        stored_ids = {r["id"] for r in stored}
+        if delete & stored_ids:
+            self.store.delete_tenders(delete & stored_ids)
+            logger.info(f"Removed {len(delete & stored_ids)} aggregator copies of official notices")
+        return keep
+
+    def _too_soon(self, source: Dict[str, Any], state: Optional[Dict[str, Any]]) -> bool:
+        """Sources with "min_interval_hours" are read at most that often (after a successful read)."""
+        hours = source.get("min_interval_hours")
+        last = _to_dt(state.get("last_ok")) if state and state.get("ok") else None
+        return bool(hours and last and datetime.now(timezone.utc) - last < timedelta(hours=float(hours)))
 
     def _state_row(self, source, state, http_status, error, listings_found) -> Dict[str, Any]:
         org = source_org(source)

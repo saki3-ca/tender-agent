@@ -134,7 +134,8 @@
     const primary = t.document_url || t.notice_url || t.source_url;
     const label = t.document_url ? "View tender" : t.notice_url ? "View notice" : "Open source";
     let html = `<a href="${esc(primary)}" target="_blank" rel="noopener">${label} &#8599;</a>`;
-    const via = /bdjobs\.com/i.test(t.source_url || "") ? "via Bdjobs.com" : "Source page";
+    const via = /bdjobs\.com/i.test(t.source_url || "") ? "via Bdjobs.com"
+      : /alltender\.com/i.test(t.source_url || "") ? "via Alltender" : "Source page";
     if (primary !== t.source_url) html += `<a class="minor" href="${esc(t.source_url)}" target="_blank" rel="noopener">${via}</a>`;
     return html;
   }
@@ -224,6 +225,12 @@
     if (!data) return;
     const failed = data.filter((s) => !s.ok).length;
     setText("#source-summary", `${data.length - failed} of ${data.length} sources read successfully in the last run.`);
+    // Tenders from the Alltender subscription are readable by signed-in users only (database policy)
+    const { data: { session } } = await db.auth.getSession();
+    if (!session) {
+      $("#source-summary").insertAdjacentHTML("beforeend",
+        ` Tenders from the Alltender subscription are shown after <a href="admin.html">signing in</a>.`);
+    }
   }
 
   function initSector(sector) {

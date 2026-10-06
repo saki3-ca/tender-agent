@@ -1467,5 +1467,23 @@
     "max_documents": 80,
     "verified": "2026-10-05",
     "note": "Bdjobs Tender/EOI section (JSON feed used by bdjobs.com/h/). Covers many NGOs/INGOs whose own pages are unavailable."
+  },
+  {
+    "id": "src_agg_alltender",
+    "type": "alltender",
+    "url": "https://www.alltender.com/user/my_tenders",
+    "public_url": "https://www.alltender.com/",
+    "organization_id": "agg_alltender",
+    "tier": 2,
+    "requires_js": false,
+    "verify_ssl": true,
+    "rate_limit_seconds": 2,
+    "enabled": true,
+    "aggregator": true,
+    "members_only": true,
+    "max_documents": 0,
+    "min_interval_hours": 6,
+    "verified": "2026-10-06",
+    "note": "Alltender.com paid subscription: 'My Tenders' list of the ACNABIN account (its 'CA Firm' preference). Needs ALLTENDER_USER / ALLTENDER_PASSWORD. Read every 6 hours; Bank and NGO tenders only. Shown to signed-in users only (Alltender content may not be republished)."
   }
 ]

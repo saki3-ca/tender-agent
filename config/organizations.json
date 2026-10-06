@@ -2157,5 +2157,21 @@
     "last_verified": "2026-10-05",
     "last_checked": null,
     "notes": "Aggregator: notices are attributed to the publishing organization, not to Bdjobs"
+  },
+  {
+    "organization_id": "agg_alltender",
+    "canonical_name": "Alltender.com (subscription)",
+    "aliases": [],
+    "organization_type": "AGGREGATOR",
+    "sector": "ngos",
+    "official_domain": "alltender.com",
+    "procurement_url": "https://www.alltender.com/",
+    "tender_url": "https://www.alltender.com/user/my_tenders",
+    "notice_url": "https://www.alltender.com/",
+    "is_ifrs9_target": false,
+    "source_status": "OK",
+    "last_verified": "2026-10-06",
+    "last_checked": null,
+    "notes": "Aggregator (paid): notices are attributed to the publishing organization, not to Alltender"
   }
 ]

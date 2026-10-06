@@ -170,6 +170,14 @@ class AppConfig:
         return os.getenv("ALERT_EMAIL_FROM", "")
 
     @property
+    def alltender_user(self) -> str:
+        return os.getenv("ALLTENDER_USER", "")
+
+    @property
+    def alltender_password(self) -> str:
+        return os.getenv("ALLTENDER_PASSWORD", "")
+
+    @property
     def crawler_contact_email(self) -> str:
         return os.getenv("CRAWLER_CONTACT_EMAIL", "tenders@acnabin.com")
 

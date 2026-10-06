@@ -86,6 +86,8 @@ jobs:
           SMTP_USER: ${{ secrets.SMTP_USER }}
           SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
           ALERT_EMAIL_TO: ${{ secrets.ALERT_EMAIL_TO }}
+          ALLTENDER_USER: ${{ secrets.ALLTENDER_USER }}
+          ALLTENDER_PASSWORD: ${{ secrets.ALLTENDER_PASSWORD }}
           DASHBOARD_BASE_URL: ${{ secrets.DASHBOARD_BASE_URL || 'https://acnabin-tenders.pages.dev' }}
         run: |
           python run_monitor.py

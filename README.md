@@ -79,6 +79,14 @@ Dates are parsed into real dates (`05/10/2026`, `2026-10-05`, `05 Oct 2026`, `Oc
 
 `src_agg_bdjobs` reads the JSON feed behind the Tender/EOI section of [bdjobs.com/h/](https://bdjobs.com/h/) (`"type": "bdjobs_json"`). It covers many NGOs, INGOs and UN agencies whose own websites have no usable tender page. Each notice is attributed to the organization that published it (matched to `config/organizations.json` by name; unknown organizations are added as new ones, financial institutions under Bank). The dashboard marks these rows "via Bdjobs.com". When the same notice is also found on the organization's own page (same organization, same deadline, matching title), only the official copy is shown.
 
+### Subscription: Alltender.com
+
+`src_agg_alltender` signs in to ACNABIN's Alltender account (`ALLTENDER_USER` / `ALLTENDER_PASSWORD`, GitHub Actions secrets) and reads its **My Tenders** list, which Alltender filters by the account's preference profile ("CA Firm"). Only the list pages are read (no detail pages or documents), at most every 6 hours (`min_interval_hours`; a run with `--source` ignores the interval). Bank and NGO / international-organization tenders are kept; government tenders are outside the dashboard's scope and are skipped. Each tender is attributed to the calling organization (Alltender's "Department", or the organization named in "Tender Caller" for catch-all departments such as "Others NGO").
+
+Alltender's terms do not allow republishing its content, so these tenders are stored with `members_only = true` and the database policy shows them **only to signed-in admin users** (the dashboard shows a "sign in" hint otherwise). They are marked "via Alltender".
+
+Aggregator copies (Bdjobs, Alltender) of a notice that is also on the organization's own page are removed, including across runs: the monitor compares new notices with the stored ones and deletes the aggregator copy.
+
 ### Admin page (add or correct URLs without editing files)
 
 Dashboard → **Admin** (`admin.html`). After signing in you can:

@@ -7,7 +7,7 @@ runs and writes its results to data/local_run.json for review.
 """
 
 import json
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Any, Dict, Iterable, List, Optional
 
@@ -24,6 +24,7 @@ TENDER_COLUMNS = {
     "title", "description", "reference_number", "published_date", "deadline", "deadline_has_time",
     "status", "is_priority", "is_ifrs9", "categories", "matched_keywords", "source_id", "source_url",
     "notice_url", "document_url", "document_text", "document_checked", "is_baseline", "first_seen", "last_seen",
+    "members_only",
 }
 # Set once when a tender is first discovered, never overwritten afterwards
 INSERT_ONLY_COLUMNS = {"first_seen"}
@@ -69,6 +70,25 @@ class Store:
             for row in res.data or []:
                 found[row["id"]] = row
         return found
+
+    def open_tenders_for_orgs(self, org_ids: Iterable[str]) -> List[Dict[str, Any]]:
+        """Stored tenders of these organizations whose deadline has not long passed (for duplicate checks)."""
+        if not self.client:
+            return []
+        since = (datetime.now(timezone.utc) - timedelta(days=1)).isoformat()
+        rows: List[Dict[str, Any]] = []
+        for chunk in _chunks(sorted(set(org_ids)), 100):
+            res = self.client.table("tenders").select("id,organization_id,title,deadline,source_id")                 .in_("organization_id", chunk).gte("deadline", since).execute()
+            rows += res.data or []
+        return rows
+
+    def delete_tenders(self, ids: Iterable[str]) -> None:
+        if not self.client:
+            for i in ids:
+                self._local["tenders"].pop(i, None)
+            return
+        for chunk in _chunks(sorted(set(ids)), 100):
+            self.client.table("tenders").delete().in_("id", chunk).execute()
 
     def save_tenders(self, tenders: List[Dict[str, Any]], known_ids: Iterable[str]) -> None:
         known = set(known_ids)
