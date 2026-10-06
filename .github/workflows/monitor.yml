@@ -81,6 +81,11 @@ jobs:
           RUN_TIME_BUDGET_MINUTES: ${{ secrets.RUN_TIME_BUDGET_MINUTES || '14' }}
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          SMTP_HOST: ${{ secrets.SMTP_HOST }}
+          SMTP_PORT: ${{ secrets.SMTP_PORT }}
+          SMTP_USER: ${{ secrets.SMTP_USER }}
+          SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
+          ALERT_EMAIL_TO: ${{ secrets.ALERT_EMAIL_TO }}
           DASHBOARD_BASE_URL: ${{ secrets.DASHBOARD_BASE_URL || 'https://acnabin-tenders.pages.dev' }}
         run: |
           python run_monitor.py

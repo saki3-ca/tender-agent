@@ -18,7 +18,7 @@ crawler:
 # Overall run budget (GitHub Actions job has a 20 minute timeout)
 run_time_budget_minutes: 14
 
-# Telegram alerts are sent for newly discovered, active Priority tenders.
+# Telegram / email alerts are sent for newly discovered, active Priority tenders.
 alerts:
   enabled: true
 

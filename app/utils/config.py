@@ -146,6 +146,30 @@ class AppConfig:
         return os.getenv("TELEGRAM_CHAT_ID", "")
 
     @property
+    def smtp_host(self) -> str:
+        return os.getenv("SMTP_HOST", "") or "smtp.gmail.com"
+
+    @property
+    def smtp_port(self) -> int:
+        return int(os.getenv("SMTP_PORT", "") or 587)
+
+    @property
+    def smtp_user(self) -> str:
+        return os.getenv("SMTP_USER", "")
+
+    @property
+    def smtp_password(self) -> str:
+        return os.getenv("SMTP_PASSWORD", "")
+
+    @property
+    def alert_email_to(self) -> str:
+        return os.getenv("ALERT_EMAIL_TO", "")
+
+    @property
+    def alert_email_from(self) -> str:
+        return os.getenv("ALERT_EMAIL_FROM", "")
+
+    @property
     def crawler_contact_email(self) -> str:
         return os.getenv("CRAWLER_CONTACT_EMAIL", "tenders@acnabin.com")
 

@@ -38,6 +38,7 @@ All logic is deterministic (no LLM calls). Code lives in `app/`:
 | `app/classification/dedupe.py` | Stable tender ids and duplicate merging |
 | `app/db/supabase.py` | Storage (`tenders`, `source_status`, `runs`) |
 | `app/alerts/telegram.py` | Optional Telegram message for each newly found Priority tender |
+| `app/alerts/email.py` | Optional email (one per run) listing newly found Priority tenders |
 
 ### Active rule
 
@@ -86,6 +87,8 @@ Dashboard → **Admin** (`admin.html`). After signing in you can:
 - **Correct a broken source**: every source that failed or showed no notices in the last run is listed; enter the real URL and save.
 - **Manage** what was added: see the result of its last check, switch monitoring on/off, or remove it (a removed correction falls back to the address in `config/sources.json`).
 
+**Run now** starts a monitoring run immediately (instead of waiting for the hourly schedule) and shows its progress. It calls the Supabase Edge Function `run-monitor` (`supabase/functions/run-monitor`), which checks that the caller is an admin and then starts the `monitor.yml` workflow on GitHub. One-time setup: create a GitHub fine-grained token for this repository with **Actions: Read and write**, then `supabase secrets set GH_DISPATCH_TOKEN=<token>`. Deploy changes with `supabase functions deploy run-monitor --no-verify-jwt`.
+
 Entries are stored in the `admin_sources` table and merged with `config/sources.json` at the start of every run. Only signed-in users listed in `app_users` (active) can write; the database enforces this with row-level security.
 
 To give someone access: Supabase dashboard → Authentication → Users → **Add user** (email + password, auto-confirm), then add the same email to the `app_users` table.
@@ -117,7 +120,18 @@ python run_monitor.py --local             # do not write to Supabase; writes dat
 pytest                                    # test suite
 ```
 
-Environment variables: see `.env.example` (`SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`, optional Telegram).
+Environment variables: see `.env.example` (`SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`, optional Telegram and email).
+
+### Email alerts
+
+When a run finds Priority tenders that were not seen before, one email lists them (earliest deadline first, IFRS 9 / ECL marked). Each tender is emailed only once. Tenders found on the first crawl of a page (baseline) are not emailed. Set these GitHub Actions secrets:
+
+| Secret | Value |
+|---|---|
+| `SMTP_USER` | Sending Gmail address |
+| `SMTP_PASSWORD` | A Gmail **app password** for that account (Google Account → Security → 2-Step Verification → App passwords), not the normal password |
+| `ALERT_EMAIL_TO` | Recipients, comma-separated |
+| `SMTP_HOST`, `SMTP_PORT` | Optional; default `smtp.gmail.com`, `587` (use another provider's values if not Gmail) |
 
 ### Database
 

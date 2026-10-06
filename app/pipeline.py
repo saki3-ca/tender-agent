@@ -22,6 +22,7 @@ import time
 from datetime import date, datetime, timedelta, timezone
 from typing import Any, Dict, List, Optional, Tuple
 
+from app.alerts.email import EmailAlerter
 from app.alerts.telegram import TelegramAlerter
 from app.classification.dedupe import dedupe, tender_id
 from app.classification.relevance import RelevanceClassifier
@@ -172,13 +173,14 @@ class Monitor:
         self.classifier = RelevanceClassifier()
         self.status_detector = StatusDetector()
         self.alerter = TelegramAlerter(self.store)
+        self.emailer = EmailAlerter(self.store)
         self.max_docs = int(config.crawler_setting("max_documents_per_source", 25))
         self.doc_chars = int(config.crawler_setting("document_text_chars", 20000))
         self.concurrency = int(config.crawler_setting("concurrent_sources", 6))
         self.deadline_ts = time.monotonic() + config.run_time_budget_minutes * 60 - 30
         self.stats = {"sources_total": 0, "sources_ok": 0, "sources_failed": 0, "sources_skipped": 0,
                       "listings": 0, "documents_read": 0, "tenders_stored": 0, "active_general": 0,
-                      "active_priority": 0, "active_ifrs9": 0, "new_tenders": 0, "alerts_sent": 0}
+                      "active_priority": 0, "active_ifrs9": 0, "new_tenders": 0, "alerts_sent": 0, "emails_sent": 0}
 
     # ------------------------------------------------------------------- run
     async def run(self, source_ids: Optional[List[str]] = None, sector: Optional[str] = None) -> Dict[str, Any]:
@@ -252,6 +254,8 @@ class Monitor:
                 if t["id"] in new_ids and not t["is_baseline"]:
                     if await self.alerter.send_new_priority(t):
                         self.stats["alerts_sent"] += 1
+                    self.emailer.add(t)
+        self.stats["emails_sent"] = await self.emailer.flush()
 
         self.stats["duration_seconds"] = round(time.monotonic() - started, 1)
         failed = [f"{s['source_id']}: {s['error']}" for s in state_rows if not s["ok"]]

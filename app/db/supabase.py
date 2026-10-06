@@ -158,12 +158,12 @@ class Store:
         except Exception:
             return False
 
-    def record_alert(self, dedupe_key: str, payload: Dict[str, Any], status: str) -> None:
+    def record_alert(self, dedupe_key: str, payload: Dict[str, Any], status: str, channel: str = "telegram") -> None:
         if not self.client:
             return
         try:
             self.client.table("alerts").insert({
-                "alert_type": "NEW_PRIORITY", "channel": "telegram", "dedupe_key": dedupe_key,
+                "alert_type": "NEW_PRIORITY", "channel": channel, "dedupe_key": dedupe_key,
                 "payload": payload, "status": status,
             }).execute()
         except Exception as e:

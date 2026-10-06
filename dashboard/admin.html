@@ -29,7 +29,7 @@
     <div class="section-head">
       <div class="crumbs"><a href="index.html">Home</a> / Admin</div>
       <h1>Admin — Tender Sources</h1>
-      <p class="lead">Add the real address of a bank or NGO tender page, or correct a source that is not working. Changes are used from the next monitoring run (hourly, 08:00–20:00 Dhaka time).</p>
+      <p class="lead">Add the real address of a bank or NGO tender page, or correct a source that is not working. Changes are used from the next monitoring run (hourly, 08:00–20:00 Dhaka time), or press <b>Run now</b>.</p>
     </div>
 
     <!-- Sign in -->
@@ -44,6 +44,19 @@
     </section>
 
     <div id="admin-area" hidden>
+      <!-- Run now -->
+      <section class="panel form-panel run-panel">
+        <h2>MONITORING RUN</h2>
+        <div class="run-row">
+          <div>
+            <div id="run-state" class="run-state">Checking…</div>
+            <div id="run-last" class="run-last"></div>
+          </div>
+          <button class="btn btn-primary" type="button" id="run-now">Run now</button>
+        </div>
+        <p class="form-msg" id="run-msg"></p>
+      </section>
+
       <!-- Add -->
       <section class="panel form-panel">
         <h2>ADD A TENDER PAGE</h2>

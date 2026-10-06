@@ -64,6 +64,7 @@
     }
     $("#signin-panel").hidden = true;
     $("#admin-area").hidden = false;
+    refreshRun();
     await loadData();
   }
 
@@ -218,6 +219,72 @@
     const { error } = await db.from("admin_sources").delete().eq("source_id", id);
     if (error) { alert(`Could not remove: ${error.message}`); }
     loadData();
+  });
+
+  // -------------------------------------------------------------- run now
+  // Calls the run-monitor Edge Function, which starts the GitHub Actions monitor workflow.
+  const RUN_FN = `${env.SUPABASE_URL}/functions/v1/run-monitor`;
+  let pollTimer = null;
+
+  async function callRunFn(method) {
+    const { data: { session } } = await db.auth.getSession();
+    if (!session) throw new Error("Signed out");
+    const res = await fetch(RUN_FN, {
+      method,
+      headers: { Authorization: `Bearer ${session.access_token}`, apikey: env.SUPABASE_ANON_KEY },
+    });
+    const body = await res.json().catch(() => ({}));
+    if (!res.ok) throw new Error(body.error || `HTTP ${res.status}`);
+    return body;
+  }
+
+  async function lastCompleted() {
+    const { data } = await db.from("v_last_run").select("end_time").limit(1);
+    const end = data && data[0] && data[0].end_time;
+    $("#run-last").textContent = end ? `Last completed run: ${fmt(end)} (Dhaka time)` : "";
+  }
+
+  function showRun(run) {
+    const btn = $("#run-now");
+    const busy = run && run.status !== "completed";
+    btn.disabled = !!busy;
+    if (!run) { $("#run-state").textContent = "No runs yet."; return busy; }
+    let text;
+    if (run.status === "queued") text = "Run queued — starting shortly…";
+    else if (run.status === "in_progress") text = `Running since ${fmt(run.started_at)} — usually 10–15 minutes.`;
+    else if (run.conclusion === "success") text = `Last run finished ${fmt(run.updated_at)}.`;
+    else text = `Last run ${run.conclusion || "ended"} (${fmt(run.updated_at)}).`;
+    $("#run-state").innerHTML = `${esc(text)} <a href="${esc(run.url)}" target="_blank" rel="noopener">Details</a>`;
+    return busy;
+  }
+
+  async function refreshRun() {
+    clearTimeout(pollTimer);
+    lastCompleted();
+    try {
+      const { run } = await callRunFn("GET");
+      const wasBusy = $("#run-now").disabled;
+      const busy = showRun(run);
+      if (busy) pollTimer = setTimeout(refreshRun, 20000);
+      else if (wasBusy) { msg("#run-msg", "Run finished. Refresh the Bank / NGO pages to see the results."); loadData(); }
+    } catch (e) {
+      $("#run-state").textContent = "Run status unavailable.";
+      msg("#run-msg", e.message, true);
+    }
+  }
+
+  $("#run-now").addEventListener("click", async () => {
+    const btn = $("#run-now");
+    btn.disabled = true;
+    msg("#run-msg", "Starting…");
+    try {
+      const r = await callRunFn("POST");
+      msg("#run-msg", r.started ? "Run started. This page updates automatically." : "A run is already in progress.");
+      setTimeout(refreshRun, 5000);
+    } catch (e) {
+      btn.disabled = false;
+      msg("#run-msg", `Could not start the run: ${e.message}`, true);
+    }
   });
 
   document.addEventListener("DOMContentLoaded", showState);
