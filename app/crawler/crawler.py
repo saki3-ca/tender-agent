@@ -163,7 +163,8 @@ class TenderCrawler:
                 result.text = await page.content()
                 await browser.close()
                 if result.status >= 400:
-                    result.error = f"HTTP_{result.status}"
+                    challenge = result.status in (401, 403, 429, 503) and _CHALLENGE.search(result.text[:8000])
+                    result.error = "BLOCKED" if challenge else f"HTTP_{result.status}"
         except Exception as e:  # noqa: BLE001
             logger.warning(f"Playwright render failed for {url}: {e}")
             result.error = f"RENDER_FAILED: {str(e)[:150]}"
