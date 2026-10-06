@@ -195,3 +195,14 @@ def test_bdjobs_organizations_are_matched_to_configured_ones():
     new = organization_for_name("Helen Keller Intl")
     assert new["organization_id"] == "ext_helen_keller_intl" and new["sector"] == "NGO"
     assert organization_for_name("People's Leasing and Financial Services Ltd (PLFS)")["sector"] == "BANK"
+
+
+def test_admin_correction_keeps_special_handling_from_config():
+    from app.pipeline import merge_admin_sources
+    base = [{"id": "src_03_rupali_tender", "url": "https://www.rupalibank.com.bd/notice_jquery.php?type=18",
+             "organization_id": "bank_03_rupali", "requires_js": True, "verify_ssl": True, "enabled": True}]
+    rows = [{"source_id": "src_03_rupali_tender", "url": "https://rupalibank.com.bd/notice_jquery.php?type=18",
+             "requires_js": False, "verify_ssl": False, "country_filter": False, "enabled": True}]
+    [merged] = merge_admin_sources(base, rows)
+    assert merged["url"] == "https://rupalibank.com.bd/notice_jquery.php?type=18"
+    assert merged["requires_js"] is True and merged["verify_ssl"] is False

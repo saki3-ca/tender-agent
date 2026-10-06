@@ -124,6 +124,12 @@ class TenderCrawler:
             result = await self._fetch_with_playwright(source["url"])
         else:
             result = await self.fetch(source["url"], verify_ssl=source.get("verify_ssl", True))
+            # Some sites answer simple HTTP clients with a "security check" page but serve a normal
+            # browser. Retry once in a headless browser (no disguise; if it is still blocked, it stays blocked).
+            if result.error == "BLOCKED" or (not result.ok and result.status in (401, 403)):
+                rendered = await self._fetch_with_playwright(source["url"])
+                if rendered.ok or rendered.error != "PLAYWRIGHT_NOT_INSTALLED":
+                    result = rendered
         if result.ok:
             head = result.text[:6000]
             title_m = re.search(r"<title[^>]*>(.*?)</title>", head, re.I | re.S)
@@ -148,7 +154,10 @@ class TenderCrawler:
             async with async_playwright() as p:
                 browser = await p.chromium.launch(headless=True)
                 page = await browser.new_page(user_agent=USER_AGENT)
-                resp = await page.goto(url, wait_until="networkidle", timeout=int(self.timeout * 1000))
+                # "networkidle" never happens on pages with chat widgets / long polling: wait for load,
+                # then give scripts a few seconds to render the list.
+                resp = await page.goto(url, wait_until="load", timeout=int(self.timeout * 1000))
+                await page.wait_for_timeout(4000)
                 result.status = resp.status if resp else 0
                 result.final_url = page.url
                 result.text = await page.content()

@@ -26,7 +26,7 @@
     "url": "https://idlc.com/procurement",
     "organization_id": "nbfi_idlc",
     "tier": 1,
-    "requires_js": false,
+    "requires_js": true,
     "verify_ssl": true,
     "rate_limit_seconds": 3,
     "enabled": true
@@ -55,13 +55,27 @@
   },
   {
     "id": "src_03_rupali_tender",
-    "url": "https://www.rupalibank.com.bd/tender",
+    "url": "https://www.rupalibank.com.bd/notice_jquery.php?type=18",
     "organization_id": "bank_03_rupali",
     "tier": 1,
-    "requires_js": false,
+    "requires_js": true,
     "verify_ssl": true,
     "rate_limit_seconds": 3,
-    "enabled": true
+    "enabled": true,
+    "verified": "2026-10-06",
+    "note": "Tender notices list (type=18). Needs a browser (Playwright): plain requests get a 403 security check."
+  },
+  {
+    "id": "src_03_rupali_eoi",
+    "url": "https://www.rupalibank.com.bd/notice_jquery.php?type=20",
+    "organization_id": "bank_03_rupali",
+    "tier": 1,
+    "requires_js": true,
+    "verify_ssl": true,
+    "rate_limit_seconds": 3,
+    "enabled": true,
+    "verified": "2026-10-06",
+    "note": "Expressions of Interest (type=20)."
   },
   {
     "id": "src_04_mercantile_tender",
@@ -154,9 +168,10 @@
     "organization_id": "bank_11_krishi",
     "tier": 1,
     "requires_js": false,
-    "verify_ssl": true,
+    "verify_ssl": false,
     "rate_limit_seconds": 3,
-    "enabled": true
+    "enabled": true,
+    "note": "Site certificate is invalid; public page read without certificate check."
   },
   {
     "id": "src_12_rakub_tender",
@@ -187,7 +202,8 @@
     "requires_js": false,
     "verify_ssl": true,
     "rate_limit_seconds": 3,
-    "enabled": true
+    "enabled": true,
+    "note": "Site is behind a bot-protection check (Cloudflare / security verification) that blocks automated access, also in a browser. Not bypassed by design; see README."
   },
   {
     "id": "src_15_pubali_tender",
@@ -197,7 +213,8 @@
     "requires_js": false,
     "verify_ssl": true,
     "rate_limit_seconds": 3,
-    "enabled": true
+    "enabled": true,
+    "note": "Site is behind a bot-protection check (Cloudflare / security verification) that blocks automated access, also in a browser. Not bypassed by design; see README."
   },
   {
     "id": "src_16_dhaka_tender",
@@ -352,7 +369,7 @@
     "url": "https://www.wooribank.com/bd/tender",
     "organization_id": "bank_30_woori",
     "tier": 1,
-    "requires_js": false,
+    "requires_js": true,
     "verify_ssl": true,
     "rate_limit_seconds": 3,
     "enabled": true

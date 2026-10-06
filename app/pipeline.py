@@ -142,7 +142,15 @@ def merge_admin_sources(config_sources: List[Dict[str, Any]], admin_rows: List[D
             continue
         options = {k: row[k] for k in ("requires_js", "verify_ssl", "country_filter", "enabled") if row.get(k) is not None}
         if sid in by_id:
-            by_id[sid].update(url=url, admin=True, **options)
+            base = by_id[sid]
+            # Special handling is kept if either the config or the admin entry asks for it
+            base.update(
+                url=url, admin=True,
+                enabled=options.get("enabled", base.get("enabled", True)),
+                requires_js=bool(base.get("requires_js") or options.get("requires_js")),
+                country_filter=bool(base.get("country_filter") or options.get("country_filter")),
+                verify_ssl=bool(base.get("verify_ssl", True) and options.get("verify_ssl", True)),
+            )
             continue
         org = config.organization(row["organization_id"]) if row.get("organization_id") else None
         if org is None:
