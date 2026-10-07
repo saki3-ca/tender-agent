@@ -50,9 +50,10 @@ A tender is an **IT tender** (`is_it`) when its title / notice text is about IT 
 
 | Capability | Delivered by |
 |---|---|
-| IT / IS audit & assurance (IS audit, SWIFT CSP, ISO 27001, PCI DSS, ITGC…) | ACNABIN |
+| IT / IS audit & assurance (IS audit, ITGC, IT risk…) | ACNABIN |
+| Security compliance (PCI DSS, SWIFT CSP, ISO 27001, privacy, NIST, AI governance) | ACNABIN + CipherShield (PCI DSS QSA) |
 | IT advisory & digital transformation (IT/ICT consultancy, IT governance, ERP selection, SRS, BPR…) | ACNABIN |
-| Cyber security services (VAPT, SOC, SIEM, threat hunting, forensics…) | CipherShield |
+| Cyber security services (VAPT, red team, managed SOC, SIEM, vCISO, forensics…) | CipherShield |
 | Software development & implementation (custom software, web / mobile apps, ERP/MIS, digital lending, AI…) | Brain Station 23 |
 
 Equipment supply (laptops, servers, CCTV), connectivity and vendor enlistments stay General. Bank / NGO Priority is unchanged (ACNABIN's own services). To add an MoU partner, add a capability with its `partner` name and phrases.

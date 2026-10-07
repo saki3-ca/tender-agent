@@ -361,7 +361,7 @@
       "auction",
       "scrap"
     ],
-    "_capabilities_comment": "One entry per capability. 'partner' is shown on the dashboard: ACNABIN itself, or the MoU partner that would deliver the work. Add new MoU partners as new entries. 'implies_it': a match also makes the tender an IT tender (only for capabilities whose phrases are unambiguously IT).",
+    "_capabilities_comment": "One entry per capability. 'partner' (a name or a list) is shown on the dashboard: ACNABIN itself and/or the MoU partner that would deliver the work (CipherShield: PCI DSS QSA, CREST-listed cyber security; Brain Station 23: software). Add new MoU partners as new entries. 'implies_it': a match also makes the tender an IT tender (only for capabilities whose phrases are unambiguously IT).",
     "capabilities": [
       {
         "code": "IT_AUDIT",
@@ -370,18 +370,11 @@
         "phrases": [
           "(?:IT|IS|ICT|information systems?|information technology|system|systems|ERP|core banking|CBS|software|cyber[\\s-]?security|IT security|information security|database|application) audit(?:s|ing|or|ors)?",
           "audit of (?:the )?(?:IT|ICT|information systems?|information technology|core banking|ERP|software|systems?|IT infrastructure|data cent(?:er|re))",
-          "SWIFT (?:CSP|customer security programme)",
-          "CSP (?:assessor|assessment)",
-          "CSCF",
-          "ISO[\\s/-]*(?:IEC[\\s/-]*)?27001",
-          "ISO[\\s/-]*(?:IEC[\\s/-]*)?(?:20000|22301|27701)",
-          "PCI[\\s-]?DSS",
           "IT general controls?",
           "ITGC",
           "ICT (?:security )?(?:guideline|policy) compliance",
           "IT compliance (?:review|assessment|audit)",
           "(?:IT|ICT|technology|cyber) risk (?:assessment|review|management framework)",
-          "data protection (?:audit|assessment|compliance)",
           "information systems? (?:review|assessment|assurance)",
           "SOC ?[12] (?:report|audit|assurance)"
         ],
@@ -409,6 +402,39 @@
           "PMO",
           "third[\\s-]party (?:verification|quality assurance|monitoring)",
           "(?:IT|ICT|digital|cyber[\\s-]?security) (?:training|capacity building)"
+        ]
+      },
+      {
+        "code": "SECURITY_COMPLIANCE",
+        "label": "Security Compliance (PCI DSS, SWIFT CSP, ISO 27001)",
+        "partner": [
+          "ACNABIN",
+          "CipherShield"
+        ],
+        "implies_it": true,
+        "phrases": [
+          "SWIFT (?:CSP|customer security programme)",
+          "CSP (?:assessor|assessment)",
+          "CSCF",
+          "ISO[\\s/-]*(?:IEC[\\s/-]*)?27001",
+          "ISO[\\s/-]*(?:IEC[\\s/-]*)?(?:20000|22301|27701)",
+          "PCI[\\s-]?DSS",
+          "data protection (?:audit|assessment|compliance)",
+          "PCI (?:compliance|assessment|audit|certification|QSA)",
+          "QSA",
+          "PA[\\s-]?DSS",
+          "P2PE",
+          "ISO[\\s/-]*(?:IEC[\\s/-]*)?42001",
+          "NIST (?:CSF|cyber ?security framework|800-53|framework)",
+          "(?:cyber|information|IT) security (?:compliance|certification|framework|policy|governance)",
+          "governance,? risk (?:and|&) compliance",
+          "GRC (?:assessment|framework|solution|tool|consultan\\w*)",
+          "(?:data )?privacy (?:assessment|audit|impact assessment|compliance|framework|program(?:me)?)",
+          "PIA",
+          "DPIA",
+          "personal data protection",
+          "AI governance",
+          "Bangladesh Bank ICT security guideline"
         ]
       },
       {
@@ -445,7 +471,20 @@
           "(?:cyber|security|IT|ICT|computer) incident response",
           "CSIRT",
           "CERT",
-          "managed detection and response"
+          "managed detection and response",
+          "CREST",
+          "offensive security",
+          "defensive security",
+          "attack surface (?:management|assessment)",
+          "breach (?:and attack )?simulation",
+          "compromise assessment",
+          "cyber (?:drill|exercise|range)",
+          "(?:cyber|information) security (?:operations|team|managed services?)",
+          "(?:24/7|24x7) (?:security )?monitoring",
+          "virtual CISO",
+          "vCISO",
+          "CISO as a service",
+          "(?:IT|network|system|server|cloud) security (?:assessment|audit|review|testing|hardening|posture)"
         ],
         "implies_it": true
       },

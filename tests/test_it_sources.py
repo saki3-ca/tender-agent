@@ -12,8 +12,15 @@ ACNABIN, CIPHERSHIELD, BRAIN_STATION = "ACNABIN", "CipherShield", "Brain Station
 
 @pytest.mark.parametrize("title,partner,category", [
     ("Information Systems Audit of core banking system", ACNABIN, "IT / IS Audit & Assurance"),
-    ("Appointment of firm for SWIFT CSP independent assessment", ACNABIN, "IT / IS Audit & Assurance"),
-    ("ISO 27001 certification readiness and gap assessment", ACNABIN, "IT / IS Audit & Assurance"),
+    ("Appointment of firm for SWIFT CSP independent assessment", CIPHERSHIELD,
+     "Security Compliance (PCI DSS, SWIFT CSP, ISO 27001)"),
+    ("ISO 27001 certification readiness and gap assessment", CIPHERSHIELD,
+     "Security Compliance (PCI DSS, SWIFT CSP, ISO 27001)"),
+    ("PCI DSS compliance assessment by a QSA", CIPHERSHIELD, "Security Compliance (PCI DSS, SWIFT CSP, ISO 27001)"),
+    ("Data privacy impact assessment and compliance framework", CIPHERSHIELD,
+     "Security Compliance (PCI DSS, SWIFT CSP, ISO 27001)"),
+    ("Network security assessment and hardening of core systems", CIPHERSHIELD, "Cyber Security Services"),
+    ("Appointment of virtual CISO (vCISO) services", CIPHERSHIELD, "Cyber Security Services"),
     ("Request for Expressions of Interest Consultancy Service for Review and Update of existing ICT based "
      "Monitoring billing software of DPHE", ACNABIN, "IT Advisory & Digital Transformation"),
     ("Consultancy for ICT strategy and digital transformation roadmap", ACNABIN, "IT Advisory & Digital Transformation"),
@@ -55,6 +62,15 @@ def test_it_general_but_not_priority(title):
 ])
 def test_not_it(title, description):
     assert not it.classify(title, description).is_it
+
+
+def test_swift_csp_is_acnabin_with_ciphershield():
+    assert it.classify("SWIFT CSP independent assessment 2026").partners == [ACNABIN, CIPHERSHIELD]
+
+
+def test_physical_security_is_not_cyber():
+    for title in ("Hiring of security guard services", "Security assessment of branch premises"):
+        assert not it.classify(title).is_priority
 
 
 def test_it_source_marks_every_tender_as_it():

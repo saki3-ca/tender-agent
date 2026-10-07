@@ -146,7 +146,8 @@ class ItClassifier:
         self.subject_exclusions = [_compile(p) for p in it.get("subject_exclusions", [])]
         self.veto = [_compile(p) for p in it.get("priority_veto", [])]
         self.capabilities = [
-            {"label": c["label"], "partner": c["partner"], "implies_it": bool(c.get("implies_it")),
+            {"label": c["label"], "implies_it": bool(c.get("implies_it")),
+             "partners": c["partner"] if isinstance(c["partner"], list) else [c["partner"]],
              "phrases": [_compile(p) for p in c["phrases"]]}
             for c in it["capabilities"]
         ]
@@ -172,8 +173,7 @@ class ItClassifier:
             hit = next((m for m in (p.search(text) for p in cap["phrases"]) if m), None)
             if hit:
                 result.categories.append(cap["label"])
-                if cap["partner"] not in result.partners:
-                    result.partners.append(cap["partner"])
+                result.partners += [p for p in cap["partners"] if p not in result.partners]
                 result.matched_keywords.append(re.sub(r"\s+", " ", hit.group(0).strip())[:60])
         result.is_priority = bool(result.categories)
         result.matched_keywords = list(dict.fromkeys(result.matched_keywords))[:8]
