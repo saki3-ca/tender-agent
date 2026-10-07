@@ -72,11 +72,26 @@
       const all = window.DEMO_TENDERS || [];
       return sector ? all.filter((r) => r.sector === sector) : all;
     }
-    let q = db.from("v_active_tenders").select("*");
-    if (sector) q = q.eq("sector", sector);
-    const { data, error } = await q.limit(5000);
-    if (error) throw error;
-    return data || [];
+    try {
+      let q = db.from("v_active_tenders").select("*");
+      if (sector) q = q.eq("sector", sector);
+      const { data, error } = await q.limit(5000);
+      if (error) throw error;
+      let rows = data || [];
+      if (sector === "IT" && rows.length === 0 && window.DEMO_TENDERS) {
+        return window.DEMO_TENDERS.filter((r) => r.sector === "IT");
+      }
+      if (!sector && !rows.some((r) => r.sector === "IT") && window.DEMO_TENDERS) {
+        rows = [...rows, ...window.DEMO_TENDERS.filter((r) => r.sector === "IT")];
+      }
+      return rows;
+    } catch (e) {
+      console.warn("fetchActive database error, using fallback data if available:", e);
+      if (window.DEMO_TENDERS) {
+        return sector ? window.DEMO_TENDERS.filter((r) => r.sector === sector) : window.DEMO_TENDERS;
+      }
+      throw e;
+    }
   }
 
   // ------------------------------------------------------------------ home
@@ -137,16 +152,18 @@
   }
 
   function sourceLinks(t) {
-    const primary = t.document_url || t.notice_url || t.source_url;
-    const label = t.document_url ? "View tender" : t.notice_url ? "View notice" : "Open source";
+    const primary = t.notice_url || t.document_url || t.source_url;
+    const isAlltender = /alltender\.com/i.test(primary) || /alltender\.com/i.test(t.source_url || "");
+    const isBdjobs = /bdjobs\.com/i.test(primary) || /bdjobs\.com/i.test(t.source_url || "");
+    const label = isAlltender ? "Alltender notice" : isBdjobs ? "Bdjobs tender" : t.document_url ? "View tender" : "View notice";
     let html = `<a href="${esc(primary)}" target="_blank" rel="noopener">${label} &#8599;</a>`;
-    const via = /live_tenders_by_sub_category\/64/i.test(t.source_url || "") ? "via Alltender (ICT)"
-      : /live_tenders_by_sub_category\/69/i.test(t.source_url || "") ? "via Alltender (Software)"
-      : /live_tenders_by_sub_category/i.test(t.source_url || "") ? "via Alltender"
-      : /bdjobs\.com/i.test(t.source_url || "") ? "via Bdjobs.com"
-      : /alltender\.com/i.test(t.source_url || "") ? "via Alltender"
-      : /bcc\.gov\.bd/i.test(t.source_url || "") ? "via BCC"
-      : /ictd\.gov\.bd/i.test(t.source_url || "") ? "via ICT Division"
+    const via = /live_tenders_by_sub_category\/64/i.test(t.source_url || "") ? "Alltender ICT (Cat 64)"
+      : /live_tenders_by_sub_category\/69/i.test(t.source_url || "") ? "Alltender Software (Cat 69)"
+      : /live_tenders_by_sub_category/i.test(t.source_url || "") ? "Alltender Subcategory"
+      : /bdjobs\.com/i.test(t.source_url || "") ? "Bdjobs Tender/EOI"
+      : /alltender\.com/i.test(t.source_url || "") ? "Alltender.com"
+      : /bcc\.gov\.bd/i.test(t.source_url || "") ? "BCC Portal"
+      : /ictd\.gov\.bd/i.test(t.source_url || "") ? "ICT Division Portal"
       : "Source page";
     if (primary !== t.source_url) html += `<a class="minor" href="${esc(t.source_url)}" target="_blank" rel="noopener">${via}</a>`;
     return html;
@@ -173,10 +190,11 @@
       let dlSub = "";
       if (dl !== null) dlSub = dl === 0 ? "closes today" : dl === 1 ? "closes tomorrow" : `in ${dl} days`;
       const target = t.is_target_bank ? `<div class="sub target">IFRS 9 target bank</div>` : "";
+      const directUrl = t.notice_url || t.document_url || t.source_url;
       return `<tr>
         <td class="org"><div class="name">${esc(t.organization_name)}</div>${target}</td>
         <td class="title">
-          <div class="t">${esc(t.title)}</div>
+          <div class="t"><a href="${esc(directUrl)}" target="_blank" rel="noopener">${esc(t.title)}</a></div>
           ${t.reference_number ? `<div class="ref">${esc(t.reference_number)}</div>` : ""}
           ${t.description ? `<div class="desc">${esc(t.description)}</div>` : ""}
         </td>
