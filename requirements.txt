@@ -19,6 +19,8 @@ Pillow>=10.4.0
 
 # Browser Automation (Optional for local, installed in CI)
 playwright>=1.49.0
+selenium>=4.15.0
+undetected-chromedriver>=3.5.4
 
 # Testing
 pytest>=8.3.0

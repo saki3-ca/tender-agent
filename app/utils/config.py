@@ -192,6 +192,10 @@ class AppConfig:
         return [k for k in dict.fromkeys(keys) if k]
 
     @property
+    def groq_api_key(self) -> str:
+        return os.getenv("GROQ_API_KEY", "")
+
+    @property
     def epaper_prothomalo_user(self) -> str:
         return os.getenv("EPAPER_PROTHOMALO_USER", "")
 
