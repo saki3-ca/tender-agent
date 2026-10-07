@@ -204,7 +204,9 @@ class Monitor:
                       "active_priority": 0, "active_ifrs9": 0, "new_tenders": 0, "alerts_sent": 0, "emails_sent": 0}
 
     # ------------------------------------------------------------------- run
-    async def run(self, source_ids: Optional[List[str]] = None, sector: Optional[str] = None) -> Dict[str, Any]:
+    async def run(self, source_ids: Optional[List[str]] = None, sector: Optional[str] = None,
+                  epaper: Optional[bool] = None) -> Dict[str, Any]:
+        """epaper=True: only newspaper e-paper sources; False: all others; None: both."""
         started = time.monotonic()
         run_id = self.store.run_started()
         sources = [s for s in merge_admin_sources(config.sources, self.store.admin_sources())
@@ -213,6 +215,8 @@ class Monitor:
             sources = [s for s in sources if s["id"] in source_ids]
         if sector:
             sources = [s for s in sources if source_org(s)["sector"] == sector]
+        if epaper is not None:
+            sources = [s for s in sources if s.get("type", "").startswith("epaper_") == epaper]
         self.stats["sources_total"] = len(sources)
         states = self.store.source_states()
         sem = asyncio.Semaphore(self.concurrency)
@@ -449,9 +453,17 @@ class Monitor:
     async def _epaper_listings(self, source: Dict[str, Any], crawler: Any, newspaper: str
                                ) -> Tuple[int, Optional[str], List[Tuple[Listing, Dict[str, Any]]]]:
         """Crawls today's digital e-paper edition and extracts tenders via Gemini Vision."""
+        if not config.gemini_api_keys:
+            return 0, "GEMINI_API_KEY not set", []
         status, error, items = await crawler.crawl_edition(target_date=self.today)
         if error:
             return status, error, []
+        # An error (not "no listings") lets the next run retry despite min_interval_hours.
+        parser = crawler.parser
+        if parser.pages_read == 0:
+            if parser.pages_failed:
+                return status, f"GEMINI_FAILED on {parser.pages_failed} pages: {parser.last_error}", []
+            return status, "NO_PAGES: no page images found for the edition", []
         pairs = []
         for item in items:
             org_name = item.get("organization") or "Unknown Organization"

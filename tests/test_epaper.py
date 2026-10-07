@@ -4,13 +4,13 @@ from unittest.mock import AsyncMock, patch
 
 import httpx
 from app.crawler.epaper.bangladeshtoday import BangladeshTodayEpaperCrawler
-from app.crawler.epaper.bdpratidin import BdPratidinEpaperCrawler
+from app.crawler.epaper.bdpratidin import full_page_image, page_numbers
 from app.crawler.epaper.dhakatribune import DhakaTribuneEpaperCrawler
 from app.crawler.epaper.financialexpress import FinancialExpressEpaperCrawler
-from app.crawler.epaper.jugantor import JugantorEpaperCrawler
+from app.crawler.epaper.jugantor import page_images
 from app.crawler.epaper.prothomalo import ProthomAloEpaperCrawler
 from app.crawler.epaper.protidinerbangladesh import ProtidinerBangladeshEpaperCrawler
-from app.parsers.epaper_gemini import GeminiEpaperParser
+from app.parsers.epaper_gemini import GEMINI_MODELS, GeminiEpaperParser
 
 
 @pytest.mark.asyncio
@@ -112,12 +112,37 @@ async def test_dhaka_tribune_crawler():
 
 
 @pytest.mark.asyncio
-async def test_jugantor_crawler():
-    crawler = JugantorEpaperCrawler()
-    assert crawler is not None
+async def test_gemini_failure_is_counted_not_silent():
+    failed = httpx.Response(status_code=429, text="quota exceeded",
+                            request=httpx.Request("POST", "https://generativelanguage.googleapis.com/"))
+    with patch.object(httpx.AsyncClient, "post", new_callable=AsyncMock) as mock_post, \
+            patch("app.parsers.epaper_gemini.asyncio.sleep", new_callable=AsyncMock):
+        mock_post.return_value = failed
+        parser = GeminiEpaperParser(api_keys=["k"])
+        assert await parser.extract_tenders_from_image(b"img") == []
+    assert (parser.pages_read, parser.pages_failed) == (0, 1)
+    assert "quota" in parser.last_error
+    assert mock_post.await_count == len(GEMINI_MODELS)  # exhausted models are not retried
 
 
-@pytest.mark.asyncio
-async def test_bd_pratidin_crawler():
-    crawler = BdPratidinEpaperCrawler()
-    assert crawler is not None
+def test_jugantor_page_images_skip_clippings_and_features():
+    html = """
+    <img src="https://epaper.jugantor.com/storage/2026-10-08/1/1791396290_1.jpg">
+    <img src="https://epaper.jugantor.com/storage/2026-10-08/1/link_img_1791396585_1.jpg">
+    <img src="https://epaper.jugantor.com/storage/2026-10-08/10/1791396300_10.jpg">
+    <img src="https://epaper.jugantor.com/storage/feature_page/2026-10-06/1/1791231204_1.jpg">
+    """
+    assert page_images(html, "2026-10-08") == {
+        1: "https://epaper.jugantor.com/storage/2026-10-08/1/1791396290_1.jpg",
+        10: "https://epaper.jugantor.com/storage/2026-10-08/10/1791396300_10.jpg",
+    }
+
+
+def test_bd_pratidin_pages_and_full_size_image():
+    home = '<a href="https://www.bd-pratidin.com/epaper/2026-10-08/1"></a><a href="/epaper/2026-10-08/12"></a>'
+    assert page_numbers(home, "2026-10-08") == [1, 12]
+    view = ('<img src="https://cdn.bd-pratidin.com/public/paper/2026/10/08/page-4/page-4-tag-7.jpg">'
+            '<img src="https://cdn.bd-pratidin.com/public/paper/2026/10/08/thumb/1791401703-3.jpg">')
+    assert full_page_image(view, "2026/10/08", 3) == \
+        "https://cdn.bd-pratidin.com/public/paper/2026/10/08/1791401703-3.jpg"
+    assert full_page_image(view, "2026/10/08", 4) is None

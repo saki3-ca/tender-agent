@@ -174,7 +174,9 @@ The tables and views of the previous design (`opportunities`, `v_general_market`
 
 ### Automation (GitHub Actions)
 
-- `monitor.yml`: hourly 08:00–20:00 and at 00:00 Asia/Dhaka; runs `run_monitor.py`
+- `monitor.yml`: hourly 08:00–20:00 and at 00:00 Asia/Dhaka; runs `run_monitor.py --no-epaper`
+- `epaper.yml`: newspaper e-papers at 07:30 Asia/Dhaka (retry at 11:30 for papers that failed); runs `run_monitor.py --epaper`. Every page is read by Gemini (`GEMINI_API_KEY`), which takes 10–30 minutes. A paper whose pages could not be read is reported as an error on the Sources page (`GEMINI_FAILED`, `NO_PAGES`, `BLOCKED`), not as "no listings". Gemini's free tier allows 20 requests per model per day, which is less than one day of editions (~100 pages); with only a free key, some papers will show `GEMINI_FAILED … quota used up`.
+- Office PC, Windows Task Scheduler "ACNABIN E-Paper (Jugantor, Pratidin)", daily 08:30 (runs later if the PC was off): `python run_monitor.py --pc-browser`. Jugantor and Bangladesh Pratidin serve their edition pages to browsers only (Cloudflare), so sources marked `"pc_browser": true` are read in the installed Chrome, in a visible window, on the office PC. In GitHub Actions they show `NEEDS_PC_BROWSER`. Log: `data/pc_browser.log`.
 - `weekly.yml`: Sunday source health check (`scripts/check_sources.py`)
 - `tests.yml`: test suite on every push
 - `deploy-dashboard.yml`: deploys `dashboard/` to Cloudflare Pages on changes

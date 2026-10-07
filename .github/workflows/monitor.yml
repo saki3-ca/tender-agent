@@ -96,6 +96,7 @@ jobs:
           SEARCH_API_KEY: ${{ secrets.SEARCH_API_KEY }}
           SEARCH_ENGINE_ID: ${{ secrets.SEARCH_ENGINE_ID }}
           DASHBOARD_BASE_URL: ${{ secrets.DASHBOARD_BASE_URL || 'https://acnabin-tenders.pages.dev' }}
+        # Newspaper e-papers are read by epaper.yml (they take longer than this run's budget).
         run: |
-          python run_monitor.py
+          python run_monitor.py --no-epaper
 
