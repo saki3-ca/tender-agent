@@ -5,11 +5,13 @@ Ingests high-resolution scanned newspaper pages, extracts tender/EOI/RFP notices
 and returns structured data.
 """
 
+import asyncio
 import base64
 import json
 import logging
 from typing import Any, Dict, List, Optional
 import httpx
+
 
 from app.utils.config import config
 
@@ -76,34 +78,49 @@ class GeminiEpaperParser:
         }
 
         async with httpx.AsyncClient(timeout=60.0) as client:
-            for key_idx, key in enumerate(self.api_keys):
-                for model in GEMINI_MODELS:
-                    url = f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent?key={key}"
-                    try:
-                        resp = await client.post(url, json=payload)
-                        if resp.status_code == 200:
-                            data = resp.json()
-                            text = data["candidates"][0]["content"]["parts"][0]["text"]
-                            items = json.loads(text)
-                            if isinstance(items, list):
-                                return items
-                            elif isinstance(items, dict) and "tenders" in items:
-                                return items["tenders"]
-                            return []
-                        elif resp.status_code in (429, 403):
-                            logger.warning(
-                                f"Gemini API key #{key_idx + 1} hit status {resp.status_code}. "
-                                "Switching to backup key..."
-                            )
-                            break  # Move to next API key immediately
-                        elif resp.status_code in (404, 503):
-                            logger.info(f"Gemini model {model} returned status {resp.status_code}, trying next model...")
+            for attempt in range(3):
+                for key_idx, key in enumerate(self.api_keys):
+                    for model in GEMINI_MODELS:
+                        url = f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent?key={key}"
+                        try:
+                            # Polite rate limiting between page queries
+                            await asyncio.sleep(2.0)
+                            resp = await client.post(url, json=payload)
+                            if resp.status_code == 200:
+                                data = resp.json()
+                                text = data["candidates"][0]["content"]["parts"][0]["text"]
+                                items = json.loads(text)
+                                if isinstance(items, list):
+                                    return items
+                                elif isinstance(items, dict) and "tenders" in items:
+                                    return items["tenders"]
+                                return []
+                            elif resp.status_code == 429:
+                                logger.info(
+                                    f"Gemini API key #{key_idx + 1} hit rate limit (429). "
+                                    f"Attempt {attempt + 1}/3..."
+                                )
+                                if len(self.api_keys) > 1:
+                                    break  # Try next key
+                                else:
+                                    # Wait and retry for single key
+                                    await asyncio.sleep(8.0)
+                                    break
+                            elif resp.status_code == 403:
+                                logger.warning(f"Gemini API key #{key_idx + 1} returned 403. Switching key...")
+                                break
+                            elif resp.status_code in (404, 503):
+                                logger.info(f"Gemini model {model} status {resp.status_code}, trying fallback model...")
+                                continue
+                            else:
+                                logger.warning(f"Gemini API ({model}) returned status {resp.status_code}: {resp.text[:200]}")
+                        except Exception as e:
+                            logger.warning(f"Gemini extraction error with {model} (key #{key_idx + 1}): {e}")
                             continue
-                        else:
-                            logger.warning(f"Gemini API ({model}) returned status {resp.status_code}: {resp.text[:200]}")
-                    except Exception as e:
-                        logger.warning(f"Gemini extraction error with {model} (key #{key_idx + 1}): {e}")
-                        continue
+
+                if attempt < 2:
+                    await asyncio.sleep(5.0)
 
         return []
+
 
