@@ -1625,7 +1625,62 @@
     "min_interval_hours": 12,
     "verified": "2026-10-07",
     "note": "Daily digital e-paper edition of Protidiner Bangladesh. Scans pages via Gemini Multimodal Vision to find published tenders."
+  },
+  {
+    "id": "src_epaper_dhakatribune",
+    "type": "epaper_dhakatribune",
+    "url": "https://epaper.dhakatribune.com/",
+    "public_url": "https://epaper.dhakatribune.com/",
+    "organization_id": "epaper_dhakatribune",
+    "tier": 2,
+    "requires_js": false,
+    "verify_ssl": true,
+    "rate_limit_seconds": 2,
+    "enabled": true,
+    "aggregator": true,
+    "members_only": false,
+    "max_documents": 0,
+    "min_interval_hours": 12,
+    "verified": "2026-10-07",
+    "note": "Daily digital e-paper edition of Dhaka Tribune. Scans pages via Gemini Multimodal Vision to find published tenders."
+  },
+  {
+    "id": "src_epaper_jugantor",
+    "type": "epaper_jugantor",
+    "url": "https://epaper.jugantor.com/",
+    "public_url": "https://epaper.jugantor.com/",
+    "organization_id": "epaper_jugantor",
+    "tier": 2,
+    "requires_js": false,
+    "verify_ssl": true,
+    "rate_limit_seconds": 2,
+    "enabled": true,
+    "aggregator": true,
+    "members_only": false,
+    "max_documents": 0,
+    "min_interval_hours": 12,
+    "verified": "2026-10-07",
+    "note": "Daily digital e-paper edition of Daily Jugantor. Scans pages via Gemini Multimodal Vision to find published tenders."
+  },
+  {
+    "id": "src_epaper_bdpratidin",
+    "type": "epaper_bdpratidin",
+    "url": "https://www.bd-pratidin.com/epaper",
+    "public_url": "https://www.bd-pratidin.com/epaper",
+    "organization_id": "epaper_bdpratidin",
+    "tier": 2,
+    "requires_js": false,
+    "verify_ssl": true,
+    "rate_limit_seconds": 2,
+    "enabled": true,
+    "aggregator": true,
+    "members_only": false,
+    "max_documents": 0,
+    "min_interval_hours": 12,
+    "verified": "2026-10-07",
+    "note": "Daily digital e-paper edition of Bangladesh Pratidin. Scans pages via Gemini Multimodal Vision to find published tenders."
   }
 ]
+
 
 

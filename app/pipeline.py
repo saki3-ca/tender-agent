@@ -30,10 +30,14 @@ from app.classification.status import StatusDetector, is_active
 from app.crawler import alltender
 from app.crawler.crawler import TenderCrawler
 from app.crawler.epaper.bangladeshtoday import BangladeshTodayEpaperCrawler
+from app.crawler.epaper.bdpratidin import BdPratidinEpaperCrawler
+from app.crawler.epaper.dhakatribune import DhakaTribuneEpaperCrawler
 from app.crawler.epaper.financialexpress import FinancialExpressEpaperCrawler
+from app.crawler.epaper.jugantor import JugantorEpaperCrawler
 from app.crawler.epaper.prothomalo import ProthomAloEpaperCrawler
 from app.crawler.epaper.protidinerbangladesh import ProtidinerBangladeshEpaperCrawler
 from app.db.supabase import Store
+
 from app.parsers.date_cleaner import DHAKA_TZ, deadline_datetime, extract_dates, find_dates, parse_first_date
 from app.parsers.document_parser import extract_document_text, is_readable_document
 from app.parsers.html_parser import (
@@ -304,8 +308,15 @@ class Monitor:
             status_code, error, pairs = await self._epaper_listings(source, BangladeshTodayEpaperCrawler(), "The Bangladesh Today")
         elif source.get("type") == "epaper_protidinerbangladesh":
             status_code, error, pairs = await self._epaper_listings(source, ProtidinerBangladeshEpaperCrawler(), "Protidiner Bangladesh")
+        elif source.get("type") == "epaper_dhakatribune":
+            status_code, error, pairs = await self._epaper_listings(source, DhakaTribuneEpaperCrawler(), "Dhaka Tribune")
+        elif source.get("type") == "epaper_jugantor":
+            status_code, error, pairs = await self._epaper_listings(source, JugantorEpaperCrawler(), "Daily Jugantor")
+        elif source.get("type") == "epaper_bdpratidin":
+            status_code, error, pairs = await self._epaper_listings(source, BdPratidinEpaperCrawler(), "Bangladesh Pratidin")
         else:
             status_code, error, pairs = await self._page_listings(source)
+
         if error:
             logger.warning(f"{source['id']}: {error}", extra={"url": source["url"], "status": status_code})
             return [], self._state_row(source, state, status_code, error, 0)

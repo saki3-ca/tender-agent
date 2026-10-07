@@ -2285,7 +2285,56 @@
     "last_verified": "2026-10-07",
     "last_checked": null,
     "notes": "E-Paper: Bangla daily newspaper"
+  },
+  {
+    "organization_id": "epaper_dhakatribune",
+    "canonical_name": "Dhaka Tribune E-Paper",
+    "aliases": ["Dhaka Tribune", "dhakatribune.com", "DT epaper"],
+    "organization_type": "NEWSPAPER",
+    "sector": "ngos",
+    "official_domain": "dhakatribune.com",
+    "procurement_url": "https://epaper.dhakatribune.com/",
+    "tender_url": "https://epaper.dhakatribune.com/",
+    "notice_url": "https://epaper.dhakatribune.com/",
+    "is_ifrs9_target": false,
+    "source_status": "OK",
+    "last_verified": "2026-10-07",
+    "last_checked": null,
+    "notes": "E-Paper: English daily newspaper"
+  },
+  {
+    "organization_id": "epaper_jugantor",
+    "canonical_name": "Daily Jugantor E-Paper",
+    "aliases": ["Daily Jugantor", "দৈনিক যুগান্তর", "jugantor.com", "যুগান্তর"],
+    "organization_type": "NEWSPAPER",
+    "sector": "ngos",
+    "official_domain": "jugantor.com",
+    "procurement_url": "https://epaper.jugantor.com/",
+    "tender_url": "https://epaper.jugantor.com/",
+    "notice_url": "https://epaper.jugantor.com/",
+    "is_ifrs9_target": false,
+    "source_status": "OK",
+    "last_verified": "2026-10-07",
+    "last_checked": null,
+    "notes": "E-Paper: Major Bangla daily newspaper"
+  },
+  {
+    "organization_id": "epaper_bdpratidin",
+    "canonical_name": "Bangladesh Pratidin E-Paper",
+    "aliases": ["Bangladesh Pratidin", "বাংলাদেশ প্রতিদিন", "bd-pratidin.com"],
+    "organization_type": "NEWSPAPER",
+    "sector": "ngos",
+    "official_domain": "bd-pratidin.com",
+    "procurement_url": "https://www.bd-pratidin.com/epaper",
+    "tender_url": "https://www.bd-pratidin.com/epaper",
+    "notice_url": "https://www.bd-pratidin.com/epaper",
+    "is_ifrs9_target": false,
+    "source_status": "OK",
+    "last_verified": "2026-10-07",
+    "last_checked": null,
+    "notes": "E-Paper: Highest circulation Bangla daily newspaper"
   }
 ]
+
 
 

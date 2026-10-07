@@ -4,7 +4,10 @@ from unittest.mock import AsyncMock, patch
 
 import httpx
 from app.crawler.epaper.bangladeshtoday import BangladeshTodayEpaperCrawler
+from app.crawler.epaper.bdpratidin import BdPratidinEpaperCrawler
+from app.crawler.epaper.dhakatribune import DhakaTribuneEpaperCrawler
 from app.crawler.epaper.financialexpress import FinancialExpressEpaperCrawler
+from app.crawler.epaper.jugantor import JugantorEpaperCrawler
 from app.crawler.epaper.prothomalo import ProthomAloEpaperCrawler
 from app.crawler.epaper.protidinerbangladesh import ProtidinerBangladeshEpaperCrawler
 from app.parsers.epaper_gemini import GeminiEpaperParser
@@ -99,4 +102,22 @@ async def test_bangladesh_today_crawler():
 @pytest.mark.asyncio
 async def test_protidiner_bangladesh_crawler():
     crawler = ProtidinerBangladeshEpaperCrawler()
+    assert crawler is not None
+
+
+@pytest.mark.asyncio
+async def test_dhaka_tribune_crawler():
+    crawler = DhakaTribuneEpaperCrawler()
+    assert crawler is not None
+
+
+@pytest.mark.asyncio
+async def test_jugantor_crawler():
+    crawler = JugantorEpaperCrawler()
+    assert crawler is not None
+
+
+@pytest.mark.asyncio
+async def test_bd_pratidin_crawler():
+    crawler = BdPratidinEpaperCrawler()
     assert crawler is not None
