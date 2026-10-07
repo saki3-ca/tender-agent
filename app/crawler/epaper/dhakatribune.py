@@ -5,7 +5,7 @@ Major English daily newspaper in Bangladesh.
 """
 
 import logging
-from datetime import date, datetime
+from datetime import date, datetime, timedelta
 from typing import Any, Dict, List, Optional, Tuple
 
 import httpx
@@ -24,11 +24,21 @@ class DhakaTribuneEpaperCrawler:
 
     async def crawl_edition(self, target_date: Optional[date] = None, max_pages: int = 14
                             ) -> Tuple[int, Optional[str], List[Dict[str, Any]]]:
-        """Crawls pages of Dhaka Tribune for the given date."""
+        """Crawls pages of Dhaka Tribune for the given date (or latest available)."""
         today = target_date or datetime.now(DHAKA_TZ).date()
         date_str = today.strftime("%Y-%m-%d")
 
         async with httpx.AsyncClient(timeout=60.0, follow_redirects=True) as client:
+            # Check if today's edition is published yet, else fallback to previous day
+            test_url = (
+                f"https://epaper-media-crop.dhakatribune.com/?width=1800&quality=85"
+                f"&image=/en/epaper/{date_str}/main-edition/1/full.jpg"
+            )
+            r_test = await client.get(test_url, headers={"User-Agent": USER_AGENT})
+            if r_test.status_code != 200 or len(r_test.content) < 10000:
+                prev_date = today - timedelta(days=1)
+                date_str = prev_date.strftime("%Y-%m-%d")
+
             extracted_tenders: List[Dict[str, Any]] = []
 
             for page_num in range(1, max_pages + 1):

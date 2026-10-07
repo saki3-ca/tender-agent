@@ -30,23 +30,27 @@ class ProthomAloEpaperCrawler:
         self.edition_id = edition_id
         self.parser = GeminiEpaperParser()
 
-    async def fetch_page_list(self, client: httpx.AsyncClient, edate_str: str) -> List[Dict[str, Any]]:
+    async def fetch_page_list(self, client: httpx.AsyncClient, edate_str: Optional[str] = None) -> List[Dict[str, Any]]:
         """Fetches the edition HTML and extracts the pglist_ array."""
-        url = f"{BASE_URL}/Home/DIndex?eid={self.edition_id}&edate={edate_str}"
-        headers = {"User-Agent": USER_AGENT, "Accept-Language": "en-US,en;q=0.9"}
-        resp = await client.get(url, headers=headers)
-        if resp.status_code >= 400:
-            logger.warning(f"Failed to load Prothom Alo e-paper: HTTP {resp.status_code}")
-            return []
+        urls = []
+        if edate_str:
+            urls.append(f"{BASE_URL}/Home/DIndex?eid={self.edition_id}&edate={edate_str}")
+        urls.append(f"{BASE_URL}/")
 
-        html = resp.text
-        # Look for var pglist_ = [...];
-        m = re.search(r"var\s+pglist_\s*=\s*(\[.*?\]);", html, re.DOTALL)
-        if m:
+        headers = {"User-Agent": USER_AGENT, "Accept-Language": "en-US,en;q=0.9"}
+        for url in urls:
             try:
-                return json.loads(m.group(1))
+                resp = await client.get(url, headers=headers)
+                if resp.status_code >= 400:
+                    continue
+                html = resp.text
+                m = re.search(r"var\s+pglist_\s*=\s*(\[.*?\]);", html, re.DOTALL)
+                if m:
+                    pages = json.loads(m.group(1))
+                    if pages:
+                        return pages
             except Exception as e:
-                logger.warning(f"Failed to parse pglist_ JSON: {e}")
+                logger.warning(f"Failed to load Prothom Alo from {url}: {e}")
 
         return []
 
