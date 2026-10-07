@@ -204,9 +204,93 @@
       "code": "TRAINING",
       "label": "Professional Training",
       "phrases": [
-        "(?:IFRS|accounting|audit|tax|VAT|financial management|internal control|risk management) training"
+        "(?:IFRS|accounting|audit|tax|VAT|financial management|internal control|risk management|IT|ICT|cyber) training"
       ],
       "document_phrases": []
+    },
+    {
+      "code": "SOFTWARE_DEV",
+      "label": "Software & Web Development",
+      "phrases": [
+        "software (?:development|customization|implementation|upgrade|maintenance|solution|app|application|platform|vendor)",
+        "(?:core banking|CBS|ERP|MIS|HRIS|CRM|billing|souvenir sales|inventory|accounting) software",
+        "web(?:site)? (?:development|design|redesign|portal|application|maintenance)",
+        "mobile (?:app|application) (?:development|solution)",
+        "API (?:integration|gateway|development)",
+        "database (?:management|administration|migration|development)",
+        "cloud (?:migration|infrastructure|native|hosting|solution)",
+        "AI (?:use case|model|solution|design|testing|deployment)",
+        "artificial intelligence",
+        "machine learning",
+        "সফটওয়্যার"
+      ],
+      "document_phrases": [
+        "development of (?:the )?(?:software|web portal|application|system|mobile app)",
+        "software development lifecycle",
+        "terms of reference for software development"
+      ]
+    },
+    {
+      "code": "CYBER_SECURITY",
+      "label": "Cyber Security & Information Protection",
+      "phrases": [
+        "cyber[\\s-]?security",
+        "information security",
+        "network security",
+        "vulnerability assessment",
+        "penetration testing",
+        "VAPT",
+        "SOC (?:operations?|solution|services?)",
+        "SIEM",
+        "firewall (?:solution|implementation|maintenance|appliance)",
+        "EDR|XDR",
+        "data loss prevention|DLP",
+        "security operations center"
+      ],
+      "document_phrases": [
+        "vulnerability assessment and penetration testing",
+        "cyber security assessment and review"
+      ]
+    },
+    {
+      "code": "IT_INFRA_NETWORKING",
+      "label": "IT Infrastructure & Networking",
+      "phrases": [
+        "ICT (?:infrastructure|support|services?|solutions?|systems?)",
+        "IT (?:infrastructure|support|services?|solutions?|systems?)",
+        "data cent(?:er|re)",
+        "server (?:procurement|maintenance|installation|rack|virtualization)",
+        "networking (?:infrastructure|solution|device)",
+        "managed network (?:service|services)",
+        "disaster recovery(?: center| site)?",
+        "cloud & security",
+        "ISP service",
+        "bandwidth|data connectivity",
+        "hardware/network maintenance"
+      ],
+      "document_phrases": [
+        "supply and installation of IT equipment",
+        "data center infrastructure",
+        "structured cabling network"
+      ]
+    },
+    {
+      "code": "IT_CONSULTANCY",
+      "label": "IT Consulting & Digital Transformation",
+      "phrases": [
+        "ICT (?:consultan(?:cy|t|ts)|advisory|strategy|specialist|expert)",
+        "IT (?:consultan(?:cy|t|ts)|advisory|strategy|specialist|expert|roadmap)",
+        "digital transformation",
+        "enterprise architecture",
+        "IT governance",
+        "technology managed (?:service|services)",
+        "MEMIS support",
+        "ICT based monitoring"
+      ],
+      "document_phrases": [
+        "selection of (?:an? )?ICT consulting firm",
+        "consultancy services for ICT"
+      ]
     }
   ],
   "_exclusions_comment": "Phrases removed from the text before category matching, so they cannot trigger a category on their own (e.g. an 'energy audit' is not an ACNABIN audit).",

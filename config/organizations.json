@@ -2173,5 +2173,53 @@
     "last_verified": "2026-10-06",
     "last_checked": null,
     "notes": "Aggregator (paid): notices are attributed to the publishing organization, not to Alltender"
+  },
+  {
+    "organization_id": "agg_alltender_ict",
+    "canonical_name": "Alltender ICT & IT Services",
+    "aliases": ["Alltender ICT", "Alltender IT", "Alltender Subcategory 64"],
+    "organization_type": "AGGREGATOR",
+    "sector": "it",
+    "official_domain": "alltender.com",
+    "procurement_url": "https://www.alltender.com/list_tab/live_tenders_by_sub_category/64",
+    "tender_url": "https://www.alltender.com/list_tab/live_tenders_by_sub_category/64",
+    "notice_url": "https://www.alltender.com/",
+    "is_ifrs9_target": false,
+    "source_status": "OK",
+    "last_verified": "2026-10-07",
+    "last_checked": null,
+    "notes": "Alltender ICT and Software live tenders aggregator"
+  },
+  {
+    "organization_id": "gov_bcc",
+    "canonical_name": "Bangladesh Computer Council (BCC)",
+    "aliases": ["BCC", "বাংলাদেশ কম্পিউটার কাউন্সিল"],
+    "organization_type": "GOVERNMENT_AGENCY",
+    "sector": "it",
+    "official_domain": "bcc.gov.bd",
+    "procurement_url": "https://bcc.gov.bd/site/view/tenders",
+    "tender_url": "https://bcc.gov.bd/site/view/tenders",
+    "notice_url": "https://bcc.gov.bd/site/view/notices",
+    "is_ifrs9_target": false,
+    "source_status": "OK",
+    "last_verified": "2026-10-07",
+    "last_checked": null,
+    "notes": "Statutory body under ICT Division"
+  },
+  {
+    "organization_id": "gov_ictd",
+    "canonical_name": "Information & Communication Technology Division (ICTD)",
+    "aliases": ["ICT Division", "তথ্য ও যোগাযোগ প্রযুক্তি বিভাগ"],
+    "organization_type": "GOVERNMENT_MINISTRY",
+    "sector": "it",
+    "official_domain": "ictd.gov.bd",
+    "procurement_url": "https://ictd.gov.bd/site/view/tenders",
+    "tender_url": "https://ictd.gov.bd/site/view/tenders",
+    "notice_url": "https://ictd.gov.bd/site/view/notices",
+    "is_ifrs9_target": false,
+    "source_status": "OK",
+    "last_verified": "2026-10-07",
+    "last_checked": null,
+    "notes": "Ministry of Posts, Telecommunications and Information Technology"
   }
 ]

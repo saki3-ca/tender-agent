@@ -11,6 +11,7 @@
   <link rel="stylesheet" href="css/style.css">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="js/config.js"></script>
+  <script src="js/demo_data.js"></script>
   <script src="js/app.js" defer></script>
 </head>
 <body data-page="home">
@@ -20,6 +21,7 @@
       <a href="index.html" class="active">Home</a>
       <a href="bank.html">Bank</a>
       <a href="ngo.html">NGO</a>
+      <a href="it.html">IT Services</a>
       <a href="sources.html">Sources</a>
       <a href="admin.html">Admin</a>
     </nav>
@@ -29,7 +31,7 @@
   <main class="page">
     <div class="section-head">
       <h1>Tender Monitoring</h1>
-      <p class="lead">Active procurement and professional-service opportunities published by banks and NGOs operating in Bangladesh.</p>
+      <p class="lead">Active procurement and professional-service opportunities published by banks, NGOs, and IT/ICT entities operating in Bangladesh.</p>
     </div>
 
     <div class="home-grid">
@@ -52,6 +54,16 @@
           <div><div class="figure-value" id="NGO-priority">–</div><div class="figure-label">Priority</div></div>
         </div>
         <a class="btn btn-primary" href="ngo.html">Open NGO</a>
+      </section>
+
+      <section class="panel">
+        <h2>IT SERVICES</h2>
+        <p>ICT support, software development, cybersecurity, network infrastructure, and digital solution procurement notices.</p>
+        <div class="figures">
+          <div><div class="figure-value" id="IT-general">–</div><div class="figure-label">Active (General)</div></div>
+          <div><div class="figure-value" id="IT-priority">–</div><div class="figure-label">Priority</div></div>
+        </div>
+        <a class="btn btn-primary" href="it.html">Open IT Services</a>
       </section>
     </div>
 

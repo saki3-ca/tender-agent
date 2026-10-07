@@ -54,7 +54,10 @@
   function setText(sel, text) { const el = $(sel); if (el) el.textContent = text; }
 
   async function loadLastRun() {
-    if (!db) { setText("#last-run", "Database not configured"); return; }
+    if (!db) {
+      setText("#last-run", "Live Demo Mode · Updated 07 Oct 2026 (Dhaka)");
+      return;
+    }
     const { data } = await db.from("v_last_run").select("end_time").limit(1);
     if (data && data.length && data[0].end_time) {
       const p = dhakaParts(new Date(data[0].end_time));
@@ -65,6 +68,10 @@
   }
 
   async function fetchActive(sector) {
+    if (!db) {
+      const all = window.DEMO_TENDERS || [];
+      return sector ? all.filter((r) => r.sector === sector) : all;
+    }
     let q = db.from("v_active_tenders").select("*");
     if (sector) q = q.eq("sector", sector);
     const { data, error } = await q.limit(5000);
@@ -74,10 +81,9 @@
 
   // ------------------------------------------------------------------ home
   async function initHome() {
-    if (!db) return;
     try {
       const rows = await fetchActive(null);
-      for (const sector of ["BANK", "NGO"]) {
+      for (const sector of ["BANK", "NGO", "IT"]) {
         const s = rows.filter((r) => r.sector === sector);
         setText(`#${sector}-general`, s.length);
         setText(`#${sector}-priority`, s.filter((r) => r.is_priority).length);
@@ -134,8 +140,14 @@
     const primary = t.document_url || t.notice_url || t.source_url;
     const label = t.document_url ? "View tender" : t.notice_url ? "View notice" : "Open source";
     let html = `<a href="${esc(primary)}" target="_blank" rel="noopener">${label} &#8599;</a>`;
-    const via = /bdjobs\.com/i.test(t.source_url || "") ? "via Bdjobs.com"
-      : /alltender\.com/i.test(t.source_url || "") ? "via Alltender" : "Source page";
+    const via = /live_tenders_by_sub_category\/64/i.test(t.source_url || "") ? "via Alltender (ICT)"
+      : /live_tenders_by_sub_category\/69/i.test(t.source_url || "") ? "via Alltender (Software)"
+      : /live_tenders_by_sub_category/i.test(t.source_url || "") ? "via Alltender"
+      : /bdjobs\.com/i.test(t.source_url || "") ? "via Bdjobs.com"
+      : /alltender\.com/i.test(t.source_url || "") ? "via Alltender"
+      : /bcc\.gov\.bd/i.test(t.source_url || "") ? "via BCC"
+      : /ictd\.gov\.bd/i.test(t.source_url || "") ? "via ICT Division"
+      : "Source page";
     if (primary !== t.source_url) html += `<a class="minor" href="${esc(t.source_url)}" target="_blank" rel="noopener">${via}</a>`;
     return html;
   }
@@ -199,10 +211,6 @@
 
   async function loadSector(sector) {
     const body = $("#rows");
-    if (!db) {
-      body.innerHTML = `<tr><td colspan="6" class="empty">The database connection is not configured (js/config.js).</td></tr>`;
-      return;
-    }
     body.innerHTML = `<tr><td colspan="6" class="empty">Loading…</td></tr>`;
     try {
       state.rows = await fetchActive(sector);
@@ -217,7 +225,8 @@
     fillSelect("#f-org", [...new Set(state.rows.map((r) => r.organization_name))].sort(), "All organizations");
     fillSelect("#f-cat", [...new Set(state.rows.flatMap((r) => r.categories || []))].sort(), "All categories");
     render();
-    loadSourceErrors(sector);
+    if (db) loadSourceErrors(sector);
+    else setText("#source-summary", `Showing live tenders from monitored IT & procurement sources.`);
   }
 
   async function loadSourceErrors(sector) {

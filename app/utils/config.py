@@ -31,6 +31,11 @@ SECTOR_MAP = {
     "ingos": "NGO",
     "public_donor": "NGO",
     "development_partners": "NGO",
+    "it": "IT",
+    "ict": "IT",
+    "software": "IT",
+    "technology": "IT",
+    "telecom": "IT",
 }
 
 
@@ -107,8 +112,8 @@ class AppConfig:
             org = self.organization(s["organization_id"])
             if not org:
                 raise ConfigError(f"Source {s['id']} references unknown organization {s['organization_id']}")
-            if org["sector"] not in ("BANK", "NGO"):
-                raise ConfigError(f"Organization {s['organization_id']} has no BANK/NGO sector")
+            if org["sector"] not in ("BANK", "NGO", "IT"):
+                raise ConfigError(f"Organization {s['organization_id']} has no BANK/NGO/IT sector")
 
     # ---- settings helpers -------------------------------------------------
     def crawler_setting(self, key: str, default: Any) -> Any:

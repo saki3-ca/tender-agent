@@ -1485,5 +1485,59 @@
     "min_interval_hours": 6,
     "verified": "2026-10-06",
     "note": "Alltender.com paid subscription: 'My Tenders' list of the ACNABIN account (its 'CA Firm' preference). Needs ALLTENDER_USER / ALLTENDER_PASSWORD. Read every 6 hours; Bank and NGO tenders only. Shown to signed-in users only (Alltender content may not be republished)."
+  },
+  {
+    "id": "src_alltender_ict_64",
+    "type": "alltender_subcategory",
+    "subcategory_id": 64,
+    "url": "https://www.alltender.com/list_tab/live_tenders_by_sub_category/64",
+    "public_url": "https://www.alltender.com/list_tab/live_tenders_by_sub_category/64",
+    "organization_id": "agg_alltender_ict",
+    "tier": 2,
+    "requires_js": false,
+    "verify_ssl": true,
+    "rate_limit_seconds": 2,
+    "enabled": true,
+    "verified": "2026-10-07",
+    "note": "Alltender Live Tenders for Sub-category 64 (ICT Support/Consultancy)."
+  },
+  {
+    "id": "src_alltender_software_69",
+    "type": "alltender_subcategory",
+    "subcategory_id": 69,
+    "url": "https://www.alltender.com/list_tab/live_tenders_by_sub_category/69",
+    "public_url": "https://www.alltender.com/list_tab/live_tenders_by_sub_category/69",
+    "organization_id": "agg_alltender_ict",
+    "tier": 2,
+    "requires_js": false,
+    "verify_ssl": true,
+    "rate_limit_seconds": 2,
+    "enabled": true,
+    "verified": "2026-10-07",
+    "note": "Alltender Live Tenders for Sub-category 69 (Software Development)."
+  },
+  {
+    "id": "src_gov_bcc_tender",
+    "url": "https://bcc.gov.bd/site/view/tenders",
+    "organization_id": "gov_bcc",
+    "tier": 2,
+    "requires_js": false,
+    "verify_ssl": true,
+    "rate_limit_seconds": 3,
+    "enabled": true,
+    "verified": "2026-10-07",
+    "note": "Bangladesh Computer Council tender notices"
+  },
+  {
+    "id": "src_gov_ictd_tender",
+    "url": "https://ictd.gov.bd/site/view/tenders",
+    "organization_id": "gov_ictd",
+    "tier": 2,
+    "requires_js": false,
+    "verify_ssl": true,
+    "rate_limit_seconds": 3,
+    "enabled": true,
+    "verified": "2026-10-07",
+    "note": "ICT Division tender and procurement notices"
   }
 ]

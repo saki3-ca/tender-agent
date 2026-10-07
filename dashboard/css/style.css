@@ -72,7 +72,7 @@ h1 { font-size: 20px; font-weight: 600; letter-spacing: 0.01em; }
 .section-head { margin-bottom: 20px; }
 
 /* ---------------------------------------------------------------- home */
-.home-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; margin-top: 24px; }
+.home-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 16px; margin-top: 24px; }
 .panel {
   background: var(--surface);
   border: 1px solid var(--border);

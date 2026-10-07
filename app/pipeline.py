@@ -105,6 +105,7 @@ def _norm_org(name: str) -> str:
 
 _ORG_NAME_INDEX: Dict[str, str] = {}
 _FINANCIAL_ORG = re.compile(r"\bbank\b|leasing|financ|insurance|securities|investment", re.I)
+_IT_ORG = re.compile(r"\b(?:software|technolog|computer|cyber|telecom|ict|data center|informatics|digital|basis|bcc|doict|ictd)\b", re.I)
 
 
 def _org_keys(name: str) -> List[str]:
@@ -131,8 +132,9 @@ def organization_for_name(name: str) -> Dict[str, Any]:
         if oid and config.organization(oid):
             return config.organization(oid)
     slug = _norm_org(name).replace(" ", "_")[:50]
+    sector = "BANK" if _FINANCIAL_ORG.search(name) else "IT" if _IT_ORG.search(name) else "NGO"
     return {"organization_id": f"ext_{slug}", "name": name, "type": None,
-            "sector": "BANK" if _FINANCIAL_ORG.search(name) else "NGO", "is_target_bank": False}
+            "sector": sector, "is_target_bank": False}
 
 
 def source_org(source: Dict[str, Any]) -> Dict[str, Any]:
@@ -287,6 +289,8 @@ class Monitor:
             status_code, error, pairs = await self._bdjobs_listings(source)
         elif source.get("type") == "alltender":
             status_code, error, pairs = await self._alltender_listings(source)
+        elif source.get("type") in ("alltender_subcategory", "alltender_sub_category") or "live_tenders_by_sub_category" in source.get("url", ""):
+            status_code, error, pairs = await self._alltender_subcategory_listings(source)
         else:
             status_code, error, pairs = await self._page_listings(source)
         if error:
@@ -402,6 +406,34 @@ class Monitor:
                 org = {**org, "sector": sector}
             f = item.fields
             title = f["Name of Work"].rstrip(".")
+            row_text = " | ".join(f"{k}: {v}" for k, v in f.items() if k != "For More Details")
+            listing = Listing(title=title, row_text=row_text, source_url=source["url"], link=item.link)
+            published = parse_first_date(f.get("Published in", ""), self.today)
+            if published and published.value <= self.today:
+                listing.published = published.value
+            closing = parse_first_date(f.get("Closing date", ""), self.today)
+            if closing:
+                listing.deadline, listing.deadline_has_time = deadline_datetime(closing.value, None)
+            pairs.append((listing, org))
+        return status, None, pairs
+
+    async def _alltender_subcategory_listings(self, source: Dict[str, Any]):
+        """Alltender live tenders by subcategory (e.g. 64 = ICT Support/Consultancy)."""
+        subcat_id = int(source.get("subcategory_id") or (re.search(r"/(\d+)(?:/|$)", source["url"]).group(1) if re.search(r"/(\d+)(?:/|$)", source["url"]) else 64))
+        status, error, items = await alltender.fetch_subcategory_tenders(subcategory_id=subcat_id)
+        if error:
+            return status, error, []
+        pairs = []
+        for item in items:
+            name = alltender.organization_name(item)
+            org = organization_for_name(name)
+            target_sector = source.get("sector") or "IT"
+            if org.get("organization_id", "").startswith("ext_") or not org.get("sector"):
+                org = {**org, "sector": target_sector}
+            f = item.fields
+            title = f.get("Name of Work", "").rstrip(".")
+            if not title:
+                continue
             row_text = " | ".join(f"{k}: {v}" for k, v in f.items() if k != "For More Details")
             listing = Listing(title=title, row_text=row_text, source_url=source["url"], link=item.link)
             published = parse_first_date(f.get("Published in", ""), self.today)
