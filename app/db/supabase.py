@@ -24,7 +24,7 @@ TENDER_COLUMNS = {
     "title", "description", "reference_number", "published_date", "deadline", "deadline_has_time",
     "status", "is_priority", "is_ifrs9", "categories", "matched_keywords", "source_id", "source_url",
     "notice_url", "document_url", "document_text", "document_checked", "is_baseline", "first_seen", "last_seen",
-    "members_only",
+    "members_only", "is_it", "it_priority", "it_categories", "it_partners",
 }
 # Set once when a tender is first discovered, never overwritten afterwards
 INSERT_ONLY_COLUMNS = {"first_seen"}

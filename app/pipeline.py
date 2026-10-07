@@ -25,7 +25,7 @@ from typing import Any, Dict, List, Optional, Tuple
 from app.alerts.email import EmailAlerter
 from app.alerts.telegram import TelegramAlerter
 from app.classification.dedupe import dedupe, same_notice, tender_id
-from app.classification.relevance import RelevanceClassifier
+from app.classification.relevance import ItClassifier, RelevanceClassifier
 from app.classification.status import StatusDetector, is_active
 from app.crawler import alltender
 from app.crawler.crawler import TenderCrawler
@@ -183,6 +183,7 @@ class Monitor:
         self.today = self.now.astimezone(DHAKA_TZ).date()
         self.crawler = TenderCrawler()
         self.classifier = RelevanceClassifier()
+        self.it_classifier = ItClassifier()
         self.status_detector = StatusDetector()
         self.alerter = TelegramAlerter(self.store)
         self.emailer = EmailAlerter(self.store)
@@ -289,8 +290,8 @@ class Monitor:
             status_code, error, pairs = await self._bdjobs_listings(source)
         elif source.get("type") == "alltender":
             status_code, error, pairs = await self._alltender_listings(source)
-        elif source.get("type") in ("alltender_subcategory", "alltender_sub_category") or "live_tenders_by_sub_category" in source.get("url", ""):
-            status_code, error, pairs = await self._alltender_subcategory_listings(source)
+        elif source.get("type") == "alltender_category":
+            status_code, error, pairs = await self._alltender_listings(source)
         else:
             status_code, error, pairs = await self._page_listings(source)
         if error:
@@ -390,14 +391,19 @@ class Monitor:
         return res.status, None, pairs
 
     async def _alltender_listings(self, source: Dict[str, Any]):
-        """Alltender.com "My Tenders" list of the ACNABIN account (see app/crawler/alltender.py).
-        Government tenders are outside the Bank / NGO scope and are left out."""
-        status, error, items = await alltender.fetch_my_tenders()
+        """Alltender.com (see app/crawler/alltender.py): the account's "My Tenders" list, or the live
+        tenders of one sub-category ("type": "alltender_category"). From "My Tenders", government
+        tenders are outside the Bank / NGO scope and are left out; from an IT category they are kept
+        under IT Services."""
+        if source.get("type") == "alltender_category":
+            status, error, items = await alltender.fetch_category(int(source["category_id"]))
+        else:
+            status, error, items = await alltender.fetch_my_tenders()
         if error:
             return status, error, []
         pairs = []
         for item in items:
-            sector = alltender.sector(item)
+            sector = alltender.sector(item) or source.get("default_sector")
             if not sector:
                 continue
             name = alltender.organization_name(item)
@@ -406,34 +412,6 @@ class Monitor:
                 org = {**org, "sector": sector}
             f = item.fields
             title = f["Name of Work"].rstrip(".")
-            row_text = " | ".join(f"{k}: {v}" for k, v in f.items() if k != "For More Details")
-            listing = Listing(title=title, row_text=row_text, source_url=source["url"], link=item.link)
-            published = parse_first_date(f.get("Published in", ""), self.today)
-            if published and published.value <= self.today:
-                listing.published = published.value
-            closing = parse_first_date(f.get("Closing date", ""), self.today)
-            if closing:
-                listing.deadline, listing.deadline_has_time = deadline_datetime(closing.value, None)
-            pairs.append((listing, org))
-        return status, None, pairs
-
-    async def _alltender_subcategory_listings(self, source: Dict[str, Any]):
-        """Alltender live tenders by subcategory (e.g. 64 = ICT Support/Consultancy)."""
-        subcat_id = int(source.get("subcategory_id") or (re.search(r"/(\d+)(?:/|$)", source["url"]).group(1) if re.search(r"/(\d+)(?:/|$)", source["url"]) else 64))
-        status, error, items = await alltender.fetch_subcategory_tenders(subcategory_id=subcat_id)
-        if error:
-            return status, error, []
-        pairs = []
-        for item in items:
-            name = alltender.organization_name(item)
-            org = organization_for_name(name)
-            target_sector = source.get("sector") or "IT"
-            if org.get("organization_id", "").startswith("ext_") or not org.get("sector"):
-                org = {**org, "sector": target_sector}
-            f = item.fields
-            title = f.get("Name of Work", "").rstrip(".")
-            if not title:
-                continue
             row_text = " | ".join(f"{k}: {v}" for k, v in f.items() if k != "For More Details")
             listing = Listing(title=title, row_text=row_text, source_url=source["url"], link=item.link)
             published = parse_first_date(f.get("Published in", ""), self.today)
@@ -512,6 +490,10 @@ class Monitor:
             description="\n".join([listing.row_text, detail_text[:3000]]),
             document_text=doc_text,
         )
+        # IT subject and IT Priority are read from the title and listing line only: notice pages are full
+        # of submission boilerplate ("apply through the tender web portal", "visit our website").
+        it = self.it_classifier.classify(
+            listing.title, listing.row_text, it_source=bool(source.get("it_source")) or org["sector"] == "IT")
         now_utc = datetime.now(timezone.utc)
         tender = {
             "id": tid,
@@ -532,6 +514,10 @@ class Monitor:
             "is_ifrs9": rel.is_ifrs9,
             "categories": rel.categories,
             "matched_keywords": rel.matched_keywords,
+            "is_it": it.is_it,
+            "it_priority": it.is_priority,
+            "it_categories": it.categories,
+            "it_partners": it.partners,
             "source_id": source["id"],
             "source_url": source.get("public_url") or source["url"],
             "notice_url": listing.link,

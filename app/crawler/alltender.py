@@ -1,5 +1,6 @@
 """
-Alltender.com (paid subscription) — the "My Tenders" list of the ACNABIN account.
+Alltender.com (paid subscription): the "My Tenders" list of the ACNABIN account, and the live
+tenders of selected sub-categories (ICT, software) for the IT Services page.
 
 The list is filtered by the account's own preference profile on Alltender (e.g. "CA Firm"), so it
 already holds the tenders Alltender matched to ACNABIN's services. The monitor signs in with
@@ -59,8 +60,18 @@ def parse_list_page(html: str) -> Tuple[List[AlltenderItem], Optional[int], Opti
     return items, int(total.group(1)) if total else None, (pref.get("value") if pref else None)
 
 
-async def fetch_my_tenders() -> Tuple[int, Optional[str], List[AlltenderItem]]:
-    """(http status, error, items). Errors: LOGIN_NOT_CONFIGURED, LOGIN_FAILED, HTTP_xxx, TIMEOUT…"""
+def _unique(items: List[AlltenderItem]) -> List[AlltenderItem]:
+    seen, out = set(), []
+    for it in items:
+        if it.tender_id not in seen:
+            seen.add(it.tender_id)
+            out.append(it)
+    return out
+
+
+async def _signed_in(read) -> Tuple[int, Optional[str], List[AlltenderItem]]:
+    """Signs in, runs read(client, first_page_html), signs out.
+    Errors: LOGIN_NOT_CONFIGURED, LOGIN_FAILED, HTTP_xxx, TIMEOUT, CONNECTION_FAILED."""
     user, password = config.alltender_user, config.alltender_password
     if not (user and password):
         return 0, "LOGIN_NOT_CONFIGURED", []
@@ -76,86 +87,51 @@ async def fetch_my_tenders() -> Tuple[int, Optional[str], List[AlltenderItem]]:
                 return first.status_code, f"HTTP_{first.status_code}", []
             if "/user/logout" not in first.text:
                 return first.status_code, "LOGIN_FAILED", []
-            items, total, pref = parse_list_page(first.text)
-            if pref:
-                items, page = [], 1
-                while page <= MAX_PAGES:
-                    res = await client.get(f"{BASE}/summary_tab/user_preferred_tender/{pref}/0/{PER_PAGE}/{page}")
-                    if res.status_code >= 400:
-                        return res.status_code, f"HTTP_{res.status_code}", []
-                    page_items, _, _ = parse_list_page(res.text)
-                    items += page_items
-                    if not page_items or (total is not None and len(items) >= total):
-                        break
-                    page += 1
-            await client.get(f"{BASE}/user/logout")
-            seen, unique = set(), []
-            for it in items:
-                if it.tender_id not in seen:
-                    seen.add(it.tender_id)
-                    unique.append(it)
-            return first.status_code, None, unique
+            try:
+                error, items = await read(client, first.text)
+            finally:
+                await client.get(f"{BASE}/user/logout")
+            return first.status_code, error, _unique(items) if not error else []
     except httpx.TimeoutException:
         return 0, "TIMEOUT", []
     except httpx.HTTPError as e:
         return 0, f"CONNECTION_FAILED: {str(e)[:120]}", []
 
 
-async def fetch_subcategory_tenders(subcategory_id: int = 64, max_pages: int = MAX_PAGES
-                                     ) -> Tuple[int, Optional[str], List[AlltenderItem]]:
-    """
-    Fetch public live tenders from an Alltender sub-category (e.g. 64 = ICT Support/Consultancy).
-    Does not require login credentials.
-    """
-    headers = {"User-Agent": USER_AGENT, "Accept-Language": "en-US,en;q=0.9"}
+async def _pages(client, url_for_page, total: Optional[int] = None) -> Tuple[Optional[str], List[AlltenderItem]]:
     items: List[AlltenderItem] = []
-    seen = set()
-    try:
-        async with httpx.AsyncClient(headers=headers, follow_redirects=True, timeout=30.0) as client:
-            page = 1
-            status_code = 200
-            while page <= max_pages:
-                url = f"{BASE}/list_tab/live_tenders_by_sub_category/{subcategory_id}/0/{PER_PAGE}/{page}"
-                res = await client.get(url)
-                status_code = res.status_code
-                if res.status_code >= 400:
-                    if page == 1:
-                        return res.status_code, f"HTTP_{res.status_code}", []
-                    break
-                page_items, total, _ = parse_list_page(res.text)
-                if not page_items:
-                    break
-                for it in page_items:
-                    if it.tender_id not in seen:
-                        seen.add(it.tender_id)
-                        items.append(it)
-                if total is not None and len(items) >= total:
-                    break
-                # If the returned items are fewer than PER_PAGE, it's the last page
-                if len(page_items) < 10:
-                    break
-                page += 1
-            return status_code, None, items
-    except httpx.TimeoutException:
-        return 0, "TIMEOUT", items
-    except httpx.HTTPError as e:
-        return 0, f"CONNECTION_FAILED: {str(e)[:120]}", items
+    for page in range(1, MAX_PAGES + 1):
+        res = await client.get(url_for_page(page))
+        if res.status_code >= 400:
+            return f"HTTP_{res.status_code}", []
+        page_items, _, _ = parse_list_page(res.text)
+        items += page_items
+        if len(page_items) < PER_PAGE or (total is not None and len(items) >= total):
+            break
+    return None, items
+
+
+async def fetch_my_tenders() -> Tuple[int, Optional[str], List[AlltenderItem]]:
+    """The account's "My Tenders" list (its preference profile, e.g. "CA Firm")."""
+    async def read(client, first_html):
+        items, total, pref = parse_list_page(first_html)
+        if not pref:
+            return None, items
+        return await _pages(client, lambda n: f"{BASE}/summary_tab/user_preferred_tender/{pref}/0/{PER_PAGE}/{n}", total)
+    return await _signed_in(read)
+
+
+async def fetch_category(sub_category_id: int) -> Tuple[int, Optional[str], List[AlltenderItem]]:
+    """Live tenders of one Alltender sub-category (e.g. 64 = ICT support / consultancy, 69 = software).
+    Read signed in: the public version of these pages hides the organization and dates."""
+    async def read(client, _):
+        return await _pages(client, lambda n: f"{BASE}/list_tab/live_tenders_by_sub_category/{sub_category_id}/0/{PER_PAGE}/{n}")
+    return await _signed_in(read)
 
 
 _GENERIC_DEPT = re.compile(r"^(?:others?|private|public)\b", re.I)
 _ADDRESS = re.compile(r"\d|\b(?:house|road|block|floor|level|plot|sector|lane|avenue|holding|gulshan|banani|"
-                      r"dhanmondi|mohakhali|lalmatia|shantinagar|mirpur|uttara|motijheel|baridhara|tejgaon)\b", re.I)
-_ORG_FROM_TITLE = re.compile(r"\b(?:for|by|of|at)\s+([A-Z][A-Za-z0-9\s&.,-]{2,40}?)(?:\s+(?:project|program|phase|initiative|tender|rfp|eoi|\(|$|,|\.))", re.I)
-
-
-_IGNORE_CANDIDATES = re.compile(
-    r"^(?:proposal|expression of interest|eoi|rfp|tender|selection|contracting|hiring|consulting|procurement|supply|services?|contract|appointment|the procurement|contracting a firm|an individual|individual consultant|schedule|enlistment|the supply|the selection|the hiring|the appointment|provision|goods|works|package)\b",
-    re.I,
-)
-_WORK_TERMS = re.compile(
-    r"\b(?:equipment|accessories|goods|works|services?|items?|licen[cs]e|support|procurement|supply|installation|maintenance|development|design|enlistment|consulting|vendor)\b",
-    re.I,
-)
+                      r"dhanmondi|mohakhali|lalmatia|shantinagar|mirpur|uttara|motijheel|baridhara|tejgaon|tower|bhaban|bhavan|building|plaza)\b", re.I)
 
 
 def organization_name(item: AlltenderItem) -> str:
@@ -165,55 +141,27 @@ def organization_name(item: AlltenderItem) -> str:
     dept = item.fields.get("Department", "")
     if dept and not _GENERIC_DEPT.match(dept):
         return dept
-    caller = item.fields.get("Tender Caller", "")
-    if caller:
-        parts = [p.strip() for p in caller.split(",") if p.strip()]
-        parts = parts[1:]                                    # person's name or "Authority"
-        if len(parts) > 1 and len(parts[-1].split()) == 1 and parts[-1].lower() != "bangladesh":
-            parts = parts[:-1]                               # city
-        for k, part in enumerate(parts):
-            if _ADDRESS.search(part):
-                parts = parts[:k]
-                break
-        if parts:
-            if parts[-1].lower() == "bangladesh" and len(parts) > 1:
-                return f"{parts[-2]}, {parts[-1]}"
-            return parts[-1]
-    if item.fields.get("Ministry/Division"):
-        return item.fields["Ministry/Division"]
-    
-    # Try extracting named organization from "Name of Work"
-    work = item.fields.get("Name of Work", "")
-    if work:
-        for m in re.finditer(r"\b(?:for|by|of|at)\s+([A-Z][A-Za-z0-9&/,\.-]{1,30}(?:\s+[A-Z][A-Za-z0-9&/,\.-]{1,30}){0,3})\s*(?:project|program|phase|initiative|tender|rfp|eoi|\(|$|,|\.)", work):
-            candidate = m.group(1).strip(" ,.-")
-            if (
-                len(candidate) >= 2
-                and not _IGNORE_CANDIDATES.search(candidate)
-                and not _WORK_TERMS.search(candidate)
-            ):
-                return candidate
-
-    district = item.fields.get("Caller District", "")
-    if district:
-        return f"Procuring Entity ({district})"
-    return "ICT Procuring Entity"
+    parts = [p.strip() for p in item.fields.get("Tender Caller", "").split(",") if p.strip()]
+    parts = parts[1:]                                    # person's name or "Authority"
+    if len(parts) > 1 and len(parts[-1].split()) == 1 and parts[-1].lower() != "bangladesh":
+        parts = parts[:-1]                               # city
+    for k, part in enumerate(parts):
+        if _ADDRESS.search(part):
+            parts = parts[:k]
+            break
+    if parts:
+        if parts[-1].lower() == "bangladesh" and len(parts) > 1:
+            return f"{parts[-2]}, {parts[-1]}"
+        return parts[-1]
+    return dept or item.fields.get("Ministry/Division", "")
 
 
-def sector(item: AlltenderItem, default: Optional[str] = None) -> Optional[str]:
-    """BANK / NGO / IT, or None for government and other tenders outside the monitor's scope."""
+def sector(item: AlltenderItem) -> Optional[str]:
+    """BANK / NGO from the calling organization, or None (government and others)."""
     ministry = item.fields.get("Ministry/Division", "")
-    dept = item.fields.get("Department", "")
-    work = item.fields.get("Name of Work", "")
-    org = organization_name(item)
-    text = f"{ministry} {dept} {org} {work}"
+    text = f"{ministry} {item.fields.get('Department', '')} {organization_name(item)}"
     if re.search(r"\bbank\b|financial institution|leasing|finance (?:plc|ltd|limited)|insurance", text, re.I):
         return "BANK"
-    if re.search(r"\bNGO\b|international organi[sz]ation|development partner|UN agenc|united nations", text, re.I):
+    if re.search(r"\bNGO\b|international organi[sz]ation|development partner|UN agenc|united nations", ministry, re.I):
         return "NGO"
-    if default:
-        return default
-    if re.search(r"\b(?:ict|software|hardware|networking|cyber|it\s+support|data\s+center|technology)\b", text, re.I):
-        return "IT"
     return None
-

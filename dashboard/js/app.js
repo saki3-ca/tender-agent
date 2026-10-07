@@ -3,6 +3,7 @@
  * Reads the Supabase view v_active_tenders (active tenders only; the ACTIVE rule is applied
  * in the database against the current time). General = all rows of a sector,
  * Priority = rows flagged is_priority.
+ * IT Services = every active row flagged is_it (any sector); IT Priority = it_priority.
  */
 (function () {
   "use strict";
@@ -54,10 +55,7 @@
   function setText(sel, text) { const el = $(sel); if (el) el.textContent = text; }
 
   async function loadLastRun() {
-    if (!db) {
-      setText("#last-run", "Live Demo Mode · Updated 07 Oct 2026 (Dhaka)");
-      return;
-    }
+    if (!db) { setText("#last-run", "Database not configured"); return; }
     const { data } = await db.from("v_last_run").select("end_time").limit(1);
     if (data && data.length && data[0].end_time) {
       const p = dhakaParts(new Date(data[0].end_time));
@@ -67,43 +65,35 @@
     }
   }
 
+  // IT Services lists every active IT tender (is_it), whichever organization published it; there,
+  // Priority / categories are the IT ones (capabilities of ACNABIN and its MoU IT partners).
+  function asItRow(r) {
+    return { ...r, is_priority: r.it_priority, is_ifrs9: false, categories: r.it_categories || [], partners: r.it_partners || [] };
+  }
+
   async function fetchActive(sector) {
-    if (!db) {
-      const all = window.DEMO_TENDERS || [];
-      return sector ? all.filter((r) => r.sector === sector) : all;
-    }
-    try {
-      let q = db.from("v_active_tenders").select("*");
-      if (sector) q = q.eq("sector", sector);
-      const { data, error } = await q.limit(5000);
-      if (error) throw error;
-      let rows = data || [];
-      if (sector === "IT" && rows.length === 0 && window.DEMO_TENDERS) {
-        return window.DEMO_TENDERS.filter((r) => r.sector === "IT");
-      }
-      if (!sector && !rows.some((r) => r.sector === "IT") && window.DEMO_TENDERS) {
-        rows = [...rows, ...window.DEMO_TENDERS.filter((r) => r.sector === "IT")];
-      }
-      return rows;
-    } catch (e) {
-      console.warn("fetchActive database error, using fallback data if available:", e);
-      if (window.DEMO_TENDERS) {
-        return sector ? window.DEMO_TENDERS.filter((r) => r.sector === sector) : window.DEMO_TENDERS;
-      }
-      throw e;
-    }
+    let q = db.from("v_active_tenders").select("*");
+    if (sector === "IT") q = q.eq("is_it", true);
+    else if (sector) q = q.eq("sector", sector);
+    const { data, error } = await q.limit(5000);
+    if (error) throw error;
+    return sector === "IT" ? (data || []).map(asItRow) : (data || []);
   }
 
   // ------------------------------------------------------------------ home
   async function initHome() {
+    if (!db) return;
     try {
       const rows = await fetchActive(null);
-      for (const sector of ["BANK", "NGO", "IT"]) {
+      for (const sector of ["BANK", "NGO"]) {
         const s = rows.filter((r) => r.sector === sector);
         setText(`#${sector}-general`, s.length);
         setText(`#${sector}-priority`, s.filter((r) => r.is_priority).length);
         if (sector === "BANK") setText("#BANK-ifrs9", s.filter((r) => r.is_ifrs9).length);
       }
+      const it = rows.filter((r) => r.is_it);
+      setText("#IT-general", it.length);
+      setText("#IT-priority", it.filter((r) => r.it_priority).length);
     } catch (e) {
       console.error(e);
     }
@@ -171,8 +161,10 @@
 
   function relevanceCell(t) {
     if (!t.is_priority) return `<span class="muted">—</span>`;
-    return (t.categories || []).map((c) =>
+    const tags = (t.categories || []).map((c) =>
       `<span class="tag ${c === "IFRS 9 / ECL" ? "tag-ifrs9" : "tag-priority"}">${esc(c)}</span>`).join("");
+    const partners = (t.partners || []).filter((p) => p !== "ACNABIN");
+    return tags + (partners.length ? `<div class="sub">With ${esc(partners.join(", "))}</div>` : "");
   }
 
   function render() {
@@ -229,6 +221,10 @@
 
   async function loadSector(sector) {
     const body = $("#rows");
+    if (!db) {
+      body.innerHTML = `<tr><td colspan="6" class="empty">The database connection is not configured (js/config.js).</td></tr>`;
+      return;
+    }
     body.innerHTML = `<tr><td colspan="6" class="empty">Loading…</td></tr>`;
     try {
       state.rows = await fetchActive(sector);
@@ -243,8 +239,7 @@
     fillSelect("#f-org", [...new Set(state.rows.map((r) => r.organization_name))].sort(), "All organizations");
     fillSelect("#f-cat", [...new Set(state.rows.flatMap((r) => r.categories || []))].sort(), "All categories");
     render();
-    if (db) loadSourceErrors(sector);
-    else setText("#source-summary", `Showing live tenders from monitored IT & procurement sources.`);
+    loadSourceErrors(sector);
   }
 
   async function loadSourceErrors(sector) {
@@ -308,30 +303,9 @@
   // ------------------------------------------------------------------ sources page
   async function initSources() {
     const body = $("#rows");
-    let sourcesData = [];
-    if (db) {
-      try {
-        const { data, error } = await db.from("source_status").select("*").order("organization_name");
-        if (data && !error) {
-          sourcesData = data;
-        }
-      } catch (e) {
-        console.error(e);
-      }
-    }
-    // Merge or fallback to configured IT / demo sources if missing from DB table
-    if (window.DEMO_SOURCES) {
-      const existingIds = new Set(sourcesData.map((s) => s.source_id));
-      for (const ds of window.DEMO_SOURCES) {
-        if (!existingIds.has(ds.source_id)) {
-          sourcesData.push(ds);
-        }
-      }
-    }
-    if (!sourcesData.length) {
-      body.innerHTML = `<tr><td colspan="6" class="empty">Could not load source status.</td></tr>`;
-      return;
-    }
+    if (!db) { body.innerHTML = `<tr><td colspan="6" class="empty">The database connection is not configured.</td></tr>`; return; }
+    const { data: sourcesData, error } = await db.from("source_status").select("*").order("organization_name");
+    if (error || !sourcesData) { body.innerHTML = `<tr><td colspan="6" class="empty">Could not load source status.</td></tr>`; return; }
     const draw = () => {
       const sector = $("#f-sector").value;
       const onlyErrors = $("#f-errors").checked;

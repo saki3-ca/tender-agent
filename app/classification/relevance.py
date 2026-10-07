@@ -125,3 +125,56 @@ class RelevanceClassifier:
                 kws.append(re.sub(r"\s+", " ", k.strip()))
         result.matched_keywords = kws[:8]
         return result
+
+
+# ---------------------------------------------------------------------- IT Services
+@dataclass
+class ItRelevance:
+    is_it: bool = False                                        # an IT tender (IT page, General)
+    is_priority: bool = False                                  # IT Priority: ACNABIN or an MoU partner can deliver it
+    categories: List[str] = field(default_factory=list)        # capability labels
+    partners: List[str] = field(default_factory=list)          # "ACNABIN", "CipherShield", "Brain Station 23"
+    matched_keywords: List[str] = field(default_factory=list)
+
+
+class ItClassifier:
+    """IT Services relevance, from the "it" section of config/relevance.json."""
+
+    def __init__(self, rules: Optional[Dict[str, Any]] = None):
+        it = (rules or config.relevance)["it"]
+        self.subject = [_compile(p) for p in it["subject"]]
+        self.subject_exclusions = [_compile(p) for p in it.get("subject_exclusions", [])]
+        self.veto = [_compile(p) for p in it.get("priority_veto", [])]
+        self.capabilities = [
+            {"label": c["label"], "partner": c["partner"], "implies_it": bool(c.get("implies_it")),
+             "phrases": [_compile(p) for p in c["phrases"]]}
+            for c in it["capabilities"]
+        ]
+
+    def classify(self, title: str, description: str = "", it_source: bool = False) -> ItRelevance:
+        title = title or ""
+        text = f"{title}\n{description or ''}"
+        for pattern in self.subject_exclusions:
+            text = pattern.sub(" ", text)
+        result = ItRelevance()
+        subject = next((m for m in (p.search(text) for p in self.subject) if m), None)
+        if not subject:   # e.g. "ISO 27001 certification", "SOC as a service"
+            subject = next((m for cap in self.capabilities if cap["implies_it"]
+                            for m in (p.search(text) for p in cap["phrases"]) if m), None)
+        result.is_it = bool(it_source or subject)
+        if not result.is_it:
+            return result
+        if subject:
+            result.matched_keywords.append(subject.group(0))
+        if any(p.search(title) for p in self.veto):
+            return result
+        for cap in self.capabilities:
+            hit = next((m for m in (p.search(text) for p in cap["phrases"]) if m), None)
+            if hit:
+                result.categories.append(cap["label"])
+                if cap["partner"] not in result.partners:
+                    result.partners.append(cap["partner"])
+                result.matched_keywords.append(re.sub(r"\s+", " ", hit.group(0).strip())[:60])
+        result.is_priority = bool(result.categories)
+        result.matched_keywords = list(dict.fromkeys(result.matched_keywords))[:8]
+        return result

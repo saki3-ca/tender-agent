@@ -1488,10 +1488,9 @@
   },
   {
     "id": "src_alltender_ict_64",
-    "type": "alltender_subcategory",
-    "subcategory_id": 64,
+    "type": "alltender_category",
     "url": "https://www.alltender.com/list_tab/live_tenders_by_sub_category/64",
-    "public_url": "https://www.alltender.com/list_tab/live_tenders_by_sub_category/64",
+    "public_url": "https://www.alltender.com/",
     "organization_id": "agg_alltender_ict",
     "tier": 2,
     "requires_js": false,
@@ -1500,14 +1499,19 @@
     "max_documents": 0,
     "enabled": true,
     "verified": "2026-10-07",
-    "note": "Alltender Live Tenders for Sub-category 64 (ICT Support/Consultancy)."
+    "note": "Alltender.com paid subscription, live tenders of sub-category 64 (ICT support / consultancy), read signed in. Shown to signed-in users only.",
+    "category_id": 64,
+    "aggregator": true,
+    "members_only": true,
+    "it_source": true,
+    "default_sector": "IT",
+    "min_interval_hours": 6
   },
   {
     "id": "src_alltender_software_69",
-    "type": "alltender_subcategory",
-    "subcategory_id": 69,
+    "type": "alltender_category",
     "url": "https://www.alltender.com/list_tab/live_tenders_by_sub_category/69",
-    "public_url": "https://www.alltender.com/list_tab/live_tenders_by_sub_category/69",
+    "public_url": "https://www.alltender.com/",
     "organization_id": "agg_alltender_ict",
     "tier": 2,
     "requires_js": false,
@@ -1516,7 +1520,13 @@
     "max_documents": 0,
     "enabled": true,
     "verified": "2026-10-07",
-    "note": "Alltender Live Tenders for Sub-category 69 (Software Development)."
+    "note": "Alltender.com paid subscription, live tenders of sub-category 69 (software), read signed in. Shown to signed-in users only.",
+    "category_id": 69,
+    "aggregator": true,
+    "members_only": true,
+    "it_source": true,
+    "default_sector": "IT",
+    "min_interval_hours": 6
   },
   {
     "id": "src_gov_bcc_tender",
@@ -1528,7 +1538,8 @@
     "rate_limit_seconds": 3,
     "enabled": true,
     "verified": "2026-10-07",
-    "note": "Bangladesh Computer Council tender notices"
+    "note": "Bangladesh Computer Council tender notices",
+    "it_source": true
   },
   {
     "id": "src_gov_ictd_tender",
@@ -1540,6 +1551,7 @@
     "rate_limit_seconds": 3,
     "enabled": true,
     "verified": "2026-10-07",
-    "note": "ICT Division tender and procurement notices"
+    "note": "ICT Division tender and procurement notices",
+    "it_source": true
   }
 ]

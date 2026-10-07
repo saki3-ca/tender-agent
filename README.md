@@ -8,8 +8,10 @@ Monitors the tender, procurement and notice pages of **banks** and **NGOs / deve
 Home
  ├── Bank   ── General  (all active bank tenders)
  │          └─ Priority (active + relevant to ACNABIN; IFRS 9 / ECL flagged)
- └── NGO    ── General  (all active NGO tenders)
-            └─ Priority (active + relevant to ACNABIN)
+ ├── NGO    ── General  (all active NGO tenders)
+ │          └─ Priority (active + relevant to ACNABIN)
+ └── IT Services ── General  (all active IT tenders, from any bank, NGO or government body)
+                 └─ Priority (IT work ACNABIN or an MoU IT partner can deliver)
 ```
 
 - **General** = every *active* opportunity found on a monitored source, whatever the subject (furniture, IT equipment, construction, audit…).
@@ -39,6 +41,21 @@ All logic is deterministic (no LLM calls). Code lives in `app/`:
 | `app/db/supabase.py` | Storage (`tenders`, `source_status`, `runs`) |
 | `app/alerts/telegram.py` | Optional Telegram message for each newly found Priority tender |
 | `app/alerts/email.py` | Optional email (one per run) listing newly found Priority tenders |
+
+### IT Services
+
+A tender is an **IT tender** (`is_it`) when its title / notice text is about IT (software, ICT services or equipment, networking, cyber security, data centre, web, ERP…; `config/relevance.json` → `it.subject`), or when it comes from an IT source (`"it_source": true`: Alltender ICT and software categories, BCC, ICT Division). An IT tender keeps its organization's section, so a bank's software RFP appears under both Bank and IT Services.
+
+**IT Priority** (`it_priority`) = an IT tender that ACNABIN can bid for, alone or with an MoU partner (`it.capabilities`; the partner is shown on the dashboard):
+
+| Capability | Delivered by |
+|---|---|
+| IT / IS audit & assurance (IS audit, SWIFT CSP, ISO 27001, PCI DSS, ITGC…) | ACNABIN |
+| IT advisory & digital transformation (IT/ICT consultancy, IT governance, ERP selection, SRS, BPR…) | ACNABIN |
+| Cyber security services (VAPT, SOC, SIEM, threat hunting, forensics…) | CipherShield |
+| Software development & implementation (custom software, web / mobile apps, ERP/MIS, digital lending, AI…) | Brain Station 23 |
+
+Equipment supply (laptops, servers, CCTV), connectivity and vendor enlistments stay General. Bank / NGO Priority is unchanged (ACNABIN's own services). To add an MoU partner, add a capability with its `partner` name and phrases.
 
 ### Active rule
 
@@ -82,6 +99,8 @@ Dates are parsed into real dates (`05/10/2026`, `2026-10-05`, `05 Oct 2026`, `Oc
 ### Subscription: Alltender.com
 
 `src_agg_alltender` signs in to ACNABIN's Alltender account (`ALLTENDER_USER` / `ALLTENDER_PASSWORD`, GitHub Actions secrets) and reads its **My Tenders** list, which Alltender filters by the account's preference profile ("CA Firm"). Only the list pages are read (no detail pages or documents), at most every 6 hours (`min_interval_hours`; a run with `--source` ignores the interval). Bank and NGO / international-organization tenders are kept; government tenders are outside the dashboard's scope and are skipped. Each tender is attributed to the calling organization (Alltender's "Department", or the organization named in "Tender Caller" for catch-all departments such as "Others NGO").
+
+The IT Services page also reads Alltender's ICT (64) and software (69) sub-category lists, signed in (`"type": "alltender_category"`); there, government tenders are kept under IT Services.
 
 Alltender's terms do not allow republishing its content, so these tenders are stored with `members_only = true` and the database policy shows them **only to signed-in admin users** (the dashboard shows a "sign in" hint otherwise). They are marked "via Alltender".
 
@@ -162,4 +181,4 @@ The tables and views of the previous design (`opportunities`, `v_general_market`
 
 ### Dashboard
 
-Static pages in `dashboard/` (`index.html`, `bank.html`, `ngo.html`, `sources.html`) reading Supabase with the public anon key (`dashboard/js/config.js`). Filters: search, organization, category, deadline window, publication date, and on Bank: IFRS 9 / ECL only and 30 target banks only. Results can be exported to CSV.
+Static pages in `dashboard/` (`index.html`, `bank.html`, `ngo.html`, `it.html`, `sources.html`, `admin.html`) reading Supabase with the public anon key (`dashboard/js/config.js`). Filters: search, organization, category, deadline window, publication date, and on Bank: IFRS 9 / ECL only and 30 target banks only. Results can be exported to CSV.
