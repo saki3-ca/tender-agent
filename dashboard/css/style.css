@@ -196,6 +196,8 @@ td.src a.minor { color: var(--text-dim); font-size: 12px; margin-top: 2px; }
 .tag-target { border-color: #34506f; color: var(--accent-strong); }
 .tag-ok { border-color: #335a3d; color: var(--ok); }
 .tag-error { border-color: #6b3a33; color: var(--danger); }
+.tag-epaper { border-color: #8a6331; color: #f3b664; background: rgba(243, 182, 100, 0.08); font-weight: 500; }
+
 
 .empty { padding: 40px 16px; text-align: center; color: var(--text-muted); }
 .notice { padding: 10px 12px; border: 1px solid #6b3a33; color: #e0a49b; border-radius: var(--radius); margin-bottom: 12px; font-size: 13px; }

@@ -141,13 +141,32 @@
     return (va < vb ? -1 : va > vb ? 1 : 0) * dir;
   }
 
+  function getPaperName(t) {
+    const hay = `${t.source_id || ""} ${t.source_url || ""} ${t.notice_url || ""} ${t.document_text || ""}`.toLowerCase();
+    if (hay.includes("prothomalo")) return "Prothom Alo";
+    if (hay.includes("financialexpress") || hay.includes("thefinancialexpress")) return "Financial Express";
+    if (hay.includes("bangladeshtoday") || hay.includes("thebangladeshtoday")) return "Bangladesh Today";
+    if (hay.includes("protidinerbangladesh")) return "Protidiner Bangladesh";
+    if (hay.includes("epaper")) return "E-Paper";
+    return null;
+  }
+
   function sourceLinks(t) {
     const primary = t.notice_url || t.document_url || t.source_url;
     const isAlltender = /alltender\.com/i.test(primary) || /alltender\.com/i.test(t.source_url || "");
     const isBdjobs = /bdjobs\.com/i.test(primary) || /bdjobs\.com/i.test(t.source_url || "");
-    const label = isAlltender ? "Alltender notice" : isBdjobs ? "Bdjobs tender" : t.document_url ? "View tender" : "View notice";
-    let html = `<a href="${esc(primary)}" target="_blank" rel="noopener">${label} &#8599;</a>`;
-    const via = /live_tenders_by_sub_category\/64/i.test(t.source_url || "") ? "Alltender ICT (Cat 64)"
+    const paperName = getPaperName(t);
+
+    const label = paperName ? (t.document_url ? "View clipping ↗" : "View page ↗")
+      : isAlltender ? "Alltender notice ↗"
+      : isBdjobs ? "Bdjobs tender ↗"
+      : t.document_url ? "View tender ↗"
+      : "View notice ↗";
+
+    let html = `<a href="${esc(primary)}" target="_blank" rel="noopener">${label}</a>`;
+
+    const via = paperName ? `📰 ${paperName}`
+      : /live_tenders_by_sub_category\/64/i.test(t.source_url || "") ? "Alltender ICT (Cat 64)"
       : /live_tenders_by_sub_category\/69/i.test(t.source_url || "") ? "Alltender Software (Cat 69)"
       : /live_tenders_by_sub_category/i.test(t.source_url || "") ? "Alltender Subcategory"
       : /bdjobs\.com/i.test(t.source_url || "") ? "Bdjobs Tender/EOI"
@@ -155,17 +174,29 @@
       : /bcc\.gov\.bd/i.test(t.source_url || "") ? "BCC Portal"
       : /ictd\.gov\.bd/i.test(t.source_url || "") ? "ICT Division Portal"
       : "Source page";
-    if (primary !== t.source_url) html += `<a class="minor" href="${esc(t.source_url)}" target="_blank" rel="noopener">${via}</a>`;
+
+    if (primary !== t.source_url || paperName) {
+      html += `<a class="minor" href="${esc(t.source_url || primary)}" target="_blank" rel="noopener">${via}</a>`;
+    }
     return html;
   }
 
   function relevanceCell(t) {
-    if (!t.is_priority) return `<span class="muted">—</span>`;
-    const tags = (t.categories || []).map((c) =>
-      `<span class="tag ${c === "IFRS 9 / ECL" ? "tag-ifrs9" : "tag-priority"}">${esc(c)}</span>`).join("");
+    const tags = [];
+    if (t.is_priority) {
+      (t.categories || []).forEach((c) => {
+        tags.push(`<span class="tag ${c === "IFRS 9 / ECL" ? "tag-ifrs9" : "tag-priority"}">${esc(c)}</span>`);
+      });
+    }
+    const paper = getPaperName(t);
+    if (paper) {
+      tags.push(`<span class="tag tag-epaper">📰 ${esc(paper)}</span>`);
+    }
+    if (!tags.length) return `<span class="muted">—</span>`;
     const partners = (t.partners || []).filter((p) => p !== "ACNABIN");
-    return tags + (partners.length ? `<div class="sub">With ${esc(partners.join(", "))}</div>` : "");
+    return tags.join("") + (partners.length ? `<div class="sub">With ${esc(partners.join(", "))}</div>` : "");
   }
+
 
   function render() {
     const items = filtered();
