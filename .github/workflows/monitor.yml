@@ -88,6 +88,14 @@ jobs:
           ALERT_EMAIL_TO: ${{ secrets.ALERT_EMAIL_TO }}
           ALLTENDER_USER: ${{ secrets.ALLTENDER_USER }}
           ALLTENDER_PASSWORD: ${{ secrets.ALLTENDER_PASSWORD }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          GEMINI_API_KEY_BACKUP: ${{ secrets.GEMINI_API_KEY_BACKUP }}
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+          EPAPER_PROTHOMALO_USER: ${{ secrets.EPAPER_PROTHOMALO_USER }}
+          EPAPER_PROTHOMALO_PASSWORD: ${{ secrets.EPAPER_PROTHOMALO_PASSWORD }}
+          SEARCH_API_KEY: ${{ secrets.SEARCH_API_KEY }}
+          SEARCH_ENGINE_ID: ${{ secrets.SEARCH_ENGINE_ID }}
           DASHBOARD_BASE_URL: ${{ secrets.DASHBOARD_BASE_URL || 'https://acnabin-tenders.pages.dev' }}
         run: |
           python run_monitor.py
+
