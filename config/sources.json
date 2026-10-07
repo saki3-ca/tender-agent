@@ -196,7 +196,7 @@
   },
   {
     "id": "src_14_ific_tender",
-    "url": "https://www.ificbank.com.bd/tender",
+    "url": "https://ificbank.com.bd/notice",
     "organization_id": "bank_14_ific",
     "tier": 1,
     "requires_js": false,
@@ -474,7 +474,7 @@
   },
   {
     "id": "src_ngo_10_friendship_ngo",
-    "url": "https://friendship.ngo/procurement/",
+    "url": "https://friendship.ngo/tenders",
     "organization_id": "ngo_10_friendship_ngo",
     "tier": 1,
     "requires_js": false,
@@ -506,7 +506,7 @@
   },
   {
     "id": "src_ngo_13_jagorani_chakra_foundation",
-    "url": "https://jcf.org.bd/tender-notice/",
+    "url": "https://jcf.org.bd/tender-profile/",
     "organization_id": "ngo_13_jagorani_chakra_foundation",
     "tier": 1,
     "requires_js": false,
@@ -568,7 +568,7 @@
   },
   {
     "id": "src_ngo_19_care_bangladesh",
-    "url": "https://carebangladesh.org/procurement/",
+    "url": "https://carebangladesh.org/consultancy",
     "organization_id": "ngo_19_care_bangladesh",
     "tier": 1,
     "requires_js": false,
@@ -856,7 +856,7 @@
   },
   {
     "id": "src_ngo_45_jhpiego_bangladesh",
-    "url": "https://www.jhpiego.org/procurement-portal/",
+    "url": "https://jhpiego.org/work-with-us/",
     "organization_id": "ngo_45_jhpiego_bangladesh",
     "tier": 2,
     "requires_js": false,
@@ -1030,7 +1030,7 @@
   },
   {
     "id": "src_ngo_61_terre_des_hommes",
-    "url": "https://www.tdh.org/en/calls-for-tenders",
+    "url": "https://www.tdh.org/en/about-us/call-for-tenders-consultancy",
     "organization_id": "ngo_61_terre_des_hommes",
     "tier": 2,
     "requires_js": false,
@@ -1083,7 +1083,7 @@
   },
   {
     "id": "src_ngo_66_world_fish_bangladesh",
-    "url": "https://worldfishcenter.org/procurement-tenders",
+    "url": "https://worldfishcenter.org/tenders",
     "organization_id": "ngo_66_world_fish_bangladesh",
     "tier": 2,
     "requires_js": false,
@@ -1127,7 +1127,7 @@
   },
   {
     "id": "src_ngo_70_ain_o_salish",
-    "url": "https://www.askbd.org/ask/notices/",
+    "url": "https://www.askbd.org/tender/",
     "organization_id": "ngo_70_ain_o_salish",
     "tier": 2,
     "requires_js": false,
@@ -1148,7 +1148,7 @@
   },
   {
     "id": "src_ngo_72_transparency_international_bangladesh",
-    "url": "https://www.ti-bangladesh.org/procurement",
+    "url": "https://www.ti-bangladesh.org/en/notice",
     "organization_id": "ngo_72_transparency_international_bangladesh",
     "tier": 2,
     "requires_js": false,
@@ -1180,7 +1180,7 @@
   },
   {
     "id": "src_ngo_75_coast_foundation",
-    "url": "https://coastbd.net/tenders/",
+    "url": "https://coastbd.net/expression-of-interest-eoi/",
     "organization_id": "ngo_75_coast_foundation",
     "tier": 2,
     "requires_js": false,
@@ -1277,7 +1277,7 @@
   },
   {
     "id": "src_ngo_84_popi_people_s",
-    "url": "https://popibd.org/procurement/",
+    "url": "https://popibd.org/tender",
     "organization_id": "ngo_84_popi_people_s",
     "tier": 2,
     "requires_js": false,
@@ -1370,7 +1370,7 @@
   },
   {
     "id": "src_ngo_93_cdd_centre_for",
-    "url": "https://cdd.org.bd/procurement-notice/",
+    "url": "https://cdd.org.bd/eoi/",
     "organization_id": "ngo_93_cdd_centre_for",
     "tier": 2,
     "requires_js": false,
