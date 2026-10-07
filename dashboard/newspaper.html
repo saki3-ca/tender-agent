@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Bank Tenders — ACNABIN</title>
+  <title>Newspaper Tenders & E-Papers — ACNABIN</title>
+  <meta name="description" content="Active tender, EOI, and procurement advertisements published in daily print and digital newspapers in Bangladesh.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -12,38 +13,37 @@
   <script src="js/config.js"></script>
   <script src="js/app.js" defer></script>
 </head>
-<body data-page="sector" data-sector="BANK">
+<body data-page="sector" data-sector="NEWSPAPER">
   <header class="topbar">
     <a class="brand" href="index.html"><span class="brand-mark">ACNABIN</span><span class="brand-name">Tender Monitoring</span></a>
     <nav class="topnav">
       <a href="index.html">Home</a>
-      <a href="bank.html" class="active">Bank</a>
+      <a href="bank.html">Bank</a>
       <a href="ngo.html">NGO</a>
       <a href="it.html">IT Services</a>
-      <a href="newspaper.html">Newspaper</a>
+      <a href="newspaper.html" class="active">Newspaper</a>
       <a href="sources.html">Sources</a>
       <a href="admin.html">Admin</a>
     </nav>
-
     <div class="topbar-meta" id="last-run"></div>
   </header>
 
   <main class="page">
     <div class="section-head">
-      <div class="crumbs"><a href="index.html">Home</a> / Bank</div>
-      <h1>Bank Tenders</h1>
-      <p class="lead">Notices published on bank websites. The 30 IFRS 9 target banks are monitored closely for IFRS 9 / ECL work as well as all other tenders.</p>
+      <div class="crumbs"><a href="index.html">Home</a> / Newspaper</div>
+      <h1>Newspaper Tenders & E-Papers</h1>
+      <p class="lead">Scanned daily advertisements, EOIs, RFPs, and public notices extracted via Multimodal AI from Prothom Alo, The Financial Express, The Bangladesh Today, and Protidiner Bangladesh.</p>
     </div>
 
     <div class="tabs" role="tablist">
-      <button class="tab" role="tab" data-tab="general">General<span class="count" id="count-general">–</span></button>
+      <button class="tab" role="tab" data-tab="general">All Notices<span class="count" id="count-general">–</span></button>
       <button class="tab" role="tab" data-tab="priority">Priority<span class="count" id="count-priority">–</span></button>
     </div>
-    <p class="tab-note" data-note="general">All active bank opportunities.</p>
-    <p class="tab-note" data-note="priority" hidden>Active bank opportunities relevant to ACNABIN.</p>
+    <p class="tab-note" data-note="general">All active procurement notices, works, supply and consultancy ads found across monitored digital newspaper editions.</p>
+    <p class="tab-note" data-note="priority" hidden>Opportunities from newspaper pages relevant to ACNABIN services (audit, financial advisory, IT/IS advisory, tax/VAT, IFRS).</p>
 
     <div class="toolbar">
-      <input type="search" id="f-search" placeholder="Search title, organization, reference" aria-label="Search">
+      <input type="search" id="f-search" placeholder="Search title, organization, reference, newspaper" aria-label="Search">
       <select id="f-org" aria-label="Organization"><option value="">All organizations</option></select>
       <select id="f-cat" aria-label="Category"><option value="">All categories</option></select>
       <select id="f-due" aria-label="Deadline">
@@ -56,8 +56,6 @@
         <option value="">Any publication date</option>
         <option value="7">Published in last 7 days</option>
       </select>
-      <label class="check"><input type="checkbox" id="f-ifrs9"> IFRS 9 / ECL only</label>
-      <label class="check"><input type="checkbox" id="f-target"> 30 target banks only</label>
       <span class="spacer"></span>
       <span class="result-count" id="result-count"></span>
       <button class="btn" id="btn-refresh" type="button">Refresh</button>

@@ -71,9 +71,19 @@
     return { ...r, is_priority: r.it_priority, is_ifrs9: false, categories: r.it_categories || [], partners: r.it_partners || [] };
   }
 
+  function isEpaperRow(r) {
+    const hay = `${r.source_id || ""} ${r.source_url || ""} ${r.notice_url || ""} ${r.document_text || ""}`.toLowerCase();
+    return hay.includes("epaper") || hay.includes("prothomalo") || hay.includes("financialexpress") || hay.includes("bangladeshtoday") || hay.includes("protidinerbangladesh");
+  }
+
   async function fetchActive(sector) {
     let q = db.from("v_active_tenders").select("*");
     if (sector === "IT") q = q.eq("is_it", true);
+    else if (sector === "NEWSPAPER") {
+      const { data, error } = await q.limit(5000);
+      if (error) throw error;
+      return (data || []).filter(isEpaperRow);
+    }
     else if (sector) q = q.eq("sector", sector);
     const { data, error } = await q.limit(5000);
     if (error) throw error;
@@ -94,10 +104,15 @@
       const it = rows.filter((r) => r.is_it);
       setText("#IT-general", it.length);
       setText("#IT-priority", it.filter((r) => r.it_priority).length);
+
+      const np = rows.filter(isEpaperRow);
+      setText("#NEWSPAPER-general", np.length);
+      setText("#NEWSPAPER-priority", np.filter((r) => r.is_priority).length);
     } catch (e) {
       console.error(e);
     }
   }
+
 
   // ------------------------------------------------------------------ sector page
   const state = { rows: [], tab: "general", sortKey: "deadline", sortDir: 1 };
