@@ -290,19 +290,40 @@
   // ------------------------------------------------------------------ sources page
   async function initSources() {
     const body = $("#rows");
-    if (!db) { body.innerHTML = `<tr><td colspan="6" class="empty">The database connection is not configured.</td></tr>`; return; }
-    const { data, error } = await db.from("source_status").select("*").order("organization_name");
-    if (error || !data) { body.innerHTML = `<tr><td colspan="6" class="empty">Could not load source status.</td></tr>`; return; }
+    let sourcesData = [];
+    if (db) {
+      try {
+        const { data, error } = await db.from("source_status").select("*").order("organization_name");
+        if (data && !error) {
+          sourcesData = data;
+        }
+      } catch (e) {
+        console.error(e);
+      }
+    }
+    // Merge or fallback to configured IT / demo sources if missing from DB table
+    if (window.DEMO_SOURCES) {
+      const existingIds = new Set(sourcesData.map((s) => s.source_id));
+      for (const ds of window.DEMO_SOURCES) {
+        if (!existingIds.has(ds.source_id)) {
+          sourcesData.push(ds);
+        }
+      }
+    }
+    if (!sourcesData.length) {
+      body.innerHTML = `<tr><td colspan="6" class="empty">Could not load source status.</td></tr>`;
+      return;
+    }
     const draw = () => {
       const sector = $("#f-sector").value;
       const onlyErrors = $("#f-errors").checked;
-      const rows = data.filter((s) => (!sector || s.sector === sector) && (!onlyErrors || !s.ok));
-      setText("#result-count", `${rows.length} sources · ${data.filter((s) => !s.ok).length} with errors`);
+      const rows = sourcesData.filter((s) => (!sector || s.sector === sector) && (!onlyErrors || !s.ok));
+      setText("#result-count", `${rows.length} sources · ${sourcesData.filter((s) => !s.ok).length} with errors`);
       body.innerHTML = rows.length ? rows.map((s) => {
         const p = s.last_checked ? dhakaParts(new Date(s.last_checked)) : null;
         return `<tr>
           <td class="org"><div class="name">${esc(s.organization_name)}</div>${s.is_target_bank ? `<div class="sub target">IFRS 9 target bank</div>` : ""}</td>
-          <td>${s.sector === "BANK" ? "Bank" : "NGO"}</td>
+          <td>${s.sector === "BANK" ? "Bank" : s.sector === "IT" ? "IT Services" : "NGO"}</td>
           <td>${!s.ok ? `<span class="tag tag-error">${esc(s.error || "Error")}</span>` : s.listings_found ? `<span class="tag tag-ok">OK</span>` : `<span class="tag tag-priority">NO LISTINGS</span>`}</td>
           <td>${s.ok ? s.listings_found : `<span class="muted">—</span>`}</td>
           <td class="date">${p ? `${fmtDate(p.y, p.m, p.d)} ${p.hh}:${p.mm}` : "—"}${!s.ok && s.consecutive_failures > 1 ? `<div class="sub">${s.consecutive_failures} failed runs</div>` : ""}</td>

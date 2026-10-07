@@ -148,7 +148,7 @@ async def main(args) -> None:
 if __name__ == "__main__":
     p = argparse.ArgumentParser()
     p.add_argument("--source", action="append")
-    p.add_argument("--sector", choices=["BANK", "NGO"])
+    p.add_argument("--sector", choices=["BANK", "NGO", "IT"])
     p.add_argument("--no-discover", dest="discover", action="store_false",
                    help="Only check configured URLs; do not look for replacement pages")
     asyncio.run(main(p.parse_args()))

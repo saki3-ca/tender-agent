@@ -20,7 +20,7 @@ from app.utils.logging import logger
 def main() -> int:
     parser = argparse.ArgumentParser(description="Run one ACNABIN tender monitoring cycle")
     parser.add_argument("--source", action="append", help="Only crawl this source id (repeatable)")
-    parser.add_argument("--sector", choices=["BANK", "NGO"], help="Only crawl sources of this sector")
+    parser.add_argument("--sector", choices=["BANK", "NGO", "IT"], help="Only crawl sources of this sector")
     parser.add_argument("--local", action="store_true", help="Do not write to Supabase; write data/local_run.json")
     args = parser.parse_args()
 

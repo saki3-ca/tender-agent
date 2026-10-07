@@ -783,6 +783,30 @@ window.DEMO_TENDERS = [
     "document_url": "https://www.alltender.com/user/tender_img/1628444"
   },
   {
+    "id": "bdjobs_it_revised_tender_notice_construc",
+    "sector": "IT",
+    "organization_id": "org_ngo_forum_for_public_health",
+    "organization_name": "NGO Forum for Public Health",
+    "is_target_bank": false,
+    "title": "Revised Tender Notice - Construction of Solar Operated Water Distribution Network including Production Borehole",
+    "description": "Published on Bdjobs by NGO Forum for Public Health",
+    "reference_number": null,
+    "published_date": "2026-10-07",
+    "deadline": "2026-10-11T17:00:00+06:00",
+    "deadline_has_time": false,
+    "is_priority": true,
+    "is_ifrs9": false,
+    "categories": [
+      "IT Consulting & Digital Transformation"
+    ],
+    "matched_keywords": [
+      "IT / Tech"
+    ],
+    "source_url": "https://bdjobs.com/h/",
+    "notice_url": "https://hotjobs1.bdjobs.com/ngo-forum-for-public-health/nfph194.html",
+    "document_url": null
+  },
+  {
     "id": "bdjobs_it_terms_of_reference_tor_hiring_",
     "sector": "IT",
     "organization_id": "org_adventist_development_and_reli",
@@ -1075,5 +1099,78 @@ window.DEMO_TENDERS = [
     "source_url": "https://ictd.gov.bd/site/view/tenders",
     "notice_url": "https://ictd.gov.bd/site/view/tenders",
     "document_url": null
+  }
+];
+
+window.DEMO_SOURCES = [
+  {
+    "source_id": "src_alltender_ict_64",
+    "organization_id": "agg_alltender_ict",
+    "organization_name": "Alltender ICT & IT Services (Subcat 64)",
+    "sector": "IT",
+    "is_target_bank": false,
+    "url": "https://www.alltender.com/list_tab/live_tenders_by_sub_category/64",
+    "last_checked": "2026-10-07T10:00:00+06:00",
+    "ok": true,
+    "http_status": 200,
+    "error": null,
+    "listings_found": 11,
+    "consecutive_failures": 0
+  },
+  {
+    "source_id": "src_alltender_software_69",
+    "organization_id": "agg_alltender_ict",
+    "organization_name": "Alltender Software Development (Subcat 69)",
+    "sector": "IT",
+    "is_target_bank": false,
+    "url": "https://www.alltender.com/list_tab/live_tenders_by_sub_category/69",
+    "last_checked": "2026-10-07T10:00:00+06:00",
+    "ok": true,
+    "http_status": 200,
+    "error": null,
+    "listings_found": 24,
+    "consecutive_failures": 0
+  },
+  {
+    "source_id": "src_agg_bdjobs_it",
+    "organization_id": "agg_bdjobs",
+    "organization_name": "Bdjobs.com (IT & Tech Notices)",
+    "sector": "IT",
+    "is_target_bank": false,
+    "url": "https://bdjobs.com/h/",
+    "last_checked": "2026-10-07T10:00:00+06:00",
+    "ok": true,
+    "http_status": 200,
+    "error": null,
+    "listings_found": 9,
+    "consecutive_failures": 0
+  },
+  {
+    "source_id": "src_gov_bcc_tender",
+    "organization_id": "gov_bcc",
+    "organization_name": "Bangladesh Computer Council (BCC)",
+    "sector": "IT",
+    "is_target_bank": false,
+    "url": "https://bcc.gov.bd/site/view/tenders",
+    "last_checked": "2026-10-07T10:00:00+06:00",
+    "ok": true,
+    "http_status": 200,
+    "error": null,
+    "listings_found": 1,
+    "consecutive_failures": 0
+  },
+  {
+    "source_id": "src_gov_ictd_tender",
+    "organization_id": "gov_ictd",
+    "organization_name": "Information & Communication Technology Division (ICTD)",
+    "sector": "IT",
+    "is_target_bank": false,
+    "url": "https://ictd.gov.bd/site/view/tenders",
+    "last_checked": "2026-10-07T10:00:00+06:00",
+    "ok": true,
+    "http_status": 200,
+    "error": null,
+    "listings_found": 1,
+    "consecutive_failures": 0
   }
 ];

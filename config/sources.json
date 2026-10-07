@@ -1497,6 +1497,7 @@
     "requires_js": false,
     "verify_ssl": true,
     "rate_limit_seconds": 2,
+    "max_documents": 0,
     "enabled": true,
     "verified": "2026-10-07",
     "note": "Alltender Live Tenders for Sub-category 64 (ICT Support/Consultancy)."
@@ -1512,6 +1513,7 @@
     "requires_js": false,
     "verify_ssl": true,
     "rate_limit_seconds": 2,
+    "max_documents": 0,
     "enabled": true,
     "verified": "2026-10-07",
     "note": "Alltender Live Tenders for Sub-category 69 (Software Development)."
@@ -1522,7 +1524,7 @@
     "organization_id": "gov_bcc",
     "tier": 2,
     "requires_js": false,
-    "verify_ssl": true,
+    "verify_ssl": false,
     "rate_limit_seconds": 3,
     "enabled": true,
     "verified": "2026-10-07",
@@ -1534,7 +1536,7 @@
     "organization_id": "gov_ictd",
     "tier": 2,
     "requires_js": false,
-    "verify_ssl": true,
+    "verify_ssl": false,
     "rate_limit_seconds": 3,
     "enabled": true,
     "verified": "2026-10-07",

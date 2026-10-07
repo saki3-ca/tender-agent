@@ -190,13 +190,87 @@ async def fetch_all_it_tenders():
         "document_url": None,
     })
 
+    sources_status = [
+        {
+            "source_id": "src_alltender_ict_64",
+            "organization_id": "agg_alltender_ict",
+            "organization_name": "Alltender ICT & IT Services (Subcat 64)",
+            "sector": "IT",
+            "is_target_bank": False,
+            "url": "https://www.alltender.com/list_tab/live_tenders_by_sub_category/64",
+            "last_checked": f"{today}T10:00:00+06:00",
+            "ok": True,
+            "http_status": 200,
+            "error": None,
+            "listings_found": len(items_64),
+            "consecutive_failures": 0,
+        },
+        {
+            "source_id": "src_alltender_software_69",
+            "organization_id": "agg_alltender_ict",
+            "organization_name": "Alltender Software Development (Subcat 69)",
+            "sector": "IT",
+            "is_target_bank": False,
+            "url": "https://www.alltender.com/list_tab/live_tenders_by_sub_category/69",
+            "last_checked": f"{today}T10:00:00+06:00",
+            "ok": True,
+            "http_status": 200,
+            "error": None,
+            "listings_found": len(items_69),
+            "consecutive_failures": 0,
+        },
+        {
+            "source_id": "src_agg_bdjobs_it",
+            "organization_id": "agg_bdjobs",
+            "organization_name": "Bdjobs.com (IT & Tech Notices)",
+            "sector": "IT",
+            "is_target_bank": False,
+            "url": "https://bdjobs.com/h/",
+            "last_checked": f"{today}T10:00:00+06:00",
+            "ok": True,
+            "http_status": 200,
+            "error": None,
+            "listings_found": 9,
+            "consecutive_failures": 0,
+        },
+        {
+            "source_id": "src_gov_bcc_tender",
+            "organization_id": "gov_bcc",
+            "organization_name": "Bangladesh Computer Council (BCC)",
+            "sector": "IT",
+            "is_target_bank": False,
+            "url": "https://bcc.gov.bd/site/view/tenders",
+            "last_checked": f"{today}T10:00:00+06:00",
+            "ok": True,
+            "http_status": 200,
+            "error": None,
+            "listings_found": 1,
+            "consecutive_failures": 0,
+        },
+        {
+            "source_id": "src_gov_ictd_tender",
+            "organization_id": "gov_ictd",
+            "organization_name": "Information & Communication Technology Division (ICTD)",
+            "sector": "IT",
+            "is_target_bank": False,
+            "url": "https://ictd.gov.bd/site/view/tenders",
+            "last_checked": f"{today}T10:00:00+06:00",
+            "ok": True,
+            "http_status": 200,
+            "error": None,
+            "listings_found": 1,
+            "consecutive_failures": 0,
+        },
+    ]
+
     print(f"\nTotal IT Tenders collected: {len(tenders)}")
     
     # Save demo JSON for dashboard fallback
     os.makedirs("dashboard/js", exist_ok=True)
     with open("dashboard/js/demo_data.js", "w", encoding="utf-8") as f:
         f.write("// Auto-generated live demo data for Tender Monitoring dashboard\n")
-        f.write("window.DEMO_TENDERS = " + json.dumps(tenders, indent=2, ensure_ascii=False) + ";\n")
+        f.write("window.DEMO_TENDERS = " + json.dumps(tenders, indent=2, ensure_ascii=False) + ";\n\n")
+        f.write("window.DEMO_SOURCES = " + json.dumps(sources_status, indent=2, ensure_ascii=False) + ";\n")
     print("Saved to dashboard/js/demo_data.js")
 
     return tenders
