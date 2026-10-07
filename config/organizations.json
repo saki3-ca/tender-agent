@@ -2221,5 +2221,71 @@
     "last_verified": "2026-10-07",
     "last_checked": null,
     "notes": "Ministry of Posts, Telecommunications and Information Technology"
+  },
+  {
+    "organization_id": "epaper_prothomalo",
+    "canonical_name": "Prothom Alo E-Paper",
+    "aliases": ["Prothom Alo", "দৈনিক প্রথম আলো", "epaper.prothomalo.com"],
+    "organization_type": "NEWSPAPER",
+    "sector": "ngos",
+    "official_domain": "prothomalo.com",
+    "procurement_url": "https://epaper.prothomalo.com/",
+    "tender_url": "https://epaper.prothomalo.com/",
+    "notice_url": "https://epaper.prothomalo.com/",
+    "is_ifrs9_target": false,
+    "source_status": "OK",
+    "last_verified": "2026-10-07",
+    "last_checked": null,
+    "notes": "E-Paper: notices are scanned and extracted via Gemini Multimodal and attributed to the publishing organization"
+  },
+  {
+    "organization_id": "epaper_financialexpress",
+    "canonical_name": "The Financial Express E-Paper",
+    "aliases": ["The Financial Express", "Financial Express Bangladesh", "FE epaper"],
+    "organization_type": "NEWSPAPER",
+    "sector": "banking",
+    "official_domain": "thefinancialexpress.com.bd",
+    "procurement_url": "https://epaper.thefinancialexpress.com.bd/",
+    "tender_url": "https://epaper.thefinancialexpress.com.bd/",
+    "notice_url": "https://epaper.thefinancialexpress.com.bd/",
+    "is_ifrs9_target": false,
+    "source_status": "OK",
+    "last_verified": "2026-10-07",
+    "last_checked": null,
+    "notes": "E-Paper: English business daily with financial, banking, and public procurement tenders"
+  },
+  {
+    "organization_id": "epaper_bangladeshtoday",
+    "canonical_name": "The Bangladesh Today E-Paper",
+    "aliases": ["The Bangladesh Today", "Bangladesh Today", "thebangladeshtoday.com"],
+    "organization_type": "NEWSPAPER",
+    "sector": "ngos",
+    "official_domain": "thebangladeshtoday.com",
+    "procurement_url": "https://epaper.thebangladeshtoday.com/",
+    "tender_url": "https://epaper.thebangladeshtoday.com/",
+    "notice_url": "https://epaper.thebangladeshtoday.com/",
+    "is_ifrs9_target": false,
+    "source_status": "OK",
+    "last_verified": "2026-10-07",
+    "last_checked": null,
+    "notes": "E-Paper: English daily newspaper"
+  },
+  {
+    "organization_id": "epaper_protidinerbangladesh",
+    "canonical_name": "Protidiner Bangladesh E-Paper",
+    "aliases": ["Protidiner Bangladesh", "প্রতিদিনের বাংলাদেশ", "protidinerbangladesh.com"],
+    "organization_type": "NEWSPAPER",
+    "sector": "ngos",
+    "official_domain": "protidinerbangladesh.com",
+    "procurement_url": "https://epaper.protidinerbangladesh.com/",
+    "tender_url": "https://epaper.protidinerbangladesh.com/",
+    "notice_url": "https://epaper.protidinerbangladesh.com/",
+    "is_ifrs9_target": false,
+    "source_status": "OK",
+    "last_verified": "2026-10-07",
+    "last_checked": null,
+    "notes": "E-Paper: Bangla daily newspaper"
   }
 ]
+
+

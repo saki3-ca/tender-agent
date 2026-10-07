@@ -175,6 +175,31 @@ class AppConfig:
         return os.getenv("ALERT_EMAIL_FROM", "")
 
     @property
+    def gemini_api_key(self) -> str:
+        return os.getenv("GEMINI_API_KEY", "") or os.getenv("GOOGLE_API_KEY", "")
+
+    @property
+    def gemini_api_key_backup(self) -> str:
+        return (
+            os.getenv("GEMINI_API_KEY_BACKUP", "")
+            or os.getenv("GEMINI_API_KEY_SECONDARY", "")
+            or os.getenv("GEMINI_BACKUP_KEY", "")
+        )
+
+    @property
+    def gemini_api_keys(self) -> List[str]:
+        keys = [self.gemini_api_key, self.gemini_api_key_backup]
+        return [k for k in dict.fromkeys(keys) if k]
+
+    @property
+    def epaper_prothomalo_user(self) -> str:
+        return os.getenv("EPAPER_PROTHOMALO_USER", "")
+
+    @property
+    def epaper_prothomalo_password(self) -> str:
+        return os.getenv("EPAPER_PROTHOMALO_PASSWORD", "")
+
+    @property
     def alltender_user(self) -> str:
         return os.getenv("ALLTENDER_USER", "")
 
@@ -192,3 +217,4 @@ class AppConfig:
 
 
 config = AppConfig()
+

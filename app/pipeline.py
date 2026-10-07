@@ -29,6 +29,10 @@ from app.classification.relevance import ItClassifier, RelevanceClassifier
 from app.classification.status import StatusDetector, is_active
 from app.crawler import alltender
 from app.crawler.crawler import TenderCrawler
+from app.crawler.epaper.bangladeshtoday import BangladeshTodayEpaperCrawler
+from app.crawler.epaper.financialexpress import FinancialExpressEpaperCrawler
+from app.crawler.epaper.prothomalo import ProthomAloEpaperCrawler
+from app.crawler.epaper.protidinerbangladesh import ProtidinerBangladeshEpaperCrawler
 from app.db.supabase import Store
 from app.parsers.date_cleaner import DHAKA_TZ, deadline_datetime, extract_dates, find_dates, parse_first_date
 from app.parsers.document_parser import extract_document_text, is_readable_document
@@ -292,6 +296,14 @@ class Monitor:
             status_code, error, pairs = await self._alltender_listings(source)
         elif source.get("type") == "alltender_category":
             status_code, error, pairs = await self._alltender_listings(source)
+        elif source.get("type") == "epaper_prothomalo":
+            status_code, error, pairs = await self._epaper_listings(source, ProthomAloEpaperCrawler(), "Prothom Alo")
+        elif source.get("type") == "epaper_financialexpress":
+            status_code, error, pairs = await self._epaper_listings(source, FinancialExpressEpaperCrawler(), "The Financial Express")
+        elif source.get("type") == "epaper_bangladeshtoday":
+            status_code, error, pairs = await self._epaper_listings(source, BangladeshTodayEpaperCrawler(), "The Bangladesh Today")
+        elif source.get("type") == "epaper_protidinerbangladesh":
+            status_code, error, pairs = await self._epaper_listings(source, ProtidinerBangladeshEpaperCrawler(), "Protidiner Bangladesh")
         else:
             status_code, error, pairs = await self._page_listings(source)
         if error:
@@ -423,7 +435,66 @@ class Monitor:
             pairs.append((listing, org))
         return status, None, pairs
 
+    async def _epaper_listings(self, source: Dict[str, Any], crawler: Any, newspaper: str
+                               ) -> Tuple[int, Optional[str], List[Tuple[Listing, Dict[str, Any]]]]:
+        """Crawls today's digital e-paper edition and extracts tenders via Gemini Vision."""
+        status, error, items = await crawler.crawl_edition(target_date=self.today)
+        if error:
+            return status, error, []
+        pairs = []
+        for item in items:
+            org_name = item.get("organization") or "Unknown Organization"
+            org = organization_for_name(org_name)
+            cat = (item.get("category") or "").lower()
+            org_type = (item.get("organization_type") or "").lower()
+            if "bank" in org_type or "bank" in org_name.lower():
+                sector = "BANK"
+            elif "ngo" in org_type or "ngo" in org_name.lower() or "charity" in org_name.lower():
+                sector = "NGO"
+            elif "it" in cat or "software" in cat or "ict" in cat:
+                sector = "IT"
+            else:
+                sector = org["sector"] if org["sector"] in ("BANK", "NGO", "IT") else "NGO"
+
+            if org["organization_id"].startswith("ext_"):
+                org = {**org, "sector": sector}
+
+            title = (item.get("title") or "").strip()
+            page_no = item.get("_page_no", "")
+            page_title = item.get("_page_title", "")
+            paper_name = item.get("_newspaper") or newspaper
+            row_text = (f"via E-Paper: {paper_name} (Page {page_no} {page_title}) | {org_name} | "
+                        f"{item.get('details', '')} | {item.get('contact', '')}")
+            link = item.get("_page_url") or source["url"]
+            doc_url = item.get("_image_url")
+            listing = Listing(
+                title=title,
+                row_text=row_text,
+                source_url=source["url"],
+                link=link,
+                document_url=doc_url,
+                reference=item.get("ref_no")
+            )
+            if item.get("publication_date"):
+                p_date = parse_first_date(item["publication_date"], self.today)
+                if p_date and p_date.value <= self.today:
+                    listing.published = p_date.value
+            if not listing.published:
+                listing.published = self.today
+            if item.get("deadline"):
+                info = extract_dates(item["deadline"], self.today)
+                if info.deadline:
+                    listing.deadline, listing.deadline_has_time = info.deadline, info.deadline_has_time
+                else:
+                    d_date = parse_first_date(item["deadline"], self.today)
+                    if d_date:
+                        listing.deadline, listing.deadline_has_time = deadline_datetime(d_date.value, None)
+            pairs.append((listing, org))
+        return status, None, pairs
+
+
     def _only_old_dates(self, listing: Listing) -> bool:
+
         """The listing shows dates, all older than the recent window: it is evidently not a new notice."""
         if listing.published or listing.deadline:
             return False
