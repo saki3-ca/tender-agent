@@ -69,30 +69,8 @@
       <a href="admin.html" id="tab-admin" class="tab-btn active" data-admin-only hidden><span class="tab-icon">🛡️</span> Admin</a>
     </nav>
 
-    <!-- Sign In Panel if logged out -->
-    <section class="section-panel" id="signin-panel" hidden>
-      <div class="panel-banner-header maroon">
-        <h2 class="banner-title">🔐 Admin Authentication Required</h2>
-      </div>
-      <div class="panel-body" style="max-width: 540px; margin: 0 auto; padding: 28px 20px;">
-        <p style="color:var(--ink-soft); margin-bottom: 16px;">Sign in with your authorized ACNABIN staff account to manage scraper endpoints and execute immediate pipeline runs.</p>
-        <form id="signin-form" class="form-grid" style="grid-template-columns: 1fr;">
-          <label>Email Address
-            <input type="email" id="si-email" autocomplete="username" placeholder="admin@acnabin.com" required>
-          </label>
-          <label>Password
-            <input type="password" id="si-password" autocomplete="current-password" placeholder="••••••••" required>
-          </label>
-          <div class="form-actions">
-            <button class="btn btn-primary" style="width:100%; justify-content:center;" type="submit">Sign In to Admin</button>
-          </div>
-        </form>
-        <p class="form-msg" id="signin-msg"></p>
-      </div>
-    </section>
-
     <!-- Admin Area (Active Profile & Controls) -->
-    <div id="admin-area">
+    <div id="admin-area" hidden>
       <!-- Official Employee Profile Header & Card -->
       <section class="section-panel" style="margin-bottom: 24px;">
         <div class="profile-card-header">
@@ -109,12 +87,7 @@
               <span class="pill-badge pill-handled" style="margin-left:4px;">ACTIVE</span>
             </div>
             <div class="identity-sub-info">
-              <span id="admin-user-email">✉ admin@acnabin.com</span>
-              <span id="admin-user-id"># Admin ID: ADM-001</span>
             </div>
-          </div>
-          <div>
-            <button class="btn btn-secondary btn-sm" type="button" id="signout-btn">Sign Out</button>
           </div>
         </div>
 

@@ -1,7 +1,7 @@
 // "Run now" for the Admin page.
 // GET  -> state of the latest monitoring run on GitHub Actions
 // POST -> starts the monitor workflow (unless one is already queued or running)
-// Only signed-in users on the admin allow-list (am_i_admin) may call it. The GitHub token
+// Only Task Tracker Admins may call it: the portal's bridge token (x-tracker-token) is checked by ta_admin_check. The GitHub token
 // stays in the function secrets (GH_DISPATCH_TOKEN) and is never sent to the browser.
 import { createClient } from "npm:@supabase/supabase-js@2";
 
@@ -11,7 +11,7 @@ const GH = `https://api.github.com/repos/${REPO}/actions/workflows/${WORKFLOW}`;
 
 const cors = {
   "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
+  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type, x-tracker-token",
   "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
 };
 
@@ -48,11 +48,8 @@ async function latestRun() {
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: cors });
 
-  const auth = req.headers.get("Authorization") ?? "";
-  const db = createClient(Deno.env.get("SUPABASE_URL")!, Deno.env.get("SUPABASE_ANON_KEY")!, {
-    global: { headers: { Authorization: auth } },
-  });
-  const { data: isAdmin, error } = await db.rpc("am_i_admin");
+  const db = createClient(Deno.env.get("SUPABASE_URL")!, Deno.env.get("SUPABASE_ANON_KEY")!);
+  const { data: isAdmin, error } = await db.rpc("ta_admin_check", { p_token: req.headers.get("x-tracker-token") ?? "" });
   if (error || !isAdmin) return json({ error: "Not allowed" }, 403);
   if (!Deno.env.get("GH_DISPATCH_TOKEN")) return json({ error: "GH_DISPATCH_TOKEN is not configured" }, 500);
 

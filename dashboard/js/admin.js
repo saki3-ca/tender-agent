@@ -1,6 +1,6 @@
 /*
  * Admin page: manage tender source URLs (table admin_sources).
- * Writing requires a Supabase sign-in by a user listed in app_users; the database enforces this.
+ * Opened only through the Task Tracker portal (Admins). Every read and change goes through ta_admin_* functions that verify the bridge token with the Task Tracker.
  */
 (function () {
   "use strict";
@@ -65,67 +65,32 @@
   }
 
   // -------------------------------------------------------------- auth
+  // No separate sign-in: the portal gives the dashboard a short-lived token for Task Tracker Admins (js/config.js),
+  // and the database checks it with the Task Tracker before every admin read or change.
+  let token = null;
+
   async function showState() {
     fmtHeaderDate();
-    if (!db) {
-      $("#signin-panel").hidden = false;
-      $("#admin-area").hidden = true;
-      return;
-    }
-
-    const { data: { session } } = await db.auth.getSession();
-    if (!session) {
-      $("#signin-panel").hidden = false;
-      $("#admin-area").hidden = false; // keep preview visible
-      $("#admin-user-name").textContent = "GUEST ADMIN";
-      $("#admin-user-email").textContent = "✉ Not Signed In";
-      $("#signout-btn").textContent = "Sign In";
-      $("#signout-btn").onclick = () => { $("#signin-panel").hidden = false; $("#si-email").focus(); };
-      await loadData();
-      return;
-    }
-
-    const email = session.user.email;
-    $("#admin-user-name").textContent = email.split("@")[0].toUpperCase();
-    $("#admin-user-email").textContent = `✉ ${email}`;
-    $("#admin-user-id").textContent = `# User ID: ${session.user.id.slice(0, 8)}`;
-    $("#signout-btn").textContent = "Sign Out";
-    $("#signout-btn").onclick = async () => { await db.auth.signOut(); showState(); };
-
-    const { data: isAdmin, error } = await db.rpc("am_i_admin");
-    if (error || !isAdmin) {
-      $("#signin-panel").hidden = false;
-      $("#signin-form").hidden = true;
-      msg("#signin-msg", `Signed in as ${email}, but this account is not on the admin list (table app_users).`, true);
-      return;
-    }
-
-    $("#signin-panel").hidden = true;
+    token = window.TA_TOKEN || null;
+    if (!db || !token) return;
+    const { data: ok, error } = await db.rpc("ta_admin_check", { p_token: token });
+    if (error || !ok) { token = null; location.replace("index.html"); return; }
     $("#admin-area").hidden = false;
     refreshRun();
     await loadData();
   }
-
-  $("#signin-form")?.addEventListener("submit", async (e) => {
-    e.preventDefault();
-    msg("#signin-msg", "Signing in…");
-    const { error } = await db.auth.signInWithPassword({ email: $("#si-email").value.trim(), password: $("#si-password").value });
-    if (error) { msg("#signin-msg", error.message, true); return; }
-    msg("#signin-msg", "");
-    showState();
-  });
+  document.addEventListener("ta-token", showState);
 
   // -------------------------------------------------------------- data
   async function loadData() {
-    if (!db) return;
+    if (!db || !token) return;
     try {
-      const [st, ad, activeTenders] = await Promise.all([
-        db.from("source_status").select("*").order("organization_name"),
-        db.from("admin_sources").select("*").order("created_at", { ascending: false }),
+      const [admin, activeTenders] = await Promise.all([
+        db.rpc("ta_admin_data", { p_token: token }),
         db.from("v_active_tenders").select("count", { count: "exact", head: true })
       ]);
-      statuses = st.data || [];
-      managed = ad.data || [];
+      statuses = (admin.data && admin.data.statuses) || [];
+      managed = (admin.data && admin.data.sources) || [];
       if (activeTenders && activeTenders.count != null) {
         const countEl = $("#profile-total-tenders");
         if (countEl) countEl.textContent = activeTenders.count;
@@ -189,7 +154,7 @@
       country_filter: $("#a-country").checked,
       enabled: true,
     });
-    const { error } = await db.from("admin_sources").insert(row);
+    const { error } = await db.rpc("ta_admin_source_add", { p_token: token, p_row: row });
     if (error) { msg("#add-msg", `Could not save: ${error.message}`, true); return; }
     msg("#add-msg", "Saved. The page will be checked in the next monitoring run.");
     $("#add-form").reset();
@@ -230,10 +195,10 @@
     if (!validUrl(url)) { input.style.borderColor = "var(--color-rose)"; input.focus(); return; }
     const s = statuses.find((x) => x.source_id === tr.dataset.id);
     btn.disabled = true;
-    const { error } = await db.from("admin_sources").upsert({
+    const { error } = await db.rpc("ta_admin_source_upsert", { p_token: token, p_row: {
       source_id: s.source_id, url, organization_id: s.organization_id,
       organization_name: s.organization_name, sector: s.sector, enabled: true,
-    });
+    } });
     btn.disabled = false;
     if (error) { alert(`Could not save: ${error.message}`); return; }
     loadData();
@@ -262,7 +227,7 @@
   $("#managed-rows")?.addEventListener("change", async (e) => {
     if (e.target.dataset.action !== "toggle" || !db) return;
     const id = e.target.closest("tr").dataset.id;
-    const { error } = await db.from("admin_sources").update({ enabled: e.target.checked }).eq("source_id", id);
+    const { error } = await db.rpc("ta_admin_source_enable", { p_token: token, p_id: id, p_enabled: e.target.checked });
     if (error) { alert(`Could not save: ${error.message}`); }
     loadData();
   });
@@ -272,7 +237,7 @@
     if (!btn || !db) return;
     const id = btn.closest("tr").dataset.id;
     if (!confirm("Remove this URL from monitoring?")) return;
-    const { error } = await db.from("admin_sources").delete().eq("source_id", id);
+    const { error } = await db.rpc("ta_admin_source_delete", { p_token: token, p_id: id });
     if (error) { alert(`Could not remove: ${error.message}`); }
     loadData();
   });
@@ -282,12 +247,10 @@
   let pollTimer = null;
 
   async function callRunFn(method) {
-    if (!db) throw new Error("No database connection");
-    const { data: { session } } = await db.auth.getSession();
-    if (!session) throw new Error("Please sign in as an admin to trigger scraper runs.");
+    if (!db || !token) throw new Error("Admin access is not available.");
     const res = await fetch(RUN_FN, {
       method,
-      headers: { Authorization: `Bearer ${session.access_token}`, apikey: env.SUPABASE_ANON_KEY },
+      headers: { "x-tracker-token": token, apikey: env.SUPABASE_ANON_KEY },
     });
     const body = await res.json().catch(() => ({}));
     if (!res.ok) throw new Error(body.error || `HTTP ${res.status}`);

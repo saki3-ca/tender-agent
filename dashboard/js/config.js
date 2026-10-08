@@ -53,7 +53,7 @@ window.ENV = {
 })();
 
 // Admin section: shown only when the portal says the signed-in Task Tracker user is an Admin. This is a display
-// control only; changing tender sources still needs the allow-listed Supabase sign-in, which the database enforces.
+// control; the bridge token it sends is checked by the database (with the Task Tracker) before any admin change.
 // Outside the portal nobody is an admin, so the Admin page sends the visitor back to the Overview.
 (function () {
   var embedded = document.documentElement.classList.contains("embedded");
@@ -77,6 +77,8 @@ window.ENV = {
     if (e.source !== window.parent || !e.data || e.data.type !== "tender-agent-role") return;
     answered = true;
     setAdmin(e.data.admin === true);
+    window.TA_TOKEN = e.data.admin === true && typeof e.data.token === "string" ? e.data.token : null; // memory only
+    document.dispatchEvent(new Event("ta-token"));
     if (!admin && onAdminPage()) location.replace("index.html");
   });
 
