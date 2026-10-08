@@ -1154,13 +1154,50 @@ td.col-source {
 
 /* ---------------------------------------------------------------- Embedded in the Task Tracker portal
    The portal already shows the ACNABIN header, user and tabs, so the dashboard drops its own header
-   and the admin shortcuts (admin tools stay on the standalone site). */
+   and the admin shortcuts (admin tools stay on the standalone site). The page order matches the
+   portal's Manpower tab: count boxes first, then the view links in the filter bar's place, then the table.
+   The portal sizes the frame to this page's height (see js/config.js), so there is no second scrollbar. */
+html.embedded,
+html.embedded body {
+  overflow: hidden;
+  min-height: 0;
+  background: transparent;
+}
+
 html.embedded .top-header,
 html.embedded a.tab-btn[href="admin.html"] {
   display: none !important;
 }
 
 html.embedded .app-container {
+  display: flex;
+  flex-direction: column;
   max-width: none;
-  padding: 12px 16px 32px;
+  padding: 0 0 8px;
 }
+html.embedded .app-container > * { order: 3; }
+html.embedded .app-container > .stat-cards-grid { order: 1; }
+html.embedded .app-container > .nav-tabs { order: 2; }
+
+/* view links: same white bar as the portal's filter bars */
+html.embedded .nav-tabs {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-sm);
+  padding: 0 8px;
+  gap: 8px;
+  margin-bottom: 18px;
+}
+html.embedded .nav-tabs .tab-btn {
+  padding: 13px 14px;
+  margin-bottom: 0;
+  border-bottom-width: 2px;
+}
+html.embedded .nav-tabs .tab-btn.active { font-weight: 600; }
+html.embedded .nav-tabs .tab-icon {
+  display: inline-flex;
+  margin-right: 6px;
+  font-size: 0;
+}
+html.embedded .nav-tabs .tab-icon svg { width: 15px; height: 15px; }
