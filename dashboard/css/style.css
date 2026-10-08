@@ -1164,8 +1164,7 @@ html.embedded body {
   background: transparent;
 }
 
-html.embedded .top-header,
-html.embedded a.tab-btn[href="admin.html"] {
+html.embedded .top-header {
   display: none !important;
 }
 
@@ -1201,3 +1200,7 @@ html.embedded .nav-tabs .tab-icon {
   font-size: 0;
 }
 html.embedded .nav-tabs .tab-icon svg { width: 15px; height: 15px; }
+
+/* Admin page: only shown to Task Tracker admins (the portal tells the dashboard, see js/config.js) */
+body[data-page="admin"] .app-container > section { display: none; }
+html.ta-admin body[data-page="admin"] .app-container > section { display: block; }

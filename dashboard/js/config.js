@@ -25,6 +25,7 @@ window.ENV = {
     "ngo.html": '<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>',
     "it.html": '<rect width="20" height="14" x="2" y="3" rx="2"/><line x1="8" x2="16" y1="21" y2="21"/><line x1="12" x2="12" y1="17" y2="21"/>',
     "newspaper.html": '<path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2Zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2"/><path d="M18 14h-8"/><path d="M15 18h-5"/><path d="M10 6h8v4h-8V6Z"/>',
+    "admin.html": '<path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/>',
     "sources.html": '<path d="M22 12h-2.48a2 2 0 0 0-1.93 1.46l-2.35 8.36a.25.25 0 0 1-.48 0L9.24 2.18a.25.25 0 0 0-.48 0l-2.35 8.36A2 2 0 0 1 4.49 12H2"/>'
   };
   function start() {
@@ -46,6 +47,46 @@ window.ENV = {
     window.addEventListener("load", report);
     window.addEventListener("resize", report);
     report();
+  }
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", start);
+  else start();
+})();
+
+// Admin section: shown only when the portal says the signed-in Task Tracker user is an Admin. This is a display
+// control only; changing tender sources still needs the allow-listed Supabase sign-in, which the database enforces.
+// Outside the portal nobody is an admin, so the Admin page sends the visitor back to the Overview.
+(function () {
+  var embedded = document.documentElement.classList.contains("embedded");
+  var admin = false;
+  try { admin = embedded && sessionStorage.getItem("ta_admin") === "1"; } catch (e) {}
+
+  function apply() {
+    document.documentElement.classList.toggle("ta-admin", admin);
+    var els = document.querySelectorAll("[data-admin-only]");
+    for (var i = 0; i < els.length; i++) els[i].hidden = !admin;
+  }
+  function setAdmin(on) {
+    admin = on;
+    try { sessionStorage.setItem("ta_admin", on ? "1" : "0"); } catch (e) {}
+    apply();
+  }
+  function onAdminPage() { return document.body && document.body.getAttribute("data-page") === "admin"; }
+
+  var answered = false;
+  window.addEventListener("message", function (e) {
+    if (e.source !== window.parent || !e.data || e.data.type !== "tender-agent-role") return;
+    answered = true;
+    setAdmin(e.data.admin === true);
+    if (!admin && onAdminPage()) location.replace("index.html");
+  });
+
+  function start() {
+    apply();
+    if (embedded && window.parent !== window) window.parent.postMessage({ type: "tender-agent-hello" }, "*");
+    if (onAdminPage()) {
+      if (!embedded) { location.replace("index.html"); return; }
+      setTimeout(function () { if (!answered) location.replace("index.html"); }, 2500);
+    }
   }
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", start);
   else start();

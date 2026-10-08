@@ -51,7 +51,6 @@
       </div>
 
       <div class="user-actions-nav">
-        <a class="btn btn-primary btn-sm" href="admin.html">+ Correct URLs</a>
         <a class="btn btn-secondary btn-sm" href="index.html">← Back to Portal</a>
       </div>
     </div>
@@ -66,7 +65,7 @@
       <a href="it.html" class="tab-btn"><span class="tab-icon">💻</span> IT Services</a>
       <a href="newspaper.html" class="tab-btn"><span class="tab-icon">📰</span> Newspaper & E-Paper</a>
       <a href="sources.html" class="tab-btn active"><span class="tab-icon">📡</span> Source Status</a>
-      <a href="admin.html" class="tab-btn"><span class="tab-icon">⚙️</span> Admin Settings</a>
+      <a href="admin.html" id="tab-admin" class="tab-btn" data-admin-only hidden><span class="tab-icon">🛡️</span> Admin</a>
     </nav>
 
     <!-- KPI Stat Cards -->
@@ -95,7 +94,7 @@
       <div class="panel-banner-header maroon">
         <h2 class="banner-title">📡 Live Health Diagnostics per Monitored Source</h2>
         <div class="banner-actions">
-          <a class="btn-banner-action" href="admin.html">⚙️ Fix Failing Sources</a>
+          <a class="btn-banner-action" href="admin.html" data-admin-only hidden>⚙️ Fix Failing Sources</a>
         </div>
       </div>
 
