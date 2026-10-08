@@ -1201,3 +1201,36 @@ html.embedded .nav-tabs .tab-icon {
 }
 html.embedded .nav-tabs .tab-icon svg { width: 15px; height: 15px; }
 
+
+/* count boxes: same look as the portal's stat pills (Manpower, Invoices ...) */
+html.embedded .stat-cards-grid {
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 12px;
+  margin-bottom: 18px;
+}
+html.embedded .stat-card {
+  border: 1.5px solid var(--maroon);
+  border-radius: var(--radius-md);
+  padding: 8px 12px;
+  height: 74px;
+  min-height: 0;
+  align-items: center;
+  box-shadow: var(--shadow-sm);
+}
+html.embedded .stat-card:hover {
+  border-color: var(--maroon);
+  box-shadow: var(--shadow-md);
+}
+html.embedded .stat-card-label {
+  font-size: 10.5px;
+  letter-spacing: 0.8px;
+  line-height: 1.2;
+  margin-bottom: 0;
+}
+html.embedded .stat-card-value {
+  font-size: 24px;
+  margin-top: 3px;
+}
+@media (max-width: 800px) {
+  html.embedded .stat-cards-grid { grid-template-columns: repeat(2, 1fr); }
+}
