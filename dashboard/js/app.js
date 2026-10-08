@@ -370,7 +370,7 @@
 
   function setTab(tab) {
     state.tab = tab === "priority" ? "priority" : "general";
-    $$(".tab-btn").forEach((b) => {
+    $$(".tab-btn[data-tab]").forEach((b) => {
       const on = b.dataset.tab === state.tab;
       b.classList.toggle("active", on);
       b.classList.toggle("btn-maroon-fill", on);
@@ -450,7 +450,7 @@
       $("#f-ifrs9").checked = true;
     }
 
-    $$(".tab-btn").forEach((b) => b.addEventListener("click", () => setTab(b.dataset.tab)));
+    $$(".tab-btn[data-tab]").forEach((b) => b.addEventListener("click", () => setTab(b.dataset.tab)));
     $("#f-search")?.addEventListener("input", renderSectorRows);
     ["#f-org", "#f-cat", "#f-due", "#f-pub", "#f-ifrs9", "#f-target"].forEach((s) => {
       $(s)?.addEventListener("change", renderSectorRows);
