@@ -1202,34 +1202,44 @@ html.embedded .nav-tabs .tab-icon {
 html.embedded .nav-tabs .tab-icon svg { width: 15px; height: 15px; }
 
 
-/* count boxes: same look as the portal's stat pills (Manpower, Invoices ...) */
+/* count boxes: same size and colours as the portal's My Profile count boxes */
 html.embedded .stat-cards-grid {
   grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
   gap: 12px;
   margin-bottom: 18px;
 }
 html.embedded .stat-card {
-  border: 1.5px solid var(--maroon);
-  border-radius: var(--radius-md);
+  --pill-bg: #FAF5FF; --pill-border: #E9D5FF; --pill-ink: #6B21A8;
+  background: var(--pill-bg);
+  border: 1px solid var(--pill-border);
+  border-radius: 8px;
   padding: 8px 12px;
   height: 74px;
   min-height: 0;
   align-items: center;
-  box-shadow: var(--shadow-sm);
+  box-shadow: none;
 }
+html.embedded .stat-card:has(.c-maroon) { --pill-bg: #FEF2F2; --pill-border: #FECACA; --pill-ink: #991B1B; }
+html.embedded .stat-card:has(.c-blue)   { --pill-bg: #EFF6FF; --pill-border: #BFDBFE; --pill-ink: #1E40AF; }
+html.embedded .stat-card:has(.c-purple) { --pill-bg: #FAF5FF; --pill-border: #E9D5FF; --pill-ink: #6B21A8; }
+html.embedded .stat-card:has(.c-green),
+html.embedded .stat-card:has(.c-teal)   { --pill-bg: #F0FDF4; --pill-border: #86EFAC; --pill-ink: #166534; }
+html.embedded .stat-card:has(.c-amber)  { --pill-bg: #FFFBEB; --pill-border: #FDE68A; --pill-ink: #92400E; }
 html.embedded .stat-card:hover {
-  border-color: var(--maroon);
+  border-color: var(--pill-border);
   box-shadow: var(--shadow-md);
 }
 html.embedded .stat-card-label {
   font-size: 10.5px;
-  letter-spacing: 0.8px;
+  letter-spacing: 0.6px;
   line-height: 1.2;
   margin-bottom: 0;
+  color: var(--pill-ink);
 }
 html.embedded .stat-card-value {
   font-size: 24px;
   margin-top: 3px;
+  color: var(--pill-ink);
 }
 @media (max-width: 800px) {
   html.embedded .stat-cards-grid { grid-template-columns: repeat(2, 1fr); }
