@@ -2,115 +2,278 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin — ACNABIN</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=yes">
+  <title>Admin & Profile — ACNABIN Chartered Accountants</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="images/apple-touch-icon.png">
+  <link rel="shortcut icon" href="images/favicon.ico">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,400;1,700&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="js/config.js"></script>
   <script src="js/admin.js" defer></script>
 </head>
 <body data-page="admin">
-  <header class="topbar">
-    <a class="brand" href="index.html"><span class="brand-mark">ACNABIN</span><span class="brand-name">Tender Monitoring</span></a>
-    <nav class="topnav">
-      <a href="index.html">Home</a>
-      <a href="bank.html">Bank</a>
-      <a href="ngo.html">NGO</a>
-      <a href="it.html">IT Services</a>
-      <a href="newspaper.html">Newspaper</a>
-      <a href="sources.html">Sources</a>
-      <a href="admin.html" class="active">Admin</a>
-    </nav>
+  <!-- Top Header with Real Official ACNABIN Logo & Masthead -->
+  <header class="top-header">
+    <div class="brand-section">
+      <a href="index.html" style="display:block;">
+        <img
+          src="images/acnabin-logo.png"
+          alt="ACNABIN Chartered Accountants"
+          class="brand-logo-img"
+        />
+      </a>
+    </div>
 
-    <div class="topbar-meta" id="who"></div>
+    <div class="center-masthead">
+      <h1 class="masthead-title">TENDER AGENT</h1>
+      <div class="masthead-subtitle" id="live-date">Thursday, 8 October 2026</div>
+    </div>
+
+    <div class="user-section">
+      <div style="display: flex; align-items: center; gap: 8px;">
+        <div class="user-name">ADMIN</div>
+        <span class="role-badge admin">ADMIN</span>
+      </div>
+
+      <div style="display: flex; align-items: center; gap: 6px; margin-top: 4px;">
+        <span style="font-size: 11px; color: var(--ink-soft);">Switch User:</span>
+        <select
+          style="font-size: 11px; padding: 2px 6px; border-radius: 4px; border: 1px solid var(--line-strong); background: #fff;"
+          title="Switch user role"
+        >
+          <option value="admin">ADMIN (Admin)</option>
+        </select>
+      </div>
+
+      <div class="user-actions-nav">
+        <a class="btn btn-primary btn-sm" href="#add-section">+ Add Source</a>
+        <a class="btn btn-secondary btn-sm" href="index.html">← Back to Portal</a>
+      </div>
+    </div>
   </header>
 
-  <main class="page">
-    <div class="section-head">
-      <div class="crumbs"><a href="index.html">Home</a> / Admin</div>
-      <h1>Admin — Tender Sources</h1>
-      <p class="lead">Add the real address of a bank or NGO tender page, or correct a source that is not working. Changes are used from the next monitoring run (hourly, 08:00–20:00 Dhaka time), or press <b>Run now</b>.</p>
-    </div>
+  <div class="app-container">
+    <!-- Navigation Tab Bar -->
+    <nav class="nav-tabs" aria-label="Dashboard views">
+      <a href="index.html" class="tab-btn"><span class="tab-icon">📋</span> Overview</a>
+      <a href="bank.html" class="tab-btn"><span class="tab-icon">🏛️</span> Bank Tenders</a>
+      <a href="ngo.html" class="tab-btn"><span class="tab-icon">🤝</span> NGO Tenders</a>
+      <a href="it.html" class="tab-btn"><span class="tab-icon">💻</span> IT Services</a>
+      <a href="newspaper.html" class="tab-btn"><span class="tab-icon">📰</span> Newspaper & E-Paper</a>
+      <a href="sources.html" class="tab-btn"><span class="tab-icon">📡</span> Source Status</a>
+      <a href="admin.html" class="tab-btn active"><span class="tab-icon">⚙️</span> Admin Settings</a>
+    </nav>
 
-    <!-- Sign in -->
-    <section class="panel form-panel" id="signin-panel" hidden>
-      <h2>SIGN IN</h2>
-      <form id="signin-form" class="form-grid">
-        <label>Email<input type="email" id="si-email" autocomplete="username" required></label>
-        <label>Password<input type="password" id="si-password" autocomplete="current-password" required></label>
-        <div class="form-actions"><button class="btn btn-primary" type="submit">Sign in</button></div>
-      </form>
-      <p class="form-msg" id="signin-msg"></p>
+    <!-- Sign In Panel if logged out -->
+    <section class="section-panel" id="signin-panel" hidden>
+      <div class="panel-banner-header maroon">
+        <h2 class="banner-title">🔐 Admin Authentication Required</h2>
+      </div>
+      <div class="panel-body" style="max-width: 540px; margin: 0 auto; padding: 28px 20px;">
+        <p style="color:var(--ink-soft); margin-bottom: 16px;">Sign in with your authorized ACNABIN staff account to manage scraper endpoints and execute immediate pipeline runs.</p>
+        <form id="signin-form" class="form-grid" style="grid-template-columns: 1fr;">
+          <label>Email Address
+            <input type="email" id="si-email" autocomplete="username" placeholder="admin@acnabin.com" required>
+          </label>
+          <label>Password
+            <input type="password" id="si-password" autocomplete="current-password" placeholder="••••••••" required>
+          </label>
+          <div class="form-actions">
+            <button class="btn btn-primary" style="width:100%; justify-content:center;" type="submit">Sign In to Admin</button>
+          </div>
+        </form>
+        <p class="form-msg" id="signin-msg"></p>
+      </div>
     </section>
 
-    <div id="admin-area" hidden>
-      <!-- Run now -->
-      <section class="panel form-panel run-panel">
-        <h2>MONITORING RUN</h2>
-        <div class="run-row">
+    <!-- Admin Area (Active Profile & Controls) -->
+    <div id="admin-area">
+      <!-- Official Employee Profile Header & Card -->
+      <section class="section-panel" style="margin-bottom: 24px;">
+        <div class="profile-card-header">
+          <h2>OFFICIAL EMPLOYEE PROFILE</h2>
+          <span style="font-size: 11.5px; font-weight: 600; letter-spacing: 0.05em; opacity: 0.9;">ACNABIN CHARTERED ACCOUNTANTS</span>
+        </div>
+
+        <div class="profile-identity-bar">
+          <div class="avatar-circle">A</div>
+          <div class="identity-meta">
+            <div class="identity-name-row">
+              <span class="identity-name" id="admin-user-name">ADMIN</span>
+              <span class="role-badge admin">ADMIN</span>
+              <span class="pill-badge pill-handled" style="margin-left:4px;">ACTIVE</span>
+            </div>
+            <div class="identity-sub-info">
+              <span id="admin-user-email">✉ admin@acnabin.com</span>
+              <span id="admin-user-id"># Admin ID: ADM-001</span>
+            </div>
+          </div>
           <div>
-            <div id="run-state" class="run-state">Checking…</div>
-            <div id="run-last" class="run-last"></div>
+            <button class="btn btn-secondary btn-sm" type="button" id="signout-btn">Sign Out</button>
           </div>
-          <button class="btn btn-primary" type="button" id="run-now">Run now</button>
         </div>
-        <p class="form-msg" id="run-msg"></p>
+
+        <!-- Metric Pill Boxes -->
+        <div class="metrics-pill-row">
+          <div class="metric-pill-box bg-blue">
+            <div class="metric-pill-title">ASSIGNED CLIENTS</div>
+            <div class="metric-pill-num" style="color:var(--navy);">All</div>
+          </div>
+          <div class="metric-pill-box bg-purple">
+            <div class="metric-pill-title">TOTAL ACTIVE TENDERS</div>
+            <div class="metric-pill-num" style="color:#7C3AED;" id="profile-total-tenders">148</div>
+          </div>
+          <div class="metric-pill-box bg-green">
+            <div class="metric-pill-title">MONITORED BANKS</div>
+            <div class="metric-pill-num" style="color:var(--status-completed-text);">61</div>
+          </div>
+          <div class="metric-pill-box bg-amber">
+            <div class="metric-pill-title">MONITORED NGOS</div>
+            <div class="metric-pill-num" style="color:var(--status-pending-text);">67</div>
+          </div>
+          <div class="metric-pill-box bg-rose">
+            <div class="metric-pill-title">NEWSPAPER DAILIES</div>
+            <div class="metric-pill-num" style="color:var(--maroon);">07</div>
+          </div>
+        </div>
+
+        <!-- Segmented Detail Boxes with Maroon Left Accent -->
+        <div class="details-grid-sections">
+          <div class="detail-box">
+            <div class="detail-box-title">EMPLOYMENT YEAR</div>
+            <div class="detail-box-val">2026</div>
+          </div>
+          <div class="detail-box">
+            <div class="detail-box-title">JOINING DATE</div>
+            <div class="detail-box-val">01 October 2026</div>
+          </div>
+          <div class="detail-box">
+            <div class="detail-box-title">DEPARTMENT</div>
+            <div class="detail-box-val">Audit & Assurance / IT Advisory Services</div>
+          </div>
+        </div>
       </section>
 
-      <!-- Add -->
-      <section class="panel form-panel">
-        <h2>ADD A TENDER PAGE</h2>
-        <form id="add-form" class="form-grid">
-          <label class="wide">Page URL<input type="url" id="a-url" placeholder="https://www.example.org/tenders" required></label>
-          <label>Organization
-            <select id="a-org" required></select>
-          </label>
-          <label id="a-name-wrap" hidden>Organization name<input type="text" id="a-name" maxlength="200"></label>
-          <label id="a-sector-wrap" hidden>Section
-            <select id="a-sector"><option value="BANK">Bank</option><option value="NGO">NGO</option></select>
-          </label>
-          <label class="wide">Notes (optional)<input type="text" id="a-notes" maxlength="500" placeholder="e.g. Procurement page linked from the homepage"></label>
-          <div class="wide checks">
-            <label class="check"><input type="checkbox" id="a-js"> Page needs JavaScript to show the list</label>
-            <label class="check"><input type="checkbox" id="a-ssl"> Ignore SSL certificate errors</label>
-            <label class="check"><input type="checkbox" id="a-country"> Keep only Bangladesh notices (international sites)</label>
+      <!-- Monitoring Trigger Panel -->
+      <section class="section-panel" style="margin-bottom: 24px;">
+        <div class="panel-banner-header teal">
+          <h2 class="banner-title">⚡ Instant Crawler Pipeline Trigger</h2>
+          <div class="banner-actions">
+            <span id="run-last" style="font-size: 11.5px; opacity:0.9;"></span>
           </div>
-          <div class="form-actions wide"><button class="btn btn-primary" type="submit">Add source</button></div>
-        </form>
-        <p class="form-msg" id="add-msg"></p>
+        </div>
+        <div class="panel-body">
+          <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:16px;">
+            <div>
+              <div id="run-state" style="font-size:14px; font-weight:700; color:var(--ink);">Ready to launch crawler pipeline.</div>
+              <div style="font-size:12px; color:var(--ink-soft); margin-top:3px;">Triggers the GitHub Actions monitoring workflow across all Bank, NGO, IT, and Newspaper scrapers.</div>
+            </div>
+            <button class="btn btn-primary" type="button" id="run-now" style="height:36px; padding:0 18px;">▶ Run Scraper Now</button>
+          </div>
+          <p class="form-msg" id="run-msg"></p>
+        </div>
       </section>
 
-      <!-- Broken -->
-      <section class="admin-section">
-        <h2 class="admin-h2">Sources that need a correct URL</h2>
-        <p class="tab-note">Sources that failed or showed no tender notices in the last run. Enter the real tender page address and save.</p>
-        <div class="toolbar">
-          <input type="search" id="broken-search" placeholder="Find organization" aria-label="Find organization">
-          <select id="broken-sector" aria-label="Sector"><option value="">Bank and NGO</option><option value="BANK">Bank</option><option value="NGO">NGO</option></select>
+      <!-- Add Tender Source Panel -->
+      <section class="section-panel" id="add-section" style="margin-bottom: 24px;">
+        <div class="panel-banner-header maroon">
+          <h2 class="banner-title">+ Add New Tender Source Page</h2>
         </div>
-        <div class="table-wrap">
-          <table>
-            <thead><tr><th>Organization</th><th>Problem</th><th>Current URL</th><th>Correct URL</th><th></th></tr></thead>
-            <tbody id="broken-rows"><tr><td colspan="5" class="empty">Loading…</td></tr></tbody>
+        <div class="panel-body">
+          <form id="add-form" class="form-grid">
+            <label class="wide">Page Web Address (URL)
+              <input type="url" id="a-url" placeholder="https://www.bankasia-bd.com/about/tenders" required>
+            </label>
+            <label>Organization
+              <select id="a-org" required></select>
+            </label>
+            <label id="a-name-wrap" hidden>New Organization Name
+              <input type="text" id="a-name" maxlength="200" placeholder="e.g. Dhaka Community Hospital">
+            </label>
+            <label id="a-sector-wrap" hidden>Sector Classification
+              <select id="a-sector">
+                <option value="BANK">Bank Sector</option>
+                <option value="NGO">NGO Sector</option>
+                <option value="IT">IT Services</option>
+              </select>
+            </label>
+            <label class="wide">Administrative Notes (Optional)
+              <input type="text" id="a-notes" maxlength="500" placeholder="e.g. Procurement section linked in top navigation">
+            </label>
+            <div class="wide checks">
+              <label class="check"><input type="checkbox" id="a-js"> Dynamic Page (Requires JavaScript Rendering)</label>
+              <label class="check"><input type="checkbox" id="a-ssl"> Ignore SSL Certificate Verification Errors</label>
+              <label class="check"><input type="checkbox" id="a-country"> Filter specifically for Bangladesh Notices</label>
+            </div>
+            <div class="form-actions wide">
+              <button class="btn btn-primary" type="submit">+ Save & Add to Monitor</button>
+            </div>
+          </form>
+          <p class="form-msg" id="add-msg"></p>
+        </div>
+      </section>
+
+      <!-- Failing Sources that Need Correct URLs -->
+      <section class="section-panel" style="margin-bottom: 24px;">
+        <div class="panel-banner-header maroon">
+          <h2 class="banner-title">⚠️ Sources Requiring URL Correction</h2>
+        </div>
+        <div class="filter-toolbar">
+          <div class="search-input-wrap">
+            <input type="search" id="broken-search" placeholder="🔍 Find organization..." aria-label="Find organization" style="width:100%;">
+          </div>
+          <select id="broken-sector" aria-label="Sector">
+            <option value="">All Sectors (Bank & NGO)</option>
+            <option value="BANK">Bank Sector</option>
+            <option value="NGO">NGO Sector</option>
+          </select>
+        </div>
+        <div class="table-container">
+          <table class="tender-data-table">
+            <thead>
+              <tr>
+                <th class="col-org">ORGANIZATION</th>
+                <th>DIAGNOSTIC ISSUE</th>
+                <th>CURRENT URL</th>
+                <th>CORRECT REAL URL</th>
+                <th>ACTION</th>
+              </tr>
+            </thead>
+            <tbody id="broken-rows">
+              <tr><td colspan="5" class="empty-catchup-state">Loading failing sources…</td></tr>
+            </tbody>
           </table>
         </div>
       </section>
 
-      <!-- Managed -->
-      <section class="admin-section">
-        <h2 class="admin-h2">URLs added or corrected here</h2>
-        <div class="table-wrap">
-          <table>
-            <thead><tr><th>Organization</th><th>URL</th><th>Last check</th><th>Enabled</th><th></th></tr></thead>
-            <tbody id="managed-rows"><tr><td colspan="5" class="empty">Loading…</td></tr></tbody>
+      <!-- Managed URL Overrides -->
+      <section class="section-panel">
+        <div class="panel-banner-header teal">
+          <h2 class="banner-title">📝 Custom Managed URL Overrides</h2>
+        </div>
+        <div class="table-container">
+          <table class="tender-data-table">
+            <thead>
+              <tr>
+                <th class="col-org">ORGANIZATION</th>
+                <th>OVERRIDE URL</th>
+                <th>LAST HEALTH CHECK</th>
+                <th>ACTIVE STATUS</th>
+                <th>ACTION</th>
+              </tr>
+            </thead>
+            <tbody id="managed-rows">
+              <tr><td colspan="5" class="empty-catchup-state">Loading managed sources…</td></tr>
+            </tbody>
           </table>
         </div>
-        <p class="footnote">Removing a correction makes the source use its original address from <code>config/sources.json</code> again.</p>
       </section>
     </div>
-  </main>
+  </div>
 </body>
 </html>

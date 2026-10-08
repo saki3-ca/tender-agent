@@ -2,88 +2,267 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Tender Monitoring — ACNABIN</title>
-  <meta name="description" content="Active tenders and professional opportunities from banks and NGOs in Bangladesh.">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=yes">
+  <title>ACNABIN | Tender Monitoring Portal</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="images/apple-touch-icon.png">
+  <link rel="shortcut icon" href="images/favicon.ico">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,400;1,700&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="js/config.js"></script>
   <script src="js/app.js" defer></script>
 </head>
 <body data-page="home">
-  <header class="topbar">
-    <a class="brand" href="index.html"><span class="brand-mark">ACNABIN</span><span class="brand-name">Tender Monitoring</span></a>
-    <nav class="topnav">
-      <a href="index.html" class="active">Home</a>
-      <a href="bank.html">Bank</a>
-      <a href="ngo.html">NGO</a>
-      <a href="it.html">IT Services</a>
-      <a href="newspaper.html">Newspaper</a>
-      <a href="sources.html">Sources</a>
-      <a href="admin.html">Admin</a>
-    </nav>
-    <div class="topbar-meta" id="last-run"></div>
+  <!-- Top Header with Real Official ACNABIN Logo & Masthead -->
+  <header class="top-header">
+    <!-- Brand Section with Real Official ACNABIN Logo -->
+    <div class="brand-section">
+      <a href="index.html" style="display:block;">
+        <img
+          src="images/acnabin-logo.png"
+          alt="ACNABIN Chartered Accountants"
+          class="brand-logo-img"
+        />
+      </a>
+    </div>
+
+    <!-- Center Masthead -->
+    <div class="center-masthead">
+      <h1 class="masthead-title">TENDER AGENT</h1>
+      <div class="masthead-subtitle" id="live-date">Thursday, 8 October 2026</div>
+    </div>
+
+    <!-- User Section -->
+    <div class="user-section">
+      <div style="display: flex; align-items: center; gap: 8px;">
+        <div class="user-name">ADMIN</div>
+        <span class="role-badge admin">ADMIN</span>
+      </div>
+
+      <div style="display: flex; align-items: center; gap: 6px; margin-top: 4px;">
+        <span style="font-size: 11px; color: var(--ink-soft);">Switch User:</span>
+        <select
+          style="font-size: 11px; padding: 2px 6px; border-radius: 4px; border: 1px solid var(--line-strong); background: #fff;"
+          title="Switch user role"
+        >
+          <option value="admin">ADMIN (Admin)</option>
+          <option value="partner">Partner (Audit & Assurance)</option>
+          <option value="manager">Manager (Advisory)</option>
+        </select>
+      </div>
+
+      <div class="user-actions-nav">
+        <a class="btn btn-primary btn-sm" href="admin.html">+ Add Source</a>
+        <a class="btn btn-secondary btn-sm" href="admin.html">Admin Panel</a>
+      </div>
+    </div>
   </header>
 
-  <main class="page">
-    <div class="section-head">
-      <h1>Tender Monitoring</h1>
-      <p class="lead">Active procurement and professional-service opportunities published by banks, NGOs, IT/ICT entities, and daily print/digital newspapers in Bangladesh.</p>
+  <div class="app-container">
+    <!-- Main Navigation Tab Bar -->
+    <nav class="nav-tabs" aria-label="Dashboard views">
+      <a href="index.html" class="tab-btn active"><span class="tab-icon">📋</span> Overview</a>
+      <a href="bank.html" class="tab-btn"><span class="tab-icon">🏛️</span> Bank Tenders</a>
+      <a href="ngo.html" class="tab-btn"><span class="tab-icon">🤝</span> NGO Tenders</a>
+      <a href="it.html" class="tab-btn"><span class="tab-icon">💻</span> IT Services</a>
+      <a href="newspaper.html" class="tab-btn"><span class="tab-icon">📰</span> Newspaper & E-Paper</a>
+      <a href="sources.html" class="tab-btn"><span class="tab-icon">📡</span> Source Status</a>
+      <a href="admin.html" class="tab-btn"><span class="tab-icon">⚙️</span> Admin Settings</a>
+    </nav>
+
+    <!-- Top KPI Stat Cards -->
+    <div class="stat-cards-grid">
+      <a href="bank.html" class="stat-card" title="Total active procurement notices">
+        <span class="stat-card-label">TOTAL NOTICES</span>
+        <span class="stat-card-value c-maroon" id="kpi-total">–</span>
+      </a>
+      <a href="bank.html?tab=priority" class="stat-card" title="View Priority opportunities for ACNABIN">
+        <span class="stat-card-label">PRIORITY TENDERS</span>
+        <span class="stat-card-value c-blue" id="kpi-priority">–</span>
+      </a>
+      <a href="bank.html?due=7" class="stat-card" title="View notices closing within 7 days">
+        <span class="stat-card-label">CLOSING SOON (&lt;7D)</span>
+        <span class="stat-card-value c-amber" id="kpi-deadlines">–</span>
+      </a>
+      <a href="bank.html?ifrs9=1" class="stat-card" title="View IFRS 9 / ECL notices">
+        <span class="stat-card-label">IFRS 9 / ECL</span>
+        <span class="stat-card-value c-green" id="kpi-ifrs9">–</span>
+      </a>
+      <a href="newspaper.html" class="stat-card" title="View daily newspaper ads and e-papers">
+        <span class="stat-card-label">NEWSPAPER ADS</span>
+        <span class="stat-card-value c-purple" id="kpi-newspaper">–</span>
+      </a>
     </div>
 
-    <div class="home-grid">
-      <section class="panel">
-        <h2>BANK</h2>
-        <p>Tender and procurement notices from bank websites, including the 30 IFRS 9 target banks, with IFRS 9 / ECL opportunities flagged.</p>
-        <div class="figures">
-          <div><div class="figure-value" id="BANK-general">–</div><div class="figure-label">Active (General)</div></div>
-          <div><div class="figure-value" id="BANK-priority">–</div><div class="figure-label">Priority</div></div>
-          <div><div class="figure-value" id="BANK-ifrs9">–</div><div class="figure-label">IFRS 9 / ECL</div></div>
+    <!-- Section 1: Maroon Banner for Priority & Important Opportunities -->
+    <section class="section-panel">
+      <div class="panel-banner-header maroon">
+        <h2 class="banner-title">📌 Priority Opportunities for ACNABIN</h2>
+        <div class="banner-actions">
+          <a class="btn-banner-action" href="bank.html?tab=priority">💬 Bank Priority</a>
+          <a class="btn-banner-action" href="it.html?tab=priority">💻 IT Advisory</a>
+          <a class="btn-banner-action" href="newspaper.html?tab=priority">📰 Newspaper Priority</a>
         </div>
-        <a class="btn btn-primary" href="bank.html">Open Bank</a>
-      </section>
+      </div>
 
-      <section class="panel">
-        <h2>NGO</h2>
-        <p>Tender, RFP, EOI and consultancy notices from NGOs, INGOs and development organizations working in Bangladesh.</p>
-        <div class="figures">
-          <div><div class="figure-value" id="NGO-general">–</div><div class="figure-label">Active (General)</div></div>
-          <div><div class="figure-value" id="NGO-priority">–</div><div class="figure-label">Priority</div></div>
-        </div>
-        <a class="btn btn-primary" href="ngo.html">Open NGO</a>
-      </section>
+      <div class="table-container">
+        <table class="tender-data-table">
+          <thead>
+            <tr>
+              <th style="width: 44px; text-align: center;">SL.</th>
+              <th style="width: 120px;">CATEGORY</th>
+              <th>TENDER & OPPORTUNITY DETAILS</th>
+              <th style="width: 120px;">PUBLISHED</th>
+              <th style="width: 140px;">DEADLINE</th>
+              <th style="width: 100px;">STATUS</th>
+              <th style="width: 120px;">ACTION</th>
+            </tr>
+          </thead>
+          <tbody id="home-rows">
+            <tr>
+              <td colspan="7" class="empty-catchup-state">
+                <div class="catchup-check-icon">⏳</div>
+                <div class="catchup-title">Loading active opportunities…</div>
+                <div class="catchup-subtitle">Connecting to ACNABIN database</div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
 
-      <section class="panel">
-        <h2>IT SERVICES</h2>
-        <p>IT tenders from banks, NGOs and government bodies. Priority: IT / IS audit and IT advisory (ACNABIN), cyber security (CipherShield), software development (Brain Station 23).</p>
-        <div class="figures">
-          <div><div class="figure-value" id="IT-general">–</div><div class="figure-label">Active (General)</div></div>
-          <div><div class="figure-value" id="IT-priority">–</div><div class="figure-label">Priority</div></div>
+    <!-- Section 2: Emerald Green Banner for Sector Categories -->
+    <section class="section-panel">
+      <div class="panel-banner-header teal">
+        <h2 class="banner-title">🏛️ Sector Breakdown & Monitored Domains</h2>
+        <div class="banner-actions">
+          <span class="btn-banner-action" id="last-run">Last run: Today</span>
         </div>
-        <a class="btn btn-primary" href="it.html">Open IT Services</a>
-      </section>
+      </div>
 
-      <section class="panel">
-        <h2>NEWSPAPER & E-PAPER</h2>
-        <p>Daily advertisements and scanned notices from Prothom Alo, The Financial Express, The Bangladesh Today, Protidiner Bangladesh, Dhaka Tribune, Daily Jugantor, and Bangladesh Pratidin.</p>
-        <div class="figures">
-          <div><div class="figure-value" id="NEWSPAPER-general">–</div><div class="figure-label">Active Ads</div></div>
-          <div><div class="figure-value" id="NEWSPAPER-priority">–</div><div class="figure-label">Priority</div></div>
+      <div class="panel-body">
+        <div class="sector-showcase-grid">
+          <!-- Bank Card -->
+          <div class="sector-card">
+            <div class="sector-card-top">
+              <span class="sector-card-name">🏛️ Bank Sector</span>
+              <span class="pill-badge pill-query">Monitored</span>
+            </div>
+            <div class="sector-card-body">
+              <p class="sector-card-desc">Tenders and procurement notices from all scheduled bank websites in Bangladesh, including 30 IFRS 9 target banks.</p>
+              <div class="sector-stat-figures">
+                <div>
+                  <div class="stat-fig-val" id="BANK-general">–</div>
+                  <div class="stat-fig-lbl">Active</div>
+                </div>
+                <div>
+                  <div class="stat-fig-val" style="color:var(--maroon);" id="BANK-priority">–</div>
+                  <div class="stat-fig-lbl">Priority</div>
+                </div>
+                <div>
+                  <div class="stat-fig-val" style="color:var(--teal);" id="BANK-ifrs9">–</div>
+                  <div class="stat-fig-lbl">IFRS 9</div>
+                </div>
+              </div>
+              <a class="btn btn-primary" style="justify-content:center; margin-top:10px;" href="bank.html">Open Bank Tenders →</a>
+            </div>
+          </div>
+
+          <!-- NGO Card -->
+          <div class="sector-card">
+            <div class="sector-card-top">
+              <span class="sector-card-name">🤝 NGO & Development</span>
+              <span class="pill-badge pill-handled">Monitored</span>
+            </div>
+            <div class="sector-card-body">
+              <p class="sector-card-desc">Tender, RFP, EOI and consultancy notices from NGOs, INGOs and multilateral development agencies.</p>
+              <div class="sector-stat-figures">
+                <div>
+                  <div class="stat-fig-val" id="NGO-general">–</div>
+                  <div class="stat-fig-lbl">Active</div>
+                </div>
+                <div>
+                  <div class="stat-fig-val" style="color:var(--maroon);" id="NGO-priority">–</div>
+                  <div class="stat-fig-lbl">Priority</div>
+                </div>
+              </div>
+              <a class="btn btn-primary" style="justify-content:center; margin-top:10px;" href="ngo.html">Open NGO Tenders →</a>
+            </div>
+          </div>
+
+          <!-- IT Services Card -->
+          <div class="sector-card">
+            <div class="sector-card-top">
+              <span class="sector-card-name">💻 IT & Cyber Services</span>
+              <span class="pill-badge pill-it">MoU Partners</span>
+            </div>
+            <div class="sector-card-body">
+              <p class="sector-card-desc">IT / IS audit (ACNABIN), cyber security (CipherShield), and enterprise software development (Brain Station 23).</p>
+              <div class="sector-stat-figures">
+                <div>
+                  <div class="stat-fig-val" id="IT-general">–</div>
+                  <div class="stat-fig-lbl">Active</div>
+                </div>
+                <div>
+                  <div class="stat-fig-val" style="color:var(--maroon);" id="IT-priority">–</div>
+                  <div class="stat-fig-lbl">Priority</div>
+                </div>
+              </div>
+              <a class="btn btn-primary" style="justify-content:center; margin-top:10px;" href="it.html">Open IT Services →</a>
+            </div>
+          </div>
+
+          <!-- Newspaper Card -->
+          <div class="sector-card">
+            <div class="sector-card-top">
+              <span class="sector-card-name">📰 Daily Newspapers</span>
+              <span class="pill-badge pill-epaper">Vision AI</span>
+            </div>
+            <div class="sector-card-body">
+              <p class="sector-card-desc">Scanned notices from Prothom Alo, Financial Express, Dhaka Tribune, Jugantor, and Bangladesh Pratidin.</p>
+              <div class="sector-stat-figures">
+                <div>
+                  <div class="stat-fig-val" id="NEWSPAPER-general">–</div>
+                  <div class="stat-fig-lbl">Active Ads</div>
+                </div>
+                <div>
+                  <div class="stat-fig-val" style="color:var(--maroon);" id="NEWSPAPER-priority">–</div>
+                  <div class="stat-fig-lbl">Priority</div>
+                </div>
+              </div>
+              <a class="btn btn-primary" style="justify-content:center; margin-top:10px;" href="newspaper.html">Open Newspaper Ads →</a>
+            </div>
+          </div>
         </div>
-        <a class="btn btn-primary" href="newspaper.html">Open Newspaper</a>
-      </section>
+      </div>
+    </section>
+
+    <!-- Operational Scope & Rules Card -->
+    <div class="portal-rules-card">
+      <div class="portal-rules-title">📋 ACNABIN Classification & Operational Rules</div>
+      <div class="rules-grid">
+        <div>
+          <div class="rule-item-title">General Opportunities</div>
+          <div class="rule-item-desc">Every active opportunity found on monitored sources across banks, NGOs, and public bodies.</div>
+        </div>
+        <div>
+          <div class="rule-item-title">Priority Opportunities</div>
+          <div class="rule-item-desc">High-value engagements relevant to ACNABIN: Statutory Audit, Internal Audit, IFRS 9/ECL, Tax/VAT, and Corporate Advisory.</div>
+        </div>
+        <div>
+          <div class="rule-item-title">IT & Cyber Advisory</div>
+          <div class="rule-item-desc">ICT tenders deliverable directly or via consortium with CipherShield (Cybersecurity) and Brain Station 23 (Software).</div>
+        </div>
+        <div>
+          <div class="rule-item-title">Active Timeline Rule</div>
+          <div class="rule-item-desc">Opportunities with future deadlines or published within the last 7 days. Expired or cancelled notices are automatically filtered out.</div>
+        </div>
+      </div>
     </div>
-
-
-    <dl class="rules">
-      <div><dt>General</dt><dd>every active opportunity found on the monitored sources, whatever its subject.</dd></div>
-      <div><dt>Priority</dt><dd>active opportunities relevant to ACNABIN: audit, accounting and IFRS, IFRS 9 / ECL, risk and internal control, tax and VAT, advisory.</dd></div>
-      <div><dt>IT Priority</dt><dd>active IT tenders that ACNABIN or an MoU partner can deliver: IT / IS audit, IT advisory and digital transformation, cyber security, software development and implementation. Equipment supply and connectivity stay General.</dd></div>
-      <div><dt>Active</dt><dd>deadline not yet passed, or (if no deadline is stated) published within the last 7 days. Closed, cancelled and awarded notices are excluded.</dd></div>
-    </dl>
-  </main>
+  </div>
 </body>
 </html>

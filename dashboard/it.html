@@ -2,85 +2,155 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>IT Services Tenders — ACNABIN</title>
-  <meta name="description" content="Active ICT, software development, cybersecurity, and tech infrastructure tender opportunities in Bangladesh.">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=yes">
+  <title>IT Services & Cyber Security Tenders — ACNABIN Chartered Accountants</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="images/apple-touch-icon.png">
+  <link rel="shortcut icon" href="images/favicon.ico">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,400;1,700&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="js/config.js"></script>
   <script src="js/app.js" defer></script>
 </head>
 <body data-page="sector" data-sector="IT">
-  <header class="topbar">
-    <a class="brand" href="index.html"><span class="brand-mark">ACNABIN</span><span class="brand-name">Tender Monitoring</span></a>
-    <nav class="topnav">
-      <a href="index.html">Home</a>
-      <a href="bank.html">Bank</a>
-      <a href="ngo.html">NGO</a>
-      <a href="it.html" class="active">IT Services</a>
-      <a href="newspaper.html">Newspaper</a>
-      <a href="sources.html">Sources</a>
-      <a href="admin.html">Admin</a>
-    </nav>
+  <!-- Top Header with Real Official ACNABIN Logo & Masthead -->
+  <header class="top-header">
+    <div class="brand-section">
+      <a href="index.html" style="display:block;">
+        <img
+          src="images/acnabin-logo.png"
+          alt="ACNABIN Chartered Accountants"
+          class="brand-logo-img"
+        />
+      </a>
+    </div>
 
-    <div class="topbar-meta" id="last-run"></div>
+    <div class="center-masthead">
+      <h1 class="masthead-title">TENDER AGENT</h1>
+      <div class="masthead-subtitle" id="live-date">Thursday, 8 October 2026</div>
+    </div>
+
+    <div class="user-section">
+      <div style="display: flex; align-items: center; gap: 8px;">
+        <div class="user-name">ADMIN</div>
+        <span class="role-badge admin">ADMIN</span>
+      </div>
+
+      <div style="display: flex; align-items: center; gap: 6px; margin-top: 4px;">
+        <span style="font-size: 11px; color: var(--ink-soft);">Switch User:</span>
+        <select
+          style="font-size: 11px; padding: 2px 6px; border-radius: 4px; border: 1px solid var(--line-strong); background: #fff;"
+          title="Switch user role"
+        >
+          <option value="admin">ADMIN (Admin)</option>
+          <option value="partner">Partner (IT Advisory)</option>
+        </select>
+      </div>
+
+      <div class="user-actions-nav">
+        <a class="btn btn-primary btn-sm" href="admin.html">+ Add IT Source</a>
+        <a class="btn btn-secondary btn-sm" href="index.html">← Back to Portal</a>
+      </div>
+    </div>
   </header>
 
-  <main class="page">
-    <div class="section-head">
-      <div class="crumbs"><a href="index.html">Home</a> / IT Services</div>
-      <h1>IT Services Tenders</h1>
-      <p class="lead">Procurement, RFP, EOI, and consultancy notices for ICT support, software development, cyber security, infrastructure, networking, and digital transformation in Bangladesh.</p>
+  <div class="app-container">
+    <!-- Navigation Tab Bar -->
+    <nav class="nav-tabs" aria-label="Dashboard views">
+      <a href="index.html" class="tab-btn"><span class="tab-icon">📋</span> Overview</a>
+      <a href="bank.html" class="tab-btn"><span class="tab-icon">🏛️</span> Bank Tenders</a>
+      <a href="ngo.html" class="tab-btn"><span class="tab-icon">🤝</span> NGO Tenders</a>
+      <a href="it.html" class="tab-btn active"><span class="tab-icon">💻</span> IT Services</a>
+      <a href="newspaper.html" class="tab-btn"><span class="tab-icon">📰</span> Newspaper & E-Paper</a>
+      <a href="sources.html" class="tab-btn"><span class="tab-icon">📡</span> Source Status</a>
+      <a href="admin.html" class="tab-btn"><span class="tab-icon">⚙️</span> Admin Settings</a>
+    </nav>
+
+    <!-- KPI Stat Cards -->
+    <div class="stat-cards-grid">
+      <div class="stat-card" data-filter="all" title="Click to show all IT tenders">
+        <span class="stat-card-label">TOTAL IT TENDERS</span>
+        <span class="stat-card-value c-maroon" id="kpi-total">–</span>
+      </div>
+      <div class="stat-card" data-filter="priority" title="Click to filter IT Audit & Advisory opportunities">
+        <span class="stat-card-label">IT AUDIT & ADVISORY (ACNABIN)</span>
+        <span class="stat-card-value c-blue" id="kpi-priority">–</span>
+      </div>
+      <div class="stat-card" data-filter="closing-soon" title="Click to filter tenders closing within 7 days">
+        <span class="stat-card-label">CLOSING WITHIN 7 DAYS</span>
+        <span class="stat-card-value c-amber" id="kpi-deadlines">–</span>
+      </div>
+      <div class="stat-card" data-filter="partners" title="Click to filter MoU Partner deliverables">
+        <span class="stat-card-label">MOU CONSORTIUM</span>
+        <span class="stat-card-value c-purple" id="kpi-it-partners">–</span>
+      </div>
     </div>
 
-    <div class="tabs" role="tablist">
-      <button class="tab" role="tab" data-tab="general">General<span class="count" id="count-general">–</span></button>
-      <button class="tab" role="tab" data-tab="priority">Priority<span class="count" id="count-priority">–</span></button>
-    </div>
-    <p class="tab-note" data-note="general">All active IT tenders (software, ICT services and equipment, networking, cyber security) from banks, NGOs and government bodies.</p>
-    <p class="tab-note" data-note="priority" hidden>Active IT tenders ACNABIN can bid for, alone or with its MoU partners: IT / IS audit and IT advisory (ACNABIN), cyber security (CipherShield), software development and implementation (Brain Station 23).</p>
+    <!-- Main Table Container Panel -->
+    <section class="section-panel">
+      <!-- Maroon Banner Header -->
+      <div class="panel-banner-header maroon">
+        <div style="display:flex; align-items:center; gap:12px;">
+          <h2 class="banner-title">💻 Active ICT, Cyber Security & Software Opportunities</h2>
+          <div style="display:inline-flex; gap:6px;">
+            <button type="button" class="btn-ctrl btn-maroon-fill tab-btn active" data-tab="general">All IT (<span id="count-general">–</span>)</button>
+            <button type="button" class="btn-ctrl tab-btn" data-tab="priority">IT Priority (<span id="count-priority">–</span>)</button>
+          </div>
+        </div>
+        <div class="banner-actions">
+          <button class="btn-banner-action" id="btn-refresh" type="button">🔄 Refresh Data</button>
+          <button class="btn-banner-action" id="btn-export" type="button">📥 Export CSV</button>
+        </div>
+      </div>
 
-    <div class="toolbar">
-      <input type="search" id="f-search" placeholder="Search title, organization, reference, keywords" aria-label="Search">
-      <select id="f-org" aria-label="Organization"><option value="">All organizations</option></select>
-      <select id="f-cat" aria-label="Category"><option value="">All categories</option></select>
-      <select id="f-due" aria-label="Deadline">
-        <option value="">Any deadline</option>
-        <option value="7">Closing within 7 days</option>
-        <option value="30">Closing within 30 days</option>
-        <option value="none">No deadline stated</option>
-      </select>
-      <select id="f-pub" aria-label="Published">
-        <option value="">Any publication date</option>
-        <option value="7">Published in last 7 days</option>
-      </select>
-      <span class="spacer"></span>
-      <span class="result-count" id="result-count"></span>
-      <button class="btn" id="btn-refresh" type="button">Refresh</button>
-      <button class="btn" id="btn-export" type="button">Export CSV</button>
-    </div>
+      <!-- Filter Toolbar -->
+      <div class="filter-toolbar">
+        <div class="search-input-wrap">
+          <input type="search" id="f-search" placeholder="🔍 Search IT tender, keywords, reference..." aria-label="Search" style="width:100%;">
+        </div>
+        <select id="f-org" aria-label="Organization"><option value="">All Organizations</option></select>
+        <select id="f-cat" aria-label="Category"><option value="">All Categories</option></select>
+        <select id="f-due" aria-label="Deadline">
+          <option value="">Any Deadline</option>
+          <option value="7">Closing within 7 days</option>
+          <option value="30">Closing within 30 days</option>
+          <option value="none">No deadline stated</option>
+        </select>
+        <select id="f-pub" aria-label="Published">
+          <option value="">Any Publication Date</option>
+          <option value="7">Published in last 7 days</option>
+        </select>
+        
+        <span class="toolbar-spacer"></span>
+        <span class="result-badge" id="result-count">Loading…</span>
+      </div>
 
-    <div class="notice" id="load-error" hidden>Could not load tenders from the database. Try Refresh.</div>
-
-    <div class="table-wrap">
-      <table>
-        <thead>
-          <tr>
-            <th class="sortable" data-sort="organization">Organization<span class="dir"></span></th>
-            <th class="sortable" data-sort="title">Opportunity<span class="dir"></span></th>
-            <th class="sortable" data-sort="published">Published<span class="dir"></span></th>
-            <th class="sortable" data-sort="deadline">Deadline<span class="dir">▲</span></th>
-            <th>Relevance</th>
-            <th>Source</th>
-          </tr>
-        </thead>
-        <tbody id="rows"></tbody>
-      </table>
-    </div>
-    <p class="footnote"><span id="source-summary"></span> <a href="sources.html">Source status</a></p>
-  </main>
+      <!-- Table Container -->
+      <div class="table-container">
+        <table class="tender-data-table">
+          <thead>
+            <tr>
+              <th class="col-sl">SL.</th>
+              <th class="sortable col-org" data-sort="organization">ORGANIZATION <span class="dir"></span></th>
+              <th class="sortable col-details" data-sort="title">IT OPPORTUNITY / SCOPE <span class="dir"></span></th>
+              <th class="sortable col-date" data-sort="published">PUBLISHED <span class="dir"></span></th>
+              <th class="sortable col-date" data-sort="deadline">DEADLINE <span class="dir">▲</span></th>
+              <th class="col-relevance">PARTNERS & SCOPE</th>
+              <th class="col-source">ACTION</th>
+            </tr>
+          </thead>
+          <tbody id="rows">
+            <tr>
+              <td colspan="7" class="empty-catchup-state">Loading notices…</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </div>
 </body>
 </html>

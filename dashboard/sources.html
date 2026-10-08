@@ -2,60 +2,138 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Source Status — ACNABIN</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=yes">
+  <title>Source Health & Status — ACNABIN Chartered Accountants</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="images/apple-touch-icon.png">
+  <link rel="shortcut icon" href="images/favicon.ico">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,400;1,700&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="js/config.js"></script>
   <script src="js/app.js" defer></script>
 </head>
 <body data-page="sources">
-  <header class="topbar">
-    <a class="brand" href="index.html"><span class="brand-mark">ACNABIN</span><span class="brand-name">Tender Monitoring</span></a>
-    <nav class="topnav">
-      <a href="index.html">Home</a>
-      <a href="bank.html">Bank</a>
-      <a href="ngo.html">NGO</a>
-      <a href="it.html">IT Services</a>
-      <a href="newspaper.html">Newspaper</a>
-      <a href="sources.html" class="active">Sources</a>
-      <a href="admin.html">Admin</a>
-    </nav>
+  <!-- Top Header with Real Official ACNABIN Logo & Masthead -->
+  <header class="top-header">
+    <div class="brand-section">
+      <a href="index.html" style="display:block;">
+        <img
+          src="images/acnabin-logo.png"
+          alt="ACNABIN Chartered Accountants"
+          class="brand-logo-img"
+        />
+      </a>
+    </div>
 
-    <div class="topbar-meta" id="last-run"></div>
+    <div class="center-masthead">
+      <h1 class="masthead-title">TENDER AGENT</h1>
+      <div class="masthead-subtitle" id="live-date">Thursday, 8 October 2026</div>
+    </div>
+
+    <div class="user-section">
+      <div style="display: flex; align-items: center; gap: 8px;">
+        <div class="user-name">ADMIN</div>
+        <span class="role-badge admin">ADMIN</span>
+      </div>
+
+      <div style="display: flex; align-items: center; gap: 6px; margin-top: 4px;">
+        <span style="font-size: 11px; color: var(--ink-soft);">Switch User:</span>
+        <select
+          style="font-size: 11px; padding: 2px 6px; border-radius: 4px; border: 1px solid var(--line-strong); background: #fff;"
+          title="Switch user role"
+        >
+          <option value="admin">ADMIN (Admin)</option>
+        </select>
+      </div>
+
+      <div class="user-actions-nav">
+        <a class="btn btn-primary btn-sm" href="admin.html">+ Correct URLs</a>
+        <a class="btn btn-secondary btn-sm" href="index.html">← Back to Portal</a>
+      </div>
+    </div>
   </header>
 
-  <main class="page">
-    <div class="section-head">
-      <div class="crumbs"><a href="index.html">Home</a> / Sources</div>
-      <h1>Source Status</h1>
-      <p class="lead">Result of the last check of each monitored tender page. A failed source does not stop the others; it is listed here so the page address can be corrected in <code>config/sources.json</code>.</p>
+  <div class="app-container">
+    <!-- Navigation Tab Bar -->
+    <nav class="nav-tabs" aria-label="Dashboard views">
+      <a href="index.html" class="tab-btn"><span class="tab-icon">📋</span> Overview</a>
+      <a href="bank.html" class="tab-btn"><span class="tab-icon">🏛️</span> Bank Tenders</a>
+      <a href="ngo.html" class="tab-btn"><span class="tab-icon">🤝</span> NGO Tenders</a>
+      <a href="it.html" class="tab-btn"><span class="tab-icon">💻</span> IT Services</a>
+      <a href="newspaper.html" class="tab-btn"><span class="tab-icon">📰</span> Newspaper & E-Paper</a>
+      <a href="sources.html" class="tab-btn active"><span class="tab-icon">📡</span> Source Status</a>
+      <a href="admin.html" class="tab-btn"><span class="tab-icon">⚙️</span> Admin Settings</a>
+    </nav>
+
+    <!-- KPI Stat Cards -->
+    <div class="stat-cards-grid">
+      <div class="stat-card" data-filter="all" title="Total monitored web sources">
+        <span class="stat-card-label">TOTAL MONITORED SOURCES</span>
+        <span class="stat-card-value c-maroon" id="kpi-total">–</span>
+      </div>
+      <div class="stat-card" data-filter="ok" title="Sources responding successfully">
+        <span class="stat-card-label">HEALTHY & CONNECTED</span>
+        <span class="stat-card-value c-green" id="kpi-ok">–</span>
+      </div>
+      <div class="stat-card" data-filter="errors" title="Click to filter sources with errors">
+        <span class="stat-card-label">ERRORS / BLOCKED</span>
+        <span class="stat-card-value c-amber" id="kpi-errors">–</span>
+      </div>
+      <div class="stat-card" data-filter="all" title="Total active listings found across all sources">
+        <span class="stat-card-label">ACTIVE LISTINGS FOUND</span>
+        <span class="stat-card-value c-blue" id="kpi-listings-total">–</span>
+      </div>
     </div>
 
-    <div class="toolbar">
-      <select id="f-sector" aria-label="Sector">
-        <option value="">All sectors (Bank, NGO, IT)</option>
-        <option value="BANK">Bank</option>
-        <option value="NGO">NGO</option>
-        <option value="IT">IT Services</option>
-      </select>
-      <label class="check"><input type="checkbox" id="f-errors"> Errors only</label>
-      <span class="spacer"></span>
-      <span class="result-count" id="result-count"></span>
-    </div>
+    <!-- Main Table Container Panel -->
+    <section class="section-panel">
+      <!-- Maroon Banner Header -->
+      <div class="panel-banner-header maroon">
+        <h2 class="banner-title">📡 Live Health Diagnostics per Monitored Source</h2>
+        <div class="banner-actions">
+          <a class="btn-banner-action" href="admin.html">⚙️ Fix Failing Sources</a>
+        </div>
+      </div>
 
-    <div class="table-wrap">
-      <table>
-        <thead>
-          <tr><th>Organization</th><th>Sector</th><th>Status</th><th>Listings</th><th>Last checked</th><th>Page</th></tr>
-        </thead>
-        <tbody id="rows"><tr><td colspan="6" class="empty">Loading…</td></tr></tbody>
-      </table>
-    </div>
-    <p class="footnote">HTTP_404: page not found · SOFT_404: the site shows a "not found" page · NO LISTINGS: the page loaded but no tender notices could be read from it · BLOCKED: the site blocks automated access · SSL_ERROR / CONNECTION_FAILED: the site could not be reached.</p>
-  </main>
+      <!-- Filter Toolbar -->
+      <div class="filter-toolbar">
+        <select id="f-sector" aria-label="Sector">
+          <option value="">All Sectors (Bank, NGO, IT)</option>
+          <option value="BANK">Bank Sector</option>
+          <option value="NGO">NGO Sector</option>
+          <option value="IT">IT Services</option>
+        </select>
+        <label class="check"><input type="checkbox" id="f-errors"> Show Errors & Issues Only</label>
+        
+        <span class="toolbar-spacer"></span>
+        <span class="result-badge" id="result-count">Loading…</span>
+      </div>
+
+      <!-- Table Container -->
+      <div class="table-container">
+        <table class="tender-data-table">
+          <thead>
+            <tr>
+              <th class="col-sl">SL.</th>
+              <th class="col-org">ORGANIZATION</th>
+              <th>SECTOR</th>
+              <th>CRAWLER STATUS</th>
+              <th class="col-date">LAST CHECKED</th>
+              <th class="col-source">TARGET URL</th>
+            </tr>
+          </thead>
+          <tbody id="rows">
+            <tr>
+              <td colspan="6" class="empty-catchup-state">Loading source diagnostics…</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </div>
 </body>
 </html>
