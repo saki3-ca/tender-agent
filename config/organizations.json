@@ -2333,6 +2333,200 @@
     "last_verified": "2026-10-07",
     "last_checked": null,
     "notes": "E-Paper: Highest circulation Bangla daily newspaper"
+  },
+  {
+    "organization_id": "dp_unicef_bd",
+    "canonical_name": "UNICEF Bangladesh",
+    "aliases": [
+      "UNICEF Bangladesh",
+      "UNICEF",
+      "United Nations Children's Fund",
+      "ইউনিসেফ"
+    ],
+    "organization_type": "DEVELOPMENT_PARTNER",
+    "sector": "development_partners",
+    "official_domain": "unicef.org",
+    "procurement_url": "https://www.unicef.org/bangladesh/en/supply-and-logistics",
+    "tender_url": "https://www.unicef.org/bangladesh/en/supply-and-logistics",
+    "notice_url": "https://www.unicef.org/bangladesh/en/supply-and-logistics",
+    "is_ifrs9_target": false,
+    "source_status": "OK",
+    "last_verified": null,
+    "last_checked": null,
+    "notes": "UNICEF Bangladesh country office supply and procurement (requests for proposal, bids)"
+  },
+  {
+    "organization_id": "dp_unfpa_bd",
+    "canonical_name": "UNFPA Bangladesh",
+    "aliases": [
+      "UNFPA Bangladesh",
+      "UNFPA",
+      "United Nations Population Fund"
+    ],
+    "organization_type": "DEVELOPMENT_PARTNER",
+    "sector": "development_partners",
+    "official_domain": "bangladesh.unfpa.org",
+    "procurement_url": "https://bangladesh.unfpa.org/en/call-for-submissions",
+    "tender_url": "https://bangladesh.unfpa.org/en/call-for-submissions",
+    "notice_url": "https://bangladesh.unfpa.org/en/call-for-submissions",
+    "is_ifrs9_target": false,
+    "source_status": "OK",
+    "last_verified": null,
+    "last_checked": null,
+    "notes": "UNFPA Bangladesh requests for proposals and invitations to bid"
+  },
+  {
+    "organization_id": "dp_iom_bd",
+    "canonical_name": "IOM Bangladesh",
+    "aliases": [
+      "IOM Bangladesh",
+      "IOM",
+      "International Organization for Migration"
+    ],
+    "organization_type": "DEVELOPMENT_PARTNER",
+    "sector": "development_partners",
+    "official_domain": "bangladesh.iom.int",
+    "procurement_url": "https://bangladesh.iom.int/procurement",
+    "tender_url": "https://bangladesh.iom.int/procurement",
+    "notice_url": "https://bangladesh.iom.int/procurement",
+    "is_ifrs9_target": false,
+    "source_status": "OK",
+    "last_verified": null,
+    "last_checked": null,
+    "notes": "IOM Bangladesh procurement tenders (RFQ, RFP, EoI)"
+  },
+  {
+    "organization_id": "dp_ilo_bd",
+    "canonical_name": "ILO Bangladesh",
+    "aliases": [
+      "ILO Bangladesh",
+      "ILO Dhaka",
+      "International Labour Organization"
+    ],
+    "organization_type": "DEVELOPMENT_PARTNER",
+    "sector": "development_partners",
+    "official_domain": "ilo.org",
+    "procurement_url": "https://www.ilo.org/dhaka/WCMS_367536/lang--en/index.htm",
+    "tender_url": "https://www.ilo.org/dhaka/WCMS_367536/lang--en/index.htm",
+    "notice_url": "https://www.ilo.org/dhaka/WCMS_367536/lang--en/index.htm",
+    "is_ifrs9_target": false,
+    "source_status": "OK",
+    "last_verified": null,
+    "last_checked": null,
+    "notes": "ILO Country Office Dhaka procurement notices"
+  },
+  {
+    "organization_id": "dp_unhcr_bd",
+    "canonical_name": "UNHCR Bangladesh",
+    "aliases": [
+      "UNHCR Bangladesh",
+      "UNHCR",
+      "UN Refugee Agency"
+    ],
+    "organization_type": "DEVELOPMENT_PARTNER",
+    "sector": "development_partners",
+    "official_domain": "unhcr.org",
+    "procurement_url": "https://www.unhcr.org/get-involved/work-us/become-supplier/invitations-bid",
+    "tender_url": "https://www.unhcr.org/get-involved/work-us/become-supplier/invitations-bid",
+    "notice_url": "https://www.unhcr.org/get-involved/work-us/become-supplier/invitations-bid",
+    "is_ifrs9_target": false,
+    "source_status": "OK",
+    "last_verified": null,
+    "last_checked": null,
+    "notes": "UNHCR global invitations to bid, filtered to Bangladesh"
+  },
+  {
+    "organization_id": "ngo_99_international_medical_corps",
+    "canonical_name": "International Medical Corps",
+    "aliases": [
+      "International Medical Corps",
+      "IMC"
+    ],
+    "organization_type": "INGO",
+    "sector": "ngos",
+    "official_domain": "internationalmedicalcorps.org",
+    "procurement_url": "https://internationalmedicalcorps.org/who-we-are/accountability-financials/open-tenders/",
+    "tender_url": "https://internationalmedicalcorps.org/who-we-are/accountability-financials/open-tenders/",
+    "notice_url": "https://internationalmedicalcorps.org/who-we-are/accountability-financials/open-tenders/",
+    "is_ifrs9_target": false,
+    "source_status": "OK",
+    "last_verified": null,
+    "last_checked": null,
+    "notes": "International Medical Corps procurement and tenders (global page, filtered to Bangladesh)"
+  },
+  {
+    "organization_id": "ngo_100_catholic_relief_services",
+    "canonical_name": "Catholic Relief Services",
+    "aliases": [
+      "Catholic Relief Services",
+      "CRS"
+    ],
+    "organization_type": "INGO",
+    "sector": "ngos",
+    "official_domain": "crs.org",
+    "procurement_url": "https://www.crs.org/bid-opportunities",
+    "tender_url": "https://www.crs.org/bid-opportunities",
+    "notice_url": "https://www.crs.org/bid-opportunities",
+    "is_ifrs9_target": false,
+    "source_status": "OK",
+    "last_verified": null,
+    "last_checked": null,
+    "notes": "Catholic Relief Services procurement and tenders (global page, filtered to Bangladesh)"
+  },
+  {
+    "organization_id": "ngo_101_mercy_corps",
+    "canonical_name": "Mercy Corps",
+    "aliases": [
+      "Mercy Corps"
+    ],
+    "organization_type": "INGO",
+    "sector": "ngos",
+    "official_domain": "mercycorps.org",
+    "procurement_url": "https://www.mercycorps.org/tenders",
+    "tender_url": "https://www.mercycorps.org/tenders",
+    "notice_url": "https://www.mercycorps.org/tenders",
+    "is_ifrs9_target": false,
+    "source_status": "OK",
+    "last_verified": null,
+    "last_checked": null,
+    "notes": "Mercy Corps procurement and tenders (global page, filtered to Bangladesh)"
+  },
+  {
+    "organization_id": "ngo_102_danchurchaid",
+    "canonical_name": "DanChurchAid",
+    "aliases": [
+      "DanChurchAid",
+      "DCA"
+    ],
+    "organization_type": "INGO",
+    "sector": "ngos",
+    "official_domain": "danchurchaid.org",
+    "procurement_url": "https://www.danchurchaid.org/how-we-work/procurement-logistics/doing-business-with-dca/business-opportunities",
+    "tender_url": "https://www.danchurchaid.org/how-we-work/procurement-logistics/doing-business-with-dca/business-opportunities",
+    "notice_url": "https://www.danchurchaid.org/how-we-work/procurement-logistics/doing-business-with-dca/business-opportunities",
+    "is_ifrs9_target": false,
+    "source_status": "OK",
+    "last_verified": null,
+    "last_checked": null,
+    "notes": "DanChurchAid procurement and tenders (global page, filtered to Bangladesh)"
+  },
+  {
+    "organization_id": "ngo_103_christian_aid",
+    "canonical_name": "Christian Aid",
+    "aliases": [
+      "Christian Aid"
+    ],
+    "organization_type": "INGO",
+    "sector": "ngos",
+    "official_domain": "christianaid.org.uk",
+    "procurement_url": "https://www.christianaid.org.uk/our-work/invitation-tender",
+    "tender_url": "https://www.christianaid.org.uk/our-work/invitation-tender",
+    "notice_url": "https://www.christianaid.org.uk/our-work/invitation-tender",
+    "is_ifrs9_target": false,
+    "source_status": "OK",
+    "last_verified": null,
+    "last_checked": null,
+    "notes": "Christian Aid procurement and tenders (global page, filtered to Bangladesh)"
   }
 ]
 

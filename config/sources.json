@@ -1681,6 +1681,122 @@
     "verified": "2026-10-08",
     "pc_browser": true,
     "note": "Daily digital e-paper edition of Bangladesh Pratidin. Scans pages via Gemini Multimodal Vision to find published tenders. Cloudflare serves the page views to browsers only: read in a real Chrome window by the daily e-paper workflow (virtual display in GitHub Actions; run_monitor.py --pc-browser on a PC is the fallback)."
+  },
+  {
+    "id": "src_dp_unicef_bd",
+    "url": "https://www.unicef.org/bangladesh/en/supply-and-logistics",
+    "organization_id": "dp_unicef_bd",
+    "tier": 1,
+    "requires_js": false,
+    "verify_ssl": true,
+    "rate_limit_seconds": 3,
+    "enabled": true,
+    "note": "Added 2026-10-10: address taken from the organization's own published page; not yet read by the monitor. Check the Sources page after the next run and correct the URL in Admin if it fails."
+  },
+  {
+    "id": "src_dp_unfpa_bd",
+    "url": "https://bangladesh.unfpa.org/en/call-for-submissions",
+    "organization_id": "dp_unfpa_bd",
+    "tier": 1,
+    "requires_js": false,
+    "verify_ssl": true,
+    "rate_limit_seconds": 3,
+    "enabled": true,
+    "note": "Added 2026-10-10: address taken from the organization's own published page; not yet read by the monitor. Check the Sources page after the next run and correct the URL in Admin if it fails."
+  },
+  {
+    "id": "src_dp_iom_bd",
+    "url": "https://bangladesh.iom.int/procurement",
+    "organization_id": "dp_iom_bd",
+    "tier": 1,
+    "requires_js": false,
+    "verify_ssl": true,
+    "rate_limit_seconds": 3,
+    "enabled": true,
+    "note": "Added 2026-10-10: address taken from the organization's own published page; not yet read by the monitor. Check the Sources page after the next run and correct the URL in Admin if it fails."
+  },
+  {
+    "id": "src_dp_ilo_bd",
+    "url": "https://www.ilo.org/dhaka/WCMS_367536/lang--en/index.htm",
+    "organization_id": "dp_ilo_bd",
+    "tier": 1,
+    "requires_js": false,
+    "verify_ssl": true,
+    "rate_limit_seconds": 3,
+    "enabled": true,
+    "note": "Added 2026-10-10: address taken from the organization's own published page; not yet read by the monitor. Check the Sources page after the next run and correct the URL in Admin if it fails."
+  },
+  {
+    "id": "src_dp_unhcr_bd",
+    "url": "https://www.unhcr.org/get-involved/work-us/become-supplier/invitations-bid",
+    "organization_id": "dp_unhcr_bd",
+    "tier": 1,
+    "requires_js": false,
+    "verify_ssl": true,
+    "rate_limit_seconds": 3,
+    "enabled": true,
+    "country_filter": true,
+    "note": "Added 2026-10-10: address taken from the organization's own published page; not yet read by the monitor. Check the Sources page after the next run and correct the URL in Admin if it fails."
+  },
+  {
+    "id": "src_ngo_99_international_medical_corps",
+    "url": "https://internationalmedicalcorps.org/who-we-are/accountability-financials/open-tenders/",
+    "organization_id": "ngo_99_international_medical_corps",
+    "tier": 2,
+    "requires_js": false,
+    "verify_ssl": true,
+    "rate_limit_seconds": 3,
+    "enabled": true,
+    "country_filter": true,
+    "note": "Added 2026-10-10: address taken from the organization's own published page; not yet read by the monitor. Check the Sources page after the next run and correct the URL in Admin if it fails."
+  },
+  {
+    "id": "src_ngo_100_catholic_relief_services",
+    "url": "https://www.crs.org/bid-opportunities",
+    "organization_id": "ngo_100_catholic_relief_services",
+    "tier": 2,
+    "requires_js": false,
+    "verify_ssl": true,
+    "rate_limit_seconds": 3,
+    "enabled": true,
+    "country_filter": true,
+    "note": "Added 2026-10-10: address taken from the organization's own published page; not yet read by the monitor. Check the Sources page after the next run and correct the URL in Admin if it fails."
+  },
+  {
+    "id": "src_ngo_101_mercy_corps",
+    "url": "https://www.mercycorps.org/tenders",
+    "organization_id": "ngo_101_mercy_corps",
+    "tier": 2,
+    "requires_js": false,
+    "verify_ssl": true,
+    "rate_limit_seconds": 3,
+    "enabled": true,
+    "country_filter": true,
+    "note": "Added 2026-10-10: address taken from the organization's own published page; not yet read by the monitor. Check the Sources page after the next run and correct the URL in Admin if it fails."
+  },
+  {
+    "id": "src_ngo_102_danchurchaid",
+    "url": "https://www.danchurchaid.org/how-we-work/procurement-logistics/doing-business-with-dca/business-opportunities",
+    "organization_id": "ngo_102_danchurchaid",
+    "tier": 2,
+    "requires_js": false,
+    "verify_ssl": true,
+    "rate_limit_seconds": 3,
+    "enabled": true,
+    "country_filter": true,
+    "note": "Added 2026-10-10: address taken from the organization's own published page; not yet read by the monitor. Check the Sources page after the next run and correct the URL in Admin if it fails."
+  },
+  {
+    "id": "src_ngo_103_christian_aid",
+    "url": "https://www.christianaid.org.uk/our-work/invitation-tender",
+    "organization_id": "ngo_103_christian_aid",
+    "tier": 2,
+    "requires_js": false,
+    "verify_ssl": true,
+    "rate_limit_seconds": 3,
+    "enabled": true,
+    "country_filter": true,
+    "note": "Added 2026-10-10: address taken from the organization's own published page; not yet read by the monitor. Check the Sources page after the next run and correct the URL in Admin if it fails."
   }
 ]
 
