@@ -4,7 +4,8 @@ Bangladesh Pratidin E-Paper Crawler.
 Highest circulation Bangla daily newspaper in Bangladesh. Each page view (/epaper/<date>/<page>)
 names its scan as cdn.bd-pratidin.com/public/paper/<y>/<m>/<d>/thumb/<id>-<page>.jpg; the
 full-size scan is the same path without "thumb/" and is public. Cloudflare serves the page
-views to browsers only: they are read in Chrome on the office PC (pc_browser).
+views to browsers only: they are read in a real Chrome window (pc_browser), which GitHub Actions
+runs under a virtual display.
 """
 
 import logging
@@ -49,9 +50,9 @@ class BdPratidinEpaperCrawler:
         date_folder = today.strftime("%Y/%m/%d")
 
         if not pc_browser.enabled():
-            return 0, "NEEDS_PC_BROWSER: read by the scheduled task on the office PC", []
+            return 0, "NEEDS_PC_BROWSER: needs a browser (set EPAPER_PC_BROWSER=1; GitHub Actions does this)", []
         async with pc_browser.chrome_pages() as get_html, \
-                httpx.AsyncClient(timeout=60.0, follow_redirects=True,
+                httpx.AsyncClient(timeout=60.0, follow_redirects=True, proxy=pc_browser.proxy_url(),
                                   headers={"User-Agent": USER_AGENT}) as client:
             status, html = await get_html(BASE_URL)
             if error := _blocked(status):

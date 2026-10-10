@@ -1661,7 +1661,7 @@
     "min_interval_hours": 12,
     "verified": "2026-10-08",
     "pc_browser": true,
-    "note": "Daily digital e-paper edition of Daily Jugantor. Scans pages via Gemini Multimodal Vision to find published tenders. Cloudflare serves the edition page to browsers only: read each morning by the scheduled task on the office PC (run_monitor.py --pc-browser)."
+    "note": "Daily digital e-paper edition of Daily Jugantor. Scans pages via Gemini Multimodal Vision to find published tenders. Cloudflare serves the edition page to browsers only: read in a real Chrome window by the daily e-paper workflow (virtual display in GitHub Actions; run_monitor.py --pc-browser on a PC is the fallback)."
   },
   {
     "id": "src_epaper_bdpratidin",
@@ -1680,7 +1680,7 @@
     "min_interval_hours": 12,
     "verified": "2026-10-08",
     "pc_browser": true,
-    "note": "Daily digital e-paper edition of Bangladesh Pratidin. Scans pages via Gemini Multimodal Vision to find published tenders. Cloudflare serves the page views to browsers only: read each morning by the scheduled task on the office PC (run_monitor.py --pc-browser)."
+    "note": "Daily digital e-paper edition of Bangladesh Pratidin. Scans pages via Gemini Multimodal Vision to find published tenders. Cloudflare serves the page views to browsers only: read in a real Chrome window by the daily e-paper workflow (virtual display in GitHub Actions; run_monitor.py --pc-browser on a PC is the fallback)."
   }
 ]
 

@@ -6,7 +6,12 @@ on:
     # newspapers that failed (successful ones are skipped by min_interval_hours).
     - cron: "30 1 * * *"
     - cron: "30 5 * * *"
-  workflow_dispatch: {}
+  workflow_dispatch:
+    inputs:
+      browser_papers_only:
+        description: "Only Jugantor and Bangladesh Pratidin (the Cloudflare-protected papers), to test the browser"
+        type: boolean
+        default: false
 
 concurrency:
   group: epaper
@@ -32,6 +37,11 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
+      - name: Install Chrome and a virtual display
+        run: |
+          python -m playwright install --with-deps chromium
+          sudo apt-get install -y xvfb
+
       - name: Read today's e-paper editions
         env:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
@@ -47,8 +57,15 @@ jobs:
           ALERT_EMAIL_TO: ${{ secrets.ALERT_EMAIL_TO }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           GEMINI_API_KEY_BACKUP: ${{ secrets.GEMINI_API_KEY_BACKUP }}
+          EPAPER_PC_BROWSER: "1"
+          EPAPER_PROXY_URL: ${{ secrets.EPAPER_PROXY_URL }}
           EPAPER_PROTHOMALO_USER: ${{ secrets.EPAPER_PROTHOMALO_USER }}
           EPAPER_PROTHOMALO_PASSWORD: ${{ secrets.EPAPER_PROTHOMALO_PASSWORD }}
           DASHBOARD_BASE_URL: ${{ secrets.DASHBOARD_BASE_URL || 'https://acnabin-tenders.pages.dev' }}
         run: |
-          python run_monitor.py --epaper
+          # xvfb gives Chrome a virtual screen, so Jugantor and Pratidin open in a real (headed) browser
+          if [ "${{ inputs.browser_papers_only }}" = "true" ]; then
+            xvfb-run -a python run_monitor.py --pc-browser
+          else
+            xvfb-run -a python run_monitor.py --epaper
+          fi

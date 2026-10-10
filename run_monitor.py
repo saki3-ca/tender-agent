@@ -6,7 +6,7 @@ ACNABIN Tender Monitor — one monitoring run.
     python run_monitor.py --sector NGO
     python run_monitor.py --no-epaper              # hourly run
     python run_monitor.py --epaper                 # daily newspaper run
-    python run_monitor.py --pc-browser             # Cloudflare-protected papers, on the office PC
+    python run_monitor.py --pc-browser             # only the Cloudflare-protected papers (Jugantor, Pratidin)
 
 Writes to Supabase when SUPABASE_URL / SUPABASE_SERVICE_ROLE_KEY are set; otherwise
 writes data/local_run.json. Prints a summary including every source that failed.
@@ -32,7 +32,7 @@ def main() -> int:
     kind.add_argument("--no-epaper", dest="epaper", action="store_const", const=False,
                       help="Skip newspaper e-paper sources")
     parser.add_argument("--pc-browser", action="store_true",
-                        help="Only sources marked pc_browser, read in the installed Chrome (office PC task)")
+                        help="Only sources marked pc_browser, read in Chrome (the --epaper run in GitHub Actions does this too)")
     args = parser.parse_args()
     if args.pc_browser:
         from app.crawler import pc_browser
