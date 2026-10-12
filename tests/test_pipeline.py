@@ -206,3 +206,32 @@ def test_admin_correction_keeps_special_handling_from_config():
     [merged] = merge_admin_sources(base, rows)
     assert merged["url"] == "https://rupalibank.com.bd/notice_jquery.php?type=18"
     assert merged["requires_js"] is True and merged["verify_ssl"] is False
+
+
+def test_epaper_notice_keeps_the_printed_title_and_is_matched_in_both_languages(monitor):
+    """Gemini returns an English title plus the printed (Bengali) one; the Bengali stays in the text for the rules."""
+    class Parser:
+        pages_read, pages_failed, last_error = 1, 0, None
+
+    class Crawler:
+        parser = Parser()
+
+        async def crawl_edition(self, target_date=None):
+            return 200, None, [
+                {"organization": "Sonali Bank PLC", "organization_type": "Bank", "title": "Appointment of external auditor for 2026",
+                 "title_original": "২০২৬ সালের জন্য বহিঃনিরীক্ষক নিয়োগ", "details": "Chartered accountant firms", "contact": "HO, Dhaka",
+                 "_page_no": "7", "_page_title": "Page 7", "_page_url": "https://paper.example/7", "_image_url": "https://paper.example/7.jpg",
+                 "_newspaper": "The X"},
+                {"organization": "Some Ministry", "title": "", "title_original": "নিরীক্ষা কার্যের জন্য ফার্ম নিয়োগ", "details": "",
+                 "contact": "", "_page_no": "8", "_page_title": "Page 8", "_page_url": "https://paper.example/8",
+                 "_image_url": "https://paper.example/8.jpg", "_newspaper": "The X"},
+            ]
+
+    source = {"id": "src_epaper_x", "url": "https://paper.example/", "organization_id": "epaper_amadershomoy"}
+    with pytest.MonkeyPatch.context() as mp:
+        mp.setenv("GEMINI_API_KEYS", "test-key-for-the-pipeline-test")
+        status, error, pairs = asyncio.run(monitor._epaper_listings(source, Crawler(), "The X"))
+    assert error is None and len(pairs) == 2
+    english, bengali_only = pairs[0][0], pairs[1][0]
+    assert english.title == "Appointment of external auditor for 2026" and "বহিঃনিরীক্ষক নিয়োগ" in english.row_text
+    assert bengali_only.title == "নিরীক্ষা কার্যের জন্য ফার্ম নিয়োগ"        # empty English title falls back to the printed one
