@@ -16,3 +16,5 @@ jobs:
         env:
           EPAPER_PC_BROWSER: "1"
           EPAPER_PROXY_URL: ${{ secrets.EPAPER_PROXY_URL }}
+      - name: Debug details for the remaining patterns
+        run: xvfb-run -a python scripts/debug_epapers.py
