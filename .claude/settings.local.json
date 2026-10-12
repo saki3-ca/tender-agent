@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__Supabase",
+      "mcp__Supabase__*",
+      "mcp__github",
+      "mcp__github__*",
+      "WebSearch",
+      "WebFetch"
+    ]
+  }
+}

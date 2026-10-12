@@ -114,8 +114,11 @@ async def inspect(browser, url, depth=0):
 async def main():
     from playwright.async_api import async_playwright
     async with async_playwright() as p:
-        browser = await p.chromium.launch(headless=False, args=["--disable-blink-features=AutomationControlled"],
-                                          ignore_default_args=["--enable-automation"])
+        opts = dict(headless=False, args=["--disable-blink-features=AutomationControlled"],
+                    ignore_default_args=["--enable-automation"])
+        if os.getenv("PROBE_CHANNEL"):
+            opts["channel"] = os.getenv("PROBE_CHANNEL")
+        browser = await p.chromium.launch(**opts)
         for url in SITES:
             await plain(url)
             links = await inspect(browser, url)
@@ -129,4 +132,23 @@ async def main():
         await browser.close()
 
 
-asyncio.run(main())
+async def dhaka_tribune_api():
+    base = "https://epaperapi.dhakatribune.com/api/v1/public"
+    async with httpx.AsyncClient(timeout=30, follow_redirects=True, headers={"User-Agent": UA}) as c:
+        r = await c.get(f"{base}/epaper-list?m=10&y=2026")
+        out("dt-list", status=r.status_code, body=r.text[:3500])
+        try:
+            items = r.json()["data"]["items"]
+        except Exception as e:  # noqa: BLE001
+            out("dt-list-error", error=str(e)); return
+        days = [i["gmt_date"] for i in items if "no E-paper" not in str(i.get("note", ""))][-3:]
+        out("dt-days-with-paper", days=days, all=[(i["gmt_date"], i.get("status"), str(i.get("note"))[:30]) for i in items][-14:])
+        for d in days:
+            r = await c.get(f"{base}/epaper-data?date={d}")
+            out("dt-data", date=d, status=r.status_code, body=r.text[:2500])
+
+
+if os.getenv("PROBE_DT"):
+    asyncio.run(dhaka_tribune_api())
+else:
+    asyncio.run(main())
