@@ -28,6 +28,7 @@ not pages), "view_url" (address stored as the link to the page; may use {date} a
 
 import asyncio
 import logging
+import os
 import re
 from datetime import date, datetime
 from typing import Any, Dict, List, Optional, Tuple
@@ -69,7 +70,7 @@ def pages_from_html(html: str, base_url: str, regex: str, replace: Optional[List
         url = groups.get("url") or m.group(0)
         if replace and len(replace) == 2:
             url = url.replace(replace[0], replace[1])
-        url = urljoin(base_url, url)
+        url = urljoin(base_url, url).replace(" ", "%20")
         if url in seen_urls:                # the same image named twice is one page
             continue
         seen_urls.add(url)
@@ -80,6 +81,13 @@ def pages_from_html(html: str, base_url: str, regex: str, replace: Optional[List
             number = order
         found.setdefault(number, url)
     return sorted(found.items())
+
+
+def _page_limit(limit: Any) -> int:
+    """Pages per edition; EPAPER_MAX_PAGES=3 limits a test run so it uses almost no Gemini quota."""
+    limit = int(limit)
+    cap = os.getenv("EPAPER_MAX_PAGES", "").strip()
+    return min(limit, int(cap)) if cap.isdigit() and int(cap) > 0 else limit
 
 
 class GenericEpaperCrawler:
@@ -98,23 +106,33 @@ class GenericEpaperCrawler:
         fmt = self.cfg.get("date_format", "%Y-%m-%d")
         min_bytes = int(self.cfg.get("min_bytes", MIN_PAGE_BYTES))
         pages: List[Page] = []
+        sizes: List[Optional[int]] = []
         misses = 0
         for n in range(1, limit + 1):
             url = fill(template, day, n, fmt)
+            size: Optional[int] = None
             try:
                 r = await client.head(url, headers=self._headers())
                 if r.status_code in (403, 405) or r.status_code >= 500:     # HEAD not allowed: ask for the image itself
                     r = await client.get(url, headers=self._headers())
-                ok = r.status_code == 200 and int(r.headers.get("content-length") or min_bytes) >= min_bytes
+                size = int(r.headers.get("content-length") or 0) or None
+                ctype = r.headers.get("content-type", "")
+                ok = (r.status_code == 200 and (not ctype or ctype.startswith("image/"))
+                      and (size or min_bytes) >= min_bytes)
             except httpx.HTTPError:
                 ok = False
             if ok:
                 pages.append((n, url))
+                sizes.append(size)
                 misses = 0
             else:
                 misses += 1
                 if misses >= 2 and (pages or n >= 3):
                     break
+        # A site that answers every page number with the same stock image: identical sizes at the end are not pages
+        while len(pages) >= 3 and sizes[-1] is not None and sizes[-1] == sizes[-2]:
+            pages.pop()
+            sizes.pop()
         return (None if pages else "NO_PAGES: no page images found for the edition"), pages
 
     async def _pages_html(self, client: httpx.AsyncClient, day: date) -> Tuple[int, Optional[str], List[Page]]:
@@ -147,7 +165,7 @@ class GenericEpaperCrawler:
     async def discover(self, client: httpx.AsyncClient, day: date, limit: Optional[int] = None
                        ) -> Tuple[int, Optional[str], List[Page]]:
         """Finds the page images of the edition: (status, error or None, [(page, image address)])."""
-        limit = int(limit or self.cfg.get("max_pages", DEFAULT_MAX_PAGES))
+        limit = _page_limit(limit or self.cfg.get("max_pages", DEFAULT_MAX_PAGES))
         mode = self.cfg.get("mode", "html")
         if (mode == "browser" or self.cfg.get("fetch") == "browser") and not pc_browser.enabled():
             return 0, "NEEDS_PC_BROWSER: needs a browser (set EPAPER_PC_BROWSER=1; GitHub Actions does this)", []
@@ -161,7 +179,7 @@ class GenericEpaperCrawler:
     async def crawl_edition(self, target_date: Optional[date] = None, max_pages: Optional[int] = None
                             ) -> Tuple[int, Optional[str], List[Dict[str, Any]]]:
         day = target_date or datetime.now(DHAKA_TZ).date()
-        limit = int(max_pages or self.cfg.get("max_pages", DEFAULT_MAX_PAGES))
+        limit = _page_limit(max_pages or self.cfg.get("max_pages", DEFAULT_MAX_PAGES))
 
         async with httpx.AsyncClient(timeout=60.0, follow_redirects=True, proxy=pc_browser.proxy_url()) as client:
             status, error, pages = await self.discover(client, day, limit)
@@ -176,10 +194,10 @@ class GenericEpaperCrawler:
             for number, img_url in pages[:limit]:
                 try:
                     resp = await client.get(img_url, headers=self._headers())
-                    if resp.status_code != 200 or len(resp.content) < min_bytes:
-                        continue
                     mime = resp.headers.get("content-type", "image/jpeg").split(";")[0]
-                    items = await self.parser.extract_tenders_from_image(resp.content, mime if mime.startswith("image/") else "image/jpeg")
+                    if resp.status_code != 200 or len(resp.content) < min_bytes or not mime.startswith("image/"):
+                        continue
+                    items = await self.parser.extract_tenders_from_image(resp.content, mime)
                 except Exception as e:  # noqa: BLE001
                     logger.warning(f"{self.name} page {number} error: {e}")
                     continue

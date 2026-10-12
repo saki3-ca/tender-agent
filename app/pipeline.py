@@ -486,12 +486,15 @@ class Monitor:
             if org["organization_id"].startswith("ext_"):
                 org = {**org, "sector": sector}
 
-            title = (item.get("title") or "").strip()
+            original = (item.get("title_original") or "").strip()
+            title = (item.get("title") or "").strip() or original
             page_no = item.get("_page_no", "")
             page_title = item.get("_page_title", "")
             paper_name = item.get("_newspaper") or newspaper
+            # the printed title (often Bengali) is kept in the text too, so the Bengali phrases of the relevance rules still match
             row_text = (f"via E-Paper: {paper_name} (Page {page_no} {page_title}) | {org_name} | "
-                        f"{item.get('details', '')} | {item.get('contact', '')}")
+                        f"{item.get('details', '')} | {item.get('contact', '')}"
+                        + (f" | {original}" if original and original != title else ""))
             link = item.get("_page_url") or source["url"]
             doc_url = item.get("_image_url")
             listing = Listing(

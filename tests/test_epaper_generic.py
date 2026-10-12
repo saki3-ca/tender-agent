@@ -51,7 +51,7 @@ def _client_factory(pages_available, other=None):
             return other[url]
         for n in range(1, pages_available + 1):
             if url.endswith(f"/p{n:02d}.jpg"):
-                return httpx.Response(200, content=BIG, headers={"content-type": "image/jpeg"})
+                return httpx.Response(200, content=BIG + b"y" * n * 100, headers={"content-type": "image/jpeg"})   # every page its own size
         return httpx.Response(404)
     transport = httpx.MockTransport(handler)
     real = httpx.AsyncClient
@@ -170,3 +170,47 @@ def test_configured_kalbela_and_ajker_patrika_patterns_find_pages_in_the_real_ma
             '<img src="https://eimages.ajkerpatrika.com/cropped-images/image_sl13_row12_date_13-10-2026_edition_1_page1_372692.jpg">')
     pages = pages_from_html(html, "https://epaper.ajkerpatrika.com/", fill(ajk["image_regex"], DAY))
     assert len(pages) == 1 and pages[0][0] == 1 and "compressedepaper" in pages[0][1]
+
+
+@pytest.mark.asyncio
+async def test_stock_image_answered_for_every_page_number_is_not_counted_as_pages():
+    sizes = {1: 50000, 2: 61000, 3: 58000, 4: 52000}          # real pages differ; 5.. all return the same stock image
+
+    def handler(request: httpx.Request) -> httpx.Response:
+        n = int(str(request.url).rsplit("/p", 1)[1][:2])
+        return httpx.Response(200, content=b"x" * sizes.get(n, 45000), headers={"content-type": "image/jpeg"})
+
+    real = httpx.AsyncClient
+    factory = lambda *a, **kw: real(transport=httpx.MockTransport(handler), **{k: v for k, v in kw.items() if k != "proxy"})  # noqa: E731
+    crawler = GenericEpaperCrawler(_source(max_pages=10))
+    with patch.object(generic.httpx, "AsyncClient", factory):
+        status, error, pages = await crawler.discover(httpx.AsyncClient(), DAY, 10)
+    assert error is None
+    assert [n for n, _ in pages] == [1, 2, 3, 4, 5]    # the first stock image may be page 5 itself; the repeats are dropped
+
+
+@pytest.mark.asyncio
+async def test_html_page_answered_with_status_200_for_missing_pages_is_not_a_page():
+    """Amader Shomoy answers page 13 and up with a 10 KB HTML page and status 200."""
+    def handler(request: httpx.Request) -> httpx.Response:
+        n = int(str(request.url).rsplit("/p", 1)[1][:2])
+        if n <= 12:
+            return httpx.Response(200, content=b"x" * (60000 + n * 100), headers={"content-type": "image/jpeg"})
+        return httpx.Response(200, content=b"<html>" + b"x" * 10567, headers={"content-type": "text/html; charset=UTF-8"})
+
+    real = httpx.AsyncClient
+    factory = lambda *a, **kw: real(transport=httpx.MockTransport(handler), **{k: v for k, v in kw.items() if k != "proxy"})  # noqa: E731
+    crawler = GenericEpaperCrawler(_source(max_pages=24))
+    with patch.object(generic.httpx, "AsyncClient", factory):
+        _, error, pages = await crawler.discover(httpx.AsyncClient(), DAY, 24)
+    assert error is None and [n for n, _ in pages] == list(range(1, 13))
+
+
+def test_image_names_with_a_space_are_found_and_encoded():
+    """Ajker Patrika / Amar Desh write the page file names with a space in them, inside srcSet lists."""
+    html = ('<img srcSet="https://eimages.example.com/compressedepaper/date_13-10-2026_edition_1_page_1_8_6_updated_LateEdition-01-Layout 1_compressed_93.jpg 1x, '
+            'https://eimages.example.com/compressedepaper/date_13-10-2026_edition_1_page_1_8_6_updated_LateEdition-01-Layout 1_compressed_93.jpg 2x" '
+            'src="https://eimages.example.com/compressedepaper/date_13-10-2026_edition_1_page_1_8_6_updated_LateEdition-01-Layout 1_compressed_93.jpg">')
+    rx = fill(r"(?P<url>https://eimages\.example\.com/compressedepaper/date_{dd}-{mm}-{yyyy}_edition_\d+_page_(?P<page>\d+)_[^\"'<>\\]+?\.jpg)", DAY)
+    pages = pages_from_html(html, "https://epaper.example.com/", rx)
+    assert len(pages) == 1 and pages[0][1].endswith("Layout%201_compressed_93.jpg") and " " not in pages[0][1]

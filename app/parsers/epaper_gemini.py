@@ -41,17 +41,18 @@ _USAGE: Counter = Counter()
 
 PROMPT = """You are an expert procurement and tender analyst in Bangladesh.
 Carefully examine the entire newspaper page image.
-Detect and extract all Tender Notices, Expression of Interest (EOI), Request for Proposals (RFP), and Procurement Notices published on this page (in English or Bengali).
+Detect and extract all Tender Notices, Expression of Interest (EOI), Request for Proposals (RFP), and Procurement Notices published on this page. The notices are in English or in Bengali.
 
-For each notice, extract a JSON object with:
-- organization: Full name of the issuing organization / department (e.g. Dhaka South City Corporation, Bangladesh Bank, UCEP Bangladesh, etc.)
+Write every field in ENGLISH, translating Bengali text (keep personal names, reference numbers and acronyms as they are printed). For each notice, extract a JSON object with:
+- organization: Full official name of the issuing organization / department in English, using its well-known English name (e.g. Dhaka South City Corporation, Bangladesh Bank, Sonali Bank PLC, UCEP Bangladesh)
 - organization_type: Bank, NGO/INGO, Government, Autonomous, or Private
-- title: Complete and descriptive title of the procurement or tender
+- title: Complete and descriptive title of the procurement or tender, in English
+- title_original: The same title exactly as printed in the newspaper (Bengali or English)
 - ref_no: Reference number, Tender ID, or Memo Number (or null if none)
 - publication_date: Publication date in DD/MM/YYYY or YYYY-MM-DD format (or null)
 - deadline: Submission deadline date and time if stated (or null)
-- category: Category such as IT, Works, Goods, Consulting, Medical, Services, Banking
-- details: Brief summary of scope, items, and submission instructions
+- category: Category such as IT, Works, Goods, Consulting, Audit, Medical, Services, Banking
+- details: Brief summary in English of scope, items, and submission instructions
 - contact: Contact email, phone, or office address
 
 Return a valid JSON array of objects. If no tenders are found on this page, return an empty array []."""

@@ -2635,6 +2635,133 @@
     "last_verified": null,
     "last_checked": null,
     "notes": "E-Paper: Bangla daily newspaper"
+  },
+  {
+    "organization_id": "epaper_amardesh",
+    "canonical_name": "Daily Amar Desh E-Paper",
+    "aliases": [
+      "Daily Amar Desh",
+      "Amar Desh",
+      "Dainik Amar Desh",
+      "দৈনিক আমার দেশ",
+      "dailyamardesh.com"
+    ],
+    "organization_type": "NEWSPAPER",
+    "sector": "ngos",
+    "official_domain": "dailyamardesh.com",
+    "procurement_url": "https://eamardesh.com/",
+    "tender_url": "https://eamardesh.com/",
+    "notice_url": "https://eamardesh.com/",
+    "is_ifrs9_target": false,
+    "source_status": "OK",
+    "last_verified": null,
+    "last_checked": null,
+    "notes": "E-Paper: Bangla daily newspaper"
+  },
+  {
+    "organization_id": "epaper_nayadiganta",
+    "canonical_name": "Daily Naya Diganta E-Paper",
+    "aliases": [
+      "Daily Naya Diganta",
+      "Naya Diganta",
+      "Dainik Naya Diganta",
+      "দৈনিক নয়া দিগন্ত",
+      "enayadiganta.com"
+    ],
+    "organization_type": "NEWSPAPER",
+    "sector": "ngos",
+    "official_domain": "enayadiganta.com",
+    "procurement_url": "https://enayadiganta.com/",
+    "tender_url": "https://enayadiganta.com/",
+    "notice_url": "https://enayadiganta.com/",
+    "is_ifrs9_target": false,
+    "source_status": "OK",
+    "last_verified": null,
+    "last_checked": null,
+    "notes": "E-Paper: Bangla daily newspaper"
+  },
+  {
+    "organization_id": "epaper_samakal",
+    "canonical_name": "Daily Samakal E-Paper",
+    "aliases": [
+      "Daily Samakal",
+      "Samakal",
+      "দৈনিক সমকাল",
+      "samakal.com"
+    ],
+    "organization_type": "NEWSPAPER",
+    "sector": "ngos",
+    "official_domain": "samakal.com",
+    "procurement_url": "https://epaper.samakal.com/",
+    "tender_url": "https://epaper.samakal.com/",
+    "notice_url": "https://epaper.samakal.com/",
+    "is_ifrs9_target": false,
+    "source_status": "OK",
+    "last_verified": null,
+    "last_checked": null,
+    "notes": "E-Paper: Bangla daily newspaper"
+  },
+  {
+    "organization_id": "epaper_newage",
+    "canonical_name": "The New Age E-Paper",
+    "aliases": [
+      "The New Age",
+      "New Age",
+      "newagebd.net"
+    ],
+    "organization_type": "NEWSPAPER",
+    "sector": "ngos",
+    "official_domain": "newagebd.net",
+    "procurement_url": "https://epaper.newagebd.net/",
+    "tender_url": "https://epaper.newagebd.net/",
+    "notice_url": "https://epaper.newagebd.net/",
+    "is_ifrs9_target": false,
+    "source_status": "OK",
+    "last_verified": null,
+    "last_checked": null,
+    "notes": "E-Paper: English daily newspaper"
+  },
+  {
+    "organization_id": "epaper_observer",
+    "canonical_name": "The Daily Observer E-Paper",
+    "aliases": [
+      "The Daily Observer",
+      "Daily Observer",
+      "Observer BD",
+      "observerbd.com"
+    ],
+    "organization_type": "NEWSPAPER",
+    "sector": "ngos",
+    "official_domain": "observerbd.com",
+    "procurement_url": "https://epaper.observerbd.com/",
+    "tender_url": "https://epaper.observerbd.com/",
+    "notice_url": "https://epaper.observerbd.com/",
+    "is_ifrs9_target": false,
+    "source_status": "OK",
+    "last_verified": null,
+    "last_checked": null,
+    "notes": "E-Paper: English daily newspaper"
+  },
+  {
+    "organization_id": "epaper_deshrupantor",
+    "canonical_name": "Desh Rupantor E-Paper",
+    "aliases": [
+      "Desh Rupantor",
+      "Daily Desh Rupantor",
+      "দেশ রূপান্তর",
+      "deshrupantor.com"
+    ],
+    "organization_type": "NEWSPAPER",
+    "sector": "ngos",
+    "official_domain": "deshrupantor.com",
+    "procurement_url": "https://epaper.deshrupantor.com/",
+    "tender_url": "https://epaper.deshrupantor.com/",
+    "notice_url": "https://epaper.deshrupantor.com/",
+    "is_ifrs9_target": false,
+    "source_status": "OK",
+    "last_verified": null,
+    "last_checked": null,
+    "notes": "E-Paper: Bangla daily newspaper"
   }
 ]
 
