@@ -4,15 +4,16 @@
 -- In the last days GitHub ran the "hourly" monitor only about 3 times a day, up to 9 hours apart.
 -- This schedule calls the run-monitor Edge Function, which starts the workflow on GitHub (and does
 -- nothing if a run is already queued or in progress). The function accepts the call only with the
--- secret below (function secret CRON_SECRET must have the same value).
+-- secret below.
+--
+-- The secret is kept only in the Vault; the function asks ta_cron_check (below) whether the secret it was given
+-- is the right one, so no function secret has to be added by hand.
 --
 -- Times are UTC (pg_cron): Dhaka = UTC + 6.
 --   monitor : 08:05-20:05 Dhaka hourly, and 00:05 Dhaka
 --   epaper  : 07:35 and 11:35 Dhaka (the second one retries papers that failed)
 --
--- Before running: 1) replace PASTE_THE_SECRET_HERE (it appears twice in the DO block)
---                 2) add the same value as the Edge Function secret CRON_SECRET
---                 3) redeploy the run-monitor function (it must know CRON_SECRET)
+-- Before running: replace PASTE_THE_SECRET_HERE (it appears twice in the DO block) with a long random value.
 -- Do not commit the real secret.
 -- ============================================================================
 
@@ -30,6 +31,16 @@ BEGIN
         PERFORM vault.update_secret(v_id, 'PASTE_THE_SECRET_HERE');
     END IF;
 END $$;
+
+-- Used by the run-monitor function: TRUE only for the schedule's secret
+CREATE OR REPLACE FUNCTION ta_cron_check(p_secret TEXT) RETURNS BOOLEAN
+LANGUAGE sql SECURITY DEFINER SET search_path = public, vault, extensions
+AS $$
+    SELECT p_secret IS NOT NULL AND length(p_secret) >= 16 AND EXISTS (
+        SELECT 1 FROM vault.decrypted_secrets WHERE name = 'tender_cron_secret' AND decrypted_secret = p_secret)
+$$;
+REVOKE ALL ON FUNCTION ta_cron_check(TEXT) FROM PUBLIC;
+GRANT EXECUTE ON FUNCTION ta_cron_check(TEXT) TO anon, authenticated;
 
 -- Re-running this file replaces the jobs of the same name
 SELECT cron.schedule('tender-monitor', '5 2-14,18 * * *', $job$

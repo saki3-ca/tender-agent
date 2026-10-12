@@ -3,7 +3,8 @@
 // POST -> starts the workflow (unless one is already queued or running)
 // ?workflow=monitor (default) or ?workflow=epaper chooses which workflow.
 // Allowed callers: Task Tracker Admins (the portal's bridge token, x-tracker-token, is checked by ta_admin_check)
-// and the Supabase scheduled job (x-cron-secret equal to the CRON_SECRET function secret). The GitHub token
+// and the Supabase scheduled job (x-cron-secret equal to the secret kept in the database Vault, checked by
+// ta_cron_check; a CRON_SECRET function secret with the same value is accepted too). The GitHub token
 // stays in the function secrets (GH_DISPATCH_TOKEN) and is never sent to the browser.
 import { createClient } from "npm:@supabase/supabase-js@2";
 
@@ -26,6 +27,16 @@ function sameSecret(a: string, b: string): boolean {
   let diff = x.length ^ y.length;
   for (let i = 0; i < Math.max(x.length, y.length); i++) diff |= (x[i] ?? 0) ^ (y[i] ?? 0);
   return diff === 0;
+}
+
+/** The scheduled job's secret: the CRON_SECRET function secret, or the one in the database Vault (ta_cron_check). */
+async function isScheduledCall(given: string): Promise<boolean> {
+  if (given.length < 16) return false;
+  const cronSecret = Deno.env.get("CRON_SECRET") ?? "";
+  if (cronSecret.length >= 16 && sameSecret(given, cronSecret)) return true;
+  const db = createClient(Deno.env.get("SUPABASE_URL")!, Deno.env.get("SUPABASE_ANON_KEY")!);
+  const { data, error } = await db.rpc("ta_cron_check", { p_secret: given });
+  return !error && data === true;
 }
 
 function gh(workflow: string, path: string, init: RequestInit = {}) {
@@ -61,9 +72,7 @@ Deno.serve(async (req) => {
   const workflow = WORKFLOWS[new URL(req.url).searchParams.get("workflow") ?? "monitor"];
   if (!workflow) return json({ error: "Unknown workflow" }, 400);
 
-  const cronSecret = Deno.env.get("CRON_SECRET") ?? "";
-  const given = req.headers.get("x-cron-secret") ?? "";
-  const isSchedule = cronSecret.length >= 16 && given !== "" && sameSecret(given, cronSecret);
+  const isSchedule = await isScheduledCall(req.headers.get("x-cron-secret") ?? "");
   if (!isSchedule) {
     const db = createClient(Deno.env.get("SUPABASE_URL")!, Deno.env.get("SUPABASE_ANON_KEY")!);
     const { data: isAdmin, error } = await db.rpc("ta_admin_check", { p_token: req.headers.get("x-tracker-token") ?? "" });
