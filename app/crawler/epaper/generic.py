@@ -70,7 +70,7 @@ def pages_from_html(html: str, base_url: str, regex: str, replace: Optional[List
         url = groups.get("url") or m.group(0)
         if replace and len(replace) == 2:
             url = url.replace(replace[0], replace[1])
-        url = urljoin(base_url, url)
+        url = urljoin(base_url, url).replace(" ", "%20")
         if url in seen_urls:                # the same image named twice is one page
             continue
         seen_urls.add(url)
@@ -106,23 +106,33 @@ class GenericEpaperCrawler:
         fmt = self.cfg.get("date_format", "%Y-%m-%d")
         min_bytes = int(self.cfg.get("min_bytes", MIN_PAGE_BYTES))
         pages: List[Page] = []
+        sizes: List[Optional[int]] = []
         misses = 0
         for n in range(1, limit + 1):
             url = fill(template, day, n, fmt)
+            size: Optional[int] = None
             try:
                 r = await client.head(url, headers=self._headers())
                 if r.status_code in (403, 405) or r.status_code >= 500:     # HEAD not allowed: ask for the image itself
                     r = await client.get(url, headers=self._headers())
-                ok = r.status_code == 200 and int(r.headers.get("content-length") or min_bytes) >= min_bytes
+                size = int(r.headers.get("content-length") or 0) or None
+                ctype = r.headers.get("content-type", "")
+                ok = (r.status_code == 200 and (not ctype or ctype.startswith("image/"))
+                      and (size or min_bytes) >= min_bytes)
             except httpx.HTTPError:
                 ok = False
             if ok:
                 pages.append((n, url))
+                sizes.append(size)
                 misses = 0
             else:
                 misses += 1
                 if misses >= 2 and (pages or n >= 3):
                     break
+        # A site that answers every page number with the same stock image: identical sizes at the end are not pages
+        while len(pages) >= 3 and sizes[-1] is not None and sizes[-1] == sizes[-2]:
+            pages.pop()
+            sizes.pop()
         return (None if pages else "NO_PAGES: no page images found for the edition"), pages
 
     async def _pages_html(self, client: httpx.AsyncClient, day: date) -> Tuple[int, Optional[str], List[Page]]:
@@ -184,10 +194,10 @@ class GenericEpaperCrawler:
             for number, img_url in pages[:limit]:
                 try:
                     resp = await client.get(img_url, headers=self._headers())
-                    if resp.status_code != 200 or len(resp.content) < min_bytes:
-                        continue
                     mime = resp.headers.get("content-type", "image/jpeg").split(";")[0]
-                    items = await self.parser.extract_tenders_from_image(resp.content, mime if mime.startswith("image/") else "image/jpeg")
+                    if resp.status_code != 200 or len(resp.content) < min_bytes or not mime.startswith("image/"):
+                        continue
+                    items = await self.parser.extract_tenders_from_image(resp.content, mime)
                 except Exception as e:  # noqa: BLE001
                     logger.warning(f"{self.name} page {number} error: {e}")
                     continue

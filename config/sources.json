@@ -1868,7 +1868,7 @@
     "min_interval_hours": 12,
     "epaper": {
       "mode": "html",
-      "image_regex": "(?P<url>https://eimages\\.ajkerpatrika\\.com/compressedepaper/date_{dd}-{mm}-{yyyy}_edition_\\d+_page_(?P<page>\\d+)_[^\"'\\s<>\\\\]+?\\.jpg)",
+      "image_regex": "(?P<url>https://eimages\\.ajkerpatrika\\.com/compressedepaper/date_{dd}-{mm}-{yyyy}_edition_\\d+_page_(?P<page>\\d+)_[^\"'<>\\\\]+?\\.jpg)",
       "view_url": "https://epaper.ajkerpatrika.com/",
       "max_pages": 24
     },
@@ -1921,6 +1921,146 @@
       "max_pages": 24
     },
     "note": "Daily e-paper of Daily Inqilab. Page scans are public files named by date and page number; read by Gemini Vision."
+  },
+  {
+    "id": "src_epaper_amardesh",
+    "type": "epaper_generic",
+    "url": "https://eamardesh.com/",
+    "public_url": "https://eamardesh.com/",
+    "organization_id": "epaper_amardesh",
+    "newspaper": "Daily Amar Desh",
+    "tier": 2,
+    "requires_js": false,
+    "verify_ssl": true,
+    "rate_limit_seconds": 2,
+    "enabled": true,
+    "aggregator": true,
+    "members_only": false,
+    "max_documents": 0,
+    "min_interval_hours": 12,
+    "epaper": {
+      "mode": "html",
+      "image_regex": "(?P<url>https://images\\.dailyamardesh\\.com/compressedepaper/date_{dd}-{mm}-{yyyy}_edition_\\d+_page_(?P<page>\\d+)_[^\"'<>\\\\]+?\\.jpg)",
+      "view_url": "https://eamardesh.com/",
+      "max_pages": 24
+    },
+    "note": "Daily e-paper of Daily Amar Desh. The page scans are named in the edition page (names contain a random part), read by Gemini Vision."
+  },
+  {
+    "id": "src_epaper_nayadiganta",
+    "type": "epaper_generic",
+    "url": "https://enayadiganta.com/",
+    "public_url": "https://enayadiganta.com/",
+    "organization_id": "epaper_nayadiganta",
+    "newspaper": "Daily Naya Diganta",
+    "tier": 2,
+    "requires_js": false,
+    "verify_ssl": true,
+    "rate_limit_seconds": 2,
+    "enabled": true,
+    "aggregator": true,
+    "members_only": false,
+    "max_documents": 0,
+    "min_interval_hours": 12,
+    "epaper": {
+      "mode": "template",
+      "image_template": "https://enayadiganta.com/images/{yyyy}{mm}{dd}/1_{page}_medium.jpg",
+      "view_url": "https://enayadiganta.com/",
+      "max_pages": 24
+    },
+    "note": "Daily e-paper of Daily Naya Diganta. Page scans are public files named by date and page number; read by Gemini Vision."
+  },
+  {
+    "id": "src_epaper_samakal",
+    "type": "epaper_generic",
+    "url": "https://epaper.samakal.com/",
+    "public_url": "https://epaper.samakal.com/",
+    "organization_id": "epaper_samakal",
+    "newspaper": "Daily Samakal",
+    "tier": 2,
+    "requires_js": false,
+    "verify_ssl": true,
+    "rate_limit_seconds": 2,
+    "enabled": false,
+    "aggregator": true,
+    "members_only": false,
+    "max_documents": 0,
+    "min_interval_hours": 12,
+    "epaper": {
+      "mode": "browser",
+      "min_image_kb": 150,
+      "max_pages": 24
+    },
+    "note": "Disabled: Cloudflare blocks GitHub's servers. Set the EPAPER_PROXY_URL secret (residential proxy) and enable."
+  },
+  {
+    "id": "src_epaper_newage",
+    "type": "epaper_generic",
+    "url": "https://epaper.newagebd.net/",
+    "public_url": "https://epaper.newagebd.net/",
+    "organization_id": "epaper_newage",
+    "newspaper": "The New Age",
+    "tier": 2,
+    "requires_js": false,
+    "verify_ssl": true,
+    "rate_limit_seconds": 2,
+    "enabled": false,
+    "aggregator": true,
+    "members_only": false,
+    "max_documents": 0,
+    "min_interval_hours": 12,
+    "epaper": {
+      "mode": "browser",
+      "min_image_kb": 150,
+      "max_pages": 24
+    },
+    "note": "Disabled: Cloudflare blocks GitHub's servers. Set the EPAPER_PROXY_URL secret (residential proxy) and enable."
+  },
+  {
+    "id": "src_epaper_observer",
+    "type": "epaper_generic",
+    "url": "https://epaper.observerbd.com/",
+    "public_url": "https://epaper.observerbd.com/",
+    "organization_id": "epaper_observer",
+    "newspaper": "The Daily Observer",
+    "tier": 2,
+    "requires_js": false,
+    "verify_ssl": true,
+    "rate_limit_seconds": 2,
+    "enabled": false,
+    "aggregator": true,
+    "members_only": false,
+    "max_documents": 0,
+    "min_interval_hours": 12,
+    "epaper": {
+      "mode": "browser",
+      "min_image_kb": 150,
+      "max_pages": 24
+    },
+    "note": "Disabled: Cloudflare blocks GitHub's servers. Set the EPAPER_PROXY_URL secret (residential proxy) and enable."
+  },
+  {
+    "id": "src_epaper_deshrupantor",
+    "type": "epaper_generic",
+    "url": "https://epaper.deshrupantor.com/",
+    "public_url": "https://epaper.deshrupantor.com/",
+    "organization_id": "epaper_deshrupantor",
+    "newspaper": "Desh Rupantor",
+    "tier": 2,
+    "requires_js": false,
+    "verify_ssl": true,
+    "rate_limit_seconds": 2,
+    "enabled": false,
+    "aggregator": true,
+    "members_only": false,
+    "max_documents": 0,
+    "min_interval_hours": 12,
+    "epaper": {
+      "mode": "browser",
+      "min_image_kb": 150,
+      "max_pages": 24
+    },
+    "note": "Disabled: Cloudflare blocks GitHub's servers. Set the EPAPER_PROXY_URL secret (residential proxy) and enable."
   }
 ]
 
