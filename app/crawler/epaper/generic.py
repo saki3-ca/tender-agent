@@ -28,6 +28,7 @@ not pages), "view_url" (address stored as the link to the page; may use {date} a
 
 import asyncio
 import logging
+import os
 import re
 from datetime import date, datetime
 from typing import Any, Dict, List, Optional, Tuple
@@ -80,6 +81,13 @@ def pages_from_html(html: str, base_url: str, regex: str, replace: Optional[List
             number = order
         found.setdefault(number, url)
     return sorted(found.items())
+
+
+def _page_limit(limit: Any) -> int:
+    """Pages per edition; EPAPER_MAX_PAGES=3 limits a test run so it uses almost no Gemini quota."""
+    limit = int(limit)
+    cap = os.getenv("EPAPER_MAX_PAGES", "").strip()
+    return min(limit, int(cap)) if cap.isdigit() and int(cap) > 0 else limit
 
 
 class GenericEpaperCrawler:
@@ -147,7 +155,7 @@ class GenericEpaperCrawler:
     async def discover(self, client: httpx.AsyncClient, day: date, limit: Optional[int] = None
                        ) -> Tuple[int, Optional[str], List[Page]]:
         """Finds the page images of the edition: (status, error or None, [(page, image address)])."""
-        limit = int(limit or self.cfg.get("max_pages", DEFAULT_MAX_PAGES))
+        limit = _page_limit(limit or self.cfg.get("max_pages", DEFAULT_MAX_PAGES))
         mode = self.cfg.get("mode", "html")
         if (mode == "browser" or self.cfg.get("fetch") == "browser") and not pc_browser.enabled():
             return 0, "NEEDS_PC_BROWSER: needs a browser (set EPAPER_PC_BROWSER=1; GitHub Actions does this)", []
@@ -161,7 +169,7 @@ class GenericEpaperCrawler:
     async def crawl_edition(self, target_date: Optional[date] = None, max_pages: Optional[int] = None
                             ) -> Tuple[int, Optional[str], List[Dict[str, Any]]]:
         day = target_date or datetime.now(DHAKA_TZ).date()
-        limit = int(max_pages or self.cfg.get("max_pages", DEFAULT_MAX_PAGES))
+        limit = _page_limit(max_pages or self.cfg.get("max_pages", DEFAULT_MAX_PAGES))
 
         async with httpx.AsyncClient(timeout=60.0, follow_redirects=True, proxy=pc_browser.proxy_url()) as client:
             status, error, pages = await self.discover(client, day, limit)
