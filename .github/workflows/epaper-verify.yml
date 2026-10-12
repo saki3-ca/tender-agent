@@ -1,0 +1,18 @@
+name: E-paper check (temporary)
+on:
+  push:
+    branches: ["claude/epaper-verify"]
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.11", cache: pip }
+      - run: pip install -r requirements.txt && python -m playwright install --with-deps chromium && sudo apt-get install -y xvfb
+      - name: Find today's pages of every generic newspaper (no Gemini calls)
+        run: xvfb-run -a python scripts/check_epapers.py
+        env:
+          EPAPER_PC_BROWSER: "1"
+          EPAPER_PROXY_URL: ${{ secrets.EPAPER_PROXY_URL }}
