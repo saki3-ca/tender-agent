@@ -1,0 +1,15 @@
+name: E-paper probe (temporary)
+on:
+  push:
+    branches: ["claude/epaper-probe"]
+    paths: ["scripts/probe_epapers.py", ".github/workflows/epaper-probe.yml"]
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.11" }
+      - run: pip install playwright httpx && python -m playwright install --with-deps chromium && sudo apt-get install -y xvfb
+      - run: xvfb-run -a python scripts/probe_epapers.py
