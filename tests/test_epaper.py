@@ -146,3 +146,110 @@ def test_bd_pratidin_pages_and_full_size_image():
     assert full_page_image(view, "2026/10/08", 3) == \
         "https://cdn.bd-pratidin.com/public/paper/2026/10/08/1791401703-3.jpg"
     assert full_page_image(view, "2026/10/08", 4) is None
+
+
+# ---------------------------------------------------------------- Gemini keys and quota handling
+def _gemini_ok(text="[]"):
+    return httpx.Response(status_code=200, json={"candidates": [{"content": {"parts": [{"text": text}]}}]},
+                          request=httpx.Request("POST", "https://generativelanguage.googleapis.com/"))
+
+
+def _gemini_429(quota_id, retry="30s"):
+    body = {"error": {"code": 429, "message": "Resource exhausted", "details": [
+        {"@type": "type.googleapis.com/google.rpc.QuotaFailure", "violations": [{"quotaId": quota_id}]},
+        {"@type": "type.googleapis.com/google.rpc.RetryInfo", "retryDelay": retry}]}}
+    return httpx.Response(status_code=429, json=body, request=httpx.Request("POST", "https://generativelanguage.googleapis.com/"))
+
+
+@pytest.fixture
+def clean_gemini_state():
+    from app.parsers import epaper_gemini as g
+    g._UNUSABLE.clear(); g._COOLDOWN.clear(); g._USAGE.clear()
+    yield g
+    g._UNUSABLE.clear(); g._COOLDOWN.clear(); g._USAGE.clear()
+
+
+def test_quota_kind_tells_per_minute_from_per_day(clean_gemini_state):
+    g = clean_gemini_state
+    assert g.quota_kind(_gemini_429("GenerateRequestsPerMinutePerProjectPerModel-FreeTier", "23s")) == ("minute", 23.0)
+    assert g.quota_kind(_gemini_429("GenerateRequestsPerDayPerProjectPerModel-FreeTier"))[0] == "day"
+    # both exceeded: the daily one decides
+    both = _gemini_429("GenerateRequestsPerMinutePerProjectPerModel-FreeTier")
+    body = both.json(); body["error"]["details"][0]["violations"].append({"quotaId": "GenerateRequestsPerDayPerProjectPerModel"})
+    assert g.quota_kind(httpx.Response(429, json=body))[0] == "day"
+    # nothing says "minute": same as before, treated as the daily quota
+    assert g.quota_kind(httpx.Response(429, text="quota exceeded"))[0] == "day"
+
+
+@pytest.mark.asyncio
+async def test_per_minute_limit_waits_and_retries_instead_of_giving_up(clean_gemini_state):
+    g = clean_gemini_state
+    replies = [_gemini_429("GenerateRequestsPerMinutePerProjectPerModel-FreeTier", "5s")] * len(GEMINI_MODELS) + [_gemini_ok('[{"title": "t"}]')]
+    clock = [1000.0]
+    waits = []
+
+    async def fake_sleep(seconds):          # time only passes when the code sleeps
+        waits.append(seconds)
+        clock[0] += seconds
+
+    with patch.object(httpx.AsyncClient, "post", new_callable=AsyncMock) as post, \
+            patch("app.parsers.epaper_gemini.asyncio.sleep", fake_sleep), \
+            patch("app.parsers.epaper_gemini.time.monotonic", lambda: clock[0]):
+        post.side_effect = replies
+        parser = GeminiEpaperParser(api_keys=["k1"])
+        items = await parser.extract_tenders_from_image(b"img")
+    assert items == [{"title": "t"}] and (parser.pages_read, parser.pages_failed) == (1, 0)
+    assert not g._UNUSABLE                      # nothing was written off for the day
+    assert max(waits) >= 5                      # it really waited for the limit to pass
+
+
+@pytest.mark.asyncio
+async def test_daily_quota_of_one_key_moves_on_to_the_next_key(clean_gemini_state):
+    g = clean_gemini_state
+    seen_keys = []
+
+    async def fake_post(self, url, json=None, headers=None):  # noqa: A002
+        seen_keys.append(headers["x-goog-api-key"])
+        return _gemini_429("GenerateRequestsPerDayPerProjectPerModel-FreeTier") if headers["x-goog-api-key"] == "k1" else _gemini_ok()
+
+    with patch.object(httpx.AsyncClient, "post", fake_post), patch("app.parsers.epaper_gemini.asyncio.sleep", new_callable=AsyncMock):
+        parser = GeminiEpaperParser(api_keys=["k1", "k2"])
+        for _ in range(3):
+            assert await parser.extract_tenders_from_image(b"img") == []
+    assert parser.pages_read == 3 and parser.pages_failed == 0
+    assert all((("k1", m) in g._UNUSABLE) for m in GEMINI_MODELS if ("k1", m) in g._UNUSABLE)
+    assert g._USAGE["k2"] == 3
+
+
+@pytest.mark.asyncio
+async def test_pages_start_on_different_keys(clean_gemini_state):
+    first = []
+
+    async def fake_post(self, url, json=None, headers=None):  # noqa: A002
+        first.append(headers["x-goog-api-key"])
+        return _gemini_ok()
+
+    with patch.object(httpx.AsyncClient, "post", fake_post), patch("app.parsers.epaper_gemini.asyncio.sleep", new_callable=AsyncMock):
+        parser = GeminiEpaperParser(api_keys=["a", "b", "c"])
+        for _ in range(6):
+            await parser.extract_tenders_from_image(b"img")
+    assert sorted(set(first)) == ["a", "b", "c"] and all(first.count(k) == 2 for k in "abc")
+
+
+def test_gemini_keys_from_one_secret_and_the_old_ones(monkeypatch):
+    from app.utils.config import config
+    monkeypatch.setenv("GEMINI_API_KEYS", "AIza-1,AIza-2\nAIza-3 ; AIza-4\r\n")
+    monkeypatch.setenv("GEMINI_API_KEY", "AIza-2")            # duplicate is ignored
+    monkeypatch.setenv("GEMINI_API_KEY_BACKUP", "AIza-5")
+    assert config.gemini_api_keys == ["AIza-1", "AIza-2", "AIza-3", "AIza-4", "AIza-5"]
+    for name in ("GEMINI_API_KEYS", "GEMINI_API_KEY", "GEMINI_API_KEY_BACKUP"):
+        monkeypatch.delenv(name)
+    assert config.gemini_api_keys == []
+
+
+def test_usage_summary_line(clean_gemini_state):
+    g = clean_gemini_state
+    g._USAGE["a"] = 12; g._USAGE["b"] = 3
+    g._UNUSABLE.update({("a", GEMINI_MODELS[0]), ("a", GEMINI_MODELS[1])})
+    line = g.usage_summary(["a", "b", "c"])
+    assert "15 pages read" in line and "2 of 3 keys used" in line and f"2 of {3 * len(GEMINI_MODELS)} key/model pairs" in line

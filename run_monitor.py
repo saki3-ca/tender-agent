@@ -57,6 +57,9 @@ def main() -> int:
     print("\n=== ACNABIN Tender Monitor — run summary ===")
     for key, value in stats.items():
         print(f"  {key:18} {value}")
+    if args.epaper or args.pc_browser:
+        from app.parsers.epaper_gemini import usage_summary
+        print("\n" + usage_summary(config.gemini_api_keys))
     failed = [s for s in monitor.source_results if not s["ok"]]
     if failed:
         print(f"\nSources with errors ({len(failed)}):")

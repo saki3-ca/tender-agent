@@ -10,6 +10,7 @@ Loads:
 """
 
 import os
+import re
 import json
 from pathlib import Path
 from typing import Any, Dict, List, Optional
@@ -188,8 +189,10 @@ class AppConfig:
 
     @property
     def gemini_api_keys(self) -> List[str]:
-        keys = [self.gemini_api_key, self.gemini_api_key_backup]
-        return [k for k in dict.fromkeys(keys) if k]
+        """GEMINI_API_KEYS (any number of keys, separated by commas / spaces / new lines) plus the two single-key settings."""
+        many = re.split(r"[\s,;]+", os.getenv("GEMINI_API_KEYS", ""))
+        keys = [*many, self.gemini_api_key, self.gemini_api_key_backup]
+        return [k.strip() for k in dict.fromkeys(keys) if k and k.strip()]
 
     @property
     def epaper_prothomalo_user(self) -> str:

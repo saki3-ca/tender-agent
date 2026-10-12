@@ -55,6 +55,7 @@ jobs:
           SMTP_USER: ${{ secrets.SMTP_USER }}
           SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
           ALERT_EMAIL_TO: ${{ secrets.ALERT_EMAIL_TO }}
+          GEMINI_API_KEYS: ${{ secrets.GEMINI_API_KEYS }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           GEMINI_API_KEY_BACKUP: ${{ secrets.GEMINI_API_KEY_BACKUP }}
           EPAPER_PC_BROWSER: "1"
