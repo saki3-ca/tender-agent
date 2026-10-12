@@ -2527,6 +2527,114 @@
     "last_verified": null,
     "last_checked": null,
     "notes": "Christian Aid procurement and tenders (global page, filtered to Bangladesh)"
+  },
+  {
+    "organization_id": "epaper_amadershomoy",
+    "canonical_name": "Daily Amader Shomoy E-Paper",
+    "aliases": [
+      "Daily Amader Shomoy",
+      "Amader Shomoy",
+      "Dainik Amader Shomoy",
+      "দৈনিক আমাদের সময়",
+      "dainikamadershomoy.com"
+    ],
+    "organization_type": "NEWSPAPER",
+    "sector": "ngos",
+    "official_domain": "dainikamadershomoy.com",
+    "procurement_url": "https://epaper.dainikamadershomoy.com/",
+    "tender_url": "https://epaper.dainikamadershomoy.com/",
+    "notice_url": "https://epaper.dainikamadershomoy.com/",
+    "is_ifrs9_target": false,
+    "source_status": "OK",
+    "last_verified": null,
+    "last_checked": null,
+    "notes": "E-Paper: Bangla daily newspaper"
+  },
+  {
+    "organization_id": "epaper_kalbela",
+    "canonical_name": "Daily Kalbela E-Paper",
+    "aliases": [
+      "Daily Kalbela",
+      "Kalbela",
+      "Dainik Kalbela",
+      "দৈনিক কালবেলা",
+      "kalbela.com"
+    ],
+    "organization_type": "NEWSPAPER",
+    "sector": "ngos",
+    "official_domain": "kalbela.com",
+    "procurement_url": "https://epaper.kalbela.com/",
+    "tender_url": "https://epaper.kalbela.com/",
+    "notice_url": "https://epaper.kalbela.com/",
+    "is_ifrs9_target": false,
+    "source_status": "OK",
+    "last_verified": null,
+    "last_checked": null,
+    "notes": "E-Paper: Bangla daily newspaper"
+  },
+  {
+    "organization_id": "epaper_ajkerpatrika",
+    "canonical_name": "Ajker Patrika E-Paper",
+    "aliases": [
+      "Ajker Patrika",
+      "Daily Ajker Patrika",
+      "আজকের পত্রিকা",
+      "ajkerpatrika.com"
+    ],
+    "organization_type": "NEWSPAPER",
+    "sector": "ngos",
+    "official_domain": "ajkerpatrika.com",
+    "procurement_url": "https://epaper.ajkerpatrika.com/",
+    "tender_url": "https://epaper.ajkerpatrika.com/",
+    "notice_url": "https://epaper.ajkerpatrika.com/",
+    "is_ifrs9_target": false,
+    "source_status": "OK",
+    "last_verified": null,
+    "last_checked": null,
+    "notes": "E-Paper: Bangla daily newspaper"
+  },
+  {
+    "organization_id": "epaper_dainikbangla",
+    "canonical_name": "Dainik Bangla E-Paper",
+    "aliases": [
+      "Dainik Bangla",
+      "Daily Bangla",
+      "দৈনিক বাংলা",
+      "dainikbangla.com.bd"
+    ],
+    "organization_type": "NEWSPAPER",
+    "sector": "ngos",
+    "official_domain": "dainikbangla.com.bd",
+    "procurement_url": "https://epaper.dainikbangla.com.bd/",
+    "tender_url": "https://epaper.dainikbangla.com.bd/",
+    "notice_url": "https://epaper.dainikbangla.com.bd/",
+    "is_ifrs9_target": false,
+    "source_status": "OK",
+    "last_verified": null,
+    "last_checked": null,
+    "notes": "E-Paper: Bangla daily newspaper"
+  },
+  {
+    "organization_id": "epaper_inqilab",
+    "canonical_name": "Daily Inqilab E-Paper",
+    "aliases": [
+      "Daily Inqilab",
+      "Inqilab",
+      "Dainik Inqilab",
+      "দৈনিক ইনকিলাব",
+      "dailyinqilab.com"
+    ],
+    "organization_type": "NEWSPAPER",
+    "sector": "ngos",
+    "official_domain": "dailyinqilab.com",
+    "procurement_url": "https://epaper.dailyinqilab.com/",
+    "tender_url": "https://epaper.dailyinqilab.com/",
+    "notice_url": "https://epaper.dailyinqilab.com/",
+    "is_ifrs9_target": false,
+    "source_status": "OK",
+    "last_verified": null,
+    "last_checked": null,
+    "notes": "E-Paper: Bangla daily newspaper"
   }
 ]
 

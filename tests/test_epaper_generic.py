@@ -132,3 +132,41 @@ async def test_browser_mode_needs_the_browser_flag(monkeypatch):
     src = {"id": "s", "type": "epaper_generic", "newspaper": "B", "url": "https://x.example/", "epaper": {"mode": "browser"}}
     status, error, tenders = await GenericEpaperCrawler(src).crawl_edition(DAY)
     assert error.startswith("NEEDS_PC_BROWSER") and tenders == []
+
+
+# ---------------------------------------------------------------- the configured newspapers
+def _generic_sources():
+    from app.utils.config import config
+    return [s for s in config.sources if s.get("type") == "epaper_generic"]
+
+
+def test_every_generic_source_is_complete_and_its_patterns_are_valid():
+    import re
+    sources = _generic_sources()
+    assert sources, "no epaper_generic sources configured"
+    for s in sources:
+        cfg = s["epaper"]
+        assert s.get("newspaper") and s["organization_id"].startswith("epaper_"), s["id"]
+        assert cfg["mode"] in ("template", "html", "browser"), s["id"]
+        if cfg["mode"] == "template":
+            assert "{page" in cfg["image_template"], s["id"]
+            assert fill(cfg["image_template"], DAY, 3).startswith("http"), s["id"]
+        if cfg["mode"] == "html":
+            re.compile(fill(cfg["image_regex"], DAY))       # must be a valid pattern
+        assert "{page" in cfg.get("view_url", "{page}") or cfg.get("view_url", "").startswith("http"), s["id"]
+
+
+def test_configured_kalbela_and_ajker_patrika_patterns_find_pages_in_the_real_markup():
+    by_id = {s["id"]: s for s in _generic_sources()}
+    kal = by_id["src_epaper_kalbela"]["epaper"]
+    html = ('<img class="img-fluid" data-src="2026/10/13/1st-Edition/thumb/page02.jpg?v=1.0" src="2026/10/13/1st-Edition/thumb/page02.jpg?v=1.0">'
+            '<img data-src="2026/10/13/1st-Edition/thumb/page01.jpg?v=1.0">')
+    pages = pages_from_html(html, "https://epaper.kalbela.com/", fill(kal["image_regex"], DAY), kal.get("replace"))
+    assert pages == [(1, "https://epaper.kalbela.com/2026/10/13/1st-Edition/large/page01.jpg?v=1.0".split("?")[0]),
+                     (2, "https://epaper.kalbela.com/2026/10/13/1st-Edition/large/page02.jpg")]
+
+    ajk = by_id["src_epaper_ajkerpatrika"]["epaper"]
+    html = ('<img src="https://eimages.ajkerpatrika.com/compressedepaper/date_13-10-2026_edition_1_page_1_821838_62166_updated_LateEdition-01-Layout%201_compressed_9338a3ec.jpg">'
+            '<img src="https://eimages.ajkerpatrika.com/cropped-images/image_sl13_row12_date_13-10-2026_edition_1_page1_372692.jpg">')
+    pages = pages_from_html(html, "https://epaper.ajkerpatrika.com/", fill(ajk["image_regex"], DAY))
+    assert len(pages) == 1 and pages[0][0] == 1 and "compressedepaper" in pages[0][1]

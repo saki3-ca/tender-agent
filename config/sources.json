@@ -1797,6 +1797,130 @@
     "enabled": true,
     "country_filter": true,
     "note": "Added 2026-10-10: address taken from the organization's own published page; not yet read by the monitor. Check the Sources page after the next run and correct the URL in Admin if it fails."
+  },
+  {
+    "id": "src_epaper_amadershomoy",
+    "type": "epaper_generic",
+    "url": "https://epaper.dainikamadershomoy.com/",
+    "public_url": "https://epaper.dainikamadershomoy.com/",
+    "organization_id": "epaper_amadershomoy",
+    "newspaper": "Daily Amader Shomoy",
+    "tier": 2,
+    "requires_js": false,
+    "verify_ssl": true,
+    "rate_limit_seconds": 2,
+    "enabled": true,
+    "aggregator": true,
+    "members_only": false,
+    "max_documents": 0,
+    "min_interval_hours": 12,
+    "epaper": {
+      "mode": "template",
+      "image_template": "https://epaper.dainikamadershomoy.com/files/e-paper/{yyyy}/{mm}/{dd}/pages/page{page2}.jpg",
+      "view_url": "https://epaper.dainikamadershomoy.com/{yyyy}/{mm}/{dd}/page-{page2}",
+      "max_pages": 24
+    },
+    "note": "Daily e-paper of Daily Amader Shomoy. Page scans are public files named by date and page number; read by Gemini Vision."
+  },
+  {
+    "id": "src_epaper_kalbela",
+    "type": "epaper_generic",
+    "url": "https://epaper.kalbela.com/",
+    "public_url": "https://epaper.kalbela.com/",
+    "organization_id": "epaper_kalbela",
+    "newspaper": "Daily Kalbela",
+    "tier": 2,
+    "requires_js": false,
+    "verify_ssl": true,
+    "rate_limit_seconds": 2,
+    "enabled": true,
+    "aggregator": true,
+    "members_only": false,
+    "max_documents": 0,
+    "min_interval_hours": 12,
+    "epaper": {
+      "mode": "html",
+      "image_regex": "(?P<url>{yyyy}/{mm}/{dd}/\\d(?:st|nd|rd|th)-Edition/thumb/page(?P<page>\\d+)\\.jpg)",
+      "replace": [
+        "/thumb/",
+        "/large/"
+      ],
+      "view_url": "https://epaper.kalbela.com/?date={date}",
+      "max_pages": 24
+    },
+    "note": "Daily e-paper of Daily Kalbela. The edition page lists the page thumbnails of the latest edition; the large scan has the same name under /large/. Read by Gemini Vision."
+  },
+  {
+    "id": "src_epaper_ajkerpatrika",
+    "type": "epaper_generic",
+    "url": "https://epaper.ajkerpatrika.com/",
+    "public_url": "https://epaper.ajkerpatrika.com/",
+    "organization_id": "epaper_ajkerpatrika",
+    "newspaper": "Ajker Patrika",
+    "tier": 2,
+    "requires_js": false,
+    "verify_ssl": true,
+    "rate_limit_seconds": 2,
+    "enabled": true,
+    "aggregator": true,
+    "members_only": false,
+    "max_documents": 0,
+    "min_interval_hours": 12,
+    "epaper": {
+      "mode": "html",
+      "image_regex": "(?P<url>https://eimages\\.ajkerpatrika\\.com/compressedepaper/date_{dd}-{mm}-{yyyy}_edition_\\d+_page_(?P<page>\\d+)_[^\"'\\s<>\\\\]+?\\.jpg)",
+      "view_url": "https://epaper.ajkerpatrika.com/",
+      "max_pages": 24
+    },
+    "note": "Daily e-paper of Ajker Patrika. The page scans are named in the edition page (names contain a random part), read by Gemini Vision."
+  },
+  {
+    "id": "src_epaper_dainikbangla",
+    "type": "epaper_generic",
+    "url": "https://epaper.dainikbangla.com.bd/",
+    "public_url": "https://epaper.dainikbangla.com.bd/",
+    "organization_id": "epaper_dainikbangla",
+    "newspaper": "Dainik Bangla",
+    "tier": 2,
+    "requires_js": false,
+    "verify_ssl": true,
+    "rate_limit_seconds": 2,
+    "enabled": true,
+    "aggregator": true,
+    "members_only": false,
+    "max_documents": 0,
+    "min_interval_hours": 12,
+    "epaper": {
+      "mode": "template",
+      "image_template": "https://epaper.dainikbangla.com.bd/assets/contents/{yyyy}/{date}/pages/{date}_{page}.jpg",
+      "view_url": "https://epaper.dainikbangla.com.bd/home/page/{date}/{page}",
+      "max_pages": 24
+    },
+    "note": "Daily e-paper of Dainik Bangla. Page scans are public files named by date and page number; read by Gemini Vision."
+  },
+  {
+    "id": "src_epaper_inqilab",
+    "type": "epaper_generic",
+    "url": "https://epaper.dailyinqilab.com/",
+    "public_url": "https://epaper.dailyinqilab.com/",
+    "organization_id": "epaper_inqilab",
+    "newspaper": "Daily Inqilab",
+    "tier": 2,
+    "requires_js": false,
+    "verify_ssl": true,
+    "rate_limit_seconds": 2,
+    "enabled": true,
+    "aggregator": true,
+    "members_only": false,
+    "max_documents": 0,
+    "min_interval_hours": 12,
+    "epaper": {
+      "mode": "template",
+      "image_template": "https://epaper.dailyinqilab.com/uploads/epaper/{yyyy}/{mm}/{dd}/pages/1/page_{page}.jpg",
+      "view_url": "https://epaper.dailyinqilab.com/",
+      "max_pages": 24
+    },
+    "note": "Daily e-paper of Daily Inqilab. Page scans are public files named by date and page number; read by Gemini Vision."
   }
 ]
 

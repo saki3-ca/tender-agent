@@ -144,22 +144,27 @@ class GenericEpaperCrawler:
         return 200, (None if pages else "NO_PAGES: no page images found for the edition"), pages
 
     # ------------------------------------------------------------------ crawl
+    async def discover(self, client: httpx.AsyncClient, day: date, limit: Optional[int] = None
+                       ) -> Tuple[int, Optional[str], List[Page]]:
+        """Finds the page images of the edition: (status, error or None, [(page, image address)])."""
+        limit = int(limit or self.cfg.get("max_pages", DEFAULT_MAX_PAGES))
+        mode = self.cfg.get("mode", "html")
+        if (mode == "browser" or self.cfg.get("fetch") == "browser") and not pc_browser.enabled():
+            return 0, "NEEDS_PC_BROWSER: needs a browser (set EPAPER_PC_BROWSER=1; GitHub Actions does this)", []
+        if mode == "template":
+            error, pages = await self._pages_template(client, day, limit)
+            return 200, error, pages
+        if mode == "browser":
+            return await self._pages_browser(day)
+        return await self._pages_html(client, day)
+
     async def crawl_edition(self, target_date: Optional[date] = None, max_pages: Optional[int] = None
                             ) -> Tuple[int, Optional[str], List[Dict[str, Any]]]:
         day = target_date or datetime.now(DHAKA_TZ).date()
         limit = int(max_pages or self.cfg.get("max_pages", DEFAULT_MAX_PAGES))
-        mode = self.cfg.get("mode", "html")
-        needs_browser = mode == "browser" or self.cfg.get("fetch") == "browser"
-        if needs_browser and not pc_browser.enabled():
-            return 0, "NEEDS_PC_BROWSER: needs a browser (set EPAPER_PC_BROWSER=1; GitHub Actions does this)", []
 
         async with httpx.AsyncClient(timeout=60.0, follow_redirects=True, proxy=pc_browser.proxy_url()) as client:
-            if mode == "template":
-                status, (error, pages) = 200, await self._pages_template(client, day, limit)
-            elif mode == "browser":
-                status, error, pages = await self._pages_browser(day)
-            else:
-                status, error, pages = await self._pages_html(client, day)
+            status, error, pages = await self.discover(client, day, limit)
             if error:
                 return status, error, []
 
