@@ -58,3 +58,6 @@ temp/
 data/
 downloads/
 scratch/
+
+# local Claude Code permissions (personal)
+.claude/settings.local.json
