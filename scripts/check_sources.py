@@ -47,10 +47,11 @@ def official_domain(org_id: str) -> str:
     return ""
 
 
-async def probe(crawler: TenderCrawler, url: str, verify_ssl: bool = True) -> dict:
-    page = await crawler.fetch_page({"url": url, "verify_ssl": verify_ssl})
+async def probe(crawler: TenderCrawler, url: str, verify_ssl: bool = True, requires_js: bool = False) -> dict:
+    # Same fetch path as the monitor: JS-rendered sources are checked in a headless browser.
+    page = await crawler.fetch_page({"url": url, "verify_ssl": verify_ssl, "requires_js": requires_js})
     if not page.ok and page.error == "SSL_ERROR" and verify_ssl:
-        retry = await probe(crawler, url, verify_ssl=False)
+        retry = await probe(crawler, url, verify_ssl=False, requires_js=requires_js)
         retry["needs_verify_ssl_false"] = retry["ok"]
         return retry
     info = {"url": url, "final_url": page.final_url, "ok": page.ok, "error": page.error, "status": page.status,
@@ -117,7 +118,8 @@ async def main(args) -> None:
 
     async def check(src):
         async with sem:
-            r = await probe(crawler, src["url"], verify_ssl=src.get("verify_ssl", True))
+            r = await probe(crawler, src["url"], verify_ssl=src.get("verify_ssl", True),
+                            requires_js=src.get("requires_js", False))
             r.pop("_html", None)
             entry = {"source_id": src["id"], "organization": config.organization(src["organization_id"])["name"],
                      "current": r, "candidates": []}

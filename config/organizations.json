@@ -2057,10 +2057,10 @@
     ],
     "organization_type": "NGO",
     "sector": "ngos",
-    "official_domain": "banckteshekha.org",
-    "procurement_url": "https://banckteshekha.org/notice/",
-    "tender_url": "https://banckteshekha.org/notice/",
-    "notice_url": "https://banckteshekha.org/notice/",
+    "official_domain": "banchteshekha.org",
+    "procurement_url": "https://banchteshekha.org/notice/",
+    "tender_url": "https://banchteshekha.org/notice/",
+    "notice_url": "https://banchteshekha.org/notice/",
     "is_ifrs9_target": false,
     "source_status": "OK",
     "last_verified": "2026-10-05",
@@ -2177,7 +2177,11 @@
   {
     "organization_id": "agg_alltender_ict",
     "canonical_name": "Alltender ICT & IT Services",
-    "aliases": ["Alltender ICT", "Alltender IT", "Alltender Subcategory 64"],
+    "aliases": [
+      "Alltender ICT",
+      "Alltender IT",
+      "Alltender Subcategory 64"
+    ],
     "organization_type": "AGGREGATOR",
     "sector": "it",
     "official_domain": "alltender.com",
@@ -2193,7 +2197,10 @@
   {
     "organization_id": "gov_bcc",
     "canonical_name": "Bangladesh Computer Council (BCC)",
-    "aliases": ["BCC", "বাংলাদেশ কম্পিউটার কাউন্সিল"],
+    "aliases": [
+      "BCC",
+      "বাংলাদেশ কম্পিউটার কাউন্সিল"
+    ],
     "organization_type": "GOVERNMENT_AGENCY",
     "sector": "it",
     "official_domain": "bcc.gov.bd",
@@ -2209,7 +2216,10 @@
   {
     "organization_id": "gov_ictd",
     "canonical_name": "Information & Communication Technology Division (ICTD)",
-    "aliases": ["ICT Division", "তথ্য ও যোগাযোগ প্রযুক্তি বিভাগ"],
+    "aliases": [
+      "ICT Division",
+      "তথ্য ও যোগাযোগ প্রযুক্তি বিভাগ"
+    ],
     "organization_type": "GOVERNMENT_MINISTRY",
     "sector": "it",
     "official_domain": "ictd.gov.bd",
@@ -2225,7 +2235,11 @@
   {
     "organization_id": "epaper_prothomalo",
     "canonical_name": "Prothom Alo E-Paper",
-    "aliases": ["Prothom Alo", "দৈনিক প্রথম আলো", "epaper.prothomalo.com"],
+    "aliases": [
+      "Prothom Alo",
+      "দৈনিক প্রথম আলো",
+      "epaper.prothomalo.com"
+    ],
     "organization_type": "NEWSPAPER",
     "sector": "ngos",
     "official_domain": "prothomalo.com",
@@ -2241,7 +2255,11 @@
   {
     "organization_id": "epaper_financialexpress",
     "canonical_name": "The Financial Express E-Paper",
-    "aliases": ["The Financial Express", "Financial Express Bangladesh", "FE epaper"],
+    "aliases": [
+      "The Financial Express",
+      "Financial Express Bangladesh",
+      "FE epaper"
+    ],
     "organization_type": "NEWSPAPER",
     "sector": "banking",
     "official_domain": "thefinancialexpress.com.bd",
@@ -2257,7 +2275,11 @@
   {
     "organization_id": "epaper_bangladeshtoday",
     "canonical_name": "The Bangladesh Today E-Paper",
-    "aliases": ["The Bangladesh Today", "Bangladesh Today", "thebangladeshtoday.com"],
+    "aliases": [
+      "The Bangladesh Today",
+      "Bangladesh Today",
+      "thebangladeshtoday.com"
+    ],
     "organization_type": "NEWSPAPER",
     "sector": "ngos",
     "official_domain": "thebangladeshtoday.com",
@@ -2273,7 +2295,11 @@
   {
     "organization_id": "epaper_protidinerbangladesh",
     "canonical_name": "Protidiner Bangladesh E-Paper",
-    "aliases": ["Protidiner Bangladesh", "প্রতিদিনের বাংলাদেশ", "protidinerbangladesh.com"],
+    "aliases": [
+      "Protidiner Bangladesh",
+      "প্রতিদিনের বাংলাদেশ",
+      "protidinerbangladesh.com"
+    ],
     "organization_type": "NEWSPAPER",
     "sector": "ngos",
     "official_domain": "protidinerbangladesh.com",
@@ -2289,7 +2315,11 @@
   {
     "organization_id": "epaper_dhakatribune",
     "canonical_name": "Dhaka Tribune E-Paper",
-    "aliases": ["Dhaka Tribune", "dhakatribune.com", "DT epaper"],
+    "aliases": [
+      "Dhaka Tribune",
+      "dhakatribune.com",
+      "DT epaper"
+    ],
     "organization_type": "NEWSPAPER",
     "sector": "ngos",
     "official_domain": "dhakatribune.com",
@@ -2305,7 +2335,12 @@
   {
     "organization_id": "epaper_jugantor",
     "canonical_name": "Daily Jugantor E-Paper",
-    "aliases": ["Daily Jugantor", "দৈনিক যুগান্তর", "jugantor.com", "যুগান্তর"],
+    "aliases": [
+      "Daily Jugantor",
+      "দৈনিক যুগান্তর",
+      "jugantor.com",
+      "যুগান্তর"
+    ],
     "organization_type": "NEWSPAPER",
     "sector": "ngos",
     "official_domain": "jugantor.com",
@@ -2321,7 +2356,11 @@
   {
     "organization_id": "epaper_bdpratidin",
     "canonical_name": "Bangladesh Pratidin E-Paper",
-    "aliases": ["Bangladesh Pratidin", "বাংলাদেশ প্রতিদিন", "bd-pratidin.com"],
+    "aliases": [
+      "Bangladesh Pratidin",
+      "বাংলাদেশ প্রতিদিন",
+      "bd-pratidin.com"
+    ],
     "organization_type": "NEWSPAPER",
     "sector": "ngos",
     "official_domain": "bd-pratidin.com",
@@ -2529,6 +2568,3 @@
     "notes": "Christian Aid procurement and tenders (global page, filtered to Bangladesh)"
   }
 ]
-
-
-

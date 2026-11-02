@@ -164,14 +164,14 @@
   },
   {
     "id": "src_11_krishi_tender",
-    "url": "https://www.krishibank.org.bd/tender",
+    "url": "https://krishibank.gov.bd/pages/tenders",
     "organization_id": "bank_11_krishi",
     "tier": 1,
     "requires_js": false,
     "verify_ssl": false,
     "rate_limit_seconds": 3,
     "enabled": true,
-    "note": "Site certificate is invalid; public page read without certificate check."
+    "verified": "2026-11-03"
   },
   {
     "id": "src_12_rakub_tender",
@@ -186,13 +186,14 @@
   },
   {
     "id": "src_13_city_tender",
-    "url": "https://www.thecitybank.com/tender",
+    "url": "https://www.citybankplc.com/rfp/request-for-proposal",
     "organization_id": "bank_13_city",
     "tier": 1,
-    "requires_js": false,
+    "requires_js": true,
     "verify_ssl": true,
     "rate_limit_seconds": 3,
-    "enabled": true
+    "enabled": true,
+    "verified": "2026-11-03"
   },
   {
     "id": "src_14_ific_tender",
@@ -224,7 +225,8 @@
     "requires_js": false,
     "verify_ssl": true,
     "rate_limit_seconds": 3,
-    "enabled": true
+    "enabled": false,
+    "note": "Disabled 2026-11-03: configured page returns 404/not-found, and no tender page is linked from the organization's homepage or sitemap. Re-enable from the Admin page with the correct URL if one is found."
   },
   {
     "id": "src_17_one_tender",
@@ -234,7 +236,8 @@
     "requires_js": false,
     "verify_ssl": true,
     "rate_limit_seconds": 3,
-    "enabled": true
+    "enabled": false,
+    "note": "Disabled 2026-11-03: configured page returns 404/not-found, and no tender page is linked from the organization's homepage or sitemap. Re-enable from the Admin page with the correct URL if one is found."
   },
   {
     "id": "src_18_mtb_tender",
@@ -259,14 +262,14 @@
   },
   {
     "id": "src_20_trust_tender",
-    "url": "https://www.trustbank.com.bd/tenders/",
+    "url": "https://www.tblbd.com/tenders/",
     "organization_id": "bank_20_trust",
     "tier": 1,
     "requires_js": false,
     "verify_ssl": false,
     "rate_limit_seconds": 3,
     "enabled": true,
-    "verified": "2026-10-05"
+    "verified": "2026-11-03"
   },
   {
     "id": "src_21_meghna_tender",
@@ -313,14 +316,14 @@
   },
   {
     "id": "src_25_bengal_tender",
-    "url": "https://www.bgcb.com.bd/e-tender",
+    "url": "https://www.bgcb.com.bd/index.php/e-tender",
     "organization_id": "bank_25_bengal",
     "tier": 1,
-    "requires_js": false,
+    "requires_js": true,
     "verify_ssl": true,
     "rate_limit_seconds": 3,
     "enabled": true,
-    "verified": "2026-10-05"
+    "verified": "2026-11-03"
   },
   {
     "id": "src_26_islami_bank_tender",
@@ -362,17 +365,19 @@
     "requires_js": false,
     "verify_ssl": true,
     "rate_limit_seconds": 3,
-    "enabled": true
+    "enabled": false,
+    "note": "Disabled 2026-11-03: configured page returns 404/not-found, and no tender page is linked from the organization's homepage or sitemap. Re-enable from the Admin page with the correct URL if one is found."
   },
   {
     "id": "src_30_woori_tender",
-    "url": "https://www.wooribank.com/bd/tender",
+    "url": "https://go.wooribank.com/bd/hs/cc/HSCC600_01L.do",
     "organization_id": "bank_30_woori",
     "tier": 1,
     "requires_js": true,
     "verify_ssl": true,
     "rate_limit_seconds": 3,
-    "enabled": true
+    "enabled": true,
+    "verified": "2026-11-03"
   },
   {
     "id": "src_ngo_01_brac",
@@ -533,7 +538,8 @@
     "requires_js": false,
     "verify_ssl": true,
     "rate_limit_seconds": 3,
-    "enabled": true
+    "enabled": false,
+    "note": "Disabled 2026-11-03: configured page returns 404/not-found, and no tender page is linked from the organization's homepage or sitemap. Re-enable from the Admin page with the correct URL if one is found."
   },
   {
     "id": "src_ngo_16_rdrs_bangladesh",
@@ -548,13 +554,15 @@
   },
   {
     "id": "src_ngo_17_save_the_children",
-    "url": "https://bangladesh.savethechildren.net/tenders",
+    "url": "https://www.savethechildren.net/tenders",
     "organization_id": "ngo_17_save_the_children",
     "tier": 1,
     "requires_js": false,
     "verify_ssl": true,
     "rate_limit_seconds": 3,
-    "enabled": true
+    "enabled": true,
+    "verified": "2026-11-03",
+    "country_filter": true
   },
   {
     "id": "src_ngo_18_oxfam_in_bangladesh",
@@ -606,18 +614,20 @@
     "requires_js": false,
     "verify_ssl": true,
     "rate_limit_seconds": 3,
-    "enabled": true
+    "enabled": false,
+    "note": "Disabled 2026-11-03: configured page returns 404/not-found, and no tender page is linked from the organization's homepage or sitemap. Re-enable from the Admin page with the correct URL if one is found."
   },
   {
     "id": "src_ngo_23_solidarites_international_bangladesh",
-    "url": "https://www.solidarites.org/en/calls-for-tenders/",
+    "url": "https://www.solidarites.org/en/tender-offers/",
     "organization_id": "ngo_23_solidarites_international_bangladesh",
     "tier": 2,
     "requires_js": false,
     "verify_ssl": true,
     "rate_limit_seconds": 3,
     "enabled": true,
-    "country_filter": true
+    "country_filter": true,
+    "verified": "2026-11-03"
   },
   {
     "id": "src_ngo_24_action_against_hunger",
@@ -666,25 +676,28 @@
   },
   {
     "id": "src_ngo_28_voluntary_service_overseas",
-    "url": "https://www.vsointernational.org/about/procurement",
+    "url": "https://www.vsointernational.org/about/international-tenders",
     "organization_id": "ngo_28_voluntary_service_overseas",
     "tier": 2,
     "requires_js": false,
     "verify_ssl": true,
     "rate_limit_seconds": 3,
     "enabled": true,
-    "country_filter": true
+    "country_filter": true,
+    "verified": "2026-11-03"
   },
   {
     "id": "src_ngo_29_practical_action_bangladesh",
-    "url": "https://practicalaction.org/procurement/",
+    "url": "https://practicalaction.org/careers/other-opportunities/",
     "organization_id": "ngo_29_practical_action_bangladesh",
     "tier": 2,
     "requires_js": false,
     "verify_ssl": true,
     "rate_limit_seconds": 3,
     "enabled": true,
-    "country_filter": true
+    "country_filter": true,
+    "verified": "2026-11-03",
+    "note": "Linked from the homepage as 'Tenders'."
   },
   {
     "id": "src_ngo_30_concern_worldwide_bangladesh",
@@ -700,13 +713,16 @@
   },
   {
     "id": "src_ngo_31_helvetas_bangladesh",
-    "url": "https://www.helvetas.org/en/bangladesh/who-we-are/jobs-tenders",
+    "url": "https://www.helvetas.org/en/switzerland/who-we-are/procurement",
     "organization_id": "ngo_31_helvetas_bangladesh",
     "tier": 2,
     "requires_js": false,
     "verify_ssl": true,
     "rate_limit_seconds": 3,
-    "enabled": true
+    "enabled": true,
+    "verified": "2026-11-03",
+    "note": "Global procurement page (no Bangladesh-specific page exists); country filter applies.",
+    "country_filter": true
   },
   {
     "id": "src_ngo_32_handicap_international_humanity",
@@ -716,8 +732,9 @@
     "requires_js": false,
     "verify_ssl": true,
     "rate_limit_seconds": 3,
-    "enabled": true,
-    "country_filter": true
+    "enabled": false,
+    "country_filter": true,
+    "note": "Disabled 2026-11-03: configured page returns 404/not-found, and no tender page is linked from the organization's homepage or sitemap. Re-enable from the Admin page with the correct URL if one is found."
   },
   {
     "id": "src_ngo_33_sightsavers_bangladesh",
@@ -727,8 +744,9 @@
     "requires_js": false,
     "verify_ssl": true,
     "rate_limit_seconds": 3,
-    "enabled": true,
-    "country_filter": true
+    "enabled": false,
+    "country_filter": true,
+    "note": "Disabled 2026-11-03: configured page returns 404/not-found, and no tender page is linked from the organization's homepage or sitemap. Re-enable from the Admin page with the correct URL if one is found."
   },
   {
     "id": "src_ngo_34_danish_refugee_council",
@@ -774,8 +792,9 @@
     "requires_js": false,
     "verify_ssl": true,
     "rate_limit_seconds": 3,
-    "enabled": true,
-    "country_filter": true
+    "enabled": false,
+    "country_filter": true,
+    "note": "Disabled 2026-11-03: configured page returns 404/not-found, and no tender page is linked from the organization's homepage or sitemap. Re-enable from the Admin page with the correct URL if one is found."
   },
   {
     "id": "src_ngo_38_medecins_du_monde",
@@ -785,19 +804,21 @@
     "requires_js": false,
     "verify_ssl": true,
     "rate_limit_seconds": 3,
-    "enabled": true,
-    "country_filter": true
+    "enabled": false,
+    "country_filter": true,
+    "note": "Disabled 2026-11-03: configured page returns 404/not-found, and no tender page is linked from the organization's homepage or sitemap. Re-enable from the Admin page with the correct URL if one is found."
   },
   {
     "id": "src_ngo_39_malteser_international_bangladesh",
-    "url": "https://www.malteser-international.org/en/procurement.html",
+    "url": "https://www.malteser-international.org/en/about-us/service/tenders.html",
     "organization_id": "ngo_39_malteser_international_bangladesh",
     "tier": 2,
     "requires_js": false,
     "verify_ssl": true,
     "rate_limit_seconds": 3,
     "enabled": true,
-    "country_filter": true
+    "country_filter": true,
+    "verified": "2026-11-03"
   },
   {
     "id": "src_ngo_40_room_to_read",
@@ -807,8 +828,9 @@
     "requires_js": false,
     "verify_ssl": true,
     "rate_limit_seconds": 3,
-    "enabled": true,
-    "country_filter": true
+    "enabled": false,
+    "country_filter": true,
+    "note": "Disabled 2026-11-03: configured page returns 404/not-found, and no tender page is linked from the organization's homepage or sitemap. Re-enable from the Admin page with the correct URL if one is found."
   },
   {
     "id": "src_ngo_41_marie_stopes_bangladesh",
@@ -818,8 +840,9 @@
     "requires_js": false,
     "verify_ssl": true,
     "rate_limit_seconds": 3,
-    "enabled": true,
-    "country_filter": true
+    "enabled": false,
+    "country_filter": true,
+    "note": "Disabled 2026-11-03: configured page returns 404/not-found, and no tender page is linked from the organization's homepage or sitemap. Re-enable from the Admin page with the correct URL if one is found."
   },
   {
     "id": "src_ngo_42_engenderhealth_bangladesh",
@@ -829,8 +852,9 @@
     "requires_js": false,
     "verify_ssl": true,
     "rate_limit_seconds": 3,
-    "enabled": true,
-    "country_filter": true
+    "enabled": false,
+    "country_filter": true,
+    "note": "Disabled 2026-11-03: configured page returns 404/not-found, and no tender page is linked from the organization's homepage or sitemap. Re-enable from the Admin page with the correct URL if one is found."
   },
   {
     "id": "src_ngo_43_pathfinder_international_bangladesh",
@@ -840,19 +864,22 @@
     "requires_js": false,
     "verify_ssl": true,
     "rate_limit_seconds": 3,
-    "enabled": true,
-    "country_filter": true
+    "enabled": false,
+    "country_filter": true,
+    "note": "Disabled 2026-11-03: configured page returns 404/not-found, and no tender page is linked from the organization's homepage or sitemap. Re-enable from the Admin page with the correct URL if one is found."
   },
   {
     "id": "src_ngo_44_nutrition_international_bangladesh",
-    "url": "https://www.nutritionintl.org/work-with-us/procurement-rfps/",
+    "url": "https://nutritionintl.org/careers/",
     "organization_id": "ngo_44_nutrition_international_bangladesh",
     "tier": 2,
     "requires_js": false,
     "verify_ssl": true,
     "rate_limit_seconds": 3,
     "enabled": true,
-    "country_filter": true
+    "country_filter": true,
+    "verified": "2026-11-03",
+    "note": "Linked from the homepage as 'Consultants & Vendors'; RFPs are published there."
   },
   {
     "id": "src_ngo_45_jhpiego_bangladesh",
@@ -867,14 +894,15 @@
   },
   {
     "id": "src_ngo_46_chemonics_international_bangladesh",
-    "url": "https://chemonics.com/procurement-opportunities/",
+    "url": "https://www.chemonics.com/procurements/",
     "organization_id": "ngo_46_chemonics_international_bangladesh",
     "tier": 2,
     "requires_js": false,
     "verify_ssl": true,
     "rate_limit_seconds": 3,
     "enabled": true,
-    "country_filter": true
+    "country_filter": true,
+    "verified": "2026-11-03"
   },
   {
     "id": "src_ngo_47_dai_development_alternatives",
@@ -884,30 +912,33 @@
     "requires_js": false,
     "verify_ssl": true,
     "rate_limit_seconds": 3,
-    "enabled": true,
-    "country_filter": true
+    "enabled": false,
+    "country_filter": true,
+    "note": "Disabled 2026-11-03: configured page returns 404/not-found, and no tender page is linked from the organization's homepage or sitemap. Re-enable from the Admin page with the correct URL if one is found."
   },
   {
     "id": "src_ngo_48_rti_international_bangladesh",
-    "url": "https://www.rti.org/procurement-opportunities",
+    "url": "https://www.rti.org/current-opportunities",
     "organization_id": "ngo_48_rti_international_bangladesh",
     "tier": 2,
-    "requires_js": false,
+    "requires_js": true,
     "verify_ssl": true,
     "rate_limit_seconds": 3,
     "enabled": true,
-    "country_filter": true
+    "country_filter": true,
+    "verified": "2026-11-03"
   },
   {
     "id": "src_ngo_49_fhi_360_bangladesh",
-    "url": "https://www.fhi360.org/working-with-fhi-360/procurement/",
+    "url": "https://solicitations.fhi360.org/Solicitation.aspx",
     "organization_id": "ngo_49_fhi_360_bangladesh",
     "tier": 2,
-    "requires_js": false,
+    "requires_js": true,
     "verify_ssl": true,
     "rate_limit_seconds": 3,
     "enabled": true,
-    "country_filter": true
+    "country_filter": true,
+    "verified": "2026-11-03"
   },
   {
     "id": "src_ngo_50_winrock_international_bangladesh",
@@ -917,8 +948,9 @@
     "requires_js": false,
     "verify_ssl": true,
     "rate_limit_seconds": 3,
-    "enabled": true,
-    "country_filter": true
+    "enabled": false,
+    "country_filter": true,
+    "note": "Disabled 2026-11-03: configured page returns 404/not-found, and no tender page is linked from the organization's homepage or sitemap. Re-enable from the Admin page with the correct URL if one is found."
   },
   {
     "id": "src_ngo_51_ide_international_development",
@@ -928,8 +960,9 @@
     "requires_js": false,
     "verify_ssl": true,
     "rate_limit_seconds": 3,
-    "enabled": true,
-    "country_filter": true
+    "enabled": false,
+    "country_filter": true,
+    "note": "Disabled 2026-11-03: configured page returns 404/not-found, and no tender page is linked from the organization's homepage or sitemap. Re-enable from the Admin page with the correct URL if one is found."
   },
   {
     "id": "src_ngo_52_land_o_lakes",
@@ -950,8 +983,9 @@
     "requires_js": false,
     "verify_ssl": true,
     "rate_limit_seconds": 3,
-    "enabled": true,
-    "country_filter": true
+    "enabled": false,
+    "country_filter": true,
+    "note": "Disabled 2026-11-03: configured page returns 404/not-found, and no tender page is linked from the organization's homepage or sitemap. Re-enable from the Admin page with the correct URL if one is found."
   },
   {
     "id": "src_ngo_54_habitat_for_humanity",
@@ -961,17 +995,19 @@
     "requires_js": false,
     "verify_ssl": true,
     "rate_limit_seconds": 3,
-    "enabled": true
+    "enabled": false,
+    "note": "Disabled 2026-11-03: configured page returns 404/not-found, and no tender page is linked from the organization's homepage or sitemap. Re-enable from the Admin page with the correct URL if one is found."
   },
   {
     "id": "src_ngo_55_wateraid_bangladesh",
-    "url": "https://www.wateraid.org/bd/procurement-and-tender-notices",
+    "url": "https://www.wateraid.org/bd/business-opportunities",
     "organization_id": "ngo_55_wateraid_bangladesh",
     "tier": 2,
     "requires_js": false,
     "verify_ssl": true,
     "rate_limit_seconds": 3,
-    "enabled": true
+    "enabled": true,
+    "verified": "2026-11-03"
   },
   {
     "id": "src_ngo_56_orbis_international_bangladesh",
@@ -981,8 +1017,9 @@
     "requires_js": false,
     "verify_ssl": true,
     "rate_limit_seconds": 3,
-    "enabled": true,
-    "country_filter": true
+    "enabled": false,
+    "country_filter": true,
+    "note": "Disabled 2026-11-03: configured page returns 404/not-found, and no tender page is linked from the organization's homepage or sitemap. Re-enable from the Admin page with the correct URL if one is found."
   },
   {
     "id": "src_ngo_57_fred_hollows_foundation",
@@ -992,8 +1029,9 @@
     "requires_js": false,
     "verify_ssl": true,
     "rate_limit_seconds": 3,
-    "enabled": true,
-    "country_filter": true
+    "enabled": false,
+    "country_filter": true,
+    "note": "Disabled 2026-11-03: configured page returns 404/not-found, and no tender page is linked from the organization's homepage or sitemap. Re-enable from the Admin page with the correct URL if one is found."
   },
   {
     "id": "src_ngo_58_lepra_bangladesh",
@@ -1014,8 +1052,9 @@
     "requires_js": false,
     "verify_ssl": true,
     "rate_limit_seconds": 3,
-    "enabled": true,
-    "country_filter": true
+    "enabled": false,
+    "country_filter": true,
+    "note": "Disabled 2026-11-03: configured page returns 404/not-found, and no tender page is linked from the organization's homepage or sitemap. Re-enable from the Admin page with the correct URL if one is found."
   },
   {
     "id": "src_ngo_60_stromme_foundation_bangladesh",
@@ -1025,8 +1064,9 @@
     "requires_js": false,
     "verify_ssl": true,
     "rate_limit_seconds": 3,
-    "enabled": true,
-    "country_filter": true
+    "enabled": false,
+    "country_filter": true,
+    "note": "Disabled 2026-11-03: configured page returns 404/not-found, and no tender page is linked from the organization's homepage or sitemap. Re-enable from the Admin page with the correct URL if one is found."
   },
   {
     "id": "src_ngo_61_terre_des_hommes",
@@ -1047,7 +1087,8 @@
     "requires_js": false,
     "verify_ssl": true,
     "rate_limit_seconds": 3,
-    "enabled": true
+    "enabled": false,
+    "note": "Disabled 2026-11-03: configured page returns 404/not-found, and no tender page is linked from the organization's homepage or sitemap. Re-enable from the Admin page with the correct URL if one is found."
   },
   {
     "id": "src_ngo_63_sos_children_s",
@@ -1057,8 +1098,9 @@
     "requires_js": false,
     "verify_ssl": true,
     "rate_limit_seconds": 3,
-    "enabled": true,
-    "country_filter": true
+    "enabled": false,
+    "country_filter": true,
+    "note": "Disabled 2026-11-03: configured page returns 404/not-found, and no tender page is linked from the organization's homepage or sitemap. Re-enable from the Admin page with the correct URL if one is found."
   },
   {
     "id": "src_ngo_64_good_neighbors_bangladesh",
@@ -1078,8 +1120,9 @@
     "requires_js": false,
     "verify_ssl": true,
     "rate_limit_seconds": 3,
-    "enabled": true,
-    "country_filter": true
+    "enabled": false,
+    "country_filter": true,
+    "note": "Disabled 2026-11-03: configured page returns 404/not-found, and no tender page is linked from the organization's homepage or sitemap. Re-enable from the Admin page with the correct URL if one is found."
   },
   {
     "id": "src_ngo_66_world_fish_bangladesh",
@@ -1100,8 +1143,9 @@
     "requires_js": false,
     "verify_ssl": true,
     "rate_limit_seconds": 3,
-    "enabled": true,
-    "country_filter": true
+    "enabled": false,
+    "country_filter": true,
+    "note": "Disabled 2026-11-03: configured page returns 404/not-found, and no tender page is linked from the organization's homepage or sitemap. Re-enable from the Admin page with the correct URL if one is found."
   },
   {
     "id": "src_ngo_68_irri_international_rice",
@@ -1111,8 +1155,9 @@
     "requires_js": false,
     "verify_ssl": true,
     "rate_limit_seconds": 3,
-    "enabled": true,
-    "country_filter": true
+    "enabled": false,
+    "country_filter": true,
+    "note": "Disabled 2026-11-03: configured page returns 404/not-found, and no tender page is linked from the organization's homepage or sitemap. Re-enable from the Admin page with the correct URL if one is found."
   },
   {
     "id": "src_ngo_69_association_for_land",
@@ -1245,13 +1290,14 @@
   },
   {
     "id": "src_ngo_81_shakti_foundation_for",
-    "url": "https://shakti.org.bd/tenders",
+    "url": "https://www.shakti.org.bd/resources/notice",
     "organization_id": "ngo_81_shakti_foundation_for",
     "tier": 2,
     "requires_js": false,
     "verify_ssl": true,
     "rate_limit_seconds": 3,
-    "enabled": true
+    "enabled": true,
+    "verified": "2026-11-03"
   },
   {
     "id": "src_ngo_82_dushtha_shasthya_kendra",
@@ -1315,7 +1361,8 @@
     "requires_js": false,
     "verify_ssl": true,
     "rate_limit_seconds": 3,
-    "enabled": true
+    "enabled": false,
+    "note": "Disabled 2026-11-03: configured page returns 404/not-found, and no tender page is linked from the organization's homepage or sitemap. Re-enable from the Admin page with the correct URL if one is found."
   },
   {
     "id": "src_ngo_88_ashrai",
@@ -1325,17 +1372,19 @@
     "requires_js": false,
     "verify_ssl": true,
     "rate_limit_seconds": 3,
-    "enabled": true
+    "enabled": false,
+    "note": "Disabled 2026-11-03: configured page returns 404/not-found, and no tender page is linked from the organization's homepage or sitemap. Re-enable from the Admin page with the correct URL if one is found."
   },
   {
     "id": "src_ngo_89_gram_bikash_kendra",
-    "url": "https://gbk-bd.org/notice-tender/",
+    "url": "https://www.gbk-bd.org/CONNECT%20WITH%20US/Procurement/index.html",
     "organization_id": "ngo_89_gram_bikash_kendra",
     "tier": 2,
-    "requires_js": false,
+    "requires_js": true,
     "verify_ssl": true,
     "rate_limit_seconds": 3,
-    "enabled": true
+    "enabled": true,
+    "verified": "2026-11-03"
   },
   {
     "id": "src_ngo_90_idea_institute_of",
@@ -1345,8 +1394,9 @@
     "requires_js": false,
     "verify_ssl": true,
     "rate_limit_seconds": 3,
-    "enabled": true,
-    "country_filter": true
+    "enabled": false,
+    "country_filter": true,
+    "note": "Disabled 2026-11-03: configured page returns 404/not-found, and no tender page is linked from the organization's homepage or sitemap. Re-enable from the Admin page with the correct URL if one is found."
   },
   {
     "id": "src_ngo_91_cnrs_center_for",
@@ -1356,7 +1406,8 @@
     "requires_js": false,
     "verify_ssl": true,
     "rate_limit_seconds": 3,
-    "enabled": true
+    "enabled": false,
+    "note": "Disabled 2026-11-03: configured page returns 404/not-found, and no tender page is linked from the organization's homepage or sitemap. Re-enable from the Admin page with the correct URL if one is found."
   },
   {
     "id": "src_ngo_92_bcas_bangladesh_centre",
@@ -1366,7 +1417,8 @@
     "requires_js": false,
     "verify_ssl": true,
     "rate_limit_seconds": 3,
-    "enabled": true
+    "enabled": false,
+    "note": "Disabled 2026-11-03: configured page returns 404/not-found, and no tender page is linked from the organization's homepage or sitemap. Re-enable from the Admin page with the correct URL if one is found."
   },
   {
     "id": "src_ngo_93_cdd_centre_for",
@@ -1386,7 +1438,8 @@
     "requires_js": false,
     "verify_ssl": true,
     "rate_limit_seconds": 3,
-    "enabled": true
+    "enabled": false,
+    "note": "Disabled 2026-11-03: configured page returns 404/not-found, and no tender page is linked from the organization's homepage or sitemap. Re-enable from the Admin page with the correct URL if one is found."
   },
   {
     "id": "src_ngo_95_uttaran",
@@ -1401,13 +1454,15 @@
   },
   {
     "id": "src_ngo_96_banchte_shekha",
-    "url": "https://banckteshekha.org/notice/",
+    "url": "https://banchteshekha.org/notice",
     "organization_id": "ngo_96_banchte_shekha",
     "tier": 2,
     "requires_js": false,
     "verify_ssl": true,
     "rate_limit_seconds": 3,
-    "enabled": true
+    "enabled": true,
+    "verified": "2026-11-03",
+    "note": "Domain was misspelled (banckteshekha.org). The notice page currently shows placeholder text only."
   },
   {
     "id": "src_ngo_97_vard_voluntary_association",
@@ -1417,7 +1472,8 @@
     "requires_js": false,
     "verify_ssl": true,
     "rate_limit_seconds": 3,
-    "enabled": true
+    "enabled": false,
+    "note": "Disabled 2026-11-03: configured page returns 404/not-found, and no tender page is linked from the organization's homepage or sitemap. Re-enable from the Admin page with the correct URL if one is found."
   },
   {
     "id": "src_ngo_98_jaago_foundation",
@@ -1799,6 +1855,3 @@
     "note": "Added 2026-10-10: address taken from the organization's own published page; not yet read by the monitor. Check the Sources page after the next run and correct the URL in Admin if it fails."
   }
 ]
-
-
-

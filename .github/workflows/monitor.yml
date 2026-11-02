@@ -38,17 +38,37 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Cache Playwright browsers
+      - name: Resolve installed Playwright version
+        id: pw-version
+        shell: bash
+        run: |
+          echo "version=$(python -c 'from importlib.metadata import version; print(version("playwright"))')" >> "$GITHUB_OUTPUT"
+
+      - name: Cache Playwright browsers (keyed on the installed Playwright version)
         uses: actions/cache@v4
         id: playwright-cache
         with:
           path: ~/.cache/ms-playwright
-          key: ${{ runner.os }}-playwright-${{ hashFiles('requirements.txt') }}
+          key: ${{ runner.os }}-playwright-${{ steps.pw-version.outputs.version }}
+          restore-keys: |
+            ${{ runner.os }}-playwright-
 
-      - name: Install Playwright Chromium (if not cached)
+      - name: Install Playwright Chromium (if not cached for this version)
         if: steps.playwright-cache.outputs.cache-hit != 'true'
         run: |
           python -m playwright install --with-deps chromium
+
+      - name: Verify Playwright Chromium launches (smoke test)
+        run: |
+          python - <<'EOF'
+          import asyncio
+          from playwright.async_api import async_playwright
+          async def main():
+              async with async_playwright() as p:
+                  browser = await p.chromium.launch(headless=True)
+                  await browser.close()
+          asyncio.run(main())
+          EOF
 
       - name: Secret Leak Protection Check
         run: |
