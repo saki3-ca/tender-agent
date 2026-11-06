@@ -2374,6 +2374,25 @@
     "notes": "E-Paper: Highest circulation Bangla daily newspaper"
   },
   {
+    "organization_id": "epaper_tob",
+    "canonical_name": "The Business Online E-Paper",
+    "aliases": [
+      "The Business Online",
+      "tob.news"
+    ],
+    "organization_type": "NEWSPAPER",
+    "sector": "ngos",
+    "official_domain": "tob.news",
+    "procurement_url": "https://tob.news/epaper/",
+    "tender_url": "https://tob.news/epaper/",
+    "notice_url": "https://tob.news/epaper/",
+    "is_ifrs9_target": false,
+    "source_status": "OK",
+    "last_verified": "2026-11-06",
+    "last_checked": null,
+    "notes": "E-Paper: daily newspaper"
+  },
+  {
     "organization_id": "dp_unicef_bd",
     "canonical_name": "UNICEF Bangladesh",
     "aliases": [

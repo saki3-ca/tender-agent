@@ -1739,6 +1739,24 @@
     "note": "Daily digital e-paper edition of Bangladesh Pratidin. Scans pages via Gemini Multimodal Vision to find published tenders. Cloudflare serves the page views to browsers only: read in a real Chrome window by the daily e-paper workflow (virtual display in GitHub Actions; run_monitor.py --pc-browser on a PC is the fallback)."
   },
   {
+    "id": "src_epaper_tob",
+    "type": "epaper_tob",
+    "url": "https://tob.news/epaper/",
+    "public_url": "https://tob.news/epaper/",
+    "organization_id": "epaper_tob",
+    "tier": 2,
+    "requires_js": false,
+    "verify_ssl": true,
+    "rate_limit_seconds": 2,
+    "enabled": true,
+    "aggregator": true,
+    "members_only": false,
+    "max_documents": 0,
+    "min_interval_hours": 12,
+    "verified": "2026-11-06",
+    "note": "Daily digital e-paper edition of The Business Online (tob.news). Scans pages via Gemini Multimodal Vision to find published tenders. Page discovery is generic and unverified: check the first run."
+  },
+  {
     "id": "src_dp_unicef_bd",
     "url": "https://www.unicef.org/bangladesh/en/supply-and-logistics",
     "organization_id": "dp_unicef_bd",

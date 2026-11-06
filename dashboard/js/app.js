@@ -102,7 +102,7 @@
 
   function isEpaperRow(r) {
     const hay = `${r.source_id || ""} ${r.source_url || ""} ${r.notice_url || ""} ${r.document_text || ""}`.toLowerCase();
-    return hay.includes("epaper") || hay.includes("prothomalo") || hay.includes("financialexpress") || hay.includes("bangladeshtoday") || hay.includes("protidinerbangladesh") || hay.includes("dhakatribune") || hay.includes("jugantor") || hay.includes("bdpratidin");
+    return hay.includes("epaper") || hay.includes("prothomalo") || hay.includes("financialexpress") || hay.includes("bangladeshtoday") || hay.includes("protidinerbangladesh") || hay.includes("dhakatribune") || hay.includes("jugantor") || hay.includes("bdpratidin") || hay.includes("tob.news");
   }
 
   function getPaperName(t) {
@@ -114,6 +114,7 @@
     if (hay.includes("dhakatribune")) return "Dhaka Tribune";
     if (hay.includes("jugantor")) return "Daily Jugantor";
     if (hay.includes("bdpratidin") || hay.includes("pratidin")) return "Bangladesh Pratidin";
+    if (hay.includes("tob.news")) return "The Business Online";
     if (hay.includes("epaper")) return "E-Paper";
     return null;
   }
@@ -129,6 +130,7 @@
     if (hay.includes("bdpratidin") || hay.includes("pratidin")) return "Bangladesh Pratidin";
     if (hay.includes("bangladeshtoday") || hay.includes("thebangladeshtoday")) return "Bangladesh Today";
     if (hay.includes("protidinerbangladesh")) return "Protidiner Bangladesh";
+    if (hay.includes("tob.news")) return "The Business Online";
     if (hay.includes("epaper")) return "Newspaper";
 
     // 2. Aggregators & Platforms

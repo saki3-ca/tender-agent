@@ -35,6 +35,7 @@ from app.crawler.epaper.dhakatribune import DhakaTribuneEpaperCrawler
 from app.crawler.epaper.financialexpress import FinancialExpressEpaperCrawler
 from app.crawler.epaper.jugantor import JugantorEpaperCrawler
 from app.crawler.epaper.prothomalo import ProthomAloEpaperCrawler
+from app.crawler.epaper.tob import TobEpaperCrawler
 from app.crawler.epaper.protidinerbangladesh import ProtidinerBangladeshEpaperCrawler
 from app.db.supabase import Store
 
@@ -318,6 +319,8 @@ class Monitor:
             status_code, error, pairs = await self._epaper_listings(source, JugantorEpaperCrawler(), "Daily Jugantor")
         elif source.get("type") == "epaper_bdpratidin":
             status_code, error, pairs = await self._epaper_listings(source, BdPratidinEpaperCrawler(), "Bangladesh Pratidin")
+        elif source.get("type") == "epaper_tob":
+            status_code, error, pairs = await self._epaper_listings(source, TobEpaperCrawler(), "The Business Online")
         else:
             status_code, error, pairs = await self._page_listings(source)
 
