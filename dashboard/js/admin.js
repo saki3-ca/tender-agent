@@ -86,22 +86,37 @@
   // (ADMIN_STANDALONE_CODE on the run-monitor Edge Function) that unlocks the manual crawler run.
   let standaloneCode = null;
 
+  // Returns null when the code is accepted, otherwise the message to show. Only a 403 means a wrong code:
+  // a network/CORS failure or a server error (e.g. GitHub unreachable) is reported as such, not as "wrong code".
   async function verifyStandaloneCode(code) {
-    const res = await fetch(RUN_FN, {
-      method: "GET",
-      headers: { "x-admin-code": code, apikey: env.SUPABASE_ANON_KEY },
-    });
-    return res.ok;
+    let res;
+    try {
+      res = await fetch(RUN_FN, {
+        method: "GET",
+        headers: { "x-admin-code": code, apikey: env.SUPABASE_ANON_KEY },
+      });
+    } catch (e) {
+      return "Could not reach the run service. Check your connection and try again.";
+    }
+    if (res.ok) return null;
+    if (res.status === 403) return "Incorrect admin code.";
+    const body = await res.json().catch(() => ({}));
+    return `The run service failed: ${body.error || `HTTP ${res.status}`}`;
   }
 
   async function unlockStandalone(code) {
-    if (!(await verifyStandaloneCode(code))) {
-      msg("#sa-msg", "Incorrect or invalid admin code.", true);
+    const problem = await verifyStandaloneCode(code);
+    if (problem) {
+      msg("#sa-msg", problem, true);
       return false;
     }
+    msg("#sa-msg", "");
     standaloneCode = code;
     const login = $("#standalone-login");
     if (login) login.hidden = true;
+    // The header's "+ Add Source" jumps to a panel that stays hidden in standalone mode.
+    const addLink = document.querySelector('.user-actions-nav a[href="#add-section"]');
+    if (addLink) addLink.hidden = true;
     // Reveal the admin area, but keep the data-management panels (portal-only) hidden.
     const area = $("#admin-area");
     if (area) area.hidden = false;
@@ -118,15 +133,23 @@
     if (login) { login.hidden = false; $("#sa-code")?.focus(); }
   }
 
-  $("#sa-login")?.addEventListener("click", async () => {
+  async function submitStandalone() {
     const code = ($("#sa-code")?.value || "").trim();
     if (!code) { msg("#sa-msg", "Enter the admin code.", true); return; }
     const btn = $("#sa-login");
     if (btn) btn.disabled = true;
-    const ok = await unlockStandalone(code);
-    if (btn) btn.disabled = false;
+    msg("#sa-msg", "Checking…");
+    let ok = false;
+    try {
+      ok = await unlockStandalone(code);
+    } finally {
+      if (btn) btn.disabled = false; // never leave the button stuck disabled
+    }
     if (ok) { const c = $("#sa-code"); if (c) c.value = ""; }
-  });
+  }
+
+  $("#sa-login")?.addEventListener("click", submitStandalone);
+  $("#sa-code")?.addEventListener("keydown", (e) => { if (e.key === "Enter") submitStandalone(); });
 
   document.addEventListener("ta-standalone", setupStandalone);
 

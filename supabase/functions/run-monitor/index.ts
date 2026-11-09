@@ -1,7 +1,8 @@
 // "Run now" for the Admin page.
 // GET  -> state of the latest monitoring run on GitHub Actions
 // POST -> starts the monitor workflow (unless one is already queued or running)
-// Only Task Tracker Admins may call it: the portal's bridge token (x-tracker-token) is checked by ta_admin_check. The GitHub token
+// Callers: Task Tracker Admins (portal bridge token x-tracker-token, checked by ta_admin_check) or, outside the portal,
+// anyone with the ADMIN_STANDALONE_CODE secret (x-admin-code). The GitHub token
 // stays in the function secrets (GH_DISPATCH_TOKEN) and is never sent to the browser.
 import { createClient } from "npm:@supabase/supabase-js@2";
 
@@ -69,6 +70,8 @@ Deno.serve(async (req) => {
   }
   if (!isAdmin && expectedCode && adminCode) {
     isAdmin = timingSafeEqual(adminCode, expectedCode);
+    // Slow down guessing: every wrong standalone code costs the caller a delay.
+    if (!isAdmin) await new Promise((r) => setTimeout(r, 1500));
   }
   if (!isAdmin) return json({ error: "Not allowed" }, 403);
   if (!Deno.env.get("GH_DISPATCH_TOKEN")) return json({ error: "GH_DISPATCH_TOKEN is not configured" }, 500);
