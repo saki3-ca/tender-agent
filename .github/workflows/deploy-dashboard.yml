@@ -37,17 +37,23 @@ jobs:
           sed -i "s|__SUPABASE_URL__|${{ secrets.SUPABASE_URL }}|g" dashboard/js/config.js
           sed -i "s|__SUPABASE_ANON_KEY__|${{ secrets.SUPABASE_ANON_KEY }}|g" dashboard/js/config.js
 
-      - name: Create the Cloudflare Pages project if it does not exist yet
-        uses: cloudflare/wrangler-action@v3
-        continue-on-error: true
-        with:
-          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: pages project create acnabin-tenders --production-branch=main
-
       - name: Deploy to Cloudflare Pages
-        uses: cloudflare/wrangler-action@v3
-        with:
-          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: pages deploy dashboard --project-name=acnabin-tenders --commit-dirty=true
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          # Wrangler's own error text is surfaced as a run annotation (visible on the run page without opening logs).
+          report() {
+            msg=$(grep -iE "error|✘|authentication|permission|not found|code" "$1" | tail -12 | paste -sd '|' -)
+            [ -z "$msg" ] && msg=$(tail -12 "$1" | paste -sd '|' -)
+            echo "::error title=$2::$msg"
+          }
+          npx --yes wrangler@4 whoami > whoami.log 2>&1 || { report whoami.log "Cloudflare token check failed"; exit 1; }
+          # Create the project on first use (fails harmlessly if it already exists).
+          npx --yes wrangler@4 pages project create acnabin-tenders --production-branch=main > create.log 2>&1 || true
+          if ! npx --yes wrangler@4 pages deploy dashboard --project-name=acnabin-tenders --branch=main --commit-dirty=true > deploy.log 2>&1; then
+            cat create.log deploy.log
+            report deploy.log "Cloudflare Pages deploy failed"
+            exit 1
+          fi
+          cat deploy.log
