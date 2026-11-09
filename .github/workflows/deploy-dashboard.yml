@@ -16,6 +16,19 @@ jobs:
       deployments: write
 
     steps:
+      - name: Check Cloudflare secrets are configured
+        env:
+          CF_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CF_ACCOUNT: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          missing=""
+          [ -z "$CF_TOKEN" ] && missing="$missing CLOUDFLARE_API_TOKEN"
+          [ -z "$CF_ACCOUNT" ] && missing="$missing CLOUDFLARE_ACCOUNT_ID"
+          if [ -n "$missing" ]; then
+            echo "::error::Repository secret(s) not set:$missing. Add them under Settings > Secrets and variables > Actions (the API token needs the 'Cloudflare Pages: Edit' permission)."
+            exit 1
+          fi
+
       - name: Checkout
         uses: actions/checkout@v4
 
