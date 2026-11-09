@@ -117,6 +117,15 @@ Dashboard → **Admin** (`admin.html`). After signing in you can:
 
 **Run now** starts a monitoring run immediately (instead of waiting for the hourly schedule) and shows its progress. It calls the Supabase Edge Function `run-monitor` (`supabase/functions/run-monitor`), which checks that the caller is an admin and then starts the `monitor.yml` workflow on GitHub. One-time setup: create a GitHub fine-grained token for this repository with **Actions: Read and write**, then `supabase secrets set GH_DISPATCH_TOKEN=<token>`. Deploy changes with `supabase functions deploy run-monitor --no-verify-jwt`.
 
+**Standalone admin run (outside the Task Tracker portal).** The Admin page is normally reached through the Task Tracker portal as an Admin. Opened directly (not embedded), the page shows a code-based login that unlocks the "Run Scraper Now" button without needing the portal. Set the code once as a Supabase function secret, then redeploy:
+
+```bash
+supabase secrets set ADMIN_STANDALONE_CODE=<your-code>
+supabase functions deploy run-monitor --no-verify-jwt
+```
+
+Standalone access is limited to launching the crawler run (the add / correct / manage panels stay portal-only and require the Task Tracker admin token).
+
 Entries are stored in the `admin_sources` table and merged with `config/sources.json` at the start of every run. Only Task Tracker Admins can change them. The Admin tab appears (right of Source Status) only inside the Task Tracker portal for an Admin; the portal gives the page a short-lived bridge token, and the `ta_admin_*` database functions verify it with the Task Tracker before every read or change (`supabase/migrations/20261008000009_tracker_admin_bridge.sql`). There is no separate admin sign-in.
 
 To give someone access, make them an Admin in the Task Tracker.

@@ -81,6 +81,55 @@
   }
   document.addEventListener("ta-token", showState);
 
+  // -------------------------------------------------------------- standalone admin
+  // Outside the Task Tracker portal there is no bridge token. The page shows a code-based login
+  // (ADMIN_STANDALONE_CODE on the run-monitor Edge Function) that unlocks the manual crawler run.
+  let standaloneCode = null;
+
+  async function verifyStandaloneCode(code) {
+    const res = await fetch(RUN_FN, {
+      method: "GET",
+      headers: { "x-admin-code": code, apikey: env.SUPABASE_ANON_KEY },
+    });
+    return res.ok;
+  }
+
+  async function unlockStandalone(code) {
+    if (!(await verifyStandaloneCode(code))) {
+      msg("#sa-msg", "Incorrect or invalid admin code.", true);
+      return false;
+    }
+    standaloneCode = code;
+    const login = $("#standalone-login");
+    if (login) login.hidden = true;
+    // Reveal the admin area, but keep the data-management panels (portal-only) hidden.
+    const area = $("#admin-area");
+    if (area) area.hidden = false;
+    ["#add-section", "#broken-section", "#managed-section"].forEach((sel) => {
+      const el = $(sel);
+      if (el) el.hidden = true;
+    });
+    refreshRun();
+    return true;
+  }
+
+  function setupStandalone() {
+    const login = $("#standalone-login");
+    if (login) { login.hidden = false; $("#sa-code")?.focus(); }
+  }
+
+  $("#sa-login")?.addEventListener("click", async () => {
+    const code = ($("#sa-code")?.value || "").trim();
+    if (!code) { msg("#sa-msg", "Enter the admin code.", true); return; }
+    const btn = $("#sa-login");
+    if (btn) btn.disabled = true;
+    const ok = await unlockStandalone(code);
+    if (btn) btn.disabled = false;
+    if (ok) { const c = $("#sa-code"); if (c) c.value = ""; }
+  });
+
+  document.addEventListener("ta-standalone", setupStandalone);
+
   // -------------------------------------------------------------- data
   async function loadData() {
     if (!db || !token) return;
@@ -195,10 +244,12 @@
     if (!validUrl(url)) { input.style.borderColor = "var(--color-rose)"; input.focus(); return; }
     const s = statuses.find((x) => x.source_id === tr.dataset.id);
     btn.disabled = true;
-    const { error } = await db.rpc("ta_admin_source_upsert", { p_token: token, p_row: {
-      source_id: s.source_id, url, organization_id: s.organization_id,
-      organization_name: s.organization_name, sector: s.sector, enabled: true,
-    } });
+    const { error } = await db.rpc("ta_admin_source_upsert", {
+      p_token: token, p_row: {
+        source_id: s.source_id, url, organization_id: s.organization_id,
+        organization_name: s.organization_name, sector: s.sector, enabled: true,
+      }
+    });
     btn.disabled = false;
     if (error) { alert(`Could not save: ${error.message}`); return; }
     loadData();
@@ -247,11 +298,16 @@
   let pollTimer = null;
 
   async function callRunFn(method) {
-    if (!db || !token) throw new Error("Admin access is not available.");
-    const res = await fetch(RUN_FN, {
-      method,
-      headers: { "x-tracker-token": token, apikey: env.SUPABASE_ANON_KEY },
-    });
+    if (!db) throw new Error("Admin access is not available.");
+    const headers = { apikey: env.SUPABASE_ANON_KEY };
+    if (standaloneCode) {
+      headers["x-admin-code"] = standaloneCode;
+    } else if (token) {
+      headers["x-tracker-token"] = token;
+    } else {
+      throw new Error("Admin access is not available.");
+    }
+    const res = await fetch(RUN_FN, { method, headers });
     const body = await res.json().catch(() => ({}));
     if (!res.ok) throw new Error(body.error || `HTTP ${res.status}`);
     return body;
@@ -264,7 +320,7 @@
       const end = data && data[0] && data[0].end_time;
       const el = $("#run-last");
       if (el) el.textContent = end ? `Last completed: ${fmt(end)} (Dhaka)` : "";
-    } catch (e) {}
+    } catch (e) { }
   }
 
   function showRun(run) {

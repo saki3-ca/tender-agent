@@ -11,9 +11,16 @@ const GH = `https://api.github.com/repos/${REPO}/actions/workflows/${WORKFLOW}`;
 
 const cors = {
   "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type, x-tracker-token",
+  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type, x-tracker-token, x-admin-code",
   "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
 };
+
+function timingSafeEqual(a: string, b: string): boolean {
+  if (a.length !== b.length) return false;
+  let out = 0;
+  for (let i = 0; i < a.length; i++) out |= a.charCodeAt(i) ^ b.charCodeAt(i);
+  return out === 0;
+}
 
 const json = (body: unknown, status = 200) =>
   new Response(JSON.stringify(body), { status, headers: { ...cors, "Content-Type": "application/json" } });
@@ -49,8 +56,21 @@ Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: cors });
 
   const db = createClient(Deno.env.get("SUPABASE_URL")!, Deno.env.get("SUPABASE_ANON_KEY")!);
-  const { data: isAdmin, error } = await db.rpc("ta_admin_check", { p_token: req.headers.get("x-tracker-token") ?? "" });
-  if (error || !isAdmin) return json({ error: "Not allowed" }, 403);
+
+  // Portal bridge token (Task Tracker Admin) OR standalone admin code (ADMIN_STANDALONE_CODE secret).
+  const trackerToken = req.headers.get("x-tracker-token") ?? "";
+  const adminCode = req.headers.get("x-admin-code") ?? "";
+  const expectedCode = Deno.env.get("ADMIN_STANDALONE_CODE") ?? "";
+
+  let isAdmin = false;
+  if (trackerToken) {
+    const { data, error } = await db.rpc("ta_admin_check", { p_token: trackerToken });
+    isAdmin = !error && !!data;
+  }
+  if (!isAdmin && expectedCode && adminCode) {
+    isAdmin = timingSafeEqual(adminCode, expectedCode);
+  }
+  if (!isAdmin) return json({ error: "Not allowed" }, 403);
   if (!Deno.env.get("GH_DISPATCH_TOKEN")) return json({ error: "GH_DISPATCH_TOKEN is not configured" }, 500);
 
   try {

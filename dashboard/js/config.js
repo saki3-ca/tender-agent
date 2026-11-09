@@ -58,7 +58,7 @@ window.ENV = {
 (function () {
   var embedded = document.documentElement.classList.contains("embedded");
   var admin = false;
-  try { admin = embedded && sessionStorage.getItem("ta_admin") === "1"; } catch (e) {}
+  try { admin = embedded && sessionStorage.getItem("ta_admin") === "1"; } catch (e) { }
 
   function apply() {
     document.documentElement.classList.toggle("ta-admin", admin);
@@ -67,7 +67,7 @@ window.ENV = {
   }
   function setAdmin(on) {
     admin = on;
-    try { sessionStorage.setItem("ta_admin", on ? "1" : "0"); } catch (e) {}
+    try { sessionStorage.setItem("ta_admin", on ? "1" : "0"); } catch (e) { }
     apply();
   }
   function onAdminPage() { return document.body && document.body.getAttribute("data-page") === "admin"; }
@@ -86,7 +86,14 @@ window.ENV = {
     apply();
     if (embedded && window.parent !== window) window.parent.postMessage({ type: "tender-agent-hello" }, "*");
     if (onAdminPage()) {
-      if (!embedded) { location.replace("index.html"); return; }
+      if (!embedded) {
+        // Standalone admin: opened outside the Task Tracker portal. Do not redirect — the
+        // Admin page shows its own code-based login for the manual crawler run (admin.js).
+        document.documentElement.classList.add("standalone");
+        window.STANDALONE = true;
+        document.dispatchEvent(new Event("ta-standalone"));
+        return;
+      }
       setTimeout(function () { if (!answered) location.replace("index.html"); }, 2500);
     }
   }
