@@ -2,12 +2,10 @@ name: Daily E-Paper Tenders
 
 on:
   schedule:
-    # Asia/Dhaka is UTC+6. One full read of every newspaper a day at 08:00 Dhaka (GitHub may start it
-    # 10-40 min late). The 10:00 and 12:00 runs retry only the newspapers that failed at 08:00
-    # (successful ones are skipped by min_interval_hours = 10).
-    - cron: "0 2 * * *"
-    - cron: "0 4 * * *"
-    - cron: "0 6 * * *"
+    # One full read of every newspaper a day at 08:00 Dhaka, retries of failed papers at 10:00 and 12:00: started by
+    # the database scheduler (pg_cron job "tender-epaper" -> Edge Function run-monitor?workflow=epaper).
+    # GitHub's own cron is only a backup at 12:30 Dhaka (papers already read today are skipped: min_interval_hours).
+    - cron: "30 6 * * *"
   workflow_dispatch:
     inputs:
       browser_papers_only:

@@ -3431,5 +3431,277 @@
     "last_verified": "2026-11-22",
     "last_checked": null,
     "notes": "Added 2026-11-22 from the Bangladesh Bank scheduled bank list (not an IFRS 9 target bank)"
+  },
+  {
+    "organization_id": "dp_worldbank_bd",
+    "canonical_name": "World Bank (Bangladesh projects)",
+    "aliases": [
+      "World Bank",
+      "IDA",
+      "IBRD",
+      "বিশ্বব্যাংক"
+    ],
+    "organization_type": "DEVELOPMENT_PARTNER",
+    "sector": "development_partners",
+    "official_domain": "worldbank.org",
+    "procurement_url": "https://search.worldbank.org/api/v2/procnotices?format=json&rows=100&srt=noticedate&order=desc&project_ctry_name_exact=Bangladesh&fl=id,notice_type,noticedate,notice_status,submission_deadline_date,submission_deadline_time,project_name,bid_reference_no,bid_description,procurement_method_name,contact_organization,notice_text",
+    "tender_url": "https://search.worldbank.org/api/v2/procnotices?format=json&rows=100&srt=noticedate&order=desc&project_ctry_name_exact=Bangladesh&fl=id,notice_type,noticedate,notice_status,submission_deadline_date,submission_deadline_time,project_name,bid_reference_no,bid_description,procurement_method_name,contact_organization,notice_text",
+    "notice_url": "https://search.worldbank.org/api/v2/procnotices?format=json&rows=100&srt=noticedate&order=desc&project_ctry_name_exact=Bangladesh&fl=id,notice_type,noticedate,notice_status,submission_deadline_date,submission_deadline_time,project_name,bid_reference_no,bid_description,procurement_method_name,contact_organization,notice_text",
+    "is_ifrs9_target": false,
+    "source_status": "OK",
+    "last_verified": "2026-11-23",
+    "last_checked": null,
+    "notes": "Added 2026-11-23: financial sector / regulator / development partner coverage"
+  },
+  {
+    "organization_id": "dp_jica_bd",
+    "canonical_name": "JICA Bangladesh",
+    "aliases": [
+      "JICA",
+      "Japan International Cooperation Agency",
+      "জাইকা"
+    ],
+    "organization_type": "DEVELOPMENT_PARTNER",
+    "sector": "development_partners",
+    "official_domain": "jica.go.jp",
+    "procurement_url": "https://www.jica.go.jp/bangladesh/english/office/others/bidding.html",
+    "tender_url": "https://www.jica.go.jp/bangladesh/english/office/others/bidding.html",
+    "notice_url": "https://www.jica.go.jp/bangladesh/english/office/others/bidding.html",
+    "is_ifrs9_target": false,
+    "source_status": "OK",
+    "last_verified": "2026-11-23",
+    "last_checked": null,
+    "notes": "Added 2026-11-23: financial sector / regulator / development partner coverage"
+  },
+  {
+    "organization_id": "nbfi_idcol",
+    "canonical_name": "Infrastructure Development Company Limited (IDCOL)",
+    "aliases": [
+      "IDCOL",
+      "ইডকল"
+    ],
+    "organization_type": "NBFI",
+    "sector": "nbfis",
+    "official_domain": "idcol.org",
+    "procurement_url": "https://idcol.org/home/notice",
+    "tender_url": "https://idcol.org/home/notice",
+    "notice_url": "https://idcol.org/home/notice",
+    "is_ifrs9_target": false,
+    "source_status": "OK",
+    "last_verified": "2026-11-23",
+    "last_checked": null,
+    "notes": "Added 2026-11-23: financial sector / regulator / development partner coverage"
+  },
+  {
+    "organization_id": "nbfi_icb",
+    "canonical_name": "Investment Corporation of Bangladesh (ICB)",
+    "aliases": [
+      "ICB",
+      "Investment Corporation of Bangladesh",
+      "ইনভেস্টমেন্ট কর্পোরেশন অব বাংলাদেশ"
+    ],
+    "organization_type": "NBFI",
+    "sector": "nbfis",
+    "official_domain": "icb.gov.bd",
+    "procurement_url": "https://icb.gov.bd/pages/tenders",
+    "tender_url": "https://icb.gov.bd/pages/tenders",
+    "notice_url": "https://icb.gov.bd/pages/tenders",
+    "is_ifrs9_target": false,
+    "source_status": "OK",
+    "last_verified": "2026-11-23",
+    "last_checked": null,
+    "notes": "Added 2026-11-23: financial sector / regulator / development partner coverage"
+  },
+  {
+    "organization_id": "nbfi_iidfc",
+    "canonical_name": "Industrial and Infrastructure Development Finance Company (IIDFC) PLC",
+    "aliases": [
+      "IIDFC"
+    ],
+    "organization_type": "NBFI",
+    "sector": "nbfis",
+    "official_domain": "iidfc.com",
+    "procurement_url": "https://iidfc.com/e-tender",
+    "tender_url": "https://iidfc.com/e-tender",
+    "notice_url": "https://iidfc.com/e-tender",
+    "is_ifrs9_target": false,
+    "source_status": "OK",
+    "last_verified": "2026-11-23",
+    "last_checked": null,
+    "notes": "Added 2026-11-23: financial sector / regulator / development partner coverage"
+  },
+  {
+    "organization_id": "nbfi_united_finance",
+    "canonical_name": "United Finance PLC",
+    "aliases": [
+      "United Finance",
+      "UFPLC",
+      "ইউনাইটেড ফাইন্যান্স"
+    ],
+    "organization_type": "NBFI",
+    "sector": "nbfis",
+    "official_domain": "ufplc.com",
+    "procurement_url": "https://www.ufplc.com/en/Home/ETender",
+    "tender_url": "https://www.ufplc.com/en/Home/ETender",
+    "notice_url": "https://www.ufplc.com/en/Home/ETender",
+    "is_ifrs9_target": false,
+    "source_status": "OK",
+    "last_verified": "2026-11-23",
+    "last_checked": null,
+    "notes": "Added 2026-11-23: financial sector / regulator / development partner coverage"
+  },
+  {
+    "organization_id": "nbfi_biffl",
+    "canonical_name": "Bangladesh Infrastructure Finance Fund Limited (BIFFL)",
+    "aliases": [
+      "BIFFL"
+    ],
+    "organization_type": "NBFI",
+    "sector": "nbfis",
+    "official_domain": "biffl.org.bd",
+    "procurement_url": "https://www.biffl.org.bd/e-tender",
+    "tender_url": "https://www.biffl.org.bd/e-tender",
+    "notice_url": "https://www.biffl.org.bd/e-tender",
+    "is_ifrs9_target": false,
+    "source_status": "OK",
+    "last_verified": "2026-11-23",
+    "last_checked": null,
+    "notes": "Added 2026-11-23: financial sector / regulator / development partner coverage"
+  },
+  {
+    "organization_id": "ins_sbc",
+    "canonical_name": "Sadharan Bima Corporation",
+    "aliases": [
+      "Sadharan Bima",
+      "SBC",
+      "সাধারণ বীমা কর্পোরেশন"
+    ],
+    "organization_type": "INSURANCE",
+    "sector": "nbfis",
+    "official_domain": "sbc.gov.bd",
+    "procurement_url": "https://sbc.gov.bd/pages/tenders",
+    "tender_url": "https://sbc.gov.bd/pages/tenders",
+    "notice_url": "https://sbc.gov.bd/pages/tenders",
+    "is_ifrs9_target": false,
+    "source_status": "OK",
+    "last_verified": "2026-11-23",
+    "last_checked": null,
+    "notes": "Added 2026-11-23: financial sector / regulator / development partner coverage"
+  },
+  {
+    "organization_id": "ins_jbc",
+    "canonical_name": "Jiban Bima Corporation",
+    "aliases": [
+      "Jiban Bima",
+      "JBC",
+      "জীবন বীমা কর্পোরেশন"
+    ],
+    "organization_type": "INSURANCE",
+    "sector": "nbfis",
+    "official_domain": "jbc.gov.bd",
+    "procurement_url": "https://jbc.gov.bd/pages/tenders",
+    "tender_url": "https://jbc.gov.bd/pages/tenders",
+    "notice_url": "https://jbc.gov.bd/pages/tenders",
+    "is_ifrs9_target": false,
+    "source_status": "OK",
+    "last_verified": "2026-11-23",
+    "last_checked": null,
+    "notes": "Added 2026-11-23: financial sector / regulator / development partner coverage"
+  },
+  {
+    "organization_id": "reg_frc",
+    "canonical_name": "Financial Reporting Council (FRC)",
+    "aliases": [
+      "FRC",
+      "ফাইন্যান্সিয়াল রিপোর্টিং কাউন্সিল"
+    ],
+    "organization_type": "REGULATOR",
+    "sector": "regulators",
+    "official_domain": "frc.gov.bd",
+    "procurement_url": "https://frc.gov.bd/pages/tenders",
+    "tender_url": "https://frc.gov.bd/pages/tenders",
+    "notice_url": "https://frc.gov.bd/pages/tenders",
+    "is_ifrs9_target": false,
+    "source_status": "OK",
+    "last_verified": "2026-11-23",
+    "last_checked": null,
+    "notes": "Added 2026-11-23: financial sector / regulator / development partner coverage"
+  },
+  {
+    "organization_id": "reg_mra",
+    "canonical_name": "Microcredit Regulatory Authority (MRA)",
+    "aliases": [
+      "MRA",
+      "মাইক্রোক্রেডিট রেগুলেটরি অথরিটি"
+    ],
+    "organization_type": "REGULATOR",
+    "sector": "regulators",
+    "official_domain": "mra.gov.bd",
+    "procurement_url": "https://mra.gov.bd/pages/tenders",
+    "tender_url": "https://mra.gov.bd/pages/tenders",
+    "notice_url": "https://mra.gov.bd/pages/tenders",
+    "is_ifrs9_target": false,
+    "source_status": "OK",
+    "last_verified": "2026-11-23",
+    "last_checked": null,
+    "notes": "Added 2026-11-23: financial sector / regulator / development partner coverage"
+  },
+  {
+    "organization_id": "reg_nbr",
+    "canonical_name": "National Board of Revenue (NBR)",
+    "aliases": [
+      "NBR",
+      "জাতীয় রাজস্ব বোর্ড"
+    ],
+    "organization_type": "REGULATOR",
+    "sector": "regulators",
+    "official_domain": "nbr.gov.bd",
+    "procurement_url": "https://nbr.gov.bd/information-library/tendernotice/eng",
+    "tender_url": "https://nbr.gov.bd/information-library/tendernotice/eng",
+    "notice_url": "https://nbr.gov.bd/information-library/tendernotice/eng",
+    "is_ifrs9_target": false,
+    "source_status": "OK",
+    "last_verified": "2026-11-23",
+    "last_checked": null,
+    "notes": "Added 2026-11-23: financial sector / regulator / development partner coverage"
+  },
+  {
+    "organization_id": "reg_cse",
+    "canonical_name": "Chittagong Stock Exchange PLC (CSE)",
+    "aliases": [
+      "CSE",
+      "Chittagong Stock Exchange",
+      "চট্টগ্রাম স্টক এক্সচেঞ্জ"
+    ],
+    "organization_type": "REGULATOR",
+    "sector": "regulators",
+    "official_domain": "cse.com.bd",
+    "procurement_url": "https://www.cse.com.bd/RFP",
+    "tender_url": "https://www.cse.com.bd/RFP",
+    "notice_url": "https://www.cse.com.bd/RFP",
+    "is_ifrs9_target": false,
+    "source_status": "OK",
+    "last_verified": "2026-11-23",
+    "last_checked": null,
+    "notes": "Added 2026-11-23: financial sector / regulator / development partner coverage"
+  },
+  {
+    "organization_id": "it_btcl",
+    "canonical_name": "Bangladesh Telecommunications Company Limited (BTCL)",
+    "aliases": [
+      "BTCL",
+      "বিটিসিএল"
+    ],
+    "organization_type": "STATE_OWNED_ENTERPRISE",
+    "sector": "it",
+    "official_domain": "btcl.gov.bd",
+    "procurement_url": "https://btcl.gov.bd/pages/tenders",
+    "tender_url": "https://btcl.gov.bd/pages/tenders",
+    "notice_url": "https://btcl.gov.bd/pages/tenders",
+    "is_ifrs9_target": false,
+    "source_status": "OK",
+    "last_verified": "2026-11-23",
+    "last_checked": null,
+    "notes": "Added 2026-11-23: financial sector / regulator / development partner coverage"
   }
 ]

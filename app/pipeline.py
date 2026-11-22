@@ -21,6 +21,9 @@ import os
 import re
 import time
 from datetime import date, datetime, timedelta, timezone
+from datetime import time as dtime
+
+from bs4 import BeautifulSoup
 from typing import Any, Dict, List, Optional, Tuple
 
 from app.alerts.email import EmailAlerter
@@ -332,6 +335,8 @@ class Monitor:
             return
         failed = [r for r in state_rows if not r["ok"] and r.get("error") != "SKIPPED_TIME_BUDGET"]
         checked = s["sources_ok"] + s["sources_failed"]
+        if checked == 0 and not s["sources_skipped"]:
+            return      # nothing was due (e.g. a backup newspaper run after the papers were read): no message
         icon = "✅" if not failed else ("⚠️" if s["sources_ok"] else "❌")
         lines = [f"{icon} {label} run {when}",
                  f"Sites: {s['sources_ok']}/{checked} OK" + (f", {len(failed)} failed" if failed else "")
@@ -371,6 +376,8 @@ class Monitor:
                              ) -> Tuple[List[Dict[str, Any]], Dict[str, Any]]:
         if source.get("type") == "bdjobs_json":
             status_code, error, pairs = await self._bdjobs_listings(source)
+        elif source.get("type") == "worldbank_json":
+            status_code, error, pairs = await self._worldbank_listings(source)
         elif source.get("type") == "alltender":
             status_code, error, pairs = await self._alltender_listings(source)
         elif source.get("type") == "alltender_category":
@@ -489,6 +496,54 @@ class Monitor:
                     listing.deadline, listing.deadline_has_time = deadline_datetime(deadline, None)
                 listing.title_is_weak = is_weak_title(title)
                 pairs.append((listing, org))
+        return res.status, None, pairs
+
+    WB_SKIP_TYPES = ("contract award", "general procurement notice")
+
+    async def _worldbank_listings(self, source: Dict[str, Any]):
+        """
+        World Bank procurement notices for Bangladesh projects (search.worldbank.org procnotices API):
+        Requests for Expression of Interest (consultancy), Invitations for Bids, RFPs. Contract awards and
+        general procurement notices are left out. The full notice text is the row text, so the
+        Priority rules see the scope; the implementing agency is named in the title.
+        """
+        res = await self.crawler.fetch(source["url"], verify_ssl=source.get("verify_ssl", True), binary=True)
+        if not res.ok:
+            return res.status, res.error, []
+        try:
+            notices = json.loads(res.content.decode("utf-8-sig")).get("procnotices") or []
+        except (ValueError, AttributeError) as e:
+            return res.status, f"INVALID_JSON: {e}", []
+        org = source_org(source)
+        pairs = []
+        for n in notices:
+            kind = str(n.get("notice_type") or "")
+            if kind.lower().startswith(self.WB_SKIP_TYPES) or str(n.get("notice_status") or "Published") != "Published":
+                continue
+            title = re.sub(r"\s+", " ", str(n.get("bid_description") or "")).strip()
+            nid = str(n.get("id") or "")
+            if len(title) < 5 or not re.fullmatch(r"[A-Za-z0-9_-]+", nid):
+                continue
+            agency = re.sub(r"\s+", " ", str(n.get("contact_organization") or "")).strip()
+            body = BeautifulSoup(str(n.get("notice_text") or ""), "html.parser").get_text(" ")
+            row_text = " | ".join(x for x in (kind, agency, str(n.get("project_name") or ""),
+                                               str(n.get("procurement_method_name") or ""),
+                                               re.sub(r"\s+", " ", body)[:4000]) if x)
+            listing = Listing(title=f"{title} ({agency})" if agency else title, row_text=row_text,
+                              source_url=source["url"],
+                              link=f"https://projects.worldbank.org/en/projects-operations/procurement-detail/{nid}")
+            listing.reference = str(n.get("bid_reference_no") or "") or None
+            try:
+                published = datetime.strptime(str(n.get("noticedate")), "%d-%b-%Y").date()
+                listing.published = published if published <= self.today else None
+            except ValueError:
+                pass
+            deadline = _to_date(n.get("submission_deadline_date"))
+            if deadline:
+                hhmm = re.fullmatch(r"(\d{1,2}):(\d{2})", str(n.get("submission_deadline_time") or "").strip())
+                at = dtime(int(hhmm.group(1)), int(hhmm.group(2))) if hhmm and int(hhmm.group(1)) < 24 else None
+                listing.deadline, listing.deadline_has_time = deadline_datetime(deadline, at)
+            pairs.append((listing, org))
         return res.status, None, pairs
 
     async def _alltender_listings(self, source: Dict[str, Any]):

@@ -206,3 +206,38 @@ def test_admin_correction_keeps_special_handling_from_config():
     [merged] = merge_admin_sources(base, rows)
     assert merged["url"] == "https://rupalibank.com.bd/notice_jquery.php?type=18"
     assert merged["requires_js"] is True and merged["verify_ssl"] is False
+
+
+def test_worldbank_feed_keeps_eois_and_bids_and_skips_awards():
+    import json as _json
+
+    feed = {"procnotices": [
+        {"id": "OP00481750", "notice_type": "Request for Expression of Interest", "notice_status": "Published",
+         "noticedate": "16-Nov-2026", "submission_deadline_date": "2026-11-29T00:00:00Z",
+         "submission_deadline_time": "09:15", "project_name": "Host and Rohingya Enhancement of Lives Project",
+         "bid_reference_no": "S-12", "bid_description": "Selection of a firm for the external audit of project accounts",
+         "procurement_method_name": "Consultant Qualification Selection",
+         "contact_organization": "Department of Environment",
+         "notice_text": "<p>The Department of Environment invites eligible audit firms ...</p>"},
+        {"id": "OP00481751", "notice_type": "Contract Award", "notice_status": "Published",
+         "noticedate": "16-Nov-2026", "bid_description": "Supply of vehicles"},
+        {"id": "bad id/../x", "notice_type": "Invitation for Bids", "notice_status": "Published",
+         "noticedate": "16-Nov-2026", "bid_description": "Should be skipped (unsafe id)"},
+    ]}
+    source = next(s for s in config.sources if s.get("type") == "worldbank_json")
+
+    class FeedCrawler:
+        async def fetch(self, url, verify_ssl=True, binary=False, timeout=None):
+            return FetchResult(url=url, status=200, content=_json.dumps(feed).encode())
+
+    m = Monitor(Store(), now=datetime(2026, 11, 23, 10, 0, tzinfo=DHAKA_TZ))
+    m.store.client = None
+    m.crawler = FeedCrawler()
+    status, error, pairs = asyncio.run(m._worldbank_listings(source))
+    assert error is None and len(pairs) == 1
+    listing, org = pairs[0]
+    assert listing.title == "Selection of a firm for the external audit of project accounts (Department of Environment)"
+    assert listing.link.endswith("/procurement-detail/OP00481750")
+    assert listing.published == date(2026, 11, 16)
+    assert listing.deadline == datetime(2026, 11, 29, 9, 15, tzinfo=DHAKA_TZ) and listing.deadline_has_time
+    assert org["organization_id"] == "dp_worldbank_bd"

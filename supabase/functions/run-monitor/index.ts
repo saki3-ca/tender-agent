@@ -1,14 +1,18 @@
-// "Run now" for the Admin page.
-// GET  -> state of the latest monitoring run on GitHub Actions
-// POST -> starts the monitor workflow (unless one is already queued or running)
-// Callers: Task Tracker Admins (portal bridge token x-tracker-token, checked by ta_admin_check) or, outside the portal,
-// anyone with the ADMIN_STANDALONE_CODE secret (x-admin-code). The GitHub token
-// stays in the function secrets (GH_DISPATCH_TOKEN) and is never sent to the browser.
+// "Run now" for the Admin page, and the scheduler for the GitHub workflows.
+// GET  -> state of the latest run of the workflow on GitHub Actions
+// POST -> starts the workflow (unless one is already queued or running)
+// ?workflow=monitor (default) | epaper  -> monitor.yml | epaper.yml
+// Callers:
+//   - the database scheduler (pg_cron jobs tender-monitor / tender-epaper): x-cron-secret, checked by ta_cron_check
+//     against the Vault secret tender_cron_secret. GitHub's own cron is unreliable (it skips many runs), so the
+//     regular searches depend on this path;
+//   - Task Tracker Admins (portal bridge token x-tracker-token, checked by ta_admin_check);
+//   - outside the portal, anyone with the ADMIN_STANDALONE_CODE secret (x-admin-code).
+// The GitHub token stays in the function secrets (GH_DISPATCH_TOKEN) and is never sent to the browser.
 import { createClient } from "npm:@supabase/supabase-js@2";
 
 const REPO = Deno.env.get("GH_REPO") ?? "saki3-ca/tender-agent";
-const WORKFLOW = "monitor.yml";
-const GH = `https://api.github.com/repos/${REPO}/actions/workflows/${WORKFLOW}`;
+const WORKFLOWS: Record<string, string> = { monitor: "monitor.yml", epaper: "epaper.yml" };
 
 const cors = {
   "Access-Control-Allow-Origin": "*",
@@ -26,8 +30,8 @@ function timingSafeEqual(a: string, b: string): boolean {
 const json = (body: unknown, status = 200) =>
   new Response(JSON.stringify(body), { status, headers: { ...cors, "Content-Type": "application/json" } });
 
-function gh(path: string, init: RequestInit = {}) {
-  return fetch(`${GH}${path}`, {
+function gh(workflow: string, path: string, init: RequestInit = {}) {
+  return fetch(`https://api.github.com/repos/${REPO}/actions/workflows/${workflow}${path}`, {
     ...init,
     headers: {
       Authorization: `Bearer ${Deno.env.get("GH_DISPATCH_TOKEN")}`,
@@ -38,8 +42,8 @@ function gh(path: string, init: RequestInit = {}) {
   });
 }
 
-async function latestRun() {
-  const res = await gh("/runs?per_page=1");
+async function latestRun(workflow: string) {
+  const res = await gh(workflow, "/runs?per_page=1");
   if (!res.ok) throw new Error(`GitHub ${res.status}`);
   const run = (await res.json()).workflow_runs?.[0];
   if (!run) return null;
@@ -58,13 +62,22 @@ Deno.serve(async (req) => {
 
   const db = createClient(Deno.env.get("SUPABASE_URL")!, Deno.env.get("SUPABASE_ANON_KEY")!);
 
-  // Portal bridge token (Task Tracker Admin) OR standalone admin code (ADMIN_STANDALONE_CODE secret).
+  const name = new URL(req.url).searchParams.get("workflow") ?? "monitor";
+  if (!Object.hasOwn(WORKFLOWS, name)) return json({ error: "Unknown workflow" }, 400);
+  const workflow = WORKFLOWS[name];
+
+  // Database scheduler (Vault secret) OR portal bridge token (Task Tracker Admin) OR standalone admin code.
+  const cronSecret = req.headers.get("x-cron-secret") ?? "";
   const trackerToken = req.headers.get("x-tracker-token") ?? "";
   const adminCode = req.headers.get("x-admin-code") ?? "";
   const expectedCode = Deno.env.get("ADMIN_STANDALONE_CODE") ?? "";
 
   let isAdmin = false;
-  if (trackerToken) {
+  if (cronSecret) {
+    const { data, error } = await db.rpc("ta_cron_check", { p_secret: cronSecret });
+    isAdmin = !error && !!data;
+  }
+  if (!isAdmin && trackerToken) {
     const { data, error } = await db.rpc("ta_admin_check", { p_token: trackerToken });
     isAdmin = !error && !!data;
   }
@@ -77,12 +90,12 @@ Deno.serve(async (req) => {
   if (!Deno.env.get("GH_DISPATCH_TOKEN")) return json({ error: "GH_DISPATCH_TOKEN is not configured" }, 500);
 
   try {
-    const run = await latestRun();
+    const run = await latestRun(workflow);
     if (req.method === "GET") return json({ run });
     if (req.method !== "POST") return json({ error: "Method not allowed" }, 405);
 
     if (run && run.status !== "completed") return json({ started: false, reason: "already_running", run });
-    const res = await gh("/dispatches", { method: "POST", body: JSON.stringify({ ref: "main" }) });
+    const res = await gh(workflow, "/dispatches", { method: "POST", body: JSON.stringify({ ref: "main" }) });
     if (res.status !== 204) return json({ error: `GitHub refused the request (${res.status})` }, 502);
     return json({ started: true });
   } catch (e) {

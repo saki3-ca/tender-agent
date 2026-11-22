@@ -2,9 +2,10 @@ name: Tender Monitor (every 30 min)
 
 on:
   schedule:
-    # Every 30 minutes, day and night, at :05 and :35 (minutes are the same in Dhaka and UTC).
-    # Each run sends a Telegram report. GitHub may start scheduled runs a few minutes late.
-    - cron: "5,35 * * * *"
+    # The regular runs (every 30 min at :05 and :35, day and night) are started by the database scheduler:
+    # pg_cron job "tender-monitor" -> Edge Function run-monitor -> workflow_dispatch. GitHub's own cron skips many
+    # runs, so it is only a backup here, every 3 hours, in case the database scheduler stops.
+    - cron: "20 */3 * * *"
   workflow_dispatch: {}
 
 concurrency:

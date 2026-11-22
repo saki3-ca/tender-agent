@@ -205,7 +205,18 @@
         "restructuring(?:,| and)? (?:revival|plan|advisory|consultan(?:cy|t))",
         "business plan(?:ning)?",
         "financial management (?:expert|specialist|consultan(?:cy|t|ts)|firm)",
-        "financial projections?"
+        "financial projections?",
+        "(?:enlistment|empanelment|pre-?qualification|panel|roster) of (?:national |local )?(?:consultants?|consult(?:ing|ancy) firms?|professional (?:service )?firms?|advisory firms?)",
+        "(?:পরামর্শক|পরামর্শ)\\s*(?:প্রতিষ্ঠান|ফার্ম)",
+        "feasibility stud(?:y|ies)",
+        "third[\\s-]party (?:monitoring|verification|validation|assessment)",
+        "independent verification agen(?:t|cy)",
+        "(?:mid[\\s-]?term|final|end[\\s-]?line|terminal|impact) (?:review|evaluation)",
+        "(?:HR|human resources?) (?:policy|manual|consultan(?:cy|t)|audit)",
+        "(?:SOP|standard operating procedures?|policy manual|operational manual) (?:preparation|development|review|consultan(?:cy|t))",
+        "(?:physical )?verification of (?:the )?(?:fixed )?assets",
+        "asset tagging",
+        "procurement (?:post[\\s-]?review|audit)"
       ],
       "document_phrases": [
         "financial due diligence",
@@ -216,7 +227,9 @@
       "code": "TRAINING",
       "label": "Professional Training",
       "phrases": [
-        "(?:IFRS|accounting|audit|tax|VAT|financial management|internal control|risk management) training"
+        "(?:IFRS|accounting|audit|tax|VAT|financial management|internal control|risk management) training",
+        "training on (?:financial management|accounting|audit|IFRS|tax|VAT|internal control|risk management|procurement|AML|anti[\\s-]money laundering)",
+        "capacity building (?:on|in) (?:financial management|accounting|audit|internal control|procurement)"
       ],
       "document_phrases": []
     }
