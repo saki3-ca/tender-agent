@@ -526,6 +526,9 @@ class Monitor:
                 continue
             agency = re.sub(r"\s+", " ", str(n.get("contact_organization") or "")).strip()
             body = BeautifulSoup(str(n.get("notice_text") or ""), "html.parser").get_text(" ")
+            # Drop the procurement-category code lists ("...;Computer audit services;Computer testing services;...")
+            # that goods notices carry: they would make an equipment purchase look like audit work.
+            body = re.sub(r"(?:[^;.:]{3,90};){3,}[^;.:]{3,90}", " ", body)
             row_text = " | ".join(x for x in (kind, agency, str(n.get("project_name") or ""),
                                                str(n.get("procurement_method_name") or ""),
                                                re.sub(r"\s+", " ", body)[:4000]) if x)
