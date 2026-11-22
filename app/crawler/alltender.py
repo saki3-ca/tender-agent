@@ -78,7 +78,11 @@ async def _signed_in(read) -> Tuple[int, Optional[str], List[AlltenderItem]]:
     headers = {"User-Agent": USER_AGENT, "Accept-Language": "en-US,en;q=0.9"}
     try:
         async with httpx.AsyncClient(headers=headers, follow_redirects=True, timeout=30.0) as client:
-            await client.get(f"{BASE}/login")
+            login_page = await client.get(f"{BASE}/login")
+            # Cloudflare "Just a moment…" check: the login form is never reached. Report that, not LOGIN_FAILED
+            # (the account and subscription are fine; automated access is refused). Not bypassed by design.
+            if login_page.status_code in (403, 503) and "just a moment" in login_page.text[:3000].lower():
+                return login_page.status_code, "BLOCKED: alltender.com bot check (account not reached)", []
             await client.post(f"{BASE}/user/check_user", data={
                 "user_id": user, "password": password,
                 "redirect_url": base64.b64encode(f"{BASE}/user/my_tenders".encode()).decode()})

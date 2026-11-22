@@ -1552,7 +1552,7 @@
     "max_documents": 0,
     "min_interval_hours": 6,
     "verified": "2026-10-06",
-    "note": "Disabled 2026-11-22: login to alltender.com has failed on every run (LOGIN_FAILED x179). Update the ALLTENDER_USER / ALLTENDER_PASSWORD repository secrets (or renew the subscription), then set enabled back to true."
+    "note": "Disabled 2026-11-22: the subscription is paid and the account is fine, but alltender.com now answers every automated visitor with a Cloudflare 'Just a moment' check, so the login form is never reached (was reported as LOGIN_FAILED). Not bypassed by design. Re-enable if Alltender allow-lists the monitor or offers a feed; until then check 'My Tenders' on alltender.com manually or use Alltender's email alerts."
   },
   {
     "id": "src_alltender_ict_64",
@@ -1567,7 +1567,7 @@
     "max_documents": 0,
     "enabled": false,
     "verified": "2026-10-07",
-    "note": "Disabled 2026-11-22: login to alltender.com has failed on every run (LOGIN_FAILED x179). Update the ALLTENDER_USER / ALLTENDER_PASSWORD repository secrets (or renew the subscription), then set enabled back to true.",
+    "note": "Disabled 2026-11-22: the subscription is paid and the account is fine, but alltender.com now answers every automated visitor with a Cloudflare 'Just a moment' check, so the login form is never reached (was reported as LOGIN_FAILED). Not bypassed by design. Re-enable if Alltender allow-lists the monitor or offers a feed; until then check 'My Tenders' on alltender.com manually or use Alltender's email alerts.",
     "category_id": 64,
     "aggregator": true,
     "members_only": true,
@@ -1588,7 +1588,7 @@
     "max_documents": 0,
     "enabled": false,
     "verified": "2026-10-07",
-    "note": "Disabled 2026-11-22: login to alltender.com has failed on every run (LOGIN_FAILED x179). Update the ALLTENDER_USER / ALLTENDER_PASSWORD repository secrets (or renew the subscription), then set enabled back to true.",
+    "note": "Disabled 2026-11-22: the subscription is paid and the account is fine, but alltender.com now answers every automated visitor with a Cloudflare 'Just a moment' check, so the login form is never reached (was reported as LOGIN_FAILED). Not bypassed by design. Re-enable if Alltender allow-lists the monitor or offers a feed; until then check 'My Tenders' on alltender.com manually or use Alltender's email alerts.",
     "category_id": 69,
     "aggregator": true,
     "members_only": true,
