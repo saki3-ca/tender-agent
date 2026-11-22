@@ -73,8 +73,16 @@ class GenericEpaperCrawler:
         if not self._allowed(url):
             logger.warning(f"{self.newspaper}: skipped URL outside the newspaper's domains: {url[:120]}")
             return None
-        r = await client.get(url)
-        return r if self._allowed(str(r.url)) else None   # redirected elsewhere
+        # Redirects are followed by hand so every hop is checked before it is requested
+        for _ in range(5):
+            r = await client.get(url, follow_redirects=False)
+            if not r.is_redirect:
+                return r
+            url = urljoin(url, r.headers.get("location", ""))
+            if not self._allowed(url):
+                logger.warning(f"{self.newspaper}: redirect outside the newspaper's domains skipped: {url[:120]}")
+                return None
+        return None
 
     async def _images(self, client: httpx.AsyncClient, page_no: int, page_url: str) -> List[Tuple[str, bytes]]:
         """Image bytes to read for one page: the page image, or the article tiles of a page view."""

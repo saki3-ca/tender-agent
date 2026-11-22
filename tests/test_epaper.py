@@ -175,3 +175,24 @@ def test_generic_epaper_page_images():
     html = '<a id="1" onclick="loadpage(1); return false;">1</a><a id="2" onclick="loadpage(2); return false;">2</a>'
     assert [u for _, u in edition_urls(html, "https://epaper.observerbd.com/", date(2026, 11, 22), src)] == [
         "https://epaper.observerbd.com/2026/11/22/1.htm", "https://epaper.observerbd.com/2026/11/22/2.htm"]
+
+
+@pytest.mark.asyncio
+async def test_generic_epaper_checks_every_redirect_hop():
+    from app.crawler.epaper.generic import GenericEpaperCrawler
+    requested = []
+
+    def handler(req):
+        requested.append(str(req.url))
+        if str(req.url) == "https://epaper.samakal.com/a.jpg":
+            return httpx.Response(302, headers={"location": "/b.jpg"})
+        if str(req.url) == "https://epaper.samakal.com/b.jpg":
+            return httpx.Response(200, content=b"img")
+        return httpx.Response(302, headers={"location": "http://169.254.169.254/latest"})
+
+    crawler = GenericEpaperCrawler({"id": "s", "url": "https://epaper.samakal.com/", "page_regex": "(?P<n>1)"})
+    async with httpx.AsyncClient(transport=httpx.MockTransport(handler)) as client:
+        assert (await crawler._get(client, "https://epaper.samakal.com/a.jpg")).content == b"img"
+        assert await crawler._get(client, "https://epaper.samakal.com/evil.jpg") is None
+        assert await crawler._get(client, "https://evil.example/x.jpg") is None
+    assert not any("169.254" in u or "evil.example" in u for u in requested)
