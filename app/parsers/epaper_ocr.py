@@ -43,7 +43,14 @@ _ORG_LINE = re.compile(
     r"ব্যাংক|bank|পিএলসি|\bPLC\b|limited|লিমিটেড|মন্ত্রণালয়|ministry|corporation|কর্পোরেশন|বোর্ড|board|authority|"
     r"কর্তৃপক্ষ|directorate|অধিদপ্তর|অধিদফতর|পরিদপ্তর|কার্যালয়|office|foundation|ফাউন্ডেশন|project|প্রকল্প|"
     r"university|বিশ্ববিদ্যালয়|company|কোম্পানি|council|কাউন্সিল", re.I)
-MIN_TEXT = 200          # less text than this = OCR could not read the image; do not trust a "no tender" result
+# Wording of an actual notice (not a news story that mentions "procurement" or "a hurried tender"):
+# OCR-only items are made only from blocks that contain one of these.
+NOTICE_WORDS = re.compile(
+    r"e-?tender|tender\s+(?:notice|no\.?|id|document|schedule)|notice\s+(?:inviting|for)\s+tender|"
+    r"invitation\s+for\s+(?:tenders?|bids?)|expression\s+of\s+interest|\bEOI\b|\bRFP\b|\bRFQ\b|"
+    r"request\s+for\s+(?:proposal|quotation)|\bmemo\b|\bref(?:erence)?\s*(?:no|:)|"
+    r"দরপত্র|টেন্ডার\s*(?:বিজ্ঞপ্তি|নোটিশ)|আগ্রহপত্র|কোটেশন|স্মারক\s*(?:নং|নম্বর)?", re.I)
+MIN_TEXT = 200         # less text than this = OCR could not read the image; do not trust a "no tender" result
 WINDOW = 900            # characters around a tender word that form one notice-like block
 MAX_PIXELS = 40_000_000  # images (and upscaled images) larger than this are not read
 MAX_UPSCALE = 3.0
@@ -149,6 +156,8 @@ def ocr_items(text: str, only_priority: bool = False) -> List[Dict[str, Any]]:
     classifier = RelevanceClassifier()
     items: List[Dict[str, Any]] = []
     for block in _blocks(text):
+        if not NOTICE_WORDS.search(block):
+            continue                                   # a news story about procurement, not a notice
         rel = classifier.classify("", block)
         if only_priority and not rel.is_priority:
             continue
