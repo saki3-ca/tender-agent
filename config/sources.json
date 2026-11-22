@@ -2216,7 +2216,8 @@
     "rate_limit_seconds": 3,
     "enabled": true,
     "verified": "2026-11-22",
-    "note": "Notices page (homepage Notices link 2026-11-22)."
+    "note": "Notices page (homepage Notices link 2026-11-22). Answers 403 to GitHub's servers but loads from Bangladesh: read by the office PC task.",
+    "office_pc": true
   },
   {
     "id": "src_bank_fsib",
