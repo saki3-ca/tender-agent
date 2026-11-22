@@ -75,7 +75,19 @@
         "নিরীক্ষা",
         "নিরীক্ষক",
         "অডিট",
-        "(?:নিরীক্ষা|অডিট)[\\s-]*ফার্ম"
+        "(?:নিরীক্ষা|অডিট)[\\s-]*ফার্ম",
+        "(?:export |remittance )?cash (?:incentive|subsidy|assistance)",
+        "(?:verification|certification|audit|scrutiny|examination) of (?:the )?(?:export )?(?:cash )?(?:incentive|subsidy) claims?",
+        "(?:incentive|subsidy) claims? (?:verification|certification|audit)",
+        "post[\\s-]?facto (?:audit|verification|review)",
+        "special audit",
+        "chartered accountants?(?:'|’)?(?: firms?)?",
+        "CA firms?",
+        "audit firms?",
+        "(?:enlistment|empanelment|panel) of (?:chartered accountants?|audit firms?|auditors?|CA firms?)",
+        "নগদ (?:প্রণোদনা|সহায়তা|ভর্তুকি)",
+        "চার্টার্ড (?:একাউন্ট্যান্ট|অ্যাকাউন্ট্যান্ট|একাউন্টেন্ট)",
+        "সিএ ফার্ম"
       ],
       "document_phrases": [
         "(?:selection|appointment|engagement|hiring) of (?:an? |the )?(?:external |statutory |internal |independent |chartered accountant )?(?:audit firms?|auditors?)",

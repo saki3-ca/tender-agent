@@ -17,6 +17,7 @@ General is decided before relevance: relevance never removes a tender from Gener
 
 import asyncio
 import json
+import os
 import re
 import time
 from datetime import date, datetime, timedelta, timezone
@@ -211,6 +212,17 @@ class Monitor:
         run_id = self.store.run_started()
         sources = [s for s in merge_admin_sources(config.sources, self.store.admin_sources())
                    if s.get("enabled", True)]
+        # A source that was disabled or removed keeps its last result in source_status, so the Sources page
+        # would show its old error for ever. Drop those rows (based on the full enabled list, not the filtered run).
+        enabled_ids = {s["id"] for s in sources}
+        stale = [sid for sid in self.store.source_states() if sid not in enabled_ids]
+        if stale:
+            logger.info(f"Removing the stored status of {len(stale)} disabled/removed sources")
+            self.store.delete_source_states(stale)
+        # Sites that never answer GitHub's servers are read by the office PC task (run_monitor.py --office-pc);
+        # the GitHub run skips them instead of recording a TIMEOUT for them every hour.
+        if os.getenv("GITHUB_ACTIONS") == "true" and not source_ids:
+            sources = [s for s in sources if not s.get("office_pc")]
         if source_ids:
             sources = [s for s in sources if s["id"] in source_ids]
         if sector:

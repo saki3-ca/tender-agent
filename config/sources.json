@@ -51,7 +51,9 @@
     "verify_ssl": true,
     "rate_limit_seconds": 3,
     "enabled": true,
-    "verified": "2026-10-05"
+    "verified": "2026-10-05",
+    "office_pc": true,
+    "note": "office_pc (2026-11-22): never answers GitHub's servers (timeouts/blocks every hour) but loads normally from a PC in Bangladesh, so it is read by the office PC task (run_monitor.py --office-pc)."
   },
   {
     "id": "src_03_rupali_tender",
@@ -75,7 +77,7 @@
     "rate_limit_seconds": 3,
     "enabled": true,
     "verified": "2026-10-06",
-    "note": "Expressions of Interest (type=20)."
+    "note": "This page (type=20) is Rupali's 'Career/Job Opportunity' list; it also carries REoIs for contractual positions."
   },
   {
     "id": "src_04_mercantile_tender",
@@ -160,7 +162,8 @@
     "requires_js": false,
     "verify_ssl": true,
     "rate_limit_seconds": 3,
-    "enabled": true
+    "enabled": false,
+    "note": "Disabled 2026-11-22: domain does not resolve / connect (merged bank's site not live yet?); failed every run. Re-enable from the Admin page with a working URL."
   },
   {
     "id": "src_11_krishi_tender",
@@ -203,8 +206,8 @@
     "requires_js": false,
     "verify_ssl": true,
     "rate_limit_seconds": 3,
-    "enabled": true,
-    "note": "Site is behind a bot-protection check (Cloudflare / security verification) that blocks automated access, also in a browser. Not bypassed by design; see README."
+    "enabled": false,
+    "note": "Disabled 2026-11-22: bot protection refuses automated readers everywhere (179 failed runs in a row). Not bypassed by design. CHECK MANUALLY: https://ificbank.com.bd/notice"
   },
   {
     "id": "src_15_pubali_tender",
@@ -214,8 +217,8 @@
     "requires_js": false,
     "verify_ssl": true,
     "rate_limit_seconds": 3,
-    "enabled": true,
-    "note": "Site is behind a bot-protection check (Cloudflare / security verification) that blocks automated access, also in a browser. Not bypassed by design; see README."
+    "enabled": false,
+    "note": "Disabled 2026-11-22: bot protection refuses automated readers everywhere (179 failed runs in a row). Not bypassed by design. CHECK MANUALLY: https://www.pubalibangla.com/tender"
   },
   {
     "id": "src_16_dhaka_tender",
@@ -334,7 +337,9 @@
     "verify_ssl": true,
     "rate_limit_seconds": 3,
     "enabled": true,
-    "verified": "2026-10-05"
+    "verified": "2026-10-05",
+    "office_pc": true,
+    "note": "office_pc (2026-11-22): never answers GitHub's servers (timeouts/blocks every hour) but loads normally from a PC in Bangladesh, so it is read by the office PC task (run_monitor.py --office-pc)."
   },
   {
     "id": "src_27_icb_islamic_tender",
@@ -572,7 +577,8 @@
     "requires_js": false,
     "verify_ssl": true,
     "rate_limit_seconds": 3,
-    "enabled": true
+    "enabled": false,
+    "note": "Disabled 2026-11-22: bangladesh.oxfam.org no longer exists; failed every run. Re-enable from the Admin page with a working URL."
   },
   {
     "id": "src_ngo_19_care_bangladesh",
@@ -879,7 +885,8 @@
     "enabled": true,
     "country_filter": true,
     "verified": "2026-11-03",
-    "note": "Linked from the homepage as 'Consultants & Vendors'; RFPs are published there."
+    "note": "office_pc (2026-11-22): never answers GitHub's servers (timeouts/blocks every hour) but loads normally from a PC in Bangladesh, so it is read by the office PC task (run_monitor.py --office-pc).",
+    "office_pc": true
   },
   {
     "id": "src_ngo_45_jhpiego_bangladesh",
@@ -972,8 +979,9 @@
     "requires_js": false,
     "verify_ssl": true,
     "rate_limit_seconds": 3,
-    "enabled": true,
-    "country_filter": true
+    "enabled": false,
+    "country_filter": true,
+    "note": "Disabled 2026-11-22: venture37.org no longer exists; failed every run. Re-enable from the Admin page with a working URL."
   },
   {
     "id": "src_ngo_53_acdi_voca_bangladesh",
@@ -1007,7 +1015,9 @@
     "verify_ssl": true,
     "rate_limit_seconds": 3,
     "enabled": true,
-    "verified": "2026-11-03"
+    "verified": "2026-11-03",
+    "office_pc": true,
+    "note": "office_pc (2026-11-22): never answers GitHub's servers (timeouts/blocks every hour) but loads normally from a PC in Bangladesh, so it is read by the office PC task (run_monitor.py --office-pc)."
   },
   {
     "id": "src_ngo_56_orbis_international_bangladesh",
@@ -1041,8 +1051,9 @@
     "requires_js": false,
     "verify_ssl": true,
     "rate_limit_seconds": 3,
-    "enabled": true,
-    "country_filter": true
+    "enabled": false,
+    "country_filter": true,
+    "note": "Disabled 2026-11-22: server drops every connection; failed every run. Re-enable from the Admin page with a working URL."
   },
   {
     "id": "src_ngo_59_heks_eper_bangladesh",
@@ -1110,7 +1121,8 @@
     "requires_js": false,
     "verify_ssl": true,
     "rate_limit_seconds": 3,
-    "enabled": true
+    "enabled": false,
+    "note": "Disabled 2026-11-22: gnbangladesh.org no longer connects; failed every run. Re-enable from the Admin page with a working URL."
   },
   {
     "id": "src_ngo_65_childfund_bangladesh",
@@ -1460,9 +1472,9 @@
     "requires_js": false,
     "verify_ssl": true,
     "rate_limit_seconds": 3,
-    "enabled": true,
+    "enabled": false,
     "verified": "2026-11-03",
-    "note": "Domain was misspelled (banckteshekha.org). The notice page currently shows placeholder text only."
+    "note": "Disabled 2026-11-22: banchteshekha.org no longer connects; failed every run. Re-enable from the Admin page with a working URL."
   },
   {
     "id": "src_ngo_97_vard_voluntary_association",
@@ -1534,13 +1546,13 @@
     "requires_js": false,
     "verify_ssl": true,
     "rate_limit_seconds": 2,
-    "enabled": true,
+    "enabled": false,
     "aggregator": true,
     "members_only": true,
     "max_documents": 0,
     "min_interval_hours": 6,
     "verified": "2026-10-06",
-    "note": "Alltender.com paid subscription: 'My Tenders' list of the ACNABIN account (its 'CA Firm' preference). Needs ALLTENDER_USER / ALLTENDER_PASSWORD. Read every 6 hours; Bank and NGO tenders only. Shown to signed-in users only (Alltender content may not be republished)."
+    "note": "Disabled 2026-11-22: login to alltender.com has failed on every run (LOGIN_FAILED x179). Update the ALLTENDER_USER / ALLTENDER_PASSWORD repository secrets (or renew the subscription), then set enabled back to true."
   },
   {
     "id": "src_alltender_ict_64",
@@ -1553,9 +1565,9 @@
     "verify_ssl": true,
     "rate_limit_seconds": 2,
     "max_documents": 0,
-    "enabled": true,
+    "enabled": false,
     "verified": "2026-10-07",
-    "note": "Alltender.com paid subscription, live tenders of sub-category 64 (ICT support / consultancy), read signed in. Shown to signed-in users only.",
+    "note": "Disabled 2026-11-22: login to alltender.com has failed on every run (LOGIN_FAILED x179). Update the ALLTENDER_USER / ALLTENDER_PASSWORD repository secrets (or renew the subscription), then set enabled back to true.",
     "category_id": 64,
     "aggregator": true,
     "members_only": true,
@@ -1574,9 +1586,9 @@
     "verify_ssl": true,
     "rate_limit_seconds": 2,
     "max_documents": 0,
-    "enabled": true,
+    "enabled": false,
     "verified": "2026-10-07",
-    "note": "Alltender.com paid subscription, live tenders of sub-category 69 (software), read signed in. Shown to signed-in users only.",
+    "note": "Disabled 2026-11-22: login to alltender.com has failed on every run (LOGIN_FAILED x179). Update the ALLTENDER_USER / ALLTENDER_PASSWORD repository secrets (or renew the subscription), then set enabled back to true.",
     "category_id": 69,
     "aggregator": true,
     "members_only": true,
@@ -1768,8 +1780,8 @@
     "requires_js": false,
     "verify_ssl": true,
     "rate_limit_seconds": 3,
-    "enabled": true,
-    "note": "Added 2026-10-10: address taken from the organization's own published page; not yet read by the monitor. Check the Sources page after the next run and correct the URL in Admin if it fails."
+    "enabled": false,
+    "note": "Disabled 2026-11-22: bot protection refuses automated readers everywhere (179 failed runs in a row). Not bypassed by design. CHECK MANUALLY: https://bangladesh.iom.int/procurement"
   },
   {
     "id": "src_dp_ilo_bd",
@@ -1779,8 +1791,8 @@
     "requires_js": false,
     "verify_ssl": true,
     "rate_limit_seconds": 3,
-    "enabled": true,
-    "note": "Added 2026-10-10: address taken from the organization's own published page; not yet read by the monitor. Check the Sources page after the next run and correct the URL in Admin if it fails."
+    "enabled": false,
+    "note": "Disabled 2026-11-22: old ILO Dhaka page returns 403 (site retired); failed every run. Re-enable from the Admin page with a working URL."
   },
   {
     "id": "src_dp_unhcr_bd",
@@ -1790,9 +1802,9 @@
     "requires_js": false,
     "verify_ssl": true,
     "rate_limit_seconds": 3,
-    "enabled": true,
+    "enabled": false,
     "country_filter": true,
-    "note": "Added 2026-10-10: address taken from the organization's own published page; not yet read by the monitor. Check the Sources page after the next run and correct the URL in Admin if it fails."
+    "note": "Disabled 2026-11-22: page redirects in a loop (URL retired); failed every run. Re-enable from the Admin page with a working URL."
   },
   {
     "id": "src_ngo_99_international_medical_corps",
@@ -1853,5 +1865,41 @@
     "enabled": true,
     "country_filter": true,
     "note": "Added 2026-10-10: address taken from the organization's own published page; not yet read by the monitor. Check the Sources page after the next run and correct the URL in Admin if it fails."
+  },
+  {
+    "id": "src_03_rupali_notice",
+    "url": "https://rupalibank.com.bd/notice_jquery.php?type=15",
+    "organization_id": "bank_03_rupali",
+    "tier": 1,
+    "requires_js": false,
+    "verify_ssl": true,
+    "rate_limit_seconds": 3,
+    "enabled": true,
+    "verified": "2026-11-22",
+    "note": "Rupali Bank 'Notice Board' (type=15). Audit-firm enlistments and similar RFPs can be posted here instead of under Tender (type=18)."
+  },
+  {
+    "id": "src_bppa_adv_services",
+    "url": "https://www.bppa.gov.bd/advertisement-notices/advertisement-services.html",
+    "organization_id": "gov_bppa_egp",
+    "tier": 1,
+    "requires_js": false,
+    "verify_ssl": true,
+    "rate_limit_seconds": 3,
+    "enabled": true,
+    "verified": "2026-11-22",
+    "note": "BPPA public advertisement list (Services): consultancy / REoI / RFP notices of all government bodies, including state-owned banks. No login needed."
+  },
+  {
+    "id": "src_bppa_adv_goods",
+    "url": "https://www.bppa.gov.bd/advertisement-notices/advertisement-goods.html",
+    "organization_id": "gov_bppa_egp",
+    "tier": 2,
+    "requires_js": false,
+    "verify_ssl": true,
+    "rate_limit_seconds": 3,
+    "enabled": true,
+    "verified": "2026-11-22",
+    "note": "BPPA public advertisement list (Goods)."
   }
 ]

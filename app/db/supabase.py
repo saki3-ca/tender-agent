@@ -136,6 +136,17 @@ class Store:
             self.client.table("source_status").upsert(chunk).execute()
 
     # -------------------------------------------------------------------- runs
+    def delete_source_states(self, source_ids: List[str]) -> None:
+        if not self.client:
+            for sid in source_ids:
+                self._local["source_status"].pop(sid, None)
+            return
+        try:
+            for chunk in _chunks(list(source_ids), 100):
+                self.client.table("source_status").delete().in_("source_id", chunk).execute()
+        except Exception as e:  # noqa: BLE001
+            logger.warning(f"Could not remove stale source_status rows: {e}")
+
     def run_started(self) -> Optional[int]:
         if not self.client:
             return None

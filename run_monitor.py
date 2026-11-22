@@ -33,11 +33,16 @@ def main() -> int:
                       help="Skip newspaper e-paper sources")
     parser.add_argument("--pc-browser", action="store_true",
                         help="Only sources marked pc_browser, read in Chrome (the --epaper run in GitHub Actions does this too)")
+    parser.add_argument("--office-pc", action="store_true",
+                        help="Only sources marked office_pc: sites that do not answer GitHub's servers but load normally "
+                             "from a PC in Bangladesh (run hourly by the Windows task from scripts/install_office_pc_task.ps1)")
     args = parser.parse_args()
     if args.pc_browser:
         from app.crawler import pc_browser
         os.environ[pc_browser.ENV_FLAG] = "1"
         args.source = [s["id"] for s in config.sources if s.get("pc_browser") and s.get("enabled", True)]
+    if args.office_pc:
+        args.source = [s["id"] for s in config.sources if s.get("office_pc") and s.get("enabled", True)]
 
     try:
         config.validate()

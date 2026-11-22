@@ -123,3 +123,14 @@ def test_bidder_eligibility_documents_are_not_tax_services():
     assert not rc.classify("Tender Notice - Agriculture Materials", description=notice).is_priority
     assert not rc.classify("RFP: Production of TV talk show", description="Tax Return Acknowledgement, NID").is_priority
     assert rc.classify("Appointment of Tax Consultant for income tax return filing").is_priority
+
+
+def test_cash_incentive_and_ca_firm_notices_are_priority():
+    from app.classification.relevance import RelevanceClassifier
+    c = RelevanceClassifier()
+    for title in ["Tender for verification of export cash incentive claims",
+                  "EOI for Cash Incentive Verification",
+                  "Enlistment of Chartered Accountants firms for the year 2027",
+                  "রপ্তানি নগদ সহায়তা যাচাইয়ের জন্য চার্টার্ড একাউন্ট্যান্টস ফার্ম নিয়োগ"]:
+        assert c.classify(title).is_priority, title
+    assert not c.classify("Recruitment of Officer (Cash)").is_priority

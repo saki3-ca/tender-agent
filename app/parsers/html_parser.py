@@ -68,7 +68,8 @@ def clean_title(title: str) -> str:
         t = t[:m.start()]
     return t.strip(" |:-–")
 
-NOISE_SELECTOR = re.compile(r"(?:^|[-_\s])(footer|navbar|nav|menu|breadcrumbs?|sidebar|cookie|topbar|social)(?:$|[-_\s])", re.I)
+NOISE_SELECTOR = re.compile(r"(?:^|[-_\s])(footer|navbar|nav|menu|breadcrumbs?|sidebar|cookie|topbar|social|"
+                            r"breakingnews|breaking|ticker|news-?ticker)(?:$|[-_\s])", re.I)
 
 HEADER_ROLES = [
     ("deadline", re.compile(r"closing|deadline|last\s*date|end\s*date|due|submission|শেষ", re.I)),
@@ -137,7 +138,8 @@ def _is_noise_element(el: Tag) -> bool:
 
 
 def strip_noise(soup: BeautifulSoup) -> BeautifulSoup:
-    for el in soup(["script", "style", "noscript", "iframe", "svg"]):
+    # <marquee> is a scrolling news ticker (site-wide headlines such as BPPA's), never the page's own content
+    for el in soup(["script", "style", "noscript", "iframe", "svg", "marquee"]):
         el.decompose()
     total = len(soup.get_text(" ", strip=True)) or 1
     for el in soup(["nav", "footer", "header", "aside", "form"]):
@@ -219,6 +221,13 @@ class HtmlNoticeExtractor:
                 if pattern.search(text):
                     roles[idx] = role
                     break
+        # "Title & Reference No." matches the reference rule first; with no other title column it is the title
+        if "title" not in roles.values():
+            title_rule = dict(HEADER_ROLES)["title"]
+            for idx, role in roles.items():
+                if role == "reference" and title_rule.search(cells[idx]):
+                    roles[idx] = "title"
+                    break
         # A plain "Date" column is the publication date unless a published column exists
         if "published" not in roles.values():
             for idx, role in roles.items():
@@ -282,6 +291,15 @@ class HtmlNoticeExtractor:
         item.title_is_weak = is_weak_title(item.title)
         return item
 
+    @staticmethod
+    def _loose_header_cells(table: Tag) -> List[str]:
+        """Header cells written as <thead><th>…</th></thead> without a <tr> (e.g. the BPPA notice lists)."""
+        thead = table.find("thead")
+        if not thead:
+            return []
+        loose = [th for th in thead.find_all("th") if th.find_parent("tr") is None]
+        return [_clean(th.get_text(" ")) for th in loose] if len(loose) >= 2 else []
+
     def _from_tables(self, soup: BeautifulSoup) -> List[Listing]:
         out: List[Listing] = []
         carried_roles: Optional[Dict[int, str]] = None  # header given in a separate one-row table
@@ -307,7 +325,12 @@ class HtmlNoticeExtractor:
             body = rows[1:]
             if roles is None:
                 body = rows
-                if carried_roles and len(first_texts) == carried_width:
+                header_cells = self._loose_header_cells(table)
+                if header_cells:
+                    mapped = self._map_header(header_cells)
+                    if "title" in mapped.values():
+                        roles = mapped
+                if roles is None and carried_roles and len(first_texts) == carried_width:
                     roles = carried_roles
             for tr in body:
                 item = self._row_to_listing(tr, roles or {})

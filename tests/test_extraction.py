@@ -109,3 +109,16 @@ def test_row_link_with_labelled_cells():
     assert item.reference == "UNDP-BGD-01200"
     assert item.published == date(2026, 9, 23)
     assert item.deadline.date() == date(2026, 10, 7) and not item.deadline_has_time
+
+
+def test_loose_thead_and_title_reference_header():
+    # BPPA advertisement lists: <th> cells directly in <thead> (no <tr>), and a "Title & Reference No." column
+    html = """<table><thead><th>SI No.</th><th>Title & Reference No.</th><th>Procuring Entity</th>
+      <th>Publication Date</th><th>Closing Date & Time</th><th>Place</th></thead><tbody>
+      <tr><td>1</td><td><a href="/advertisement-services/details-1.html">Appointment of audit firm for cash incentive audit
+          <br>12.34.0000.001</a></td><td>Rupali Bank PLC</td><td>01/10/2026</td><td>15/10/2026 <br/> 2:00 PM</td><td>Dhaka</td></tr>
+    </tbody></table>"""
+    [item] = extract(html)
+    assert item.title.startswith("Appointment of audit firm for cash incentive audit")
+    assert item.published == date(2026, 10, 1)
+    assert item.deadline.date() == date(2026, 10, 15)

@@ -87,11 +87,13 @@ class TenderCrawler:
         self._last[urlparse(url).netloc] = time.monotonic()
         lock.release()
 
-    async def fetch(self, url: str, verify_ssl: bool = True, binary: bool = False) -> FetchResult:
+    async def fetch(self, url: str, verify_ssl: bool = True, binary: bool = False,
+                    timeout: Optional[float] = None) -> FetchResult:
         result = FetchResult(url=url)
         lock = await self._polite(url)
         try:
-            resp = await self._client(verify_ssl).get(url)
+            resp = await (self._client(verify_ssl).get(url, timeout=timeout) if timeout
+                          else self._client(verify_ssl).get(url))
             result.status = resp.status_code
             result.final_url = str(resp.url)
             result.content_type = resp.headers.get("content-type", "").lower()
@@ -130,6 +132,9 @@ class TenderCrawler:
                 rendered = await self._fetch_with_playwright(source["url"])
                 if rendered.ok or rendered.error != "PLAYWRIGHT_NOT_INSTALLED":
                     result = rendered
+            elif result.error == "TIMEOUT":
+                # Slow government/bank servers: one more try with a longer limit before reporting a failure.
+                result = await self.fetch(source["url"], verify_ssl=source.get("verify_ssl", True), timeout=60.0)
         if result.ok:
             head = result.text[:6000]
             title_m = re.search(r"<title[^>]*>(.*?)</title>", head, re.I | re.S)
