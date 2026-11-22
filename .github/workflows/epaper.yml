@@ -2,12 +2,13 @@ name: Daily E-Paper Tenders
 
 on:
   schedule:
-    # Asia/Dhaka is UTC+6. Morning read at 06:30 Dhaka so alerts are in by 08:00 (GitHub often starts
-    # scheduled runs 10-40 min late); the 08:00 and 11:30 runs retry only the newspapers that failed
-    # (successful ones are skipped by min_interval_hours).
+    # Asia/Dhaka is UTC+6. Newspapers are read twice a day: 06:30 (alerts in by 08:00; GitHub often starts
+    # scheduled runs 10-40 min late) and 18:30. The 08:00 and 11:30 runs retry only the newspapers that
+    # failed in the morning (successful ones are skipped by min_interval_hours = 10).
     - cron: "30 0 * * *"
     - cron: "0 2 * * *"
     - cron: "30 5 * * *"
+    - cron: "30 12 * * *"
   workflow_dispatch:
     inputs:
       browser_papers_only:
