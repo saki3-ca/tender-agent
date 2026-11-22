@@ -314,10 +314,10 @@ class Monitor:
 
     def _run_label(self, epaper: Optional[bool]) -> str:
         if self.run_type == "office_pc":
-            return "Office PC"
+            return "Office PC (GitHub-blocked sites)"
         if epaper:
             return "Newspapers"
-        return "GitHub hourly" if os.getenv("GITHUB_ACTIONS") == "true" else f"Run ({self.run_type})"
+        return "GitHub (every 30 min)" if os.getenv("GITHUB_ACTIONS") == "true" else f"Run ({self.run_type})"
 
     async def report_run(self, state_rows: List[Dict[str, Any]], epaper: Optional[bool],
                          crashed: Optional[str] = None) -> None:

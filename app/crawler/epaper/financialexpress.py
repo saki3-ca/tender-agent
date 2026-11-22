@@ -7,6 +7,7 @@ government, and public procurement tenders.
 
 import json
 import logging
+import re
 from datetime import date, datetime
 from typing import Any, Dict, List, Optional, Tuple
 
@@ -60,18 +61,22 @@ class FinancialExpressEpaperCrawler:
                 logger.info(f"Processing Financial Express Page {idx}: {img_url}")
 
                 try:
-                    img_resp = await client.get(img_url, headers={"User-Agent": USER_AGENT})
-                    if img_resp.status_code != 200:
-                        continue
-
-                    tenders = await self.parser.extract_tenders_from_image(img_resp.content, "image/jpeg")
-                    if tenders:
-                        logger.info(f"Financial Express Page {idx}: Extracted {len(tenders)} tender notice(s)")
+                    # The full page image is only ~700 px wide: small tender ads are unreadable on it (this is how
+                    # Rupali Bank's cash-assistance audit EOI of 19 Nov 2026 was missed). Each article/advert is
+                    # also published as its own sharper image: read those, and the page only if there are none.
+                    images = await self._article_images(client, idx, today) or [img_url]
+                    for image_url in images:
+                        img_resp = await client.get(image_url, headers={"User-Agent": USER_AGENT})
+                        if img_resp.status_code != 200:
+                            continue
+                        tenders = await self.parser.extract_tenders_from_image(img_resp.content, "image/jpeg")
+                        if tenders:
+                            logger.info(f"Financial Express Page {idx}: Extracted {len(tenders)} tender notice(s)")
                         for t in tenders:
                             t["_page_no"] = str(idx)
                             t["_page_title"] = f"Page {idx}"
                             t["_page_url"] = page_view_url
-                            t["_image_url"] = img_url
+                            t["_image_url"] = image_url
                             t["_edition_date"] = today.strftime("%d/%m/%Y")
                             t["_newspaper"] = "The Financial Express"
                             extracted_tenders.append(t)
@@ -80,3 +85,21 @@ class FinancialExpressEpaperCrawler:
                     continue
 
             return 200, None, extracted_tenders
+
+    async def _article_images(self, client: httpx.AsyncClient, page_no: int, day: date) -> List[str]:
+        """Sharp per-article images of one page (epaper.php fragment: <date>/images/<page>_<n>.jpg)."""
+        try:
+            resp = await client.get(f"{BASE_URL}/epaper.php",
+                                    params={"page_num": f"{page_no:02d}", "date": day.strftime("%Y_%m_%d")},
+                                    headers={"User-Agent": USER_AGENT})
+        except httpx.HTTPError:
+            return []
+        if resp.status_code != 200:
+            return []
+        return article_image_urls(resp.text, page_no, day)
+
+
+def article_image_urls(fragment_html: str, page_no: int, day: date) -> List[str]:
+    folder = day.strftime("%Y/%m/%d")
+    found = re.findall(rf"{re.escape(folder)}/images/{page_no:02d}_\d+\.jpe?g", fragment_html)
+    return [f"{BASE_URL}/{p}" for p in dict.fromkeys(found)]

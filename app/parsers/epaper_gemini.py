@@ -13,6 +13,7 @@ from typing import Any, Dict, List, Optional
 import httpx
 
 
+from app.parsers import epaper_ocr
 from app.utils.config import config
 
 logger = logging.getLogger("epaper_gemini")
@@ -57,20 +58,37 @@ class GeminiEpaperParser:
             self.api_keys = config.gemini_api_keys
         self.pages_read = 0
         self.pages_failed = 0
+        self.pages_ocr_skipped = 0     # OCR found no tender word: Gemini not asked (saves the free quota)
+        self.pages_ocr_only = 0        # Gemini failed: the OCR text was used instead
         self.last_error: Optional[str] = None
 
     async def extract_tenders_from_image(self, image_bytes: bytes, mime_type: str = "image/jpeg") -> List[Dict[str, Any]]:
-        """Tenders on one page image; failures are counted (pages_failed / last_error), not raised."""
-        if not self.api_keys:
-            self.pages_failed += 1
-            self.last_error = "GEMINI_API_KEY not set"
+        """
+        Tenders on one page/article image; failures are counted (pages_failed / last_error), not raised.
+        Free OCR reads the image first (app/parsers/epaper_ocr.py): no tender word -> Gemini is not asked;
+        Gemini fails -> the OCR text is the result; Gemini misses a Priority notice OCR sees -> it is added.
+        """
+        text = await epaper_ocr.ocr_text(image_bytes)
+        if epaper_ocr.readable(text) and not epaper_ocr.has_tender_words(text):
+            self.pages_read += 1
+            self.pages_ocr_skipped += 1
             return []
-        async with _GEMINI_SLOTS:
-            items = await self._extract(image_bytes, mime_type)
+        items: Optional[List[Dict[str, Any]]] = None
+        if self.api_keys:
+            async with _GEMINI_SLOTS:
+                items = await self._extract(image_bytes, mime_type)
+        else:
+            self.last_error = "GEMINI_API_KEY not set"
         if items is None:
+            if text and epaper_ocr.has_tender_words(text):
+                self.pages_read += 1
+                self.pages_ocr_only += 1
+                return epaper_ocr.ocr_items(text)
             self.pages_failed += 1
             return []
         self.pages_read += 1
+        if text and epaper_ocr.has_tender_words(text) and not _any_priority(items):
+            items = list(items) + epaper_ocr.ocr_items(text, only_priority=True)
         return items
 
     async def _extract(self, image_bytes: bytes, mime_type: str) -> Optional[List[Dict[str, Any]]]:
@@ -136,6 +154,13 @@ class GeminiEpaperParser:
                     await asyncio.sleep(20.0)
 
         return None
+
+
+def _any_priority(items: List[Dict[str, Any]]) -> bool:
+    from app.classification.relevance import RelevanceClassifier  # local import: avoids a config import cycle
+    classifier = RelevanceClassifier()
+    return any(classifier.classify(str(i.get("title") or ""), f"{i.get('details') or ''} {i.get('organization') or ''}"
+                                   ).is_priority for i in items if isinstance(i, dict))
 
 
 def _describe(model: str, resp: httpx.Response) -> str:
