@@ -1,12 +1,10 @@
-name: Hourly Tender Monitor
+name: Tender Monitor (every 30 min)
 
 on:
   schedule:
-    # Asia/Dhaka is UTC+6:
-    # 00:00 Dhaka = 18:00 UTC
-    - cron: "7 18 * * *"
-    # 08:00–20:00 Dhaka = 02:00–14:00 UTC (hourly)
-    - cron: "7 2-14 * * *"
+    # Every 30 minutes, day and night, at :05 and :35 (minutes are the same in Dhaka and UTC).
+    # Each run sends a Telegram report. GitHub may start scheduled runs a few minutes late.
+    - cron: "5,35 * * * *"
   workflow_dispatch: {}
 
 concurrency:

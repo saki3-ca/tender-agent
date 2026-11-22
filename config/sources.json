@@ -1787,7 +1787,7 @@
     "members_only": false,
     "max_documents": 0,
     "min_interval_hours": 12,
-    "page_regex": "https://[\\w.]+/images/{Y}{m}{d}/1_(?P<n>\\d+)_full\\.jpg",
+    "page_regex": "https://(?:[\\w-]+\\.)?enayadiganta\\.com/images/{Y}{m}{d}/1_(?P<n>\\d+)_full\\.jpg",
     "max_pages": 20,
     "verified": "2026-11-22",
     "note": "Daily e-paper of Daily Naya Diganta. Page images found by page_regex on the home page (app/crawler/epaper/generic.py) and read via Gemini Vision."
@@ -1811,7 +1811,11 @@
     "page_regex": "https://epaperimages\\.dailyamardesh\\.com/compressedepaper/date_{d}-{m}-{Y}_edition_1_page_(?P<n>\\d+)_[\\w-]*?_compressed_[0-9a-f-]+\\.jpg",
     "max_pages": 20,
     "verified": "2026-11-22",
-    "note": "Daily e-paper of Daily Amar Desh. Page images found by page_regex on the home page (app/crawler/epaper/generic.py) and read via Gemini Vision."
+    "note": "Daily e-paper of Daily Amar Desh. Page images found by page_regex on the home page (app/crawler/epaper/generic.py) and read via Gemini Vision.",
+    "allowed_hosts": [
+      "eamardesh.com",
+      "dailyamardesh.com"
+    ]
   },
   {
     "id": "src_epaper_samakal",

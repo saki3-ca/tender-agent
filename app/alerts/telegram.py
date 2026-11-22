@@ -36,6 +36,13 @@ def format_message(t: Dict[str, Any]) -> str:
     return "\n".join(lines)
 
 
+def _safe(e: Exception) -> str:
+    """Error text without the bot token (httpx errors include the request URL, which contains it)."""
+    text = f"{type(e).__name__}: {e}"
+    token = config.telegram_bot_token
+    return text.replace(token, "***") if token else text
+
+
 class TelegramAlerter:
     def __init__(self, store):
         self.store = store
@@ -54,7 +61,7 @@ class TelegramAlerter:
             self.store.record_alert(dedupe_key, {"text": text}, "SENT")
             return True
         except Exception as e:  # noqa: BLE001
-            logger.warning(f"Telegram message failed: {e}")
+            logger.warning(f"Telegram message failed: {_safe(e)}")
             return False
 
     async def send_status(self, text: str) -> bool:
@@ -69,7 +76,7 @@ class TelegramAlerter:
                 resp.raise_for_status()
             return True
         except Exception as e:  # noqa: BLE001
-            logger.warning(f"Telegram run report failed: {e}")
+            logger.warning(f"Telegram run report failed: {_safe(e)}")
             return False
 
     async def send_new_priority(self, tender: Dict[str, Any]) -> bool:
@@ -90,5 +97,5 @@ class TelegramAlerter:
             self.store.record_alert(key, {"text": text}, "SENT")
             return True
         except Exception as e:
-            logger.warning(f"Telegram alert failed: {e}")
+            logger.warning(f"Telegram alert failed: {_safe(e)}")
             return False

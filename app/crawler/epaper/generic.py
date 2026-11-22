@@ -14,13 +14,15 @@ Source fields (type "epaper_generic"):
                    tile_regex ({n} = page number) finds the article images on it; images smaller than
                    min_image_bytes (spacers, empty tiles) are skipped. Used for The Daily Observer.
   max_pages        default 20
+  allowed_hosts    optional domains images may come from (default: the url's host); every page, tile and
+                   redirect target outside them is skipped
 """
 
 import logging
 import re
 from datetime import date, datetime
 from typing import Any, Dict, List, Optional, Tuple
-from urllib.parse import urljoin
+from urllib.parse import urljoin, urlparse
 
 import httpx
 
@@ -59,10 +61,25 @@ class GenericEpaperCrawler:
         self.newspaper = source.get("newspaper") or source["id"]
         self.parser = GeminiEpaperParser()
 
+    def _allowed(self, url: str) -> bool:
+        """Only fetch from the newspaper's own domains (the source URL's host, or allowed_hosts)."""
+        host = (urlparse(url).hostname or "").lower()
+        hosts = self.source.get("allowed_hosts") or [urlparse(self.source["url"]).hostname or ""]
+        return urlparse(url).scheme in ("http", "https") and any(
+            host == h.lower().removeprefix("www.") or host.endswith("." + h.lower().removeprefix("www."))
+            for h in hosts if h)
+
+    async def _get(self, client: httpx.AsyncClient, url: str) -> Optional[httpx.Response]:
+        if not self._allowed(url):
+            logger.warning(f"{self.newspaper}: skipped URL outside the newspaper's domains: {url[:120]}")
+            return None
+        r = await client.get(url)
+        return r if self._allowed(str(r.url)) else None   # redirected elsewhere
+
     async def _images(self, client: httpx.AsyncClient, page_no: int, page_url: str) -> List[Tuple[str, bytes]]:
         """Image bytes to read for one page: the page image, or the article tiles of a page view."""
-        r = await client.get(page_url)
-        if r.status_code != 200 or not r.content:
+        r = await self._get(client, page_url)
+        if r is None or r.status_code != 200 or not r.content:
             return []
         if not self.source.get("page_html"):
             return [(page_url, r.content)]
@@ -70,8 +87,8 @@ class GenericEpaperCrawler:
         tiles = list(dict.fromkeys(urljoin(page_url, t) for t in re.findall(tile_regex, r.text)))
         out = []
         for t in tiles:
-            img = await client.get(t)
-            if img.status_code == 200 and len(img.content) >= int(self.source.get("min_image_bytes", 15000)):
+            img = await self._get(client, t)
+            if img is not None and img.status_code == 200 and len(img.content) >= int(self.source.get("min_image_bytes", 15000)):
                 out.append((t, img.content))
         return out
 
