@@ -141,7 +141,11 @@ python scripts/check_sources.py --sector NGO
 
 The script checks every configured page and, for broken or empty ones, lists tender/procurement pages linked from the organization's **own homepage**, with how many listings each yields. Review the candidates and update `config/sources.json`. URLs are never constructed by guesswork. The same check runs weekly in GitHub Actions (`weekly.yml`) and uploads the report.
 
-Sources that could not be repaired on 2026-10-05 remain enabled and are reported as errors (some sites block automated access, some domains no longer resolve). The e-GP homepage is disabled (login portal), and CCDB is disabled because its domain currently serves unrelated content.
+Disabled sources carry a `note` saying why. Each run removes the stored status of disabled or removed sources, so the Sources page only lists what is actually monitored. Sites behind bot protection (IFIC, Pubali, IOM) are disabled, not bypassed; their notes say "CHECK MANUALLY" with the link.
+
+**Government tenders (BPPA).** `src_bppa_adv_services` / `src_bppa_adv_goods` read the public BPPA advertisement lists, which carry the consultancy / REoI / RFP notices of all government bodies, including state-owned banks (Rupali, Sonali, Janata, Agrani…). No login is needed (the e-GP homepage itself stays disabled).
+
+**Office PC sources.** Some Bangladeshi sites never answer GitHub's servers (Janata Bank and Islami Bank timed out on every run) but load normally from a PC in Bangladesh. They are marked `"office_pc": true`; the GitHub run skips them and an office PC reads them hourly with `python run_monitor.py --office-pc`. Install that once on a PC that stays on: copy `.env` (SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY) into the repository folder, `pip install -r requirements.txt`, then `powershell -ExecutionPolicy Bypass -File scripts\install_office_pc_task.ps1`. Log: `data\office_pc.log`.
 
 ## Running
 
