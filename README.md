@@ -145,7 +145,7 @@ Disabled sources carry a `note` saying why. Each run removes the stored status o
 
 **Government tenders (BPPA).** `src_bppa_adv_services` / `src_bppa_adv_goods` read the public BPPA advertisement lists, which carry the consultancy / REoI / RFP notices of all government bodies, including state-owned banks (Rupali, Sonali, Janata, Agrani…). No login is needed (the e-GP homepage itself stays disabled).
 
-**Office PC sources.** Some Bangladeshi sites never answer GitHub's servers (Janata Bank and Islami Bank timed out on every run) but load normally from a PC in Bangladesh. They are marked `"office_pc": true`; the GitHub run skips them and an office PC reads them hourly with `python run_monitor.py --office-pc`. Install that once on a PC that stays on: copy `.env` (SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY) into the repository folder, `pip install -r requirements.txt`, then `powershell -ExecutionPolicy Bypass -File scripts\install_office_pc_task.ps1`. Log: `data\office_pc.log`.
+**Office PC sources.** Some Bangladeshi sites never answer GitHub's servers (Janata Bank and Islami Bank timed out on every run) but load normally from a PC in Bangladesh. They are marked `"office_pc": true`; the GitHub run skips them and an office PC reads them hourly with `python run_monitor.py --office-pc`. Step-by-step setup from zero: [docs/OFFICE_PC_SETUP.md](docs/OFFICE_PC_SETUP.md). Check it with `python scripts/pc_status.py`; GitHub alerts by Telegram/email when the PC stops.
 
 ## Running
 

@@ -28,6 +28,14 @@ $repo = Split-Path -Parent $PSScriptRoot
 $python = (Get-Command python -ErrorAction Stop).Source
 if (-not (Test-Path (Join-Path $repo ".env"))) { throw "No .env file in $repo (needs SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY)." }
 New-Item -ItemType Directory -Force (Join-Path $repo "data") | Out-Null
+if (-not (Get-Command git -ErrorAction SilentlyContinue)) { throw "Git is not installed (or not on PATH). Install Git, reopen PowerShell, try again." }
+
+# The task must keep running after a restart / power cut even when nobody signs in, so Windows needs this
+# account's password once (stored by Task Scheduler, not by this script). The account must have a password.
+$user = "$env:USERDOMAIN\$env:USERNAME"
+$cred = Get-Credential -UserName $user -Message "Windows password of $user (lets the task run without anyone signed in)"
+if (-not $cred) { throw "Cancelled." }
+$plain = $cred.GetNetworkCredential().Password
 
 function Register-AgentTask([string]$name, [string]$arguments, [string]$logName, $trigger, [int]$limitMinutes) {
     $log = Join-Path $repo "data\$logName"
@@ -37,6 +45,7 @@ function Register-AgentTask([string]$name, [string]$arguments, [string]$logName,
     $settings = New-ScheduledTaskSettingsSet -StartWhenAvailable -WakeToRun -DontStopOnIdleEnd `
         -ExecutionTimeLimit (New-TimeSpan -Minutes $limitMinutes) -MultipleInstances IgnoreNew
     Register-ScheduledTask -TaskName $name -Action $action -Trigger $trigger -Settings $settings `
+        -User $user -Password $plain -RunLevel Highest `
         -Description "ACNABIN Tender Monitor: run_monitor.py $arguments" -Force | Out-Null
     Write-Host "Installed task '$name' (log: $log)"
 }
