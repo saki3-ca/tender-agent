@@ -113,6 +113,23 @@ class EmailAlerter:
                 s.login(config.smtp_user, config.smtp_password)
                 s.send_message(msg)
 
+    async def send_text(self, dedupe_key: str, subject: str, text: str) -> bool:
+        """A plain notice (e.g. 'office PC stopped'), sent once per dedupe_key."""
+        if not self.enabled or self.store.alert_sent(dedupe_key):
+            return False
+        msg = EmailMessage()
+        msg["Subject"] = subject
+        msg["From"] = f"ACNABIN Tender Monitor <{config.alert_email_from or config.smtp_user}>"
+        msg["To"] = ", ".join(self.recipients)
+        msg.set_content(text)
+        try:
+            await asyncio.to_thread(self._send, msg)
+            self.store.record_alert(dedupe_key, {"subject": subject}, "SENT", channel="email")
+            return True
+        except Exception as e:  # noqa: BLE001
+            logger.warning(f"Email notice failed: {e}")
+            return False
+
     async def flush(self) -> int:
         """Sends one message with all pending tenders. Returns the number of tenders emailed."""
         if not self.pending:

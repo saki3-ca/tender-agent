@@ -36,7 +36,11 @@ def main() -> int:
     parser.add_argument("--office-pc", action="store_true",
                         help="Only sources marked office_pc: sites that do not answer GitHub's servers but load normally "
                              "from a PC in Bangladesh (run hourly by the Windows task from scripts/install_office_pc_task.ps1)")
+    parser.add_argument("--run-type", default=None,
+                        help="Label stored in the runs table (default 'monitor'; 'office_pc' for the office PC task, "
+                             "which GitHub uses as the PC's heartbeat)")
     args = parser.parse_args()
+    run_type = args.run_type or ("office_pc" if args.office_pc else "monitor")
     if args.pc_browser:
         from app.crawler import pc_browser
         os.environ[pc_browser.ENV_FLAG] = "1"
@@ -56,7 +60,7 @@ def main() -> int:
     store = Store()
     if args.local:
         store.client = None
-    monitor = Monitor(store)
+    monitor = Monitor(store, run_type=run_type)
     stats = asyncio.run(monitor.run(args.source, sector=args.sector, epaper=args.epaper))
 
     print("\n=== ACNABIN Tender Monitor — run summary ===")

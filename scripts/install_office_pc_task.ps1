@@ -21,7 +21,7 @@
 # Logs: data\office_pc.log, data\full_run.log, data\epaper_run.log. Remove the tasks with:
 #   Get-ScheduledTask -TaskName "ACNABIN*" | Unregister-ScheduledTask -Confirm:$false
 
-param([switch]$Full)
+param([switch]$Full, [int]$IntervalMinutes = 10)
 
 $ErrorActionPreference = "Stop"
 $repo = Split-Path -Parent $PSScriptRoot
@@ -41,15 +41,16 @@ function Register-AgentTask([string]$name, [string]$arguments, [string]$logName,
     Write-Host "Installed task '$name' (log: $log)"
 }
 
-$hourly = New-ScheduledTaskTrigger -Once -At (Get-Date).Date.AddMinutes(20) -RepetitionInterval (New-TimeSpan -Hours 1)
+$hourly = New-ScheduledTaskTrigger -Once -At (Get-Date).AddMinutes(1) -RepetitionInterval (New-TimeSpan -Minutes $IntervalMinutes)
 
 if ($Full) {
-    # Whole monitor every hour (all web sources; office_pc sources are included because this is not GitHub)
-    Register-AgentTask "ACNABIN Tender Monitor (full, hourly)" "--no-epaper" "full_run.log" $hourly 50
+    # Whole monitor every $IntervalMinutes minutes (all web sources; office_pc sources are included because this is
+    # not GitHub). Recorded as run_type office_pc, so GitHub's hourly run alerts if this PC stops.
+    Register-AgentTask "ACNABIN Tender Monitor (full)" "--no-epaper --run-type office_pc" "full_run.log" $hourly 50
     # Newspaper e-papers once a day at 10:30 Dhaka time (needs GEMINI_API_KEY in .env)
     $daily = New-ScheduledTaskTrigger -Daily -At "10:30"
     Register-AgentTask "ACNABIN Tender Monitor (e-paper, daily)" "--epaper" "epaper_run.log" $daily 120
-    Start-ScheduledTask -TaskName "ACNABIN Tender Monitor (full, hourly)"
+    Start-ScheduledTask -TaskName "ACNABIN Tender Monitor (full)"
 } else {
     Register-AgentTask "ACNABIN Tender Monitor (office PC)" "--office-pc" "office_pc.log" $hourly 30
     Start-ScheduledTask -TaskName "ACNABIN Tender Monitor (office PC)"

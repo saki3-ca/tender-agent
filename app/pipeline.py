@@ -186,8 +186,9 @@ def merge_admin_sources(config_sources: List[Dict[str, Any]], admin_rows: List[D
 
 
 class Monitor:
-    def __init__(self, store: Optional[Store] = None, now: Optional[datetime] = None):
+    def __init__(self, store: Optional[Store] = None, now: Optional[datetime] = None, run_type: str = "monitor"):
         self.store = store or Store()
+        self.run_type = run_type  # "monitor" (GitHub / normal) or "office_pc" (the PC task; used as its heartbeat)
         self.now = now or datetime.now(DHAKA_TZ)
         self.today = self.now.astimezone(DHAKA_TZ).date()
         self.crawler = TenderCrawler()
@@ -209,7 +210,7 @@ class Monitor:
                   epaper: Optional[bool] = None) -> Dict[str, Any]:
         """epaper=True: only newspaper e-paper sources; False: all others; None: both."""
         started = time.monotonic()
-        run_id = self.store.run_started()
+        run_id = self.store.run_started(self.run_type)
         sources = [s for s in merge_admin_sources(config.sources, self.store.admin_sources())
                    if s.get("enabled", True)]
         # A source that was disabled or removed keeps its last result in source_status, so the Sources page
@@ -298,6 +299,8 @@ class Monitor:
                         self.stats["alerts_sent"] += 1
                     self.emailer.add(t)
         self.stats["emails_sent"] = await self.emailer.flush()
+        if os.getenv("GITHUB_ACTIONS") == "true":
+            await self.check_office_pc()
 
         self.stats["duration_seconds"] = round(time.monotonic() - started, 1)
         failed = [f"{s['source_id']}: {s['error']}" for s in state_rows if not s["ok"]]
@@ -306,6 +309,26 @@ class Monitor:
         self.results = all_tenders
         self.source_results = state_rows
         return self.stats
+
+    OFFICE_PC_SILENT_MINUTES = 30
+
+    async def check_office_pc(self) -> None:
+        """Run from GitHub: if the office PC task has run before but not in the last 30 minutes, send one
+        Telegram message + email for this outage (the dedupe key is the last run time, so no repeats)."""
+        last = _to_dt(self.store.last_run_start("office_pc"))
+        if not last:
+            return  # the office PC was never set up
+        silent = datetime.now(timezone.utc) - last
+        self.stats["office_pc_last_run"] = last.astimezone(DHAKA_TZ).strftime("%d %b %H:%M")
+        if silent < timedelta(minutes=self.OFFICE_PC_SILENT_MINUTES):
+            return
+        when = last.astimezone(DHAKA_TZ).strftime("%d %b %Y %H:%M")
+        key = f"office_pc_down_{last.isoformat()}"
+        text = (f"ACNABIN Tender Monitor: the office PC has not run since {when} (Dhaka time, "
+                f"{int(silent.total_seconds() // 60)} minutes ago). Janata Bank, Islami Bank and the other office-PC "
+                "sources are not being read. Check that the PC is on, awake and online.")
+        await self.alerter.send_text(key, text)
+        await self.emailer.send_text(key + "_email", "Office PC stopped - tender sources not being read", text)
 
     # ---------------------------------------------------------------- source
     async def process_source(self, source: Dict[str, Any], state: Optional[Dict[str, Any]]

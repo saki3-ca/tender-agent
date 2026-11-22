@@ -147,12 +147,24 @@ class Store:
         except Exception as e:  # noqa: BLE001
             logger.warning(f"Could not remove stale source_status rows: {e}")
 
-    def run_started(self) -> Optional[int]:
+    def last_run_start(self, run_type: str) -> Optional[str]:
+        """start_time of the latest run of this type (e.g. 'office_pc'), or None if there never was one."""
+        if not self.client:
+            return None
+        try:
+            res = (self.client.table("runs").select("start_time").eq("run_type", run_type)
+                   .order("start_time", desc=True).limit(1).execute())
+            return res.data[0]["start_time"] if res.data else None
+        except Exception as e:  # noqa: BLE001
+            logger.warning(f"Could not read the last {run_type} run: {e}")
+            return None
+
+    def run_started(self, run_type: str = "monitor") -> Optional[int]:
         if not self.client:
             return None
         try:
             res = self.client.table("runs").insert(
-                {"run_type": "monitor", "start_time": _now(), "status": "RUNNING"}).execute()
+                {"run_type": run_type, "start_time": _now(), "status": "RUNNING"}).execute()
             return res.data[0]["id"] if res.data else None
         except Exception as e:
             logger.warning(f"Could not record run start: {e}")

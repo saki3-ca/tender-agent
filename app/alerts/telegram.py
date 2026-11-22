@@ -42,6 +42,21 @@ class TelegramAlerter:
         self.enabled = bool(config.settings.get("alerts", {}).get("enabled", True)
                             and config.telegram_bot_token and config.telegram_chat_id)
 
+    async def send_text(self, dedupe_key: str, text: str) -> bool:
+        """A plain message (e.g. 'office PC stopped'), sent once per dedupe_key."""
+        if not self.enabled or self.store.alert_sent(dedupe_key):
+            return False
+        try:
+            async with httpx.AsyncClient(timeout=15.0) as client:
+                resp = await client.post(f"https://api.telegram.org/bot{config.telegram_bot_token}/sendMessage",
+                                         json={"chat_id": config.telegram_chat_id, "text": text})
+                resp.raise_for_status()
+            self.store.record_alert(dedupe_key, {"text": text}, "SENT")
+            return True
+        except Exception as e:  # noqa: BLE001
+            logger.warning(f"Telegram message failed: {e}")
+            return False
+
     async def send_new_priority(self, tender: Dict[str, Any]) -> bool:
         if not self.enabled:
             return False
