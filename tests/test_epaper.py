@@ -146,3 +146,32 @@ def test_bd_pratidin_pages_and_full_size_image():
     assert full_page_image(view, "2026/10/08", 3) == \
         "https://cdn.bd-pratidin.com/public/paper/2026/10/08/1791401703-3.jpg"
     assert full_page_image(view, "2026/10/08", 4) is None
+
+
+def test_generic_epaper_page_images():
+    from datetime import date
+    from app.crawler.epaper.generic import edition_urls
+
+    # JSON-escaped relative paths (Inqilab), first occurrence per page, sorted by page number
+    html = (r'{"p":"uploads\/epaper\/2026\/11\/22\/pages\/1\/page_3.jpg"} '
+            '"uploads/epaper/2026/11/22/pages/1/page_2.jpg" "uploads/epaper/2026/11/21/pages/1/page_9.jpg"')
+    src = {"page_regex": r"uploads/epaper/{Y}/{m}/{d}/pages/\d+/page_(?P<n>\d+)\.jpg"}
+    assert edition_urls(html, "https://epaper.dailyinqilab.com/", date(2026, 11, 22), src) == [
+        (2, "https://epaper.dailyinqilab.com/uploads/epaper/2026/11/22/pages/1/page_2.jpg"),
+        (3, "https://epaper.dailyinqilab.com/uploads/epaper/2026/11/22/pages/1/page_3.jpg")]
+
+    # image_template built from named groups (Samakal thumbnail -> full page)
+    html = ('<a title="Page 2" href="https://epaper.samakal.com/nogor-edition/2026-11-22/2"><img src="https://epaper.'
+            'samakal.com/../uploads/epaper/2026/11/22/thumb/page6b0204dd7e04c.jpg" style="width: 100%"></a>')
+    src = {"page_regex": r'title="Page (?P<n>\d+)" href="[^"]*/nogor-edition/[^"]*"><img src="[^"]*?'
+                         r'(?P<path>uploads/epaper/{Y}/{m}/{d})/thumb/(?P<id>page\w+)\.jpg',
+           "image_template": "https://epaper.samakal.com/{path}/pages/{id}.jpg"}
+    assert edition_urls(html, "https://epaper.samakal.com/", date(2026, 11, 22), src) == [
+        (2, "https://epaper.samakal.com/uploads/epaper/2026/11/22/pages/page6b0204dd7e04c.jpg")]
+
+    # template using the date (Observer page views)
+    src = {"page_regex": r'onclick="loadpage\((?P<n>\d+)\);',
+           "image_template": "https://epaper.observerbd.com/{Y}/{m}/{d}/{n}.htm"}
+    html = '<a id="1" onclick="loadpage(1); return false;">1</a><a id="2" onclick="loadpage(2); return false;">2</a>'
+    assert [u for _, u in edition_urls(html, "https://epaper.observerbd.com/", date(2026, 11, 22), src)] == [
+        "https://epaper.observerbd.com/2026/11/22/1.htm", "https://epaper.observerbd.com/2026/11/22/2.htm"]

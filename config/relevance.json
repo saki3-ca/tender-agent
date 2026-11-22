@@ -261,7 +261,15 @@
     "internship",
     "sale of (?:old|used|scrap)",
     "selling of",
-    "auction"
+    "auction",
+    "annual general meeting",
+    "extra-?ordinary general meeting",
+    "AGM",
+    "EGM",
+    "record date",
+    "dividend",
+    "price sensitive information",
+    "corporate governance (?:report|compliance|status)"
   ],
   "_closed_status_comment": "If the listing title/row text matches one of these, the notice is not an open opportunity.",
   "closed_status": [

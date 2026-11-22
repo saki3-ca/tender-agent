@@ -34,6 +34,7 @@ from app.crawler.epaper.bangladeshtoday import BangladeshTodayEpaperCrawler
 from app.crawler.epaper.bdpratidin import BdPratidinEpaperCrawler
 from app.crawler.epaper.dhakatribune import DhakaTribuneEpaperCrawler
 from app.crawler.epaper.financialexpress import FinancialExpressEpaperCrawler
+from app.crawler.epaper.generic import GenericEpaperCrawler
 from app.crawler.epaper.jugantor import JugantorEpaperCrawler
 from app.crawler.epaper.prothomalo import ProthomAloEpaperCrawler
 from app.crawler.epaper.protidinerbangladesh import ProtidinerBangladeshEpaperCrawler
@@ -308,7 +309,42 @@ class Monitor:
                                 error_summary="; ".join(failed)[:2000] if failed else None)
         self.results = all_tenders
         self.source_results = state_rows
+        await self.report_run(state_rows, epaper)
         return self.stats
+
+    def _run_label(self, epaper: Optional[bool]) -> str:
+        if self.run_type == "office_pc":
+            return "Office PC"
+        if epaper:
+            return "Newspapers"
+        return "GitHub hourly" if os.getenv("GITHUB_ACTIONS") == "true" else f"Run ({self.run_type})"
+
+    async def report_run(self, state_rows: List[Dict[str, Any]], epaper: Optional[bool],
+                         crashed: Optional[str] = None) -> None:
+        """One Telegram message per run (set TELEGRAM_RUN_UPDATES=0 to turn off). Local test runs are silent."""
+        if os.getenv("TELEGRAM_RUN_UPDATES", "1") == "0" or not self.store.is_connected:
+            return
+        s = self.stats
+        when = datetime.now(DHAKA_TZ).strftime("%d %b %H:%M")
+        label = self._run_label(epaper)
+        if crashed:
+            await self.alerter.send_status(f"❌ {label} run {when} CRASHED\n{crashed[:500]}")
+            return
+        failed = [r for r in state_rows if not r["ok"] and r.get("error") != "SKIPPED_TIME_BUDGET"]
+        checked = s["sources_ok"] + s["sources_failed"]
+        icon = "✅" if not failed else ("⚠️" if s["sources_ok"] else "❌")
+        lines = [f"{icon} {label} run {when}",
+                 f"Sites: {s['sources_ok']}/{checked} OK" + (f", {len(failed)} failed" if failed else "")
+                 + (f", {s['sources_skipped']} skipped (time)" if s["sources_skipped"] else ""),
+                 f"New tenders: {s['new_tenders']} | Priority alerts: {s['alerts_sent']} | {s['duration_seconds']:.0f}s"]
+        if failed:
+            names = {src["id"]: source_org(src)["name"] for src in config.sources if config.organization(src["organization_id"])}
+            lines.append("Failed:")
+            for r in failed[:10]:
+                lines.append(f"• {names.get(r['source_id'], r['source_id'])}: {str(r.get('error'))[:60]}")
+            if len(failed) > 10:
+                lines.append(f"• … and {len(failed) - 10} more")
+        await self.alerter.send_status("\n".join(lines))
 
     OFFICE_PC_SILENT_MINUTES = 30
 
@@ -353,6 +389,9 @@ class Monitor:
             status_code, error, pairs = await self._epaper_listings(source, JugantorEpaperCrawler(), "Daily Jugantor")
         elif source.get("type") == "epaper_bdpratidin":
             status_code, error, pairs = await self._epaper_listings(source, BdPratidinEpaperCrawler(), "Bangladesh Pratidin")
+        elif source.get("type") == "epaper_generic":
+            status_code, error, pairs = await self._epaper_listings(
+                source, GenericEpaperCrawler(source), source.get("newspaper") or source["id"])
         else:
             status_code, error, pairs = await self._page_listings(source)
 

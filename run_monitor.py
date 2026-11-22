@@ -61,7 +61,12 @@ def main() -> int:
     if args.local:
         store.client = None
     monitor = Monitor(store, run_type=run_type)
-    stats = asyncio.run(monitor.run(args.source, sector=args.sector, epaper=args.epaper))
+    try:
+        stats = asyncio.run(monitor.run(args.source, sector=args.sector, epaper=args.epaper))
+    except Exception as e:
+        # Tell Telegram that this run crashed (the normal per-run report is sent at the end of monitor.run)
+        asyncio.run(monitor.report_run([], args.epaper, crashed=f"{type(e).__name__}: {e}"))
+        raise
 
     print("\n=== ACNABIN Tender Monitor — run summary ===")
     for key, value in stats.items():

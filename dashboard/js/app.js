@@ -102,7 +102,7 @@
 
   function isEpaperRow(r) {
     const hay = `${r.source_id || ""} ${r.source_url || ""} ${r.notice_url || ""} ${r.document_text || ""}`.toLowerCase();
-    return hay.includes("epaper") || hay.includes("prothomalo") || hay.includes("financialexpress") || hay.includes("bangladeshtoday") || hay.includes("protidinerbangladesh") || hay.includes("dhakatribune") || hay.includes("jugantor") || hay.includes("bdpratidin");
+    return hay.includes("epaper") || hay.includes("prothomalo") || hay.includes("financialexpress") || hay.includes("bangladeshtoday") || hay.includes("protidinerbangladesh") || hay.includes("dhakatribune") || hay.includes("jugantor") || hay.includes("bdpratidin") || hay.includes("inqilab") || hay.includes("nayadiganta") || hay.includes("amardesh") || hay.includes("samakal") || hay.includes("observerbd") || hay.includes("kalerkantho");
   }
 
   function getPaperName(t) {
@@ -114,6 +114,12 @@
     if (hay.includes("dhakatribune")) return "Dhaka Tribune";
     if (hay.includes("jugantor")) return "Daily Jugantor";
     if (hay.includes("bdpratidin") || hay.includes("pratidin")) return "Bangladesh Pratidin";
+    if (hay.includes("inqilab")) return "Daily Inqilab";
+    if (hay.includes("nayadiganta")) return "Naya Diganta";
+    if (hay.includes("amardesh")) return "Amar Desh";
+    if (hay.includes("samakal")) return "Samakal";
+    if (hay.includes("observerbd")) return "Daily Observer";
+    if (hay.includes("kalerkantho")) return "Kaler Kantho";
     if (hay.includes("epaper")) return "E-Paper";
     return null;
   }
@@ -129,6 +135,12 @@
     if (hay.includes("bdpratidin") || hay.includes("pratidin")) return "Bangladesh Pratidin";
     if (hay.includes("bangladeshtoday") || hay.includes("thebangladeshtoday")) return "Bangladesh Today";
     if (hay.includes("protidinerbangladesh")) return "Protidiner Bangladesh";
+    if (hay.includes("inqilab")) return "Daily Inqilab";
+    if (hay.includes("nayadiganta")) return "Naya Diganta";
+    if (hay.includes("amardesh")) return "Amar Desh";
+    if (hay.includes("samakal")) return "Samakal";
+    if (hay.includes("observerbd")) return "Daily Observer";
+    if (hay.includes("kalerkantho")) return "Kaler Kantho";
     if (hay.includes("epaper")) return "Newspaper";
 
     // 2. Aggregators & Platforms

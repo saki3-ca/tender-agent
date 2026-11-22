@@ -2566,5 +2566,870 @@
     "last_verified": null,
     "last_checked": null,
     "notes": "Christian Aid procurement and tenders (global page, filtered to Bangladesh)"
+  },
+  {
+    "organization_id": "epaper_inqilab",
+    "canonical_name": "Daily Inqilab E-Paper",
+    "aliases": [
+      "Daily Inqilab",
+      "Inqilab",
+      "দৈনিক ইনকিলাব",
+      "dailyinqilab.com"
+    ],
+    "organization_type": "NEWSPAPER",
+    "sector": "ngos",
+    "official_domain": "dailyinqilab.com",
+    "procurement_url": "https://epaper.dailyinqilab.com/",
+    "tender_url": "https://epaper.dailyinqilab.com/",
+    "notice_url": "https://epaper.dailyinqilab.com/",
+    "is_ifrs9_target": false,
+    "source_status": "OK",
+    "last_verified": "2026-11-22",
+    "last_checked": null,
+    "notes": "E-Paper: daily newspaper (tender advertisements)"
+  },
+  {
+    "organization_id": "epaper_nayadiganta",
+    "canonical_name": "Daily Naya Diganta E-Paper",
+    "aliases": [
+      "Naya Diganta",
+      "Daily Naya Diganta",
+      "নয়া দিগন্ত",
+      "dailynayadiganta.com"
+    ],
+    "organization_type": "NEWSPAPER",
+    "sector": "ngos",
+    "official_domain": "enayadiganta.com",
+    "procurement_url": "https://enayadiganta.com/",
+    "tender_url": "https://enayadiganta.com/",
+    "notice_url": "https://enayadiganta.com/",
+    "is_ifrs9_target": false,
+    "source_status": "OK",
+    "last_verified": "2026-11-22",
+    "last_checked": null,
+    "notes": "E-Paper: daily newspaper (tender advertisements)"
+  },
+  {
+    "organization_id": "epaper_amardesh",
+    "canonical_name": "Daily Amar Desh E-Paper",
+    "aliases": [
+      "Amar Desh",
+      "Daily Amar Desh",
+      "আমার দেশ",
+      "dailyamardesh.com"
+    ],
+    "organization_type": "NEWSPAPER",
+    "sector": "ngos",
+    "official_domain": "eamardesh.com",
+    "procurement_url": "https://eamardesh.com/",
+    "tender_url": "https://eamardesh.com/",
+    "notice_url": "https://eamardesh.com/",
+    "is_ifrs9_target": false,
+    "source_status": "OK",
+    "last_verified": "2026-11-22",
+    "last_checked": null,
+    "notes": "E-Paper: daily newspaper (tender advertisements)"
+  },
+  {
+    "organization_id": "epaper_samakal",
+    "canonical_name": "Daily Samakal E-Paper",
+    "aliases": [
+      "Samakal",
+      "Daily Samakal",
+      "সমকাল",
+      "samakal.com"
+    ],
+    "organization_type": "NEWSPAPER",
+    "sector": "ngos",
+    "official_domain": "samakal.com",
+    "procurement_url": "https://epaper.samakal.com/",
+    "tender_url": "https://epaper.samakal.com/",
+    "notice_url": "https://epaper.samakal.com/",
+    "is_ifrs9_target": false,
+    "source_status": "OK",
+    "last_verified": "2026-11-22",
+    "last_checked": null,
+    "notes": "E-Paper: daily newspaper (tender advertisements)"
+  },
+  {
+    "organization_id": "epaper_observerbd",
+    "canonical_name": "The Daily Observer E-Paper",
+    "aliases": [
+      "The Daily Observer",
+      "Daily Observer",
+      "observerbd.com"
+    ],
+    "organization_type": "NEWSPAPER",
+    "sector": "ngos",
+    "official_domain": "observerbd.com",
+    "procurement_url": "https://epaper.observerbd.com/",
+    "tender_url": "https://epaper.observerbd.com/",
+    "notice_url": "https://epaper.observerbd.com/",
+    "is_ifrs9_target": false,
+    "source_status": "OK",
+    "last_verified": "2026-11-22",
+    "last_checked": null,
+    "notes": "E-Paper: daily newspaper (tender advertisements)"
+  },
+  {
+    "organization_id": "epaper_kalerkantho",
+    "canonical_name": "Daily Kaler Kantho E-Paper",
+    "aliases": [
+      "Kaler Kantho",
+      "Daily Kaler Kantho",
+      "কালের কণ্ঠ",
+      "kalerkantho.com"
+    ],
+    "organization_type": "NEWSPAPER",
+    "sector": "ngos",
+    "official_domain": "kalerkantho.com",
+    "procurement_url": "https://www.kalerkantho.com/epaper",
+    "tender_url": "https://www.kalerkantho.com/epaper",
+    "notice_url": "https://www.kalerkantho.com/epaper",
+    "is_ifrs9_target": false,
+    "source_status": "OK",
+    "last_verified": "2026-11-22",
+    "last_checked": null,
+    "notes": "E-Paper: daily newspaper (tender advertisements)"
+  },
+  {
+    "organization_id": "bank_x_ab",
+    "canonical_name": "AB Bank PLC",
+    "aliases": [
+      "AB Bank",
+      "এবি ব্যাংক",
+      "abbl.com"
+    ],
+    "organization_type": "BANK",
+    "sector": "banking",
+    "official_domain": "abbl.com",
+    "procurement_url": "https://abbl.com/rfp/",
+    "tender_url": "https://abbl.com/rfp/",
+    "notice_url": "https://abbl.com/rfp/",
+    "is_ifrs9_target": false,
+    "source_status": "OK",
+    "last_verified": "2026-11-22",
+    "last_checked": null,
+    "notes": "Added 2026-11-22 from the Bangladesh Bank scheduled bank list (not an IFRS 9 target bank)"
+  },
+  {
+    "organization_id": "bank_x_bcbl",
+    "canonical_name": "Bangladesh Commerce Bank Limited",
+    "aliases": [
+      "Bangladesh Commerce Bank",
+      "বাংলাদেশ কমার্স ব্যাংক",
+      "bcblbd.com"
+    ],
+    "organization_type": "BANK",
+    "sector": "banking",
+    "official_domain": "bcblbd.com",
+    "procurement_url": "https://www.bcblbd.com/tender_page",
+    "tender_url": "https://www.bcblbd.com/tender_page",
+    "notice_url": "https://www.bcblbd.com/tender_page",
+    "is_ifrs9_target": false,
+    "source_status": "OK",
+    "last_verified": "2026-11-22",
+    "last_checked": null,
+    "notes": "Added 2026-11-22 from the Bangladesh Bank scheduled bank list (not an IFRS 9 target bank)"
+  },
+  {
+    "organization_id": "bank_x_bank_asia",
+    "canonical_name": "Bank Asia PLC",
+    "aliases": [
+      "Bank Asia",
+      "ব্যাংক এশিয়া",
+      "bankasia-bd.com"
+    ],
+    "organization_type": "BANK",
+    "sector": "banking",
+    "official_domain": "bankasia-bd.com",
+    "procurement_url": "https://www.bankasia-bd.com/home/tender",
+    "tender_url": "https://www.bankasia-bd.com/home/tender",
+    "notice_url": "https://www.bankasia-bd.com/home/tender",
+    "is_ifrs9_target": false,
+    "source_status": "OK",
+    "last_verified": "2026-11-22",
+    "last_checked": null,
+    "notes": "Added 2026-11-22 from the Bangladesh Bank scheduled bank list (not an IFRS 9 target bank)"
+  },
+  {
+    "organization_id": "bank_x_brac_bank",
+    "canonical_name": "BRAC Bank PLC",
+    "aliases": [
+      "BRAC Bank",
+      "ব্র্যাক ব্যাংক",
+      "bracbank.com"
+    ],
+    "organization_type": "BANK",
+    "sector": "banking",
+    "official_domain": "bracbank.com",
+    "procurement_url": "https://www.bracbank.com/en/page/e-tender",
+    "tender_url": "https://www.bracbank.com/en/page/e-tender",
+    "notice_url": "https://www.bracbank.com/en/page/e-tender",
+    "is_ifrs9_target": false,
+    "source_status": "OK",
+    "last_verified": "2026-11-22",
+    "last_checked": null,
+    "notes": "Added 2026-11-22 from the Bangladesh Bank scheduled bank list (not an IFRS 9 target bank)"
+  },
+  {
+    "organization_id": "bank_x_ebl",
+    "canonical_name": "Eastern Bank PLC",
+    "aliases": [
+      "Eastern Bank",
+      "ইস্টার্ন ব্যাংক",
+      "ebl.com.bd"
+    ],
+    "organization_type": "BANK",
+    "sector": "banking",
+    "official_domain": "ebl.com.bd",
+    "procurement_url": "https://www.ebl.com.bd/ICT-Tender-Notice",
+    "tender_url": "https://www.ebl.com.bd/ICT-Tender-Notice",
+    "notice_url": "https://www.ebl.com.bd/ICT-Tender-Notice",
+    "is_ifrs9_target": false,
+    "source_status": "OK",
+    "last_verified": "2026-11-22",
+    "last_checked": null,
+    "notes": "Added 2026-11-22 from the Bangladesh Bank scheduled bank list (not an IFRS 9 target bank)"
+  },
+  {
+    "organization_id": "bank_x_exim",
+    "canonical_name": "Export Import Bank of Bangladesh PLC",
+    "aliases": [
+      "Export Import Bank of Bangladesh",
+      "এক্সিম ব্যাংক",
+      "eximbankbd.com"
+    ],
+    "organization_type": "BANK",
+    "sector": "banking",
+    "official_domain": "eximbankbd.com",
+    "procurement_url": "https://www.eximbankbd.com/media/tender",
+    "tender_url": "https://www.eximbankbd.com/media/tender",
+    "notice_url": "https://www.eximbankbd.com/media/tender",
+    "is_ifrs9_target": false,
+    "source_status": "OK",
+    "last_verified": "2026-11-22",
+    "last_checked": null,
+    "notes": "Added 2026-11-22 from the Bangladesh Bank scheduled bank list (not an IFRS 9 target bank)"
+  },
+  {
+    "organization_id": "bank_x_jamuna",
+    "canonical_name": "Jamuna Bank PLC",
+    "aliases": [
+      "Jamuna Bank",
+      "যমুনা ব্যাংক",
+      "jamunabankbd.com"
+    ],
+    "organization_type": "BANK",
+    "sector": "banking",
+    "official_domain": "jamunabankbd.com",
+    "procurement_url": "https://jamunabankbd.com/notice-board/",
+    "tender_url": "https://jamunabankbd.com/notice-board/",
+    "notice_url": "https://jamunabankbd.com/notice-board/",
+    "is_ifrs9_target": false,
+    "source_status": "OK",
+    "last_verified": "2026-11-22",
+    "last_checked": null,
+    "notes": "Added 2026-11-22 from the Bangladesh Bank scheduled bank list (not an IFRS 9 target bank)"
+  },
+  {
+    "organization_id": "bank_x_ncc",
+    "canonical_name": "National Credit & Commerce Bank PLC",
+    "aliases": [
+      "National Credit & Commerce Bank",
+      "এনসিসি ব্যাংক",
+      "nccbank.com.bd"
+    ],
+    "organization_type": "BANK",
+    "sector": "banking",
+    "official_domain": "nccbank.com.bd",
+    "procurement_url": "https://www.nccbank.com.bd/NccbTender",
+    "tender_url": "https://www.nccbank.com.bd/NccbTender",
+    "notice_url": "https://www.nccbank.com.bd/NccbTender",
+    "is_ifrs9_target": false,
+    "source_status": "OK",
+    "last_verified": "2026-11-22",
+    "last_checked": null,
+    "notes": "Added 2026-11-22 from the Bangladesh Bank scheduled bank list (not an IFRS 9 target bank)"
+  },
+  {
+    "organization_id": "bank_x_nrbc",
+    "canonical_name": "NRBC Bank PLC",
+    "aliases": [
+      "NRBC Bank",
+      "এনআরবিসি ব্যাংক",
+      "nrbcommercialbank.com"
+    ],
+    "organization_type": "BANK",
+    "sector": "banking",
+    "official_domain": "nrbcommercialbank.com",
+    "procurement_url": "https://www.nrbcommercialbank.com/Tender",
+    "tender_url": "https://www.nrbcommercialbank.com/Tender",
+    "notice_url": "https://www.nrbcommercialbank.com/Tender",
+    "is_ifrs9_target": false,
+    "source_status": "OK",
+    "last_verified": "2026-11-22",
+    "last_checked": null,
+    "notes": "Added 2026-11-22 from the Bangladesh Bank scheduled bank list (not an IFRS 9 target bank)"
+  },
+  {
+    "organization_id": "bank_x_padma",
+    "canonical_name": "Padma Bank PLC",
+    "aliases": [
+      "Padma Bank",
+      "পদ্মা ব্যাংক",
+      "padmabankbd.com"
+    ],
+    "organization_type": "BANK",
+    "sector": "banking",
+    "official_domain": "padmabankbd.com",
+    "procurement_url": "https://www.padmabankbd.com/agm-notice",
+    "tender_url": "https://www.padmabankbd.com/agm-notice",
+    "notice_url": "https://www.padmabankbd.com/agm-notice",
+    "is_ifrs9_target": false,
+    "source_status": "OK",
+    "last_verified": "2026-11-22",
+    "last_checked": null,
+    "notes": "Added 2026-11-22 from the Bangladesh Bank scheduled bank list (not an IFRS 9 target bank)"
+  },
+  {
+    "organization_id": "bank_x_prime",
+    "canonical_name": "Prime Bank PLC",
+    "aliases": [
+      "Prime Bank",
+      "প্রাইম ব্যাংক",
+      "primebank.com.bd"
+    ],
+    "organization_type": "BANK",
+    "sector": "banking",
+    "official_domain": "primebank.com.bd",
+    "procurement_url": "https://www.primebank.com.bd/tenders",
+    "tender_url": "https://www.primebank.com.bd/tenders",
+    "notice_url": "https://www.primebank.com.bd/tenders",
+    "is_ifrs9_target": false,
+    "source_status": "OK",
+    "last_verified": "2026-11-22",
+    "last_checked": null,
+    "notes": "Added 2026-11-22 from the Bangladesh Bank scheduled bank list (not an IFRS 9 target bank)"
+  },
+  {
+    "organization_id": "bank_x_sjibl",
+    "canonical_name": "Shahjalal Islami Bank PLC",
+    "aliases": [
+      "Shahjalal Islami Bank",
+      "শাহজালাল ইসলামী ব্যাংক",
+      "sjiblbd.com"
+    ],
+    "organization_type": "BANK",
+    "sector": "banking",
+    "official_domain": "sjiblbd.com",
+    "procurement_url": "https://sjiblbd.com/tender.php",
+    "tender_url": "https://sjiblbd.com/tender.php",
+    "notice_url": "https://sjiblbd.com/tender.php",
+    "is_ifrs9_target": false,
+    "source_status": "OK",
+    "last_verified": "2026-11-22",
+    "last_checked": null,
+    "notes": "Added 2026-11-22 from the Bangladesh Bank scheduled bank list (not an IFRS 9 target bank)"
+  },
+  {
+    "organization_id": "bank_x_sibl",
+    "canonical_name": "Social Islami Bank PLC",
+    "aliases": [
+      "Social Islami Bank",
+      "সোশ্যাল ইসলামী ব্যাংক",
+      "siblbd.com"
+    ],
+    "organization_type": "BANK",
+    "sector": "banking",
+    "official_domain": "siblbd.com",
+    "procurement_url": "https://www.siblbd.com/media",
+    "tender_url": "https://www.siblbd.com/media",
+    "notice_url": "https://www.siblbd.com/media",
+    "is_ifrs9_target": false,
+    "source_status": "OK",
+    "last_verified": "2026-11-22",
+    "last_checked": null,
+    "notes": "Added 2026-11-22 from the Bangladesh Bank scheduled bank list (not an IFRS 9 target bank)"
+  },
+  {
+    "organization_id": "bank_x_union",
+    "canonical_name": "Union Bank PLC",
+    "aliases": [
+      "Union Bank",
+      "ইউনিয়ন ব্যাংক",
+      "unionbank.com.bd"
+    ],
+    "organization_type": "BANK",
+    "sector": "banking",
+    "official_domain": "unionbank.com.bd",
+    "procurement_url": "https://unionbank.com.bd/tender-notice-",
+    "tender_url": "https://unionbank.com.bd/tender-notice-",
+    "notice_url": "https://unionbank.com.bd/tender-notice-",
+    "is_ifrs9_target": false,
+    "source_status": "OK",
+    "last_verified": "2026-11-22",
+    "last_checked": null,
+    "notes": "Added 2026-11-22 from the Bangladesh Bank scheduled bank list (not an IFRS 9 target bank)"
+  },
+  {
+    "organization_id": "bank_x_grameen",
+    "canonical_name": "Grameen Bank",
+    "aliases": [
+      "Grameen Bank",
+      "গ্রামীণ ব্যাংক",
+      "grameenbank.org.bd"
+    ],
+    "organization_type": "BANK",
+    "sector": "banking",
+    "official_domain": "grameenbank.org.bd",
+    "procurement_url": "https://www.grameenbank.org.bd/notice-board",
+    "tender_url": "https://www.grameenbank.org.bd/notice-board",
+    "notice_url": "https://www.grameenbank.org.bd/notice-board",
+    "is_ifrs9_target": false,
+    "source_status": "OK",
+    "last_verified": "2026-11-22",
+    "last_checked": null,
+    "notes": "Added 2026-11-22 from the Bangladesh Bank scheduled bank list (not an IFRS 9 target bank)"
+  },
+  {
+    "organization_id": "bank_x_sbi",
+    "canonical_name": "State Bank of India - Bangladesh",
+    "aliases": [
+      "State Bank of India - Bangladesh",
+      "স্টেট ব্যাংক অব ইন্ডিয়া",
+      "bd.statebank"
+    ],
+    "organization_type": "BANK",
+    "sector": "banking",
+    "official_domain": "bd.statebank",
+    "procurement_url": "https://bd.statebank/e-tender",
+    "tender_url": "https://bd.statebank/e-tender",
+    "notice_url": "https://bd.statebank/e-tender",
+    "is_ifrs9_target": false,
+    "source_status": "OK",
+    "last_verified": "2026-11-22",
+    "last_checked": null,
+    "notes": "Added 2026-11-22 from the Bangladesh Bank scheduled bank list (not an IFRS 9 target bank)"
+  },
+  {
+    "organization_id": "bank_x_sbac",
+    "canonical_name": "South Bangla Agriculture & Commerce Bank PLC",
+    "aliases": [
+      "South Bangla Agriculture & Commerce Bank",
+      "সাউথ বাংলা এগ্রিকালচার অ্যান্ড কমার্স ব্যাংক",
+      "sbacbank.com"
+    ],
+    "organization_type": "BANK",
+    "sector": "banking",
+    "official_domain": "sbacbank.com",
+    "procurement_url": "https://www.sbacbank.com/e-tender",
+    "tender_url": "https://www.sbacbank.com/e-tender",
+    "notice_url": "https://www.sbacbank.com/e-tender",
+    "is_ifrs9_target": false,
+    "source_status": "OK",
+    "last_verified": "2026-11-22",
+    "last_checked": null,
+    "notes": "Added 2026-11-22 from the Bangladesh Bank scheduled bank list (not an IFRS 9 target bank)"
+  },
+  {
+    "organization_id": "bank_x_ucb",
+    "canonical_name": "United Commercial Bank PLC",
+    "aliases": [
+      "United Commercial Bank",
+      "ইউনাইটেড কমার্শিয়াল ব্যাংক",
+      "ucb.com.bd"
+    ],
+    "organization_type": "BANK",
+    "sector": "banking",
+    "official_domain": "ucb.com.bd",
+    "procurement_url": "https://www.ucb.com.bd/news-and-events/notice/",
+    "tender_url": "https://www.ucb.com.bd/news-and-events/notice/",
+    "notice_url": "https://www.ucb.com.bd/news-and-events/notice/",
+    "is_ifrs9_target": false,
+    "source_status": "OK",
+    "last_verified": "2026-11-22",
+    "last_checked": null,
+    "notes": "Added 2026-11-22 from the Bangladesh Bank scheduled bank list (not an IFRS 9 target bank)"
+  },
+  {
+    "organization_id": "bank_x_fsib",
+    "canonical_name": "First Security Islami Bank PLC",
+    "aliases": [
+      "First Security Islami Bank",
+      "ফার্স্ট সিকিউরিটি ইসলামী ব্যাংক",
+      "fsibplc.com"
+    ],
+    "organization_type": "BANK",
+    "sector": "banking",
+    "official_domain": "fsibplc.com",
+    "procurement_url": "https://fsibplc.com/tender.php",
+    "tender_url": "https://fsibplc.com/tender.php",
+    "notice_url": "https://fsibplc.com/tender.php",
+    "is_ifrs9_target": false,
+    "source_status": "OK",
+    "last_verified": "2026-11-22",
+    "last_checked": null,
+    "notes": "Added 2026-11-22 from the Bangladesh Bank scheduled bank list (not an IFRS 9 target bank)"
+  },
+  {
+    "organization_id": "bank_x_dbbl",
+    "canonical_name": "Dutch-Bangla Bank PLC",
+    "aliases": [
+      "Dutch-Bangla Bank",
+      "ডাচ-বাংলা ব্যাংক",
+      "dutchbanglabank.com"
+    ],
+    "organization_type": "BANK",
+    "sector": "banking",
+    "official_domain": "dutchbanglabank.com",
+    "procurement_url": "https://www.dutchbanglabank.com/",
+    "tender_url": "https://www.dutchbanglabank.com/",
+    "notice_url": "https://www.dutchbanglabank.com/",
+    "is_ifrs9_target": false,
+    "source_status": "BROKEN",
+    "last_verified": "2026-11-22",
+    "last_checked": null,
+    "notes": "Added 2026-11-22 from the Bangladesh Bank scheduled bank list (not an IFRS 9 target bank)"
+  },
+  {
+    "organization_id": "bank_x_nbl",
+    "canonical_name": "National Bank PLC",
+    "aliases": [
+      "National Bank",
+      "ন্যাশনাল ব্যাংক",
+      "nblbd.com"
+    ],
+    "organization_type": "BANK",
+    "sector": "banking",
+    "official_domain": "nblbd.com",
+    "procurement_url": "https://www.nblbd.com/",
+    "tender_url": "https://www.nblbd.com/",
+    "notice_url": "https://www.nblbd.com/",
+    "is_ifrs9_target": false,
+    "source_status": "BROKEN",
+    "last_verified": "2026-11-22",
+    "last_checked": null,
+    "notes": "Added 2026-11-22 from the Bangladesh Bank scheduled bank list (not an IFRS 9 target bank)"
+  },
+  {
+    "organization_id": "bank_x_nrb",
+    "canonical_name": "NRB Bank PLC",
+    "aliases": [
+      "NRB Bank",
+      "এনআরবি ব্যাংক",
+      "nrbbankbd.com"
+    ],
+    "organization_type": "BANK",
+    "sector": "banking",
+    "official_domain": "nrbbankbd.com",
+    "procurement_url": "https://www.nrbbankbd.com/",
+    "tender_url": "https://www.nrbbankbd.com/",
+    "notice_url": "https://www.nrbbankbd.com/",
+    "is_ifrs9_target": false,
+    "source_status": "BROKEN",
+    "last_verified": "2026-11-22",
+    "last_checked": null,
+    "notes": "Added 2026-11-22 from the Bangladesh Bank scheduled bank list (not an IFRS 9 target bank)"
+  },
+  {
+    "organization_id": "bank_x_standard",
+    "canonical_name": "Standard Islami Bank PLC",
+    "aliases": [
+      "Standard Islami Bank",
+      "স্ট্যান্ডার্ড ইসলামী ব্যাংক",
+      "standardbankbd.com"
+    ],
+    "organization_type": "BANK",
+    "sector": "banking",
+    "official_domain": "standardbankbd.com",
+    "procurement_url": "https://www.standardbankbd.com/",
+    "tender_url": "https://www.standardbankbd.com/",
+    "notice_url": "https://www.standardbankbd.com/",
+    "is_ifrs9_target": false,
+    "source_status": "BROKEN",
+    "last_verified": "2026-11-22",
+    "last_checked": null,
+    "notes": "Added 2026-11-22 from the Bangladesh Bank scheduled bank list (not an IFRS 9 target bank)"
+  },
+  {
+    "organization_id": "bank_x_uttara",
+    "canonical_name": "Uttara Bank PLC",
+    "aliases": [
+      "Uttara Bank",
+      "উত্তরা ব্যাংক",
+      "uttarabank-bd.com"
+    ],
+    "organization_type": "BANK",
+    "sector": "banking",
+    "official_domain": "uttarabank-bd.com",
+    "procurement_url": "https://www.uttarabank-bd.com/",
+    "tender_url": "https://www.uttarabank-bd.com/",
+    "notice_url": "https://www.uttarabank-bd.com/",
+    "is_ifrs9_target": false,
+    "source_status": "BROKEN",
+    "last_verified": "2026-11-22",
+    "last_checked": null,
+    "notes": "Added 2026-11-22 from the Bangladesh Bank scheduled bank list (not an IFRS 9 target bank)"
+  },
+  {
+    "organization_id": "bank_x_southeast",
+    "canonical_name": "Southeast Bank PLC",
+    "aliases": [
+      "Southeast Bank",
+      "সাউথইস্ট ব্যাংক",
+      "southeastbank.com.bd"
+    ],
+    "organization_type": "BANK",
+    "sector": "banking",
+    "official_domain": "southeastbank.com.bd",
+    "procurement_url": "https://www.southeastbank.com.bd/",
+    "tender_url": "https://www.southeastbank.com.bd/",
+    "notice_url": "https://www.southeastbank.com.bd/",
+    "is_ifrs9_target": false,
+    "source_status": "BROKEN",
+    "last_verified": "2026-11-22",
+    "last_checked": null,
+    "notes": "Added 2026-11-22 from the Bangladesh Bank scheduled bank list (not an IFRS 9 target bank)"
+  },
+  {
+    "organization_id": "bank_x_global_islami",
+    "canonical_name": "Global Islami Bank PLC",
+    "aliases": [
+      "Global Islami Bank",
+      "গ্লোবাল ইসলামী ব্যাংক",
+      "globalislamibankbd.com"
+    ],
+    "organization_type": "BANK",
+    "sector": "banking",
+    "official_domain": "globalislamibankbd.com",
+    "procurement_url": "http://www.globalislamibankbd.com/",
+    "tender_url": "http://www.globalislamibankbd.com/",
+    "notice_url": "http://www.globalislamibankbd.com/",
+    "is_ifrs9_target": false,
+    "source_status": "BROKEN",
+    "last_verified": "2026-11-22",
+    "last_checked": null,
+    "notes": "Added 2026-11-22 from the Bangladesh Bank scheduled bank list (not an IFRS 9 target bank)"
+  },
+  {
+    "organization_id": "bank_x_bank_alfalah",
+    "canonical_name": "Bank Alfalah Limited - Bangladesh",
+    "aliases": [
+      "Bank Alfalah - Bangladesh",
+      "ব্যাংক আলফালাহ",
+      "bankalfalah.com"
+    ],
+    "organization_type": "BANK",
+    "sector": "banking",
+    "official_domain": "bankalfalah.com",
+    "procurement_url": "http://www.bankalfalah.com/",
+    "tender_url": "http://www.bankalfalah.com/",
+    "notice_url": "http://www.bankalfalah.com/",
+    "is_ifrs9_target": false,
+    "source_status": "BROKEN",
+    "last_verified": "2026-11-22",
+    "last_checked": null,
+    "notes": "Added 2026-11-22 from the Bangladesh Bank scheduled bank list (not an IFRS 9 target bank)"
+  },
+  {
+    "organization_id": "bank_x_citi",
+    "canonical_name": "Citibank N.A. - Bangladesh",
+    "aliases": [
+      "Citibank N.A. - Bangladesh",
+      "সিটিব্যাংক এন.এ.",
+      "citi.com"
+    ],
+    "organization_type": "BANK",
+    "sector": "banking",
+    "official_domain": "citi.com",
+    "procurement_url": "http://www.citi.com/domain/index.htm",
+    "tender_url": "http://www.citi.com/domain/index.htm",
+    "notice_url": "http://www.citi.com/domain/index.htm",
+    "is_ifrs9_target": false,
+    "source_status": "BROKEN",
+    "last_verified": "2026-11-22",
+    "last_checked": null,
+    "notes": "Added 2026-11-22 from the Bangladesh Bank scheduled bank list (not an IFRS 9 target bank)"
+  },
+  {
+    "organization_id": "bank_x_hbl",
+    "canonical_name": "Habib Bank Limited - Bangladesh",
+    "aliases": [
+      "Habib Bank - Bangladesh",
+      "হাবিব ব্যাংক",
+      "globalhbl.com"
+    ],
+    "organization_type": "BANK",
+    "sector": "banking",
+    "official_domain": "globalhbl.com",
+    "procurement_url": "http://globalhbl.com/Bangladesh/",
+    "tender_url": "http://globalhbl.com/Bangladesh/",
+    "notice_url": "http://globalhbl.com/Bangladesh/",
+    "is_ifrs9_target": false,
+    "source_status": "BROKEN",
+    "last_verified": "2026-11-22",
+    "last_checked": null,
+    "notes": "Added 2026-11-22 from the Bangladesh Bank scheduled bank list (not an IFRS 9 target bank)"
+  },
+  {
+    "organization_id": "bank_x_nbp",
+    "canonical_name": "National Bank of Pakistan - Bangladesh",
+    "aliases": [
+      "National Bank of Pakistan - Bangladesh",
+      "ন্যাশনাল ব্যাংক অব পাকিস্তান",
+      "nbp.com.pk"
+    ],
+    "organization_type": "BANK",
+    "sector": "banking",
+    "official_domain": "nbp.com.pk",
+    "procurement_url": "http://www.nbp.com.pk/",
+    "tender_url": "http://www.nbp.com.pk/",
+    "notice_url": "http://www.nbp.com.pk/",
+    "is_ifrs9_target": false,
+    "source_status": "BROKEN",
+    "last_verified": "2026-11-22",
+    "last_checked": null,
+    "notes": "Added 2026-11-22 from the Bangladesh Bank scheduled bank list (not an IFRS 9 target bank)"
+  },
+  {
+    "organization_id": "bank_x_scb",
+    "canonical_name": "Standard Chartered Bank - Bangladesh",
+    "aliases": [
+      "Standard Chartered Bank - Bangladesh",
+      "স্ট্যান্ডার্ড চার্টার্ড ব্যাংক",
+      "sc.com"
+    ],
+    "organization_type": "BANK",
+    "sector": "banking",
+    "official_domain": "sc.com",
+    "procurement_url": "https://www.sc.com/bd/",
+    "tender_url": "https://www.sc.com/bd/",
+    "notice_url": "https://www.sc.com/bd/",
+    "is_ifrs9_target": false,
+    "source_status": "BROKEN",
+    "last_verified": "2026-11-22",
+    "last_checked": null,
+    "notes": "Added 2026-11-22 from the Bangladesh Bank scheduled bank list (not an IFRS 9 target bank)"
+  },
+  {
+    "organization_id": "bank_x_hsbc",
+    "canonical_name": "The Hongkong and Shanghai Banking Corporation - Bangladesh",
+    "aliases": [
+      "The Hongkong and Shanghai Banking Corporation - Bangladesh",
+      "এইচএসবিসি",
+      "hsbc.com.bd"
+    ],
+    "organization_type": "BANK",
+    "sector": "banking",
+    "official_domain": "hsbc.com.bd",
+    "procurement_url": "https://www.hsbc.com.bd/supplier-portal/",
+    "tender_url": "https://www.hsbc.com.bd/supplier-portal/",
+    "notice_url": "https://www.hsbc.com.bd/supplier-portal/",
+    "is_ifrs9_target": false,
+    "source_status": "BROKEN",
+    "last_verified": "2026-11-22",
+    "last_checked": null,
+    "notes": "Added 2026-11-22 from the Bangladesh Bank scheduled bank list (not an IFRS 9 target bank)"
+  },
+  {
+    "organization_id": "bank_x_pkb",
+    "canonical_name": "Probashi Kollyan Bank",
+    "aliases": [
+      "Probashi Kollyan Bank",
+      "প্রবাসী কল্যাণ ব্যাংক",
+      "pkb.gov.bd"
+    ],
+    "organization_type": "BANK",
+    "sector": "banking",
+    "official_domain": "pkb.gov.bd",
+    "procurement_url": "http://www.pkb.gov.bd/",
+    "tender_url": "http://www.pkb.gov.bd/",
+    "notice_url": "http://www.pkb.gov.bd/",
+    "is_ifrs9_target": false,
+    "source_status": "BROKEN",
+    "last_verified": "2026-11-22",
+    "last_checked": null,
+    "notes": "Added 2026-11-22 from the Bangladesh Bank scheduled bank list (not an IFRS 9 target bank)"
+  },
+  {
+    "organization_id": "bank_x_ansar_vdp",
+    "canonical_name": "Ansar VDP Unnayan Bank",
+    "aliases": [
+      "Ansar VDP Unnayan Bank",
+      "আনসার ভিডিপি উন্নয়ন ব্যাংক",
+      "ansarvdpbank.gov.bd"
+    ],
+    "organization_type": "BANK",
+    "sector": "banking",
+    "official_domain": "ansarvdpbank.gov.bd",
+    "procurement_url": "http://www.ansarvdpbank.gov.bd/",
+    "tender_url": "http://www.ansarvdpbank.gov.bd/",
+    "notice_url": "http://www.ansarvdpbank.gov.bd/",
+    "is_ifrs9_target": false,
+    "source_status": "BROKEN",
+    "last_verified": "2026-11-22",
+    "last_checked": null,
+    "notes": "Added 2026-11-22 from the Bangladesh Bank scheduled bank list (not an IFRS 9 target bank)"
+  },
+  {
+    "organization_id": "bank_x_jubilee",
+    "canonical_name": "Jubilee Bank",
+    "aliases": [
+      "Jubilee Bank",
+      "জুবিলী ব্যাংক",
+      "jubileebank.com"
+    ],
+    "organization_type": "BANK",
+    "sector": "banking",
+    "official_domain": "jubileebank.com",
+    "procurement_url": "http://www.jubileebank.com/",
+    "tender_url": "http://www.jubileebank.com/",
+    "notice_url": "http://www.jubileebank.com/",
+    "is_ifrs9_target": false,
+    "source_status": "BROKEN",
+    "last_verified": "2026-11-22",
+    "last_checked": null,
+    "notes": "Added 2026-11-22 from the Bangladesh Bank scheduled bank list (not an IFRS 9 target bank)"
+  },
+  {
+    "organization_id": "bank_x_karmasangsthan",
+    "canonical_name": "Karmasangsthan Bank",
+    "aliases": [
+      "Karmasangsthan Bank",
+      "কর্মসংস্থান ব্যাংক",
+      "karmasangsthanbank.gov.bd"
+    ],
+    "organization_type": "BANK",
+    "sector": "banking",
+    "official_domain": "karmasangsthanbank.gov.bd",
+    "procurement_url": "http://www.karmasangsthanbank.gov.bd/",
+    "tender_url": "http://www.karmasangsthanbank.gov.bd/",
+    "notice_url": "http://www.karmasangsthanbank.gov.bd/",
+    "is_ifrs9_target": false,
+    "source_status": "BROKEN",
+    "last_verified": "2026-11-22",
+    "last_checked": null,
+    "notes": "Added 2026-11-22 from the Bangladesh Bank scheduled bank list (not an IFRS 9 target bank)"
+  },
+  {
+    "organization_id": "bank_x_palli_sanchay",
+    "canonical_name": "Palli Sanchay Bank",
+    "aliases": [
+      "Palli Sanchay Bank",
+      "পল্লী সঞ্চয় ব্যাংক",
+      "pallisanchaybank.gov.bd"
+    ],
+    "organization_type": "BANK",
+    "sector": "banking",
+    "official_domain": "pallisanchaybank.gov.bd",
+    "procurement_url": "http://www.pallisanchaybank.gov.bd/",
+    "tender_url": "http://www.pallisanchaybank.gov.bd/",
+    "notice_url": "http://www.pallisanchaybank.gov.bd/",
+    "is_ifrs9_target": false,
+    "source_status": "BROKEN",
+    "last_verified": "2026-11-22",
+    "last_checked": null,
+    "notes": "Added 2026-11-22 from the Bangladesh Bank scheduled bank list (not an IFRS 9 target bank)"
   }
 ]

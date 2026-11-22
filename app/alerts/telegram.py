@@ -57,6 +57,21 @@ class TelegramAlerter:
             logger.warning(f"Telegram message failed: {e}")
             return False
 
+    async def send_status(self, text: str) -> bool:
+        """Run report: sent every time (no dedupe, not recorded in the alerts table)."""
+        if not self.enabled:
+            return False
+        try:
+            async with httpx.AsyncClient(timeout=15.0) as client:
+                resp = await client.post(f"https://api.telegram.org/bot{config.telegram_bot_token}/sendMessage",
+                                         json={"chat_id": config.telegram_chat_id, "text": text,
+                                               "disable_web_page_preview": True})
+                resp.raise_for_status()
+            return True
+        except Exception as e:  # noqa: BLE001
+            logger.warning(f"Telegram run report failed: {e}")
+            return False
+
     async def send_new_priority(self, tender: Dict[str, Any]) -> bool:
         if not self.enabled:
             return False
