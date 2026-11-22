@@ -4,6 +4,8 @@ supabase>=2.32.0
 pydantic>=2.10.0
 pyyaml>=6.0.2
 python-dotenv>=1.0.1
+# Time zones (Windows has no built-in zone database; needed for Asia/Dhaka)
+tzdata>=2024.1
 
 # HTML, Parsing & Documents
 beautifulsoup4>=4.12.3
