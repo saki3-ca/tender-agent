@@ -45,6 +45,9 @@ _ORG_LINE = re.compile(
     r"university|বিশ্ববিদ্যালয়|company|কোম্পানি|council|কাউন্সিল", re.I)
 MIN_TEXT = 200          # less text than this = OCR could not read the image; do not trust a "no tender" result
 WINDOW = 900            # characters around a tender word that form one notice-like block
+MAX_PIXELS = 40_000_000  # images (and upscaled images) larger than this are not read
+MAX_UPSCALE = 3.0
+MAX_ASPECT = 12.0
 
 
 def available() -> bool:
@@ -64,11 +67,15 @@ def available() -> bool:
 
 def _ocr_sync(image_bytes: bytes) -> str:
     img = Image.open(BytesIO(image_bytes))
+    w, h = img.size
+    if not w or not h or w * h > MAX_PIXELS or max(w / h, h / w) > MAX_ASPECT:
+        return ""                              # empty, huge or strip-like image: not a newspaper page/advert
     if img.mode not in ("L", "RGB"):
         img = img.convert("RGB")
-    if img.width < 1400:                       # small e-paper images: upscale so small print is readable
-        scale = 1400 / img.width
-        img = img.resize((int(img.width * scale), int(img.height * scale)))
+    if w < 1400:                               # small e-paper images: upscale so small print is readable
+        scale = min(1400 / w, MAX_UPSCALE, (MAX_PIXELS / (w * h)) ** 0.5)
+        if scale > 1:
+            img = img.resize((int(w * scale), int(h * scale)))
     try:
         return pytesseract.image_to_string(img, lang="ben+eng")
     except pytesseract.TesseractError:        # Bangla language data missing

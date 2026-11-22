@@ -196,3 +196,17 @@ async def test_generic_epaper_checks_every_redirect_hop():
         assert await crawler._get(client, "https://epaper.samakal.com/evil.jpg") is None
         assert await crawler._get(client, "https://evil.example/x.jpg") is None
     assert not any("169.254" in u or "evil.example" in u for u in requested)
+
+
+def test_epaper_ocr_refuses_oversized_and_strip_images():
+    from io import BytesIO
+    from PIL import Image
+    from app.parsers.epaper_ocr import _ocr_sync
+
+    def png(w, h):
+        buf = BytesIO()
+        Image.new("L", (w, h), 255).save(buf, "PNG")
+        return buf.getvalue()
+
+    assert _ocr_sync(png(1, 5000)) == ""        # a 1 px strip would otherwise be upscaled 1400x
+    assert _ocr_sync(png(9000, 9000)) == ""     # 81 MP: above MAX_PIXELS
