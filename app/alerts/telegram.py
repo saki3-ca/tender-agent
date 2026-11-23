@@ -56,7 +56,7 @@ class TelegramAlerter:
         try:
             async with httpx.AsyncClient(timeout=15.0) as client:
                 resp = await client.post(f"https://api.telegram.org/bot{config.telegram_bot_token}/sendMessage",
-                                         json={"chat_id": config.telegram_chat_id, "text": text})
+                                         json={"chat_id": config.telegram_status_chat_id, "text": text})
                 resp.raise_for_status()
             self.store.record_alert(dedupe_key, {"text": text}, "SENT")
             return True
@@ -71,7 +71,7 @@ class TelegramAlerter:
         try:
             async with httpx.AsyncClient(timeout=15.0) as client:
                 resp = await client.post(f"https://api.telegram.org/bot{config.telegram_bot_token}/sendMessage",
-                                         json={"chat_id": config.telegram_chat_id, "text": text,
+                                         json={"chat_id": config.telegram_status_chat_id, "text": text,
                                                "disable_web_page_preview": True})
                 resp.raise_for_status()
             return True

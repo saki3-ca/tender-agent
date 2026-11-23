@@ -151,6 +151,12 @@ class AppConfig:
         return os.getenv("TELEGRAM_CHAT_ID", "")
 
     @property
+    def telegram_status_chat_id(self) -> str:
+        """Chat for run reports and system warnings. Unset = same chat as the tender alerts (TELEGRAM_CHAT_ID),
+        so the tender-alert group (e.g. with management) can be kept free of the every-10/30-minute reports."""
+        return os.getenv("TELEGRAM_STATUS_CHAT_ID", "") or self.telegram_chat_id
+
+    @property
     def smtp_host(self) -> str:
         return os.getenv("SMTP_HOST", "") or "smtp.gmail.com"
 
