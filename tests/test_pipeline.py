@@ -256,3 +256,10 @@ def test_newspaper_report_lists_each_paper_with_pages_and_tenders(monkeypatch):
     assert lines[0].startswith("📰⚠️ Newspapers read 24 Nov 08:15") and lines[0].endswith("1/2 OK")
     assert "24 pages, 2 by OCR (Gemini slow) | 2 tenders, 1 PRIORITY" in lines[1]
     assert lines[2].startswith("❌") and "HTTP_504" in lines[2]
+
+
+def test_night_hours_are_7pm_to_9am_dhaka():
+    from app.pipeline import is_night
+    at = lambda h, mi=0: datetime(2026, 11, 23, h, mi, tzinfo=DHAKA_TZ)
+    assert is_night(at(19)) and is_night(at(23, 50)) and is_night(at(0, 20)) and is_night(at(8, 59))
+    assert not is_night(at(9)) and not is_night(at(12)) and not is_night(at(18, 59))

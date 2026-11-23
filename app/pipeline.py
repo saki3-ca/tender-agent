@@ -72,6 +72,16 @@ DOC_TEXT_KEEP = 6000         # characters of document text stored for re-classif
 STORE_EXPIRED_DAYS = 30      # expired tenders older than this are not stored
 
 
+DAY_START_HOUR, NIGHT_START_HOUR = 9, 19   # Dhaka: 09:00-19:00 every 30 min (GitHub) / 10 min (office PC), else hourly
+
+
+def is_night(now: Optional[datetime] = None) -> bool:
+    """19:00-09:00 Dhaka: few notices are posted, so sources are read once an hour (pg_cron jobs tender-monitor /
+    tender-monitor-night; the office PC task skips runs within the hour)."""
+    hour = (now or datetime.now(DHAKA_TZ)).astimezone(DHAKA_TZ).hour
+    return not DAY_START_HOUR <= hour < NIGHT_START_HOUR
+
+
 def derive_title(text: str) -> Optional[str]:
     """A descriptive title from notice/document text, e.g. the 'Subject:' line."""
     head = (text or "")[:5000]
@@ -392,6 +402,7 @@ class Monitor:
         return "\n".join(lines)
 
     OFFICE_PC_SILENT_MINUTES = 30
+    OFFICE_PC_SILENT_MINUTES_NIGHT = 75     # at night the office PC reads once an hour (see is_night)
 
     async def check_office_pc(self) -> None:
         """Run from GitHub: if the office PC task has run before but not in the last 30 minutes, send one
@@ -401,7 +412,8 @@ class Monitor:
             return  # the office PC was never set up
         silent = datetime.now(timezone.utc) - last
         self.stats["office_pc_last_run"] = last.astimezone(DHAKA_TZ).strftime("%d %b %H:%M")
-        if silent < timedelta(minutes=self.OFFICE_PC_SILENT_MINUTES):
+        limit = self.OFFICE_PC_SILENT_MINUTES_NIGHT if is_night() else self.OFFICE_PC_SILENT_MINUTES
+        if silent < timedelta(minutes=limit):
             return
         when = last.astimezone(DHAKA_TZ).strftime("%d %b %Y %H:%M")
         key = f"office_pc_down_{last.isoformat()}"

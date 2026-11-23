@@ -60,6 +60,14 @@ def main() -> int:
     store = Store()
     if args.local:
         store.client = None
+    if run_type == "office_pc" and args.office_pc:
+        # The office PC task fires every 10 minutes; at night (19:00-09:00 Dhaka) it reads once an hour
+        from datetime import datetime, timedelta, timezone
+        from app.pipeline import _to_dt, is_night
+        last = _to_dt(store.last_run_start("office_pc"))
+        if is_night() and last and datetime.now(timezone.utc) - last < timedelta(minutes=55):
+            logger.info("Night hours: the office PC reads once an hour; skipping this run")
+            return 0
     monitor = Monitor(store, run_type=run_type)
     try:
         stats = asyncio.run(monitor.run(args.source, sector=args.sector, epaper=args.epaper))
