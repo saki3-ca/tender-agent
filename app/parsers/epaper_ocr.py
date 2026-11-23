@@ -52,6 +52,7 @@ NOTICE_WORDS = re.compile(
     r"দরপত্র|টেন্ডার\s*(?:বিজ্ঞপ্তি|নোটিশ)|আগ্রহপত্র|কোটেশন|স্মারক\s*(?:নং|নম্বর)?", re.I)
 MIN_TEXT = 200         # less text than this = OCR could not read the image; do not trust a "no tender" result
 WINDOW = 900            # characters around a tender word that form one notice-like block
+PRIORITY_WINDOW = 400   # characters around a tender word checked on their own for a Priority notice
 MAX_PIXELS = 40_000_000  # images (and upscaled images) larger than this are not read
 MAX_UPSCALE = 3.0
 MAX_ASPECT = 12.0
@@ -150,26 +151,45 @@ def _title(block: str) -> str:
     return (lines[0] if lines else "Notice in newspaper")[:220]
 
 
+def _item(block: str) -> Dict[str, Any]:
+    return {
+        "organization": _organization(block)[:120] or "See newspaper page",
+        "organization_type": "",
+        "title": "[OCR] " + _title(block),
+        "ref_no": None, "publication_date": None, "deadline": None,
+        "category": "Read by OCR - check the page",
+        "details": _clean(block)[:1500],
+        "contact": "",
+        "_ocr": True,
+    }
+
+
+def _priority_windows(text: str, classifier: Any) -> List[str]:
+    """Small window around EACH tender word that is a Priority notice on its own. On a page full of notices the
+    merged blocks are thousands of characters long, and a small audit notice deep inside one (e.g. RAOWA's external
+    audit, Pratidin 23 Nov 2026 p.9) fell outside the 1500 characters kept and classified."""
+    out: List[str] = []
+    last_end = -1
+    for m in TENDER_WORDS.finditer(text):
+        start, end = max(0, m.start() - PRIORITY_WINDOW), min(len(text), m.end() + PRIORITY_WINDOW)
+        if start < last_end:
+            continue                                   # same notice as the previous Priority window
+        window = text[start:end]
+        if NOTICE_WORDS.search(window) and classifier.classify("", window).is_priority:
+            # the Priority wording may sit at the window's end: keep what follows (address, deadline, e-mail)
+            last_end = min(len(text), end + PRIORITY_WINDOW)
+            out.append(text[start:last_end])
+    return out
+
+
 def ocr_items(text: str, only_priority: bool = False) -> List[Dict[str, Any]]:
-    """Tender items built from OCR text (Gemini's item format). only_priority: just the Priority blocks."""
+    """Tender items built from OCR text (Gemini's item format). only_priority: just the Priority notices."""
     from app.classification.relevance import RelevanceClassifier  # local import: avoids a config import cycle
     classifier = RelevanceClassifier()
-    items: List[Dict[str, Any]] = []
+    items: List[Dict[str, Any]] = [_item(w) for w in _priority_windows(text, classifier)]
+    if only_priority:
+        return items
     for block in _blocks(text):
-        if not NOTICE_WORDS.search(block):
-            continue                                   # a news story about procurement, not a notice
-        rel = classifier.classify("", block)
-        if only_priority and not rel.is_priority:
-            continue
-        org = _organization(block)
-        items.append({
-            "organization": org[:120] or "See newspaper page",
-            "organization_type": "",
-            "title": "[OCR] " + _title(block),
-            "ref_no": None, "publication_date": None, "deadline": None,
-            "category": "Read by OCR - check the page",
-            "details": _clean(block)[:1500],
-            "contact": "",
-            "_ocr": True,
-        })
+        if NOTICE_WORDS.search(block):                 # else: a news story about procurement, not a notice
+            items.append(_item(block))
     return items

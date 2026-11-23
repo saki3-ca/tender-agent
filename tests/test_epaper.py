@@ -225,3 +225,20 @@ def test_epaper_ocr_refuses_oversized_and_strip_images():
 
     assert _ocr_sync(png(1, 5000)) == ""        # a 1 px strip would otherwise be upscaled 1400x
     assert _ocr_sync(png(9000, 9000)) == ""     # 81 MP: above MAX_PIXELS
+
+
+def test_ocr_finds_a_small_audit_notice_inside_a_page_full_of_tenders():
+    # Pratidin 23 Nov 2026 p.9: RAOWA's external-audit notice sat between daycare food tenders; the merged OCR block
+    # was thousands of characters long and the audit wording fell outside what was classified.
+    from app.parsers.epaper_ocr import ocr_items
+    filler = ("e-GP Tender Notice Ref. No- 32.01.0000.000.706.07.0001.26-761 Appointment of Supplier for Supplying "
+              "Child Food to Daycare Center in Dhaka under the Department of Women Affairs. Tender ID 1359793 OTM. "
+              "This is an online tender, where only e-tender will be accepted in the national e-GP portal. ") * 6
+    raowa = ("“HOM কপ WE\" ২০২৬-২০২৭ অর্থবছরের THA feria জন্য বিভিন্ন অডিট ফার্মের নিকট হতে অনলাইনে "
+             "(raowa.office@gmail.com), সস অথবা ডাকযোগে আগামী ২৮ নভেঘর ২০২৩ তারিখের বো সেটার রেলে রাওয়া, "
+             "ভিআইপি রোড, মহাখালী, ঢাকা বরাবর দরপত্র জমা দেওয়ার আহ্বান করা যাচ্ছে ")
+    text = filler + raowa + filler
+    priority = ocr_items(text, only_priority=True)
+    assert len(priority) == 1 and "raowa.office@gmail.com" in priority[0]["details"]
+    everything = ocr_items(text)
+    assert any("raowa" in i["details"] for i in everything)
