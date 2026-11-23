@@ -37,10 +37,12 @@ $cred = Get-Credential -UserName $user -Message "Windows password of $user (lets
 if (-not $cred) { throw "Cancelled." }
 $plain = $cred.GetNetworkCredential().Password
 
-function Register-AgentTask([string]$name, [string]$arguments, [string]$logName, $trigger, [int]$limitMinutes) {
+function Register-AgentTask([string]$name, [string]$arguments, [string]$logName, $trigger, [int]$limitMinutes,
+                            [string]$envPrefix = "") {
     $log = Join-Path $repo "data\$logName"
-    # git pull first so the PC always uses the latest source list and code
-    $command = "cd /d `"$repo`" && git pull -q & `"$python`" run_monitor.py $arguments >> `"$log`" 2>&1"
+    # git pull first so the PC always uses the latest source list and code. $envPrefix sets variables for this task
+    # only (they win over .env, e.g. a longer RUN_TIME_BUDGET_MINUTES for the newspaper run).
+    $command = "cd /d `"$repo`" && git pull -q & $envPrefix`"$python`" run_monitor.py $arguments >> `"$log`" 2>&1"
     $action = New-ScheduledTaskAction -Execute "cmd.exe" -Argument "/c $command"
     $settings = New-ScheduledTaskSettingsSet -StartWhenAvailable -WakeToRun -DontStopOnIdleEnd `
         -ExecutionTimeLimit (New-TimeSpan -Minutes $limitMinutes) -MultipleInstances IgnoreNew
@@ -62,10 +64,12 @@ if ($Full) {
     Start-ScheduledTask -TaskName "ACNABIN Tender Monitor (full)"
 } else {
     Register-AgentTask "ACNABIN Tender Monitor (office PC)" "--office-pc" "office_pc.log" $hourly 30
-    # Bangladesh Pratidin and Jugantor block GitHub (Cloudflare): read them here in Chrome every morning at 08:30
-    # Dhaka (GitHub's 08:00 newspaper run also tries them). Needs GEMINI_API_KEY in .env.
-    $daily = New-ScheduledTaskTrigger -Daily -At "08:30"
-    Register-AgentTask "ACNABIN Tender Monitor (newspapers)" "--pc-browser --run-type office_pc_newspapers" "newspapers.log" $daily 90
+    # Every newspaper e-paper, every morning at 08:00 Dhaka: this PC is the main newspaper reader (real Chrome for
+    # the Cloudflare papers Pratidin and Jugantor, a Bangladesh connection). GitHub's 10:00 and 12:00 runs are the
+    # backup and skip papers already read here. Needs GEMINI_API_KEY in .env; Tesseract OCR (+ Bangla) recommended.
+    $daily = New-ScheduledTaskTrigger -Daily -At "08:00"
+    Register-AgentTask "ACNABIN Tender Monitor (newspapers)" "--epaper --run-type office_pc_newspapers" "newspapers.log" `
+        $daily 100 'set "RUN_TIME_BUDGET_MINUTES=80" & set "EPAPER_PC_BROWSER=1" & '
     Start-ScheduledTask -TaskName "ACNABIN Tender Monitor (office PC)"
 }
 Write-Host "Done. The first run has started; watch the log file above."

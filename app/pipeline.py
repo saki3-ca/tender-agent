@@ -325,7 +325,7 @@ class Monitor:
         if self.run_type == "office_pc":
             return "Office PC (GitHub-blocked sites)"
         if self.run_type == "office_pc_newspapers":
-            return "Office PC (Pratidin + Jugantor newspapers)"
+            return "Office PC (newspapers)"
         if epaper:
             return "Newspapers"
         return "GitHub (every 30 min)" if os.getenv("GITHUB_ACTIONS") == "true" else f"Run ({self.run_type})"
