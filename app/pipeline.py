@@ -245,7 +245,13 @@ class Monitor:
                 if time.monotonic() > self.deadline_ts:
                     return [], self._state_row(source, states.get(source["id"]), None, "SKIPPED_TIME_BUDGET", 0)
                 try:
-                    return await self.process_source(source, states.get(source["id"]))
+                    # Hard stop at the run's time budget: one slow source (e.g. a newspaper with many pages) must not
+                    # hold the whole run until the job is killed, which loses every other source's results too.
+                    return await asyncio.wait_for(self.process_source(source, states.get(source["id"])),
+                                                  timeout=max(60.0, self.deadline_ts - time.monotonic()))
+                except asyncio.TimeoutError:
+                    logger.error(f"Source {source['id']} stopped: run time budget reached")
+                    return [], self._state_row(source, states.get(source["id"]), None, "TIMEOUT_RUN_BUDGET", 0)
                 except Exception as e:  # noqa: BLE001 - one source must never stop the run
                     logger.error(f"Source {source['id']} failed: {e}", extra={"source_id": source["id"]})
                     return [], self._state_row(source, states.get(source["id"]), None, f"ERROR: {str(e)[:200]}", 0)
@@ -318,6 +324,8 @@ class Monitor:
     def _run_label(self, epaper: Optional[bool]) -> str:
         if self.run_type == "office_pc":
             return "Office PC (GitHub-blocked sites)"
+        if self.run_type == "office_pc_newspapers":
+            return "Office PC (Pratidin + Jugantor newspapers)"
         if epaper:
             return "Newspapers"
         return "GitHub (every 30 min)" if os.getenv("GITHUB_ACTIONS") == "true" else f"Run ({self.run_type})"

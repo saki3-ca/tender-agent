@@ -62,6 +62,10 @@ if ($Full) {
     Start-ScheduledTask -TaskName "ACNABIN Tender Monitor (full)"
 } else {
     Register-AgentTask "ACNABIN Tender Monitor (office PC)" "--office-pc" "office_pc.log" $hourly 30
+    # Bangladesh Pratidin and Jugantor block GitHub (Cloudflare): read them here in Chrome every morning at 08:30
+    # Dhaka (GitHub's 08:00 newspaper run also tries them). Needs GEMINI_API_KEY in .env.
+    $daily = New-ScheduledTaskTrigger -Daily -At "08:30"
+    Register-AgentTask "ACNABIN Tender Monitor (newspapers)" "--pc-browser --run-type office_pc_newspapers" "newspapers.log" $daily 90
     Start-ScheduledTask -TaskName "ACNABIN Tender Monitor (office PC)"
 }
 Write-Host "Done. The first run has started; watch the log file above."
