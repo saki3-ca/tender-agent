@@ -241,3 +241,18 @@ def test_worldbank_feed_keeps_eois_and_bids_and_skips_awards():
     assert listing.published == date(2026, 11, 16)
     assert listing.deadline == datetime(2026, 11, 29, 9, 15, tzinfo=DHAKA_TZ) and listing.deadline_has_time
     assert org["organization_id"] == "dp_worldbank_bd"
+
+
+def test_newspaper_report_lists_each_paper_with_pages_and_tenders(monkeypatch):
+    monkeypatch.delenv("GITHUB_ACTIONS", raising=False)
+    m = Monitor(Store(), now=NOW)
+    m.epaper_pages = {"src_epaper_financialexpress": {"read": 24, "ocr_only": 2, "failed": 0}}
+    m.results = [{"source_id": "src_epaper_financialexpress", "is_priority": True},
+                 {"source_id": "src_epaper_financialexpress", "is_priority": False}]
+    rows = [{"source_id": "src_epaper_financialexpress", "ok": True, "error": None},
+            {"source_id": "src_epaper_jugantor", "ok": False, "error": "HTTP_504"}]
+    text = m._newspaper_report(rows, "24 Nov 08:15")
+    lines = text.splitlines()
+    assert lines[0].startswith("📰⚠️ Newspapers read 24 Nov 08:15") and lines[0].endswith("1/2 OK")
+    assert "24 pages, 2 by OCR (Gemini slow) | 2 tenders, 1 PRIORITY" in lines[1]
+    assert lines[2].startswith("❌") and "HTTP_504" in lines[2]

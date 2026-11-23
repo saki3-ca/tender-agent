@@ -205,6 +205,7 @@ class Monitor:
         self.doc_chars = int(config.crawler_setting("document_text_chars", 20000))
         self.concurrency = int(config.crawler_setting("concurrent_sources", 6))
         self.deadline_ts = time.monotonic() + config.run_time_budget_minutes * 60 - 30
+        self.epaper_pages: Dict[str, Dict[str, int]] = {}   # newspaper source id -> pages read (for the report)
         self.stats = {"sources_total": 0, "sources_ok": 0, "sources_failed": 0, "sources_skipped": 0,
                       "listings": 0, "documents_read": 0, "tenders_stored": 0, "active_general": 0,
                       "active_priority": 0, "active_ifrs9": 0, "new_tenders": 0, "alerts_sent": 0, "emails_sent": 0}
@@ -345,6 +346,12 @@ class Monitor:
         checked = s["sources_ok"] + s["sources_failed"]
         if checked == 0 and not s["sources_skipped"]:
             return      # nothing was due (e.g. a backup newspaper run after the papers were read): no message
+        paper_ids = {src["id"] for src in config.sources if src.get("type", "").startswith("epaper_")}
+        if any(r["source_id"] in paper_ids for r in state_rows):
+            await self.alerter.send_status(self._newspaper_report(
+                [r for r in state_rows if r["source_id"] in paper_ids], when))
+            if epaper:
+                return  # a newspaper-only run: the newspaper message is its report
         icon = "✅" if not failed else ("⚠️" if s["sources_ok"] else "❌")
         lines = [f"{icon} {label} run {when}",
                  f"Sites: {s['sources_ok']}/{checked} OK" + (f", {len(failed)} failed" if failed else "")
@@ -358,6 +365,31 @@ class Monitor:
             if len(failed) > 10:
                 lines.append(f"• … and {len(failed) - 10} more")
         await self.alerter.send_status("\n".join(lines))
+
+    def _newspaper_report(self, state_rows: List[Dict[str, Any]], when: str) -> str:
+        """Separate Telegram message for newspaper reads: one line per paper (pages read, tenders, failures)."""
+        found: Dict[str, List[int]] = {}
+        for t in getattr(self, "results", None) or []:
+            n = found.setdefault(t["source_id"], [0, 0])
+            n[0] += 1
+            n[1] += 1 if t.get("is_priority") else 0
+        names = {src["id"]: source_org(src)["name"].replace(" E-Paper", "").replace(" e-Paper", "")
+                 for src in config.sources if config.organization(src["organization_id"])}
+        rows = state_rows
+        ok = [r for r in rows if r["ok"]]
+        lines = [f"{'📰✅' if len(ok) == len(rows) else '📰⚠️'} Newspapers read {when} ({self._run_label(None)}): "
+                 f"{len(ok)}/{len(rows)} OK"]
+        for r in sorted(rows, key=lambda r: (not r["ok"], names.get(r["source_id"], r["source_id"]))):
+            name = names.get(r["source_id"], r["source_id"])
+            if not r["ok"]:
+                lines.append(f"❌ {name}: {str(r.get('error'))[:70]}")
+                continue
+            pages = self.epaper_pages.get(r["source_id"], {})
+            tenders, priority = found.get(r["source_id"], [0, 0])
+            extra = f", {pages['ocr_only']} by OCR (Gemini slow)" if pages.get("ocr_only") else ""
+            lines.append(f"✅ {name}: {pages.get('read', 0)} pages{extra} | {tenders} tenders"
+                         + (f", {priority} PRIORITY" if priority else ""))
+        return "\n".join(lines)
 
     OFFICE_PC_SILENT_MINUTES = 30
 
@@ -600,6 +632,8 @@ class Monitor:
             return status, error, []
         # An error (not "no listings") lets the next run retry despite min_interval_hours.
         parser = crawler.parser
+        self.epaper_pages[source["id"]] = {"read": parser.pages_read, "ocr_only": parser.pages_ocr_only,
+                                           "failed": parser.pages_failed}
         if parser.pages_read == 0:
             if parser.pages_failed:
                 return status, f"GEMINI_FAILED on {parser.pages_failed} pages: {parser.last_error}", []
