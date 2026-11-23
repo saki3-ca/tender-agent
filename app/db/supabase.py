@@ -7,9 +7,12 @@ runs and writes its results to data/local_run.json for review.
 """
 
 import json
+import time
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Any, Dict, Iterable, List, Optional
+
+import httpx
 
 from app.utils.config import BASE_DIR, config
 from app.utils.logging import logger
@@ -39,6 +42,19 @@ def _chunks(items: List[Any], size: int) -> Iterable[List[Any]]:
         yield items[i:i + size]
 
 
+def _execute(query: Any, attempts: int = 3) -> Any:
+    """Run a Supabase query, retrying network timeouts/drops (slow office internet). Only for idempotent
+    queries (selects and upserts): a retried upsert writes the same rows again."""
+    for attempt in range(1, attempts + 1):
+        try:
+            return query.execute()
+        except (httpx.TimeoutException, httpx.NetworkError, httpx.RemoteProtocolError) as e:
+            if attempt == attempts:
+                raise
+            logger.warning(f"Supabase request failed ({e!r}); retry {attempt}/{attempts - 1}")
+            time.sleep(5 * attempt)
+
+
 class Store:
     def __init__(self):
         self.client = None
@@ -63,10 +79,10 @@ class Store:
             return {i: self._local["tenders"][i] for i in ids if i in self._local["tenders"]}
         found: Dict[str, Dict[str, Any]] = {}
         for chunk in _chunks(sorted(set(ids)), 150):
-            res = self.client.table("tenders").select(
+            res = _execute(self.client.table("tenders").select(
                 "id,title,description,published_date,deadline,deadline_has_time,reference_number,"
                 "document_text,document_checked,first_seen,is_baseline"
-            ).in_("id", chunk).execute()
+            ).in_("id", chunk))
             for row in res.data or []:
                 found[row["id"]] = row
         return found
@@ -103,7 +119,7 @@ class Store:
             return
         for batch in (new_rows, existing_rows):
             for chunk in _chunks(batch, 200):
-                self.client.table("tenders").upsert(chunk).execute()
+                _execute(self.client.table("tenders").upsert(chunk))
 
     # ----------------------------------------------------------- admin sources
     def admin_sources(self) -> List[Dict[str, Any]]:
@@ -133,7 +149,7 @@ class Store:
                 self._local["source_status"][r["source_id"]] = r
             return
         for chunk in _chunks(rows, 200):
-            self.client.table("source_status").upsert(chunk).execute()
+            _execute(self.client.table("source_status").upsert(chunk))
 
     # -------------------------------------------------------------------- runs
     def delete_source_states(self, source_ids: List[str]) -> None:
