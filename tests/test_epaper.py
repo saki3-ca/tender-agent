@@ -125,6 +125,21 @@ async def test_gemini_failure_is_counted_not_silent():
     assert mock_post.await_count == len(GEMINI_MODELS)  # exhausted models are not retried
 
 
+@pytest.mark.asyncio
+async def test_slow_gemini_gives_up_on_the_page_instead_of_retrying_for_half_an_hour():
+    from app.parsers import epaper_gemini
+    with patch.object(httpx.AsyncClient, "post", new_callable=AsyncMock) as mock_post, \
+            patch("app.parsers.epaper_gemini.asyncio.sleep", new_callable=AsyncMock), \
+            patch.dict(epaper_gemini._TIMEOUTS, clear=True), \
+            patch.object(epaper_gemini, "_UNUSABLE", set()):
+        mock_post.side_effect = httpx.ReadTimeout("slow")
+        parser = GeminiEpaperParser(api_keys=["k1", "k2"])
+        assert await parser._extract(b"img", "image/jpeg") is None
+        # every (key, model) timed out twice and was then dropped: 2 rounds, not 3 rounds x every model x 120 s
+        assert mock_post.await_count == 2 * 2 * len(GEMINI_MODELS)
+        assert all(n == 2 for n in epaper_gemini._TIMEOUTS.values())
+
+
 def test_jugantor_page_images_skip_clippings_and_features():
     html = """
     <img src="https://epaper.jugantor.com/storage/2026-10-08/1/1791396290_1.jpg">

@@ -9,6 +9,7 @@ import asyncio
 import base64
 import json
 import logging
+import time
 from typing import Any, Dict, List, Optional
 import httpx
 
@@ -29,6 +30,9 @@ GEMINI_MODELS = [
 _GEMINI_SLOTS = asyncio.Semaphore(2)
 # (key, model) pairs that hit their daily quota or are unavailable, for the rest of this run.
 _UNUSABLE: set = set()
+_TIMEOUTS: Dict[Any, int] = {}
+PAGE_SECONDS = 180       # Gemini time per page before falling back to the OCR text
+REQUEST_SECONDS = 90.0   # one Gemini request
 
 PROMPT = """You are an expert procurement and tender analyst in Bangladesh.
 Carefully examine the entire newspaper page image.
@@ -113,16 +117,24 @@ class GeminiEpaperParser:
             }
         }
 
-        async with httpx.AsyncClient(timeout=120.0) as client:
+        # One page gets at most PAGE_SECONDS of Gemini time; after that the OCR text is used. Without this cap a slow
+        # Gemini (timeouts on every model and key, 3 rounds) took 30+ minutes per page and the run was killed.
+        page_deadline = time.monotonic() + PAGE_SECONDS
+        async with httpx.AsyncClient(timeout=REQUEST_SECONDS) as client:
             for attempt in range(3):
                 for key_idx, key in enumerate(self.api_keys):
                     for model in GEMINI_MODELS:
                         if (key, model) in _UNUSABLE:
                             continue
+                        left = page_deadline - time.monotonic()
+                        if left < 15:
+                            self.last_error = f"Gemini too slow: page gave up after {PAGE_SECONDS}s"
+                            return None
                         url = f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent"
                         try:
                             await asyncio.sleep(2.0)
-                            resp = await client.post(url, json=payload, headers={"x-goog-api-key": key})
+                            resp = await client.post(url, json=payload, headers={"x-goog-api-key": key},
+                                                     timeout=min(REQUEST_SECONDS, left))
                             if resp.status_code == 200:
                                 data = resp.json()
                                 text = data["candidates"][0]["content"]["parts"][0]["text"]
@@ -145,6 +157,10 @@ class GeminiEpaperParser:
                         except Exception as e:  # noqa: BLE001
                             self.last_error = f"Gemini {model}: {type(e).__name__}: {str(e)[:120]}"
                             logger.warning(self.last_error)
+                            if isinstance(e, httpx.TimeoutException):
+                                _TIMEOUTS[(key, model)] = _TIMEOUTS.get((key, model), 0) + 1
+                                if _TIMEOUTS[(key, model)] >= 2:      # this model is overloaded today: stop asking it
+                                    _UNUSABLE.add((key, model))
 
                 if all((k, m) in _UNUSABLE for k in self.api_keys for m in GEMINI_MODELS):
                     self.last_error = self.last_error if "quota" not in (self.last_error or "") else \
