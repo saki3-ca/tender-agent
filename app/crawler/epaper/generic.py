@@ -27,6 +27,7 @@ from urllib.parse import urljoin, urlparse
 import httpx
 
 from app.crawler.crawler import USER_AGENT
+from app.crawler.epaper import get_page_image
 from app.parsers.date_cleaner import DHAKA_TZ
 from app.parsers.epaper_gemini import GeminiEpaperParser
 
@@ -75,7 +76,7 @@ class GenericEpaperCrawler:
             return None
         # Redirects are followed by hand so every hop is checked before it is requested
         for _ in range(5):
-            r = await client.get(url, follow_redirects=False)
+            r = await get_page_image(client, url, follow_redirects=False)
             if not r.is_redirect:
                 return r
             url = urljoin(url, r.headers.get("location", ""))

@@ -15,6 +15,7 @@ import httpx
 from bs4 import BeautifulSoup
 
 from app.crawler.crawler import USER_AGENT
+from app.crawler.epaper import get_page_image
 from app.parsers.date_cleaner import DHAKA_TZ
 from app.parsers.epaper_gemini import GeminiEpaperParser
 
@@ -66,7 +67,7 @@ class FinancialExpressEpaperCrawler:
                     # also published as its own sharper image: read those, and the page only if there are none.
                     images = await self._article_images(client, idx, today) or [img_url]
                     for image_url in images:
-                        img_resp = await client.get(image_url, headers={"User-Agent": USER_AGENT})
+                        img_resp = await get_page_image(client, image_url, headers={"User-Agent": USER_AGENT})
                         if img_resp.status_code != 200:
                             continue
                         tenders = await self.parser.extract_tenders_from_image(img_resp.content, "image/jpeg")

@@ -3703,5 +3703,25 @@
     "last_verified": "2026-11-23",
     "last_checked": null,
     "notes": "Added 2026-11-23: financial sector / regulator / development partner coverage"
+  },
+  {
+    "organization_id": "epaper_newage",
+    "canonical_name": "New Age E-Paper",
+    "aliases": [
+      "New Age",
+      "The New Age",
+      "newagebd.net"
+    ],
+    "organization_type": "NEWSPAPER",
+    "sector": "ngos",
+    "official_domain": "newagebd.net",
+    "procurement_url": "https://epaper.newagebd.net/",
+    "tender_url": "https://epaper.newagebd.net/",
+    "notice_url": "https://epaper.newagebd.net/",
+    "is_ifrs9_target": false,
+    "source_status": "OK",
+    "last_verified": "2026-11-23",
+    "last_checked": null,
+    "notes": "English daily; added 2026-11-23"
   }
 ]

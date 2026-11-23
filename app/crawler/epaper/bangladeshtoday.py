@@ -12,6 +12,7 @@ import httpx
 from bs4 import BeautifulSoup
 
 from app.crawler.crawler import USER_AGENT
+from app.crawler.epaper import get_page_image
 from app.parsers.date_cleaner import DHAKA_TZ
 from app.parsers.epaper_gemini import GeminiEpaperParser
 
@@ -49,7 +50,7 @@ class BangladeshTodayEpaperCrawler:
                 logger.info(f"Processing The Bangladesh Today Page {idx}: {img_url}")
 
                 try:
-                    img_resp = await client.get(img_url, headers={"User-Agent": USER_AGENT})
+                    img_resp = await get_page_image(client, img_url, headers={"User-Agent": USER_AGENT})
                     if img_resp.status_code != 200:
                         continue
 

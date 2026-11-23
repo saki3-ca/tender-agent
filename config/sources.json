@@ -1884,6 +1884,31 @@
     "note": "Disabled 2026-11-22: kalerkantho.com answers automated visitors with a Cloudflare 'Attention Required' block page (HTTP 403). Not bypassed by design. CHECK MANUALLY: https://www.kalerkantho.com/epaper"
   },
   {
+    "id": "src_epaper_newage",
+    "type": "epaper_generic",
+    "newspaper": "New Age",
+    "url": "https://epaper.newagebd.net/",
+    "public_url": "https://epaper.newagebd.net/",
+    "organization_id": "epaper_newage",
+    "tier": 2,
+    "requires_js": false,
+    "verify_ssl": true,
+    "rate_limit_seconds": 2,
+    "enabled": true,
+    "aggregator": true,
+    "members_only": false,
+    "max_documents": 0,
+    "min_interval_hours": 10,
+    "page_regex": "(?:epaper\\.newagebd\\.net/{d}-{m}-{Y}/|images/{d}_{m}_{Y}/regular_)(?P<n>\\d+)",
+    "image_template": "https://epapercontent.newagebd.net/images/{d}_{m}_{Y}/regular_{n}_medium.jpg",
+    "allowed_hosts": [
+      "newagebd.net"
+    ],
+    "max_pages": 20,
+    "verified": "2026-11-23",
+    "note": "English daily New Age. Page links on the home page; full page scans at epapercontent.newagebd.net (regular_<n>_medium.jpg, ~1.8 MB)."
+  },
+  {
     "id": "src_dp_unicef_bd",
     "url": "https://www.unicef.org/bangladesh/en/supply-and-logistics",
     "organization_id": "dp_unicef_bd",

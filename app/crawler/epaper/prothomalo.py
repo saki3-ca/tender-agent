@@ -15,6 +15,7 @@ from typing import Any, Dict, List, Optional, Tuple
 import httpx
 
 from app.crawler.crawler import USER_AGENT
+from app.crawler.epaper import get_page_image
 from app.parsers.date_cleaner import DHAKA_TZ, deadline_datetime, extract_dates, parse_first_date
 from app.parsers.epaper_gemini import GeminiEpaperParser
 from app.parsers.html_parser import Listing
@@ -85,7 +86,7 @@ class ProthomAloEpaperCrawler:
                 logger.info(f"Processing Prothom Alo Page {page_no} ({page_title}): {image_url}")
 
                 try:
-                    img_resp = await client.get(image_url, headers={"User-Agent": USER_AGENT})
+                    img_resp = await get_page_image(client, image_url, headers={"User-Agent": USER_AGENT})
                     if img_resp.status_code != 200:
                         logger.warning(f"Failed to download page {page_no} image: HTTP {img_resp.status_code}")
                         continue

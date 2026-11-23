@@ -16,6 +16,7 @@ import httpx
 
 from app.crawler import pc_browser
 from app.crawler.crawler import USER_AGENT
+from app.crawler.epaper import get_page_image
 from app.parsers.date_cleaner import DHAKA_TZ
 from app.parsers.epaper_gemini import GeminiEpaperParser
 
@@ -57,7 +58,7 @@ class JugantorEpaperCrawler:
                 page_view_url = (f"{BASE_URL}/{edition.group(1)}/{date_str}?page={page_no}"
                                  if edition else f"{BASE_URL}/")
                 try:
-                    img_resp = await client.get(img_url, headers={"User-Agent": USER_AGENT})
+                    img_resp = await get_page_image(client, img_url, headers={"User-Agent": USER_AGENT})
                     if img_resp.status_code != 200 or len(img_resp.content) < 10000:
                         continue
                     tenders = await self.parser.extract_tenders_from_image(img_resp.content, "image/jpeg")

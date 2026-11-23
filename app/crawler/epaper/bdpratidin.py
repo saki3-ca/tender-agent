@@ -17,6 +17,7 @@ import httpx
 
 from app.crawler import pc_browser
 from app.crawler.crawler import USER_AGENT
+from app.crawler.epaper import get_page_image
 from app.parsers.date_cleaner import DHAKA_TZ
 from app.parsers.epaper_gemini import GeminiEpaperParser
 
@@ -71,7 +72,7 @@ class BdPratidinEpaperCrawler:
                     img_url = full_page_image(view, date_folder, page_no)
                     if not img_url:
                         continue
-                    img_resp = await client.get(img_url)
+                    img_resp = await get_page_image(client, img_url)
                     if img_resp.status_code != 200 or len(img_resp.content) < 10000:
                         continue
                     tenders = await self.parser.extract_tenders_from_image(img_resp.content, "image/jpeg")
