@@ -359,7 +359,12 @@ class Monitor:
         if checked == 0 and not s["sources_skipped"]:
             return      # nothing was due (e.g. a backup newspaper run after the papers were read): no message
         if self.run_type == "bdjobs" and not failed and not s["new_tenders"]:
-            return      # BDJobs runs every 5 minutes: report only new tenders or a failure
+            # BDJobs runs every 5 minutes: a short "checked" message on every other run (:00, :10, :20 ...)
+            # so the team can see it is working; new tenders and failures are reported on every run.
+            if datetime.now(DHAKA_TZ).minute // 5 % 2 == 0:
+                await self.alerter.send_status(f"✅ BDJobs checked {when}: {s['listings']} notices on BDJobs, "
+                                               f"no new tender")
+            return
         paper_ids = {src["id"] for src in config.sources if src.get("type", "").startswith("epaper_")}
         if any(r["source_id"] in paper_ids for r in state_rows):
             await self.alerter.send_status(self._newspaper_report(
