@@ -335,6 +335,8 @@ class Monitor:
     def _run_label(self, epaper: Optional[bool]) -> str:
         if self.run_type == "office_pc":
             return "Office PC (GitHub-blocked sites)"
+        if self.run_type == "bdjobs":
+            return "BDJobs (every 5 min)"
         if self.run_type == "office_pc_newspapers":
             return "Office PC (newspapers)"
         if epaper:
@@ -356,6 +358,8 @@ class Monitor:
         checked = s["sources_ok"] + s["sources_failed"]
         if checked == 0 and not s["sources_skipped"]:
             return      # nothing was due (e.g. a backup newspaper run after the papers were read): no message
+        if self.run_type == "bdjobs" and not failed and not s["new_tenders"]:
+            return      # BDJobs runs every 5 minutes: report only new tenders or a failure
         paper_ids = {src["id"] for src in config.sources if src.get("type", "").startswith("epaper_")}
         if any(r["source_id"] in paper_ids for r in state_rows):
             await self.alerter.send_status(self._newspaper_report(
@@ -522,7 +526,10 @@ class Monitor:
         Bdjobs.com "Tender/EOI" section (the JSON feed behind bdjobs.com/h/). Each notice is attributed
         to the organization that published it; the Bdjobs notice page is the link.
         """
-        res = await self.crawler.fetch(source["url"], verify_ssl=source.get("verify_ssl", True), binary=True)
+        # The feed is served with "Cache-Control: max-age=3600": a unique query string asks for the current copy,
+        # not one cached up to an hour (NETZ's audit RFP, posted 13:06 on 24 Nov 2026, was found at 13:41).
+        url = f"{source['url']}{'&' if '?' in source['url'] else '?'}t={int(time.time())}"
+        res = await self.crawler.fetch(url, verify_ssl=source.get("verify_ssl", True), binary=True)
         if not res.ok:
             return res.status, res.error, []
         try:

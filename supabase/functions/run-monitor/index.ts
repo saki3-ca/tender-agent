@@ -12,7 +12,7 @@
 import { createClient } from "npm:@supabase/supabase-js@2";
 
 const REPO = Deno.env.get("GH_REPO") ?? "saki3-ca/tender-agent";
-const WORKFLOWS: Record<string, string> = { monitor: "monitor.yml", epaper: "epaper.yml" };
+const WORKFLOWS: Record<string, string> = { monitor: "monitor.yml", epaper: "epaper.yml", bdjobs: "bdjobs.yml" };
 
 const cors = {
   "Access-Control-Allow-Origin": "*",

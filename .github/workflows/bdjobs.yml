@@ -1,0 +1,54 @@
+name: BDJobs Tenders (every 5 min, 08:00-19:00)
+
+on:
+  schedule:
+    # Every 5 minutes, 08:00-18:55 Dhaka (02:00-12:55 UTC). Most NGO/INGO EOIs and RFPs appear on BDJobs during
+    # office hours, and a colleague can act on one within minutes (NETZ audit RFP, 24 Nov 2026). The database
+    # scheduler (pg_cron job "tender-bdjobs" -> Edge Function run-monitor?workflow=bdjobs) starts these runs on
+    # time; GitHub's own cron below is a backup (it skips or delays many 5-minute runs).
+    - cron: "*/5 2-12 * * *"
+  workflow_dispatch: {}
+
+concurrency:
+  group: bdjobs
+  cancel-in-progress: false
+
+jobs:
+  run-bdjobs:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+
+      - name: Install Python dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Read BDJobs Tender/EOI feed
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          CRAWLER_CONTACT_EMAIL: ${{ secrets.CRAWLER_CONTACT_EMAIL || 'tenders@acnabin.com' }}
+          RUN_TIME_BUDGET_MINUTES: "6"
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          TELEGRAM_STATUS_CHAT_ID: ${{ secrets.TELEGRAM_STATUS_CHAT_ID }}
+          SMTP_HOST: ${{ secrets.SMTP_HOST }}
+          SMTP_PORT: ${{ secrets.SMTP_PORT }}
+          SMTP_USER: ${{ secrets.SMTP_USER }}
+          SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
+          ALERT_EMAIL_TO: ${{ secrets.ALERT_EMAIL_TO }}
+          DASHBOARD_BASE_URL: ${{ secrets.DASHBOARD_BASE_URL || 'https://acnabin-tenders.pages.dev' }}
+        # New Priority tenders -> Telegram alert + email at once; the run report is sent only when there is
+        # something new or a failure (app/pipeline.py report_run).
+        run: |
+          python run_monitor.py --source src_agg_bdjobs --run-type bdjobs
