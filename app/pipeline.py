@@ -424,8 +424,7 @@ class Monitor:
         text = (f"ACNABIN Tender Monitor: the office PC has not run since {when} (Dhaka time, "
                 f"{int(silent.total_seconds() // 60)} minutes ago). Janata Bank, Islami Bank and the other office-PC "
                 "sources are not being read. Check that the PC is on, awake and online.")
-        await self.alerter.send_text(key, text)
-        await self.emailer.send_text(key + "_email", "Office PC stopped - tender sources not being read", text)
+        await self.alerter.send_text(key, text)     # Telegram only: email is for tenders
 
     # ---------------------------------------------------------------- source
     async def process_source(self, source: Dict[str, Any], state: Optional[Dict[str, Any]]
